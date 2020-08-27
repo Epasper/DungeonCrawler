@@ -1,13 +1,14 @@
 package com.dungeoncrawler.Javiarenka;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.*;
+
+import static org.springframework.boot.SpringApplication.run;
 
 @SpringBootApplication
 public class JaviarenkaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JaviarenkaApplication.class, args);
+		run(JaviarenkaApplication.class, args);
 	}
 
 }
