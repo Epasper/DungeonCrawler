@@ -14,7 +14,7 @@ public class CharacterCreatorController {
     CharacterCreatorService service = new CharacterCreatorService();
 
     @GetMapping("/characterCreator")
-    public String characterCreatorGet(String className, Model model) {
+    public String characterCreatorGet(Model model) {
         model.addAttribute("heroClasses", service.getAvailableClassesStringified());
         return "characterCreator";
     }
