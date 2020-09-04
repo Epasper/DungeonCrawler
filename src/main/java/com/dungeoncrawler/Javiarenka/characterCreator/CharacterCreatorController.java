@@ -14,12 +14,8 @@ public class CharacterCreatorController {
     CharacterCreatorService service = new CharacterCreatorService();
 
     @GetMapping("/characterCreator")
-    public String characterCreatorGet(@RequestParam(value = "className", required = false) String className, Model model) {
+    public String characterCreatorGet(String className, Model model) {
         model.addAttribute("heroClasses", service.getAvailableClassesStringified());
-        if (className != null && !className.isBlank()) {
-            model.addAttribute("startingWeapon", service.getCharacterClassToAvailableWeapon().get(className));
-            model.addAttribute("startingArmor", service.getCharacterClassToAvailableArmor().get(className));
-        }
         return "characterCreator";
     }
 
