@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Character Creator</title>
@@ -10,17 +10,18 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
-<form>
-    <div class="form">
-        <div >
-            <label>Name</label>
-            <input type="text" placeholder="Hero Name">
-        </div>
-        <div>
-            <label>Surname</label>
-            <input type="text" placeholder="Hero Surname">
-        </div>
-    </div>
+<form action="/characterCreator">
+        <table>
+            <tr>
+                <td><label>Name</label></td>
+                <td><input type="text" placeholder="Hero Name"></td>
+            </tr>
+            <tr>
+                <td><label>Surname</label></td>
+                <td><input type="text" placeholder="Hero Surname"></td>
+            </tr>
+        </table>
+
     <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Select Class:
@@ -48,7 +49,7 @@
                 <a class="dropdown-item" href='/characterCreator(className=class)'><td th:text="|${startingArmor}|"></td></a>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Save Character</button>
+    <button type="submit" value="Submit" class="btn btn-primary">Save Character</button>
 </form>
 </body>
 </html>
