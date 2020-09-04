@@ -1,21 +1,25 @@
 package com.dungeoncrawler.Javiarenka.equipment;
 
+import com.dungeoncrawler.Javiarenka.character.HeroClass;
+
+import java.util.List;
+
 public class Weapon extends Equipment {
-    private String type;
+    private DamageType damageType;
     private int damageDealt;
 
-    public Weapon(String name, double weight, double price, String type, int damageDealt) {
-        super(name, weight, price);
-        this.type = type;
+    public Weapon(String name, List<HeroClass> classRestriction, double weight, double price, DamageType damageType, int damageDealt) {
+        super(name, classRestriction, weight, price);
+        this.damageType = damageType;
         this.damageDealt = damageDealt;
     }
 
-    public String getType() {
-        return type;
+    public DamageType getDamageType() {
+        return damageType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
     }
 
     public int getDamageDealt() {

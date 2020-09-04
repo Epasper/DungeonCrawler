@@ -2,17 +2,24 @@ package com.dungeoncrawler.Javiarenka.characterCreator;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 @Controller
 public class CharacterCreatorController {
 
+    CharacterCreatorService service = new CharacterCreatorService();
+
     @GetMapping("/characterCreator")
-    public String characterCreatorGet(Model model) {
+    public String characterCreatorGet(@RequestParam(value = "className", required = false) String className, Model model) {
+        model.addAttribute("heroClasses", service.getAvailableClassesStringified());
+        if (className != null && !className.isBlank()) {
+            model.addAttribute("startingWeapon", service.getCharacterClassToAvailableWeapon().get(className));
+            model.addAttribute("startingArmor", service.getCharacterClassToAvailableArmor().get(className));
+        }
         return "characterCreator";
     }
 
