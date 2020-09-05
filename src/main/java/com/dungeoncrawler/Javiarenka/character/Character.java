@@ -20,4 +20,7 @@ public class Character {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+    void attack(Character character){
+    }
 }

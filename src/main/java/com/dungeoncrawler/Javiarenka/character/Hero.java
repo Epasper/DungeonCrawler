@@ -8,6 +8,7 @@ public class Hero extends Character {
     private HeroClass heroClass;
     private Armor equippedArmor;
     private Weapon equippedWeapon;
+    private int money;
 
     @Override
     public String toString() {
@@ -52,7 +53,16 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
     }
 
+    public int getMoney() { return money; }
+
+    public void setMoney(int money) { this.money = money; }
+
     public void saveThisHero() {
         //TODO: DUN-26: Zapisać postać w lokalnym pliku
+    }
+
+    @Override
+    void attack(Character monster) {
+        monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
     }
 }
