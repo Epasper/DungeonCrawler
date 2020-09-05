@@ -1,15 +1,15 @@
 package com.dungeoncrawler.Javiarenka.drop;
 
-public class itemDropped {
+public class ItemDropped {
     private ItemType droppedItemType; // todo can more than one item by acquired at once?
     private int itemsDropped;
 
-    public itemDropped(){
+    public ItemDropped(){
         this.droppedItemType = null;
         this.itemsDropped = 0;
     }
 
-    public itemDropped(ItemType droppedItemType, int itemsDropped) {
+    public ItemDropped(ItemType droppedItemType, int itemsDropped) {
         this.droppedItemType = droppedItemType;
         this.itemsDropped = itemsDropped;
     }
