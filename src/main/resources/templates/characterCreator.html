@@ -35,32 +35,48 @@
             </button>
             <tr th:each="class: ${heroClasses}" th:value="${heroClass}" th:field="*{heroClass}">
                 <td><button type="button" class="btn btn-primary" th:text="${class}"
-                        th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">Primary</button></td>
+                        th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'"></button></td>
         </div>
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <button class="btn btn-secondary" type="button">
                 Select Starting Weapon:
             </button>
-            <div class="dropdown-menu" id="weapons" aria-labelledby="dropdownMenuButton">
-                <tr th:each="class: ${startingWeapon}">
-                    <a class="dropdown-item" href="#">
-                        <td th:text="|${startingWeapon}|"></td>
-                    </a>
-            </div>
+            <tr th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}">
+                <td><button th:id="selectWeapon+${weapon}" type="button" class="btn btn-primary" th:text="${weapon}"
+                            th:onclick="'javascript:todo(\'' + ${weapon} + '\');'"></button></td>
         </div>
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
+            <button class="btn btn-secondary" type="button">
                 Select Starting Armor:
             </button>
-            <div class="dropdown-menu" id="armors" aria-labelledby="dropdownMenuButton">
-                <tr th:each="class: ${startingArmor}">
-                    <a class="dropdown-item" href='/characterCreator(className=class)'>
-                        <td th:text="|${startingArmor}|"></td>
-                    </a>
-            </div>
+            <tr th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}">
+                <td><button  th:id="selectArmor+${armor}" type="button" class="btn btn-primary" th:text="${armor}"
+                            th:onclick="'javascript:todo(\'' + ${armor} + '\');'"></button></td>
         </div>
+<!--        <div class="dropdown">-->
+<!--            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"-->
+<!--                aria-expanded="false">-->
+<!--                Select Starting Weapon:-->
+<!--            </button>-->
+<!--            <div class="dropdown-menu" id="weapons" aria-labelledby="dropdownMenuButton">-->
+<!--                <tr th:each="class: ${startingWeapon}">-->
+<!--                    <a class="dropdown-item" href="#">-->
+<!--                        <td th:text="|${startingWeapon}|"></td>-->
+<!--                    </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="dropdown">-->
+<!--            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"-->
+<!--                aria-expanded="false">-->
+<!--                Select Starting Armor:-->
+<!--            </button>-->
+<!--            <div class="dropdown-menu" id="armors" aria-labelledby="dropdownMenuButton">-->
+<!--                <tr th:each="class: ${startingArmor}">-->
+<!--                    <a class="dropdown-item" href='/characterCreator(className=class)'>-->
+<!--                        <td th:text="|${startingArmor}|"></td>-->
+<!--                    </a>-->
+<!--            </div>-->
+<!--        </div>-->
         <button type="submit" value="Submit" class="btn btn-primary">Save Character</button>
     </form>
 </body>

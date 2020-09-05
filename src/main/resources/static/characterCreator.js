@@ -1,44 +1,42 @@
-function sendAjaxRequest(heroClass){
+function sendAjaxRequest(heroClass) {
     sendAjaxArmorRequest(heroClass);
     sendAjaxWeaponRequest(heroClass);
 }
 
 function sendAjaxArmorRequest(heroClass) {
-    let select = document.getElementById("armors");
-    select.innerHTML = ''
-
-    fetch(`http://localhost:8080/charClassToArmor/` + heroClass)
+    fetch(`http://localhost:8080/charClassToArmor`, { method: 'get' })
         .then(function (response) {
             return response.json();
-        })
-        .then(function (result) {
+        }).then(async function (data) {
+            data.forEach(e => {
+                let firstSelect = document.getElementById('selectArmor' + e);
+                firstSelect.disabled = true;
+            });
+            const response = await fetch(`http://localhost:8080/charClassToArmor/` + heroClass);
+            const result = await response.json();
             console.log(result);
-            result.forEach(element => {
-                let opt = element;
-                let el = document.createElement("option");
-                el.textContent = opt;
-                el.value = opt;
-                select.appendChild(el);
-            })
-        });;
+            result.forEach(elem => {
+                let chainedSelect = document.getElementById('selectArmor' + elem);
+                chainedSelect.disabled = false;
+            });;
+        })
 }
 
 function sendAjaxWeaponRequest(heroClass) {
-    let select = document.getElementById("weapons");
-    select.innerHTML = ''
-
-    fetch(`http://localhost:8080/charClassToWeapon/` + heroClass)
+    fetch(`http://localhost:8080/charClassToWeapon`, { method: 'get' })
         .then(function (response) {
             return response.json();
-        })
-        .then(function (result) {
+        }).then(async function (data) {
+            data.forEach(e => {
+                let firstSelect = document.getElementById('selectWeapon' + e);
+                firstSelect.disabled = true;
+            });
+            const response = await fetch(`http://localhost:8080/charClassToWeapon/` + heroClass);
+            const result = await response.json();
             console.log(result);
-            result.forEach(element => {
-                let opt = element;
-                let el = document.createElement("option");
-                el.textContent = opt;
-                el.value = opt;
-                select.appendChild(el);
-            })
-        });;
+            result.forEach(elem => {
+                let chainedSelect = document.getElementById('selectWeapon' + elem);
+                chainedSelect.disabled = false;
+            });;
+        })
 }
