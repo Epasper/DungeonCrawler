@@ -15,7 +15,7 @@ public enum DamageType {
     }
 
     public boolean equalsName(String inputName) {
-        return damageTypeString.equals(inputName);
+        return damageTypeString.equalsIgnoreCase(inputName);
     }
 
     public String toString() {

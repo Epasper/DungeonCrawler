@@ -15,7 +15,7 @@ public enum HeroClass {
     }
 
     public boolean equalsName(String inputName) {
-        return heroClassString.equals(inputName);
+        return heroClassString.equalsIgnoreCase(inputName);
     }
 
     public String toString() {
