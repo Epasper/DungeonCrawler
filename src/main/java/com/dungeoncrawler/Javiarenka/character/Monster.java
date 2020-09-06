@@ -20,4 +20,9 @@ package com.dungeoncrawler.Javiarenka.character;
     public void setDamageStrength(int damageStrength) {
         this.damageStrength = damageStrength;
     }
-}
+
+    @Override
+    void attack(Character hero) {
+        hero.setHp(hero.getHp() - damageStrength);
+        }
+    }
