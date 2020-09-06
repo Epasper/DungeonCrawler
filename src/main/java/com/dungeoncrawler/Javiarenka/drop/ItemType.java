@@ -1,7 +1,18 @@
 package com.dungeoncrawler.Javiarenka.drop;
 
 public enum ItemType {
-    GEM,
-    COIN,
-    GOLD
+    GEMS("GEMS"),
+    COINS("COINS"),
+    GOLD("GOLD");
+
+    private String itemTypeString;
+
+    ItemType(String itemTypeString) {
+        this.itemTypeString = itemTypeString;
+    }
+
+    @Override
+    public String toString() {
+        return this.itemTypeString;
+    }
 }

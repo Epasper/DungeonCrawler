@@ -6,7 +6,7 @@ public class ItemDropped {
     private ItemType droppedItemType;
     private int itemsDropped;
 
-    public ItemDropped() {
+    private ItemDropped() {
         this.droppedItemType = null;
         this.itemsDropped = 0;
     }
@@ -19,21 +19,21 @@ public class ItemDropped {
         return itemsDropped;
     }
 
-    public ItemDropped getRandomItems() { // todo Monster monster
+    public static ItemDropped getRandomItems() { // todo Monster monster
         ItemDropped randomItems = new ItemDropped();
         if (true) { // todo monster.getHp() == 0
             randomItems.droppedItemType = getRandomItemType();
-            randomItems.itemsDropped = getRandomItemNumber();
+            randomItems.itemsDropped = getRandomItemAmount();
         }
         return randomItems;
     }
 
-    private ItemType getRandomItemType() {
+    private static ItemType getRandomItemType() {
         int randomItemType = new Random().nextInt(ItemType.values().length);
         return ItemType.values()[randomItemType];
     }
 
-    private int getRandomItemNumber() {
+    private static int getRandomItemAmount() {
         return new Random().nextInt(100) + 1;
     }
 
