@@ -26,7 +26,7 @@ public class CharacterCreatorService {
         verifyAndAddStartingEquipment(HeroClass.KNIGHT, StartingArmor.RUSTED_CHAIN_ARMOR);
         verifyAndAddStartingEquipment(HeroClass.WIZARD, StartingWeapon.STAFF_OF_FIRE);
         verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingWeapon.DAGGER, StartingWeapon.SHORT_BOW);
-        verifyAndAddStartingEquipment(HeroClass.ROGUE, StartingWeapon.DAGGER, StartingWeapon.SHORT_BOW);
+        verifyAndAddStartingEquipment(HeroClass.ROGUE, StartingWeapon.DAGGER, StartingWeapon.SHORT_SWORD, StartingWeapon.SHORT_BOW);
         verifyAndAddStartingEquipment(HeroClass.WARRIOR, StartingWeapon.DAGGER, StartingWeapon.CLUB, StartingWeapon.SHORT_BOW, StartingWeapon.SHORT_SWORD);
         verifyAndAddStartingEquipment(HeroClass.KNIGHT, StartingWeapon.CLUB);
         verifyAndAddStartingEquipment(HeroClass.HEALER, StartingWeapon.CLUB);

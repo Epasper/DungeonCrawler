@@ -10,8 +10,8 @@ public enum HeroClass {
 
     private final String heroClassString;
 
-    HeroClass(String s) {
-        heroClassString = s;
+    HeroClass(String heroClassString) {
+        this.heroClassString = heroClassString;
     }
 
     public boolean equalsName(String inputName) {
