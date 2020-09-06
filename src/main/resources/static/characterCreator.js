@@ -18,8 +18,8 @@ function sendAjaxArmorRequest(heroClass) {
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectArmor' + elem);
                 chainedSelect.disabled = false;
-            });;
-        })
+            });
+        });
 }
 
 function sendAjaxWeaponRequest(heroClass) {
@@ -37,6 +37,6 @@ function sendAjaxWeaponRequest(heroClass) {
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectWeapon' + elem);
                 chainedSelect.disabled = false;
-            });;
-        })
+            });
+        });
 }
