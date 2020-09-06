@@ -18,65 +18,18 @@ public class CharacterCreatorService {
 
 
     public CharacterCreatorService() {
-        //ciekawostka:  List.of(); oraz Set.of(); to nowe metody z Javy 9
-
-        characterClassToAvailableArmor.put(
-                HeroClass.ARCHER.toString(), Set.of(
-                        (StartingArmor.CLOTH_ARMOR.getName()),
-                        (StartingArmor.RUSTED_CHAIN_ARMOR.getName())
-                ));
-        characterClassToAvailableArmor.put(
-                HeroClass.WIZARD.toString(), Set.of(
-                        (StartingArmor.CLOTH_ARMOR.getName())
-                ));
-        characterClassToAvailableArmor.put(
-                HeroClass.ROGUE.toString(), Set.of(
-                        (StartingArmor.CLOTH_ARMOR.getName()),
-                        (StartingArmor.LEATHER_ARMOR.getName())
-                ));
-        characterClassToAvailableArmor.put(
-                HeroClass.HEALER.toString(), Set.of(
-                        (StartingArmor.CLOTH_ARMOR.getName())
-                ));
-        characterClassToAvailableArmor.put(
-                HeroClass.WARRIOR.toString(), Set.of(
-                        (StartingArmor.RUSTED_CHAIN_ARMOR.getName()),
-                        (StartingArmor.LEATHER_ARMOR.getName())
-                ));
-        characterClassToAvailableArmor.put(
-                HeroClass.KNIGHT.toString(), Set.of(
-                        (StartingArmor.RUSTED_CHAIN_ARMOR.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.WIZARD.toString(), Set.of(
-                        (StartingWeapon.STAFF_OF_FIRE.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.ARCHER.toString(), Set.of(
-                        (StartingWeapon.DAGGER.getName()),
-                        (StartingWeapon.SHORT_BOW.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.ROGUE.toString(), Set.of(
-                        (StartingWeapon.DAGGER.getName()),
-                        (StartingWeapon.SHORT_BOW.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.WARRIOR.toString(), Set.of(
-                        (StartingWeapon.DAGGER.getName()),
-                        (StartingWeapon.CLUB.getName()),
-                        (StartingWeapon.SHORT_BOW.getName()),
-                        (StartingWeapon.SHORT_SWORD.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.KNIGHT.toString(), Set.of(
-                        (StartingWeapon.CLUB.getName()),
-                        (StartingWeapon.SHORT_SWORD.getName())
-                ));
-        characterClassToAvailableWeapon.put(
-                HeroClass.HEALER.toString(), Set.of(
-                        (StartingWeapon.CLUB.getName())
-                ));
+        verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingArmor.RUSTED_CHAIN_ARMOR, StartingArmor.LEATHER_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.WIZARD, StartingArmor.CLOTH_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.ROGUE, StartingArmor.CLOTH_ARMOR, StartingArmor.LEATHER_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.HEALER, StartingArmor.CLOTH_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.WARRIOR, StartingArmor.RUSTED_CHAIN_ARMOR, StartingArmor.LEATHER_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.KNIGHT, StartingArmor.RUSTED_CHAIN_ARMOR);
+        verifyAndAddStartingEquipment(HeroClass.WIZARD, StartingWeapon.STAFF_OF_FIRE);
+        verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingWeapon.DAGGER, StartingWeapon.SHORT_BOW);
+        verifyAndAddStartingEquipment(HeroClass.ROGUE, StartingWeapon.DAGGER, StartingWeapon.SHORT_BOW);
+        verifyAndAddStartingEquipment(HeroClass.WARRIOR, StartingWeapon.DAGGER, StartingWeapon.CLUB, StartingWeapon.SHORT_BOW, StartingWeapon.SHORT_SWORD);
+        verifyAndAddStartingEquipment(HeroClass.KNIGHT, StartingWeapon.CLUB);
+        verifyAndAddStartingEquipment(HeroClass.HEALER, StartingWeapon.CLUB);
         for (HeroClass hc : availableClasses) {
             String classString = hc.toString();
             classString = classString.substring(0, 1).toUpperCase() + classString.substring(1).toLowerCase();
@@ -84,6 +37,26 @@ public class CharacterCreatorService {
         }
         StartingWeapon.ALL_STARTING_WEAPON.forEach(e -> startingWeapons.add(e.getName()));
         StartingArmor.ALL_STARTING_ARMOR.forEach(e -> startingArmors.add(e.getName()));
+    }
+
+    private void verifyAndAddStartingEquipment(HeroClass heroClass, Equipment... equipment) {
+        Set<String> armorToBeAdded = new HashSet<>();
+        Set<String> weaponToBeAdded = new HashSet<>();
+        for (Equipment eq : equipment) {
+            if (eq.getClass().equals(Armor.class) && eq.getClassRestrictions().contains(heroClass)) {
+                armorToBeAdded.add(eq.getName());
+            } else if (eq.getClass().equals(Weapon.class) && eq.getClassRestrictions().contains(heroClass)) {
+                weaponToBeAdded.add(eq.getName());
+            } else
+                throw (new RuntimeException("You are trying to add an inappropriate equipment to the starting equipment list"));
+        }
+        if (!armorToBeAdded.isEmpty()) {
+            characterClassToAvailableArmor.put(heroClass.toString(), armorToBeAdded);
+            return;
+        }
+        if (!weaponToBeAdded.isEmpty()) {
+            characterClassToAvailableWeapon.put(heroClass.toString(), weaponToBeAdded);
+        }
     }
 
     public Map<String, Set<String>> getCharacterClassToAvailableArmor() {
