@@ -30,10 +30,9 @@
             </div>
             <div class="classContent">
                 <h2>Class</h2>
-                <div class="classImg" th:each="class: ${heroClasses}" th:value="${heroClass}" th:field="*{heroClass}">
-                    <button type="button" class="btn btn-primary"
-                        th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'"></button>
-                    <img src="" alt="">
+                <div class="classImg btn btn-primary" th:each="class: ${heroClasses}" th:value="${heroClass}"
+                    th:field="*{heroClass}" h:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
+                    <img th:src="@{/images/test.png}" alt="">
                     <p th:text="${class}"></p>
                 </div>
             </div>
