@@ -25,6 +25,10 @@ public class CharacterCreatorController {
     public String characterCreatorPost(@ModelAttribute Hero hero, Model model) {
         System.out.println("POST TEST:" + hero.toString());
         hero.saveThisHero();
+        model.addAttribute("heroClasses", service.getAvailableClassesStringified());
+        model.addAttribute("hero", new Hero());
+        model.addAttribute("allStartingArmors", service.getStartingArmors());
+        model.addAttribute("allStartingWeapons", service.getStartingWeapons());
         return "characterCreator";
     }
 }
