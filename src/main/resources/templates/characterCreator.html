@@ -42,7 +42,8 @@
                 <div class="weaponImg btn btn-primary" th:id="selectWeapon+${weapon}"
                     th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
                     th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'">
-                    <img th:src="@{..static/images/${weapon}.png}" alt="${weapon}">
+                    <img
+                        th:attr="src=@{'../static/images/' + ${weapon} + '/image.png'},title=${weapon},alt=${weapon}" />
                     <p th:text="${weapon}"></p>
                 </div>
             </div>
