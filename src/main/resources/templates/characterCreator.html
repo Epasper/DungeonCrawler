@@ -32,7 +32,7 @@
             <div class="classContent">
                 <h2>Class</h2>
                 <div class="classImg btn btn-primary" th:each="class: ${heroClasses}" th:value="${heroClass}"
-                    th:field="*{heroClass}" h:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
+                    th:field="*{heroClass}" th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
                     <img th:src="@{/images/test.png}" alt="">
                     <p th:text="${class}"></p>
                 </div>
