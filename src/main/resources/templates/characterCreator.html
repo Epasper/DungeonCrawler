@@ -33,7 +33,7 @@
                 <h2>Class</h2>
                 <div class="classImg btn btn-primary" th:each="class: ${heroClasses}" th:value="${heroClass}"
                     th:field="*{heroClass}" th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
-                    <img th:src="@{/images/test.png}" alt="">
+                    <img th:src="@{..static/images/${class}.png}" alt="${class}">
                     <p th:text="${class}"></p>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="weaponImg btn btn-primary" th:id="selectWeapon+${weapon}"
                     th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
                     th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'">
-                    <img src="" alt="">
+                    <img th:src="@{..static/images/${weapon}.png}" alt="${weapon}">
                     <p th:text="${weapon}"></p>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                 <div class="armorImg btn btn-primary" th:id="selectArmor+${armor}" th:each="armor: ${allStartingArmors}"
                     th:value="${heroClass}" th:field="*{heroClass}"
                     th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'">
-                    <img src="" alt="">
+                    <img th:src="@{..static/images/${armor}.png}" alt="${armor}">
                     <p th:text="${armor}"></p>
                 </div>
             </div>
