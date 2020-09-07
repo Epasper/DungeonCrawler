@@ -39,14 +39,20 @@
             </div>
             <div class="weaponContent">
                 <h2>Weapon</h2>
-                <div class="weaponImg">
+                <div class="weaponImg" th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}"
+                    th:field="*{heroClass}">
+                    <button th:id="selectWeapon+${weapon}" type="button" class="btn btn-primary" th:text="${weapon}"
+                        th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'"></button>
                     <img src="" alt="">
                     <p></p>
                 </div>
             </div>
             <div class="armorContent">
                 <h2>Armor</h2>
-                <div class="armorImg">
+                <div class="armorImg" th:each="armor: ${allStartingArmors}" th:value="${heroClass}"
+                    th:field="*{heroClass}">
+                    <button th:id="selectArmor+${armor}" type="button" class="btn btn-primary" th:text="${armor}"
+                        th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'"></button>
                     <img src="" alt="">
                     <p></p>
                 </div>
