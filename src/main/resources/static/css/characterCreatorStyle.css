@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}
+
+.btn {
+    background-color: cadetblue;
+
+}
+
+.btn-primary {
+    background-color: blue;
+
+}
+
+.btn-secondary {
+    background-color: grey;
+
+}
+
+.disabled {
+    pointer-events: none;
+
+    /* for "disabled" effect */
+    opacity: 0.5;
+    background: green;
+}

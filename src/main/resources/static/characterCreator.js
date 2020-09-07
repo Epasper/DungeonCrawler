@@ -4,14 +4,15 @@ function sendAjaxRequest(heroClass) {
 }
 
 function sendAjaxArmorRequest(heroClass) {
-    fetch(`http://localhost:8080/charClassToArmor`, { method: 'get' })
+    fetch(`http://localhost:8080/charClassToArmor`, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
                 let firstSelect = document.getElementById('selectArmor' + e);
-                firstSelect.disabled = true;
-                firstSelect.className = 'btn btn-secondary';
+                firstSelect.className = 'disabled';
             });
             const response = await fetch(`http://localhost:8080/charClassToArmor/` + heroClass);
             const result = await response.json();
@@ -25,14 +26,15 @@ function sendAjaxArmorRequest(heroClass) {
 }
 
 function sendAjaxWeaponRequest(heroClass) {
-    fetch(`http://localhost:8080/charClassToWeapon`, { method: 'get' })
+    fetch(`http://localhost:8080/charClassToWeapon`, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
                 let firstSelect = document.getElementById('selectWeapon' + e);
-                firstSelect.disabled = true;
-                firstSelect.className = 'btn btn-secondary';
+                firstSelect.className = 'disabled';
             });
             const response = await fetch(`http://localhost:8080/charClassToWeapon/` + heroClass);
             const result = await response.json();
@@ -46,14 +48,15 @@ function sendAjaxWeaponRequest(heroClass) {
 }
 
 function selectArmor(armorName) {
-    fetch(`http://localhost:8080/charClassToArmor`, { method: 'get' })
+    fetch(`http://localhost:8080/charClassToArmor`, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
                 let firstSelect = document.getElementById('selectArmor' + e);
-                firstSelect.disabled = true;
-                firstSelect.className = 'btn btn-secondary';
+                firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectArmor' + armorName);
             firstSelect.className = 'btn btn-success';
@@ -61,14 +64,15 @@ function selectArmor(armorName) {
 }
 
 function selectWeapon(weaponName) {
-    fetch(`http://localhost:8080/charClassToWeapon`, { method: 'get' })
+    fetch(`http://localhost:8080/charClassToWeapon`, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
                 let firstSelect = document.getElementById('selectWeapon' + e);
-                firstSelect.disabled = true;
-                firstSelect.className = 'btn btn-secondary';
+                firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectWeapon' + weaponName);
             firstSelect.className = 'btn btn-success';
