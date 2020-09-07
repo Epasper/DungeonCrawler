@@ -23,6 +23,7 @@
 
     <div class="container" th:action="@{/characterCreator}" th:object="${hero}" method="post">
         <div class="content">
+
             <h1 class="createHeroTitle">Create your Hero!</h1>
             <div class="name">
                 <input type="text" th:field="*{name}">
