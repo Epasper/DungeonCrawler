@@ -39,22 +39,20 @@
             </div>
             <div class="weaponContent">
                 <h2>Weapon</h2>
-                <div class="weaponImg" th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}"
-                    th:field="*{heroClass}">
-                    <button th:id="selectWeapon+${weapon}" type="button" class="btn btn-primary" th:text="${weapon}"
-                        th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'"></button>
+                <div class="weaponImg btn btn-primary" th:id="selectWeapon+${weapon}"
+                    th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
+                    th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'">
                     <img src="" alt="">
-                    <p></p>
+                    <p th:text="${weapon}"></p>
                 </div>
             </div>
             <div class="armorContent">
                 <h2>Armor</h2>
-                <div class="armorImg" th:each="armor: ${allStartingArmors}" th:value="${heroClass}"
-                    th:field="*{heroClass}">
-                    <button th:id="selectArmor+${armor}" type="button" class="btn btn-primary" th:text="${armor}"
-                        th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'"></button>
+                <div class="armorImg btn btn-primary" th:id="selectArmor+${armor}" th:each="armor: ${allStartingArmors}"
+                    th:value="${heroClass}" th:field="*{heroClass}"
+                    th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'">
                     <img src="" alt="">
-                    <p></p>
+                    <p th:text="${armor}"></p>
                 </div>
             </div>
             <button type="submit" value="Submit" class="btn btn-primary">Save Character</button>
