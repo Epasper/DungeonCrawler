@@ -33,6 +33,7 @@ public class CharacterCreatorRestControllerTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
                 .build();
+
     }
 
     @Test
