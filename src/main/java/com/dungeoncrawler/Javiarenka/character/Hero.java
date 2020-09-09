@@ -85,4 +85,15 @@ public class Hero extends Character {
             monster.setAlive(false);
         }
     }
+
+    public void addMoney(int amount) {
+        this.money = this.money + amount;
+    }
+
+    public void removeMoney (int amount) throws NoMoreMoneyException {
+        if (amount > this.money){
+            throw new NoMoreMoneyException();
+        }
+        this.money = this.money - amount;
+    }
 }
