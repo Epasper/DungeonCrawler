@@ -35,6 +35,7 @@ public class HeroTest {
 
     @Test
     void testAttackAndKillMonster() {
+        testMonster.setAlive(true);
         testMonster.setHp(20);
         testWeapon.setDamageDealt(50);
         testedHero.setEquippedWeapon(testWeapon);
@@ -44,6 +45,7 @@ public class HeroTest {
 
     @Test
     void testAttackAndNotKillMonster() {
+        testMonster.setAlive(true);
         testMonster.setHp(50);
         testWeapon.setDamageDealt(20);
         testedHero.setEquippedWeapon(testWeapon);
