@@ -9,6 +9,7 @@ public class Hero extends Character {
     private Armor equippedArmor;
     private Weapon equippedWeapon;
     private int money;
+    private int unarmedAttackDamage = 1;
 
     @Override
     public String toString() {
@@ -19,6 +20,14 @@ public class Hero extends Character {
                 ", equippedArmor=" + equippedArmor +
                 ", equippedWeapon=" + equippedWeapon +
                 '}';
+    }
+
+    public int getUnarmedAttackDamage() {
+        return unarmedAttackDamage;
+    }
+
+    public void setUnarmedAttackDamage(int unarmedAttackDamage) {
+        this.unarmedAttackDamage = unarmedAttackDamage;
     }
 
     public String getSurname() {
@@ -53,16 +62,27 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
     }
 
-    public int getMoney() { return money; }
+    public int getMoney() {
+        return money;
+    }
 
-    public void setMoney(int money) { this.money = money; }
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public void saveThisHero() {
         //TODO: DUN-26: Zapisać postać w lokalnym pliku
     }
 
     @Override
-    void attack(Character monster) {
-        monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
+    public void attack(Character monster) {
+        if (equippedWeapon != null) {
+            monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
+        } else {
+            monster.setHp(monster.getHp() - unarmedAttackDamage);
+        }
+        if (monster.getHp() < 1) {
+            monster.setAlive(false);
+        }
     }
 }
