@@ -20,7 +20,7 @@ function sendAjaxArmorRequest(heroClass) {
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectArmor' + elem);
                 chainedSelect.disabled = false;
-                chainedSelect.className = 'selection selection-primary';
+                chainedSelect.className = 'selection selection-primary armorImg';
             });
         });
 }
@@ -42,7 +42,7 @@ function sendAjaxWeaponRequest(heroClass) {
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectWeapon' + elem);
                 chainedSelect.disabled = false;
-                chainedSelect.className = 'selection selection-primary';
+                chainedSelect.className = 'selection selection-primary weaponImg';
             });
         });
 }
@@ -59,7 +59,7 @@ function selectArmor(armorName) {
                 firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectArmor' + armorName);
-            firstSelect.className = 'selection selection-success';
+            firstSelect.className = 'selection selection-success armorImg';
         });
 }
 
@@ -75,6 +75,6 @@ function selectWeapon(weaponName) {
                 firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectWeapon' + weaponName);
-            firstSelect.className = 'selection selection-success';
+            firstSelect.className = 'selection selection-success weaponImg';
         });
 }
