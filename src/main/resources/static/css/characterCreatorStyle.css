@@ -17,31 +17,45 @@
     left: 5%;
     height: 80vh;
     width: 40%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    grid-gap: 1rem;
 }
 
 .classImg img {
     height: 100px;
     width: 100px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.selection {
-    background-color: cadetblue;
+.classImg:hover img {
+    height: 120px;
+    width: 130px;
 }
+
+/* .selection {
+    background-color: blue;
+} */
 
 .selection-primary {
-    background-color: blue;
-
+    background-color: none
 }
 
-.selection-secondary {
-    background-color: grey;
+.selection-success {
+    background-color: green;
 
 }
 
 .disabled {
     pointer-events: none;
-
-    /* for "disabled" effect */
     opacity: 0.5;
-    background: green;
+    background: grey;
 }
