@@ -4,17 +4,36 @@
     box-sizing: 0;
 }
 
-.btn {
-    background-color: cadetblue;
-
+.container {
+    background-image: url("../images/backgroundCreator.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
 }
 
-.btn-primary {
+.content {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    height: 80vh;
+    width: 40%;
+}
+
+.classImg img {
+    height: 100px;
+    width: 100px;
+}
+
+.selection {
+    background-color: cadetblue;
+}
+
+.selection-primary {
     background-color: blue;
 
 }
 
-.btn-secondary {
+.selection-secondary {
     background-color: grey;
 
 }
