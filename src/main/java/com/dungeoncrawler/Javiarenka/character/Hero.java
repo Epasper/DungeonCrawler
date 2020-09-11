@@ -10,6 +10,22 @@ public class Hero extends Character {
     private Weapon equippedWeapon;
     private int money;
 
+    public Hero(String name, int hp) {
+        super(name, hp);
+    }
+
+    public Hero(String name, int hp, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+        super(name, hp);
+        this.surname = surname;
+        this.heroClass = heroClass;
+        this.equippedArmor = equippedArmor;
+        this.equippedWeapon = equippedWeapon;
+        this.money = money;
+    }
+
+    public Hero() {
+    }
+
     @Override
     public String toString() {
         return "Hero{" +
