@@ -21,9 +21,11 @@
                 <input type="text" th:field="*{name}">
                 <input type="text" th:field="*{surname}">
             </div>
+
             <div class="classContent">
                 <h2>Class</h2>
                 <div class="box">
+
                     <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
                         th:value="${heroClass}" th:field="*{heroClass}"
                         th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
@@ -32,6 +34,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="weaponContent">
                 <h2>Weapon</h2>
                 <div class="box">
@@ -43,6 +46,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="armorContent">
                 <h2>Armor</h2>
                 <div class="box">
