@@ -33,7 +33,7 @@ function sendAjaxWeaponRequest(heroClass) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectWeapon' + e);
+                let firstSelect = document.getElementById('selectWeapon' + e.name);
                 firstSelect.className = 'disabled';
             });
             const response = await fetch(`http://localhost:8080/charClassToWeapon/` + heroClass);
@@ -71,10 +71,18 @@ function selectWeapon(weaponName) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectWeapon' + e);
+                let firstSelect = document.getElementById('selectWeapon' + e.name);
                 firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectWeapon' + weaponName);
             firstSelect.className = 'selection selection-success weaponImg';
         });
+}
+
+function saveCharacter(){
+    const name = document.getElementById('heroName').value;
+    const surname = document.getElementById('heroSurname').value;
+    const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
+    const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
+    debugger;
 }

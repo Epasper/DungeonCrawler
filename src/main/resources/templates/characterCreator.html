@@ -14,49 +14,52 @@
 
 <body>
 
-    <div class="container" th:action="@{/characterCreator}" th:object="${hero}" method="post">
-        <div class="content">
-            <h1 class="createHeroTitle">Create your Hero!</h1>
-            <div class="name">
-                <input type="text" th:field="*{name}">
-                <input type="text" th:field="*{surname}">
-            </div>
-            <div class="classContent">
-                <h2>Class</h2>
-                <div class="box">
-                    <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
-                        th:value="${heroClass}" th:field="*{heroClass}"
-                        th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
-                        <img th:attr="src=@{'../images/' + ${class} + '.png'},title=${class},alt=${class}" />
-                        <p th:text="${class}"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="weaponContent">
-                <h2>Weapon</h2>
-                <div class="box">
-                    <div class="weaponImg selection selection-primary" th:id="selectWeapon+${weapon}"
-                        th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
-                        th:onclick="'javascript:selectWeapon(\'' + ${weapon} + '\');'">
-                        <img th:attr="src=@{'../images/' + ${weapon} + '.png'},title=${weapon},alt=${weapon}" />
-                        <p th:text="${weapon}"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="armorContent">
-                <h2>Armor</h2>
-                <div class="box">
-                    <div class="armorImg selection selection-primary" th:id="selectArmor+${armor}"
-                        th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}"
-                        th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'">
-                        <img th:attr="src=@{'../images/' + ${armor} + '.png'},title=${armor},alt=${armor}" />
-                        <p th:text="${armor}"></p>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" value="Submit" class="selection selection-primary">Save Character</button>
+<div class="container" th:action="@{/characterCreator}" th:object="${hero}" method="post">
+    <div class="content">
+        <h1 class="createHeroTitle">Create your Hero!</h1>
+        <div class="name">
+            <input id="heroName" type="text" th:field="*{name}">
+            <input id="heroSurname" type="text" th:field="*{surname}">
         </div>
+        <div class="classContent">
+            <h2>Class</h2>
+            <div class="box">
+                <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
+                     th:value="${heroClass}" th:field="*{heroClass}"
+                     th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
+                    <img th:attr="src=@{'../images/' + ${class} + '.png'},title=${class},alt=${class}"/>
+                    <p th:text="${class}"></p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="weaponContent">
+            <h2>Weapon</h2>
+            <div class="box">
+                <div class="weaponImg selection selection-primary" th:id="selectWeapon+${weapon.getName()}"
+                     th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
+                     th:onclick="'javascript:selectWeapon(\'' + ${weapon.getName()} + '\');'">
+                    <img th:attr="src=@{'../images/' + ${weapon.getName()} + '.png'},title=${weapon.getName()},alt=${weapon.getName()}"/>
+                    <p th:text="${weapon.getName()}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="armorContent">
+            <h2>Armor</h2>
+            <div class="box">
+                <div class="armorImg selection selection-primary" th:id="selectArmor+${armor}"
+                     th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}"
+                     th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'">
+                    <img th:attr="src=@{'../images/' + ${armor} + '.png'},title=${armor},alt=${armor}"/>
+                    <p th:text="${armor}"></p>
+                </div>
+            </div>
+        </div>
+        <button th:onclick="'javascript:saveCharacter();'" class="selection selection-primary">Save Character</button>
     </div>
+</div>
+</div>
 
 </body>
 

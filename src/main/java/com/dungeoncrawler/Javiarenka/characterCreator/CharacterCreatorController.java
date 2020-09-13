@@ -17,13 +17,15 @@ public class CharacterCreatorController {
         model.addAttribute("hero", new Hero());
         model.addAttribute("allStartingArmors", service.getStartingArmors());
         model.addAttribute("allStartingWeapons", service.getStartingWeapons());
-        System.out.println(service.getStartingWeapons());
         return "characterCreator";
     }
 
     @PostMapping("/characterCreator")
-    public String characterCreatorPost(@ModelAttribute Hero hero, Model model) {
+    public String characterCreatorPost(@ModelAttribute("hero") Hero hero, Model model) {
+        model.addAttribute("equippedWeapon", hero.getEquippedWeapon());
         System.out.println("POST TEST:" + hero.toString());
+        System.out.println("POST TEST 1:" + model.getAttribute("equippedWeapon"));
+//        System.out.println("POST TEST wpn:" + hero.getEquippedWeapon().toString());
         hero.saveThisHero();
         model.addAttribute("heroClasses", service.getAvailableClassesStringified());
         model.addAttribute("hero", new Hero());

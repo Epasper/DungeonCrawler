@@ -1,7 +1,10 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
+import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,7 +30,12 @@ public class CharacterCreatorRestController {
     }
 
     @GetMapping("/charClassToWeapon")
-    public List<String> getAllStartingWeapons() {
+    public List<Weapon> getAllStartingWeapons() {
         return service.getStartingWeapons();
+    }
+
+    @PostMapping("/saveCharacter")
+    public Hero saveCharacter() {
+        return null;
     }
 }
