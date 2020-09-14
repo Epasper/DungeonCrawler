@@ -101,5 +101,4 @@ function saveCharacter() {
     }
     const heroJSON = JSON.stringify(hero);
     request.send(heroJSON);
-    debugger;
 }

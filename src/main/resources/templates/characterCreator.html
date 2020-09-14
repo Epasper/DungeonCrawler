@@ -7,10 +7,10 @@
     <meta name="keywords" content="character, creator, game, dungeon">
     <meta name="description" content="Character creator w DUngeon Crawler Game">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script th:src="@{characterCreator.js}"></script>
     <link rel="stylesheet" href="../css/characterCreatorStyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
     <script th:src="@{characterCreator.js}"></script>
+    <script th:src="@{nameGenerator.js}"></script>
 </head>
 
 <body>
@@ -20,7 +20,9 @@
             <h1 class="createHeroTitle">Create your Hero!</h1>
             <div class="name">
                 <input id="heroName" type="text" th:field="*{name}">
+                <button th:onclick="'javascript:addNameToField(\'' + heroName + '\');'">Generate</button>
                 <input id="heroSurname" type="text" th:field="*{surname}">
+                <button th:onclick="'javascript:addNameToField(\'' + heroSurname + '\');'">Generate</button>
             </div>
             <div class="classContent">
                 <h2>Class</h2>
