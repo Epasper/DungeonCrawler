@@ -23,6 +23,10 @@ public class BoardService {
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
     }
 
+    public static void attackMonster(Hero heroFromForm, Monster monsterFromForm) {
+        heroFromForm.attack(monsterFromForm);
+    }
+
     public List<Hero> getHeroes() {
         return heroes;
     }

@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <body>
-<table width=“100%”>
+<form method="post" th:action="@{/fightBoard/attack}">
+    <table width=“100%”>
         <td>
             <table class="table">
                 <thead>
@@ -23,6 +24,7 @@
                     <th>Based HP</th>
                     <th>Weapon(Damage dealt)</th>
                     <th>Armor(Additional HP)</th>
+                    <th>Attack Monster</th>
                     <th>|</th>
                 </tr>
                 </thead>
@@ -33,6 +35,15 @@
                     <td th:text="${hero.getHp()}"></td>
                     <td th:text="${hero.getEquippedWeapon().getName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></td>
                     <td th:text="${hero.getEquippedArmor().getName() + '(' + hero.getEquippedArmor().getAdditionalHp() + ')'}"></td>
+                    <td>
+                        <select>
+                            <option selected disabled>Choose monster</option>
+                            <option th:each="monster : ${monsters}"
+                                    th:value="${monster}"
+                                    th:text="${monster.name}"></option>
+                        </select>
+                        <button type="submit">Attack!</button>
+                    </td>
                     <td>|</td>
                 </tr>
                 </tbody>
@@ -58,6 +69,7 @@
                 </tbody>
             </table>
         </td>
-</table>
+    </table>
+</form>
 </body>
 </html>

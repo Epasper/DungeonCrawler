@@ -69,16 +69,20 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
     }
 
-    public int getMoney() { return money; }
+    public int getMoney() {
+        return money;
+    }
 
-    public void setMoney(int money) { this.money = money; }
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public void saveThisHero() {
         //TODO: DUN-26: Zapisać postać w lokalnym pliku
     }
 
     @Override
-    void attack(Character monster) {
+    public void attack(Character monster) {
         monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
     }
 }
