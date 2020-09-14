@@ -1,11 +1,11 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
+import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -35,7 +35,11 @@ public class CharacterCreatorRestController {
     }
 
     @PostMapping("/saveCharacter")
-    public Hero saveCharacter() {
+    public Hero saveCharacter(@RequestBody Hero hero) {
+        hero.setHeroClass(HeroClass.getHeroClassByName(hero.getClassName()));
+        hero.setEquippedWeapon(StartingWeapon.getWeaponByName(hero.getWeaponName()));
+        hero.setEquippedArmor(StartingArmor.getArmorByName(hero.getArmorName()));
+        System.out.println(hero.toString());
         return null;
     }
 }

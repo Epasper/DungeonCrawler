@@ -1,12 +1,15 @@
+var globalHeroClass = '';
+
 function sendAjaxRequest(heroClass) {
     sendAjaxArmorRequest(heroClass);
     sendAjaxWeaponRequest(heroClass);
+    globalHeroClass = heroClass;
 }
 
 function sendAjaxArmorRequest(heroClass) {
     fetch(`http://localhost:8080/charClassToArmor`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -27,8 +30,8 @@ function sendAjaxArmorRequest(heroClass) {
 
 function sendAjaxWeaponRequest(heroClass) {
     fetch(`http://localhost:8080/charClassToWeapon`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -49,8 +52,8 @@ function sendAjaxWeaponRequest(heroClass) {
 
 function selectArmor(armorName) {
     fetch(`http://localhost:8080/charClassToArmor`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -65,8 +68,8 @@ function selectArmor(armorName) {
 
 function selectWeapon(weaponName) {
     fetch(`http://localhost:8080/charClassToWeapon`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -79,10 +82,24 @@ function selectWeapon(weaponName) {
         });
 }
 
-function saveCharacter(){
+function saveCharacter() {
+    let request = new XMLHttpRequest();
+    const url = `http://localhost:8080/saveCharacter`
+    request.open("POST", url, true);
+    request.setRequestHeader('Content-Type', 'application/json');
     const name = document.getElementById('heroName').value;
     const surname = document.getElementById('heroSurname').value;
     const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
     const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
+    const heroClass = globalHeroClass;
+    const hero = {
+        name: name,
+        surname: surname,
+        weaponName: weaponName,
+        armorName: armorName,
+        className: heroClass
+    }
+    const heroJSON = JSON.stringify(hero);
+    request.send(heroJSON);
     debugger;
 }

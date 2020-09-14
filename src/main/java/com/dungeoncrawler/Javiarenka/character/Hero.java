@@ -10,6 +10,7 @@ public class Hero extends Character {
     private Weapon equippedWeapon;
     private String weaponName;
     private String armorName;
+    private String className;
     private int money;
 
     @Override
@@ -24,6 +25,14 @@ public class Hero extends Character {
                 ", armorName='" + armorName + '\'' +
                 ", money=" + money +
                 '}';
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getSurname() {
@@ -58,9 +67,13 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
     }
 
-    public int getMoney() { return money; }
+    public int getMoney() {
+        return money;
+    }
 
-    public void setMoney(int money) { this.money = money; }
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public void saveThisHero() {
         //TODO: DUN-26: Zapisać postać w lokalnym pliku
