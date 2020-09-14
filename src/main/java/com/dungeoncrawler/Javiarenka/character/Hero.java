@@ -34,6 +34,7 @@ public class Hero extends Character {
 
     public void setClassName(String className) {
         this.className = className;
+    }
 
     public int getUnarmedAttackDamage() {
         return unarmedAttackDamage;
