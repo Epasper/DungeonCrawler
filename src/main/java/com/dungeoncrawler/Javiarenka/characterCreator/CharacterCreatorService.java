@@ -10,7 +10,7 @@ import java.util.*;
 public class CharacterCreatorService {
 
     private List<Weapon> startingWeapons = new ArrayList<>();
-    private List<String> startingArmors = new ArrayList<>();
+    private List<Armor> startingArmors = new ArrayList<>();
     private Map<String, Set<String>> characterClassToAvailableArmor = new HashMap<>();
     private Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
     private List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
@@ -36,7 +36,7 @@ public class CharacterCreatorService {
             availableClassesStringified.add(classString);
         }
         startingWeapons.addAll(StartingWeapon.ALL_STARTING_WEAPON);
-        StartingArmor.ALL_STARTING_ARMOR.forEach(e -> startingArmors.add(e.getName()));
+        startingArmors.addAll(StartingArmor.ALL_STARTING_ARMOR);
     }
 
     private void verifyAndAddStartingEquipment(HeroClass heroClass, Equipment... equipment) {
@@ -71,7 +71,7 @@ public class CharacterCreatorService {
         return startingWeapons;
     }
 
-    public List<String> getStartingArmors() {
+    public List<Armor> getStartingArmors() {
         return startingArmors;
     }
 

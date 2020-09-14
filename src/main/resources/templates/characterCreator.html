@@ -48,11 +48,11 @@
         <div class="armorContent">
             <h2>Armor</h2>
             <div class="box">
-                <div class="armorImg selection selection-primary" th:id="selectArmor+${armor}"
+                <div class="armorImg selection selection-primary" th:id="selectArmor+${armor.getName()}"
                      th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}"
-                     th:onclick="'javascript:selectArmor(\'' + ${armor} + '\');'">
-                    <img th:attr="src=@{'../images/' + ${armor} + '.png'},title=${armor},alt=${armor}"/>
-                    <p th:text="${armor}"></p>
+                     th:onclick="'javascript:selectArmor(\'' + ${armor.getName()} + '\');'">
+                    <img th:attr="src=@{'../images/' + ${armor.getName()} + '.png'},title=${armor.getName()},alt=${armor.getName()}"/>
+                    <p th:text="${armor.getName()}"></p>
 
                 </div>
             </div>

@@ -14,7 +14,7 @@ function sendAjaxArmorRequest(heroClass) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectArmor' + e);
+                let firstSelect = document.getElementById('selectArmor' + e.name);
                 firstSelect.className = 'disabled';
             });
             const response = await fetch(`http://localhost:8080/charClassToArmor/` + heroClass);
@@ -58,7 +58,7 @@ function selectArmor(armorName) {
             return response.json();
         }).then(async function (data) {
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectArmor' + e);
+                let firstSelect = document.getElementById('selectArmor' + e.name);
                 firstSelect.className = 'disabled';
             });
             let firstSelect = document.getElementById('selectArmor' + armorName);

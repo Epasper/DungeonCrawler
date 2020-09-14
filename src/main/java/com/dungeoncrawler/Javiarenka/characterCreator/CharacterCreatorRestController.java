@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.characterCreator;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
@@ -20,7 +21,7 @@ public class CharacterCreatorRestController {
     }
 
     @GetMapping("/charClassToArmor")
-    public List<String> getAllStartingArmors() {
+    public List<Armor> getAllStartingArmors() {
         return service.getStartingArmors();
     }
 
