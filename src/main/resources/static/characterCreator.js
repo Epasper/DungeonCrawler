@@ -7,45 +7,51 @@ function sendAjaxRequest(heroClass) {
 }
 
 function sendAjaxArmorRequest(heroClass) {
-    fetch(`http://localhost:8080/charClassToArmor`, {
+    let outerSelection;
+    fetch(`http://localhost:8080/charClassToArmor/`  + heroClass, {
         method: 'get'
     })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
+            outerSelection = data;
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectArmor' + e.name);
-                firstSelect.className = 'disabled';
+                let selection = document.getElementById('selectArmor' + e);
+                selection.disabled = false;
+                selection.className = 'selection selection-primary armorImg';
             });
-            const response = await fetch(`http://localhost:8080/charClassToArmor/` + heroClass);
+            const response = await fetch(`http://localhost:8080/charClassToArmor/`);
             const result = await response.json();
-            console.log(result);
             result.forEach(elem => {
-                let chainedSelect = document.getElementById('selectArmor' + elem);
-                chainedSelect.disabled = false;
-                chainedSelect.className = 'selection selection-primary armorImg';
+                let chainedSelect = document.getElementById('selectArmor' + elem.name);
+                if (chainedSelect.className != 'disabled' && !outerSelection.includes(elem.name)){
+                    chainedSelect.className = 'disabled';
+                }
             });
         });
 }
 
 function sendAjaxWeaponRequest(heroClass) {
-    fetch(`http://localhost:8080/charClassToWeapon`, {
+    let outerSelection;
+    fetch(`http://localhost:8080/charClassToWeapon/`  + heroClass, {
         method: 'get'
     })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
+            outerSelection = data;
             data.forEach(e => {
-                let firstSelect = document.getElementById('selectWeapon' + e.name);
-                firstSelect.className = 'disabled';
+                let selection = document.getElementById('selectWeapon' + e);
+                selection.disabled = false;
+                selection.className = 'selection selection-primary weaponImg';
             });
-            const response = await fetch(`http://localhost:8080/charClassToWeapon/` + heroClass);
+            const response = await fetch(`http://localhost:8080/charClassToWeapon/`);
             const result = await response.json();
-            console.log(result);
             result.forEach(elem => {
-                let chainedSelect = document.getElementById('selectWeapon' + elem);
-                chainedSelect.disabled = false;
-                chainedSelect.className = 'selection selection-primary weaponImg';
+                let chainedSelect = document.getElementById('selectWeapon' + elem.name);
+                if (chainedSelect.className != 'disabled' && !outerSelection.includes(elem.name)){
+                    chainedSelect.className = 'disabled';
+                }
             });
         });
 }
