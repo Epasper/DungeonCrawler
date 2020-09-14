@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-    class Monster extends Character {
+    public class Monster extends Character {
 
     private String race;
     private int damageStrength;

@@ -12,6 +12,7 @@ public class Hero extends Character {
     private String armorName;
     private String className;
     private int money;
+    private int unarmedAttackDamage = 1;
 
     @Override
     public String toString() {
@@ -33,6 +34,13 @@ public class Hero extends Character {
 
     public void setClassName(String className) {
         this.className = className;
+
+    public int getUnarmedAttackDamage() {
+        return unarmedAttackDamage;
+    }
+
+    public void setUnarmedAttackDamage(int unarmedAttackDamage) {
+        this.unarmedAttackDamage = unarmedAttackDamage;
     }
 
     public String getSurname() {
@@ -96,7 +104,25 @@ public class Hero extends Character {
     }
 
     @Override
-    void attack(Character monster) {
-        monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
+    public void attack(Character monster) {
+        if (equippedWeapon != null) {
+            monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
+        } else {
+            monster.setHp(monster.getHp() - unarmedAttackDamage);
+        }
+        if (monster.getHp() < 1) {
+            monster.setAlive(false);
+        }
+    }
+
+    public void addMoney(int amount) {
+        this.money = this.money + amount;
+    }
+
+    public void removeMoney (int amount) throws NoMoreMoneyException {
+        if (amount > this.money){
+            throw new NoMoreMoneyException();
+        }
+        this.money = this.money - amount;
     }
 }
