@@ -3,20 +3,19 @@ package com.dungeoncrawler.Javiarenka.Board;
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
-import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
 
 public class BoardService {
     private List<Hero> heroes = new ArrayList<>();
     private List<Monster> monsters = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
-    private String messageOutput = "";
+    private List<String> messageOutput = new ArrayList<>();
 
     public BoardService() {
         heroes.add(new Hero("Joe", 70, "Jenkins", HeroClass.ARCHER, StartingArmor.CLOTH_ARMOR, StartingWeapon.SHORT_BOW, 20));
@@ -27,12 +26,12 @@ public class BoardService {
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
     }
 
-    public String getMessageOutput() {
+    public List<String> getMessageOutput() {
         return messageOutput;
     }
 
     public void setMessageOutput(String messageOutput) {
-        this.messageOutput = messageOutput;
+        this.messageOutput = Collections.singletonList(messageOutput);
     }
 
     public static void attackMonster(Hero heroFromForm, Monster monsterFromForm) {

@@ -7,6 +7,7 @@ import java.util.List;
 public class Armor extends Equipment{
     private int damageReduction;
     private int chanceToHitReduction;
+    private int additionalHp;
 
     public int getDamageReduction() {
         return damageReduction;
@@ -22,6 +23,14 @@ public class Armor extends Equipment{
 
     public void setChanceToHitReduction(int chanceToHitReduction) {
         this.chanceToHitReduction = chanceToHitReduction;
+    }
+
+    public int getAdditionalHp() {
+        return additionalHp;
+    }
+
+    public void setAdditionalHp(int additionalHp) {
+        this.additionalHp = additionalHp;
     }
 
     public Armor(String name, List<HeroClass> classRestriction, double weight, double price, int damageReduction, int chanceToHitReduction) {
