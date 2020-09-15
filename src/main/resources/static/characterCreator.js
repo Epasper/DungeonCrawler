@@ -8,9 +8,9 @@ function sendAjaxRequest(heroClass) {
 
 function sendAjaxArmorRequest(heroClass) {
     let outerSelection;
-    fetch(`http://localhost:8080/charClassToArmor/`  + heroClass, {
-        method: 'get'
-    })
+    fetch(`http://localhost:8080/charClassToArmor/` + heroClass, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -24,7 +24,7 @@ function sendAjaxArmorRequest(heroClass) {
             const result = await response.json();
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectArmor' + elem.name);
-                if (chainedSelect.className != 'disabled' && !outerSelection.includes(elem.name)){
+                if (chainedSelect.className !== 'disabled' && !outerSelection.includes(elem.name)) {
                     chainedSelect.className = 'disabled';
                 }
             });
@@ -33,9 +33,9 @@ function sendAjaxArmorRequest(heroClass) {
 
 function sendAjaxWeaponRequest(heroClass) {
     let outerSelection;
-    fetch(`http://localhost:8080/charClassToWeapon/`  + heroClass, {
-        method: 'get'
-    })
+    fetch(`http://localhost:8080/charClassToWeapon/` + heroClass, {
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -49,7 +49,7 @@ function sendAjaxWeaponRequest(heroClass) {
             const result = await response.json();
             result.forEach(elem => {
                 let chainedSelect = document.getElementById('selectWeapon' + elem.name);
-                if (chainedSelect.className != 'disabled' && !outerSelection.includes(elem.name)){
+                if (chainedSelect.className !== 'disabled' && !outerSelection.includes(elem.name)) {
                     chainedSelect.className = 'disabled';
                 }
             });
@@ -58,8 +58,8 @@ function sendAjaxWeaponRequest(heroClass) {
 
 function selectArmor(armorName) {
     fetch(`http://localhost:8080/charClassToArmor`, {
-        method: 'get'
-    })
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -74,8 +74,8 @@ function selectArmor(armorName) {
 
 function selectWeapon(weaponName) {
     fetch(`http://localhost:8080/charClassToWeapon`, {
-        method: 'get'
-    })
+            method: 'get'
+        })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
