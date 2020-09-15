@@ -6,6 +6,14 @@ public class Character {
     private int hp;
     private boolean isAlive = true;
 
+    public Character() {
+    }
+
+    public Character(String name, int hp) {
+        this.name = name;
+        this.hp = hp;
+    }
+
     public String getName() {
         return name;
     }
@@ -22,7 +30,8 @@ public class Character {
         this.hp = hp;
     }
 
-    void attack(Character character){
+    String attack(Character character){
+        return null;
     }
 
     public boolean isAlive() {

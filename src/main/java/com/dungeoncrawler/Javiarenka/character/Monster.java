@@ -7,7 +7,16 @@ public class Monster extends Character {
     private String race;
     private int damageStrength;
 
-    public String getRace() {
+        public Monster() {
+        }
+
+        public Monster(String name, int hp, String race, int damageStrength) {
+            super(name, hp);
+            this.race = race;
+            this.damageStrength = damageStrength;
+        }
+
+        public String getRace() {
         return race;
     }
 
@@ -24,7 +33,7 @@ public class Monster extends Character {
     }
 
     @Override
-    void attack(Character hero) {
+    String attack(Character hero) {
         Hero attackedHero = (Hero)hero;
 
         Random random = new Random();
@@ -35,5 +44,6 @@ public class Monster extends Character {
         if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
             attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
         }
+        return null;
         }
     }
