@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-    class Monster extends Character {
+    public class Monster extends Character {
 
     private String race;
     private int damageStrength;
@@ -20,4 +20,9 @@ package com.dungeoncrawler.Javiarenka.character;
     public void setDamageStrength(int damageStrength) {
         this.damageStrength = damageStrength;
     }
-}
+
+    @Override
+    void attack(Character hero) {
+        hero.setHp(hero.getHp() - damageStrength);
+        }
+    }
