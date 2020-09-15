@@ -32,7 +32,11 @@ public class BoardController {
 
     @GetMapping("/fightBoard/attackMonster")
     public RedirectView attackMonster(Hero heroFromForm, Monster monsterFromForm) {
-        service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedMonster()));
+        if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
+            service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedMonster()));
+        } else {
+            service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
+        }
         return new RedirectView("");
     }
 
