@@ -39,7 +39,7 @@ public class Monster extends Character {
         Random random = new Random();
         int hitPossibility = random.nextInt(100);
 
-        if (hitPossibility <= attackedHero.getEquippedArmor().getChanceToHitReduction()) { return; }
+        if (hitPossibility <= attackedHero.getEquippedArmor().getChanceToHitReduction()) { return null; }
 
         if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
             attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
