@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: 0;
-    font-family: 'Berkshire Swash', cursive;
+    font-family: 'Berkshire Swash', Arial, cursive, sans-serif;
     color: white;
 }
 
@@ -104,9 +104,12 @@ Zrobić scrollbar dla firefox */
     font-size: 1.5em;
 }
 
+h1,
 h2 {
-    margin: 2rem auto 2rem 3rem;
+    text-align: center;
+    margin: 3rem auto 1rem auto;
     font-size: 2em;
+    text-shadow: 4px 1px 2px black, 0 0 25px rgba(177, 207, 102, 1), 0 0 5px rgba(7, 175, 173, 1);
 }
 
 
@@ -114,7 +117,7 @@ input {
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    margin: 0px 10px 10px 0px;
+    margin: 0px 10px 10px 20px;
     border: 1px solid #003f15;
     padding: 10px;
     background: rgba(146, 190, 161, 0.5);
