@@ -40,7 +40,7 @@ public class Shop {
     }
 
     private static HeroClass getHeroClass(Hero hero){
-        return hero.getHeroClass;
+        return hero.getHeroClass();
     }
 
     private static Hero validation(Object object) {
