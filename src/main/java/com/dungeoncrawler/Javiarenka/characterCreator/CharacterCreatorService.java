@@ -9,8 +9,8 @@ import java.util.*;
 @Service
 public class CharacterCreatorService {
 
-    private List<String> startingWeapons = new ArrayList<>();
-    private List<String> startingArmors = new ArrayList<>();
+    private List<Weapon> startingWeapons = new ArrayList<>();
+    private List<Armor> startingArmors = new ArrayList<>();
     private Map<String, Set<String>> characterClassToAvailableArmor = new HashMap<>();
     private Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
     private List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
@@ -35,8 +35,8 @@ public class CharacterCreatorService {
             classString = classString.substring(0, 1).toUpperCase() + classString.substring(1).toLowerCase();
             availableClassesStringified.add(classString);
         }
-        StartingWeapon.ALL_STARTING_WEAPON.forEach(e -> startingWeapons.add(e.getName()));
-        StartingArmor.ALL_STARTING_ARMOR.forEach(e -> startingArmors.add(e.getName()));
+        startingWeapons.addAll(StartingWeapon.ALL_STARTING_WEAPON);
+        startingArmors.addAll(StartingArmor.ALL_STARTING_ARMOR);
     }
 
     private void verifyAndAddStartingEquipment(HeroClass heroClass, Equipment... equipment) {
@@ -67,11 +67,11 @@ public class CharacterCreatorService {
         return characterClassToAvailableWeapon;
     }
 
-    public List<String> getStartingWeapons() {
+    public List<Weapon> getStartingWeapons() {
         return startingWeapons;
     }
 
-    public List<String> getStartingArmors() {
+    public List<Armor> getStartingArmors() {
         return startingArmors;
     }
 

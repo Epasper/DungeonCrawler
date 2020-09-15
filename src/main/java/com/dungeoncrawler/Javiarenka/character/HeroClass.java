@@ -1,12 +1,12 @@
 package com.dungeoncrawler.Javiarenka.character;
 
 public enum HeroClass {
-    ARCHER ("ARCHER"),
-    ROGUE ("ROGUE"),
-    WARRIOR ("WARRIOR"),
-    WIZARD ("WIZARD"),
-    HEALER ("HEALER"),
-    KNIGHT ("KNIGHT");
+    ARCHER("ARCHER"),
+    ROGUE("ROGUE"),
+    WARRIOR("WARRIOR"),
+    WIZARD("WIZARD"),
+    HEALER("HEALER"),
+    KNIGHT("KNIGHT");
 
     private final String heroClassString;
 
@@ -20,5 +20,15 @@ public enum HeroClass {
 
     public String toString() {
         return this.heroClassString;
+    }
+
+    public static HeroClass getHeroClassByName(String name) {
+        name = name.toUpperCase();
+        for(HeroClass v : values()){
+            if( v.heroClassString.equals(name)){
+                return v;
+            }
+        }
+        return null;
     }
 }

@@ -2,9 +2,9 @@ package com.dungeoncrawler.Javiarenka.equipment;
 
 import com.dungeoncrawler.Javiarenka.character.HeroClass;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class StartingWeapon {
     public static final Weapon DAGGER = new Weapon("Dagger", List.of(HeroClass.ROGUE, HeroClass.WARRIOR, HeroClass.ARCHER), 5, 10, DamageType.DMG_SLASHING, 5);
@@ -14,4 +14,11 @@ public final class StartingWeapon {
     public static final Weapon STAFF_OF_FIRE = new Weapon("Staff of Fire", List.of(HeroClass.WIZARD), 8, 20, DamageType.DMG_FIRE, 5);
     public static final List<Weapon> ALL_STARTING_WEAPON = Arrays.asList(DAGGER,CLUB,SHORT_SWORD,SHORT_BOW,STAFF_OF_FIRE);
 
+    public static Weapon getWeaponByName(String weaponName){
+        return ALL_STARTING_WEAPON
+                .stream()
+                .filter(e -> e.getName().equalsIgnoreCase(weaponName))
+                .collect(Collectors.toList())
+                .get(0);
+    }
 }
