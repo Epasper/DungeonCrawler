@@ -78,9 +78,11 @@
             <tr>
                 <th>Hero</th>
                 <th>Class</th>
-                <th>Based HP</th>
+                <th>HP</th>
                 <th>Weapon(Damage dealt)</th>
-                <th>Armor(Additional HP)</th>
+                <th>Armor(Damage reduction)</th>
+                <th>Is alive?</th>
+<!--                <th>Total HP</th>-->
                 <th>|</th>
             </tr>
             </thead>
@@ -91,8 +93,10 @@
                 </td>
                 <td th:text="${hero.getHeroClass()}"></td>
                 <td th:text="${hero.getHp()}"></td>
-                <td th:text="${hero.getEquippedWeapon().getName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></td>
-                <td th:text="${hero.getEquippedArmor().getName() + '(' + hero.getEquippedArmor().getAdditionalHp() + ')'}"></td>
+                <td th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></td>
+                <td th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></td>
+                <td th:text="${hero.isAlive()}"></td>
+                <!--                <td th:text="${hero.getTotalHp()}"></td>-->
                 <td>|</td>
             </tr>
             </tbody>
@@ -107,6 +111,7 @@
                 <th>Race</th>
                 <th>HP</th>
                 <th>Damage strength</th>
+                <th>Is alive?</th>
             </tr>
             </thead>
             <tbody>
@@ -118,6 +123,7 @@
                 <td th:text="${monster.getRace()}"></td>
                 <td th:text="${monster.getHp()}"></td>
                 <td th:text="${monster.getDamageStrength()}"></td>
+                <td th:text="${monster.isAlive()}"></td>
             </tr>
             </tbody>
         </table>

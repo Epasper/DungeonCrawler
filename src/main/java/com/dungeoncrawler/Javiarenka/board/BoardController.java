@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.Board;
+package com.dungeoncrawler.Javiarenka.board;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
@@ -22,7 +22,11 @@ public class BoardController {
 
     @GetMapping("/fightBoard/attackHero")
     public RedirectView attackHero(Hero heroFromForm, Monster monsterFromForm) {
-        service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedHero()));
+        if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
+            service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedMonster().attack(service.getSelectedHero()));
+        } else {
+            service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
+        }
         return new RedirectView("");
     }
 
@@ -37,6 +41,7 @@ public class BoardController {
         service.setSelectedHero(service.getCurrentHeroByName(heroName));
         System.out.println("Selected Hero: " + service.getSelectedHero().getName());
         return new RedirectView("");
+        // todo unselect hero after attack
     }
 
     @GetMapping("/fightBoard/selectMonster")
@@ -44,5 +49,6 @@ public class BoardController {
         service.setSelectedMonster(service.getCurrentMonsterByName(monsterName));
         System.out.println("Selected Monster: " + service.getSelectedMonster().getName());
         return new RedirectView("");
+        // todo unselect monster after attack
     }
 }

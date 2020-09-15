@@ -37,7 +37,12 @@ public class Armor extends Equipment{
         super(name, classRestriction, weight, price);
         this.damageReduction = damageReduction;
         this.chanceToHitReduction = chanceToHitReduction;
+    }
 
-
+    public Armor(String name, List<HeroClass> classRestriction, double weight, double price, int damageReduction, int chanceToHitReduction, int additionalHp) {
+        super(name, classRestriction, weight, price);
+        this.damageReduction = damageReduction;
+        this.chanceToHitReduction = chanceToHitReduction;
+        this.additionalHp = additionalHp;
     }
 }
