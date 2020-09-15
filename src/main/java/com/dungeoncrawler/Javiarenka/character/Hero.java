@@ -8,8 +8,27 @@ public class Hero extends Character {
     private HeroClass heroClass;
     private Armor equippedArmor;
     private Weapon equippedWeapon;
+    private String weaponName;
+    private String armorName;
+    private String className;
     private int money;
     private int unarmedAttackDamage = 1;
+
+    public Hero(String name, int hp) {
+        super(name, hp);
+    }
+
+    public Hero(String name, int hp, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+        super(name, hp);
+        this.surname = surname;
+        this.heroClass = heroClass;
+        this.equippedArmor = equippedArmor;
+        this.equippedWeapon = equippedWeapon;
+        this.money = money;
+    }
+
+    public Hero() {
+    }
 
     @Override
     public String toString() {
@@ -19,7 +38,18 @@ public class Hero extends Character {
                 ", heroClass=" + heroClass +
                 ", equippedArmor=" + equippedArmor +
                 ", equippedWeapon=" + equippedWeapon +
+                ", weaponName='" + weaponName + '\'' +
+                ", armorName='" + armorName + '\'' +
+                ", money=" + money +
                 '}';
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public int getUnarmedAttackDamage() {
@@ -74,8 +104,32 @@ public class Hero extends Character {
         //TODO: DUN-26: Zapisać postać w lokalnym pliku
     }
 
+    public String getWeaponName() {
+        return weaponName;
+    }
+
+    public void setWeaponName(String weaponName) {
+        this.weaponName = weaponName;
+    }
+
+    public String getArmorName() {
+        return armorName;
+    }
+
+    public void setArmorName(String armorName) {
+        this.armorName = armorName;
+    }
+
     @Override
-    public void attack(Character monster) {
+    public String attack(Character monster) {
+        String message;
+        String hit = "hit ";
+        String damageDealt;
+        if (equippedWeapon != null) {
+            damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
+        } else {
+            damageDealt = " and dealt 1 damage.";
+        }
         if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
@@ -84,14 +138,16 @@ public class Hero extends Character {
         if (monster.getHp() < 1) {
             monster.setAlive(false);
         }
+        message = "Hero " + getName() + " attacked a " + monster.getName() + ", " + hit + damageDealt;
+        return message;
     }
 
     public void addMoney(int amount) {
         this.money = this.money + amount;
     }
 
-    public void removeMoney (int amount) throws NoMoreMoneyException {
-        if (amount > this.money){
+    public void removeMoney(int amount) throws NoMoreMoneyException {
+        if (amount > this.money) {
             throw new NoMoreMoneyException();
         }
         this.money = this.money - amount;
