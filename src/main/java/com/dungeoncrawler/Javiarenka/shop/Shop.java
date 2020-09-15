@@ -12,43 +12,47 @@ import java.util.stream.Collectors;
 
 public class Shop {
 
-    private List<Armor> allAvailableArmor = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
-    private List<Weapon> allAvailableWeapon = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
+    private static List<Armor> allAvailableArmor = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
+    private static List<Weapon> allAvailableWeapon = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
 
-    public List<Armor> getNewArmor(Object object) {
-        validation(object);
-        Hero hero = (Hero) object;
-        return getAvailableArmour(hero.getHeroClass());
+    public static List<Armor> getNewArmor(Object object) {
+        Hero hero = validation(object);
+        return getAvailableArmour(getHeroClass(hero));
     }
 
-    public List<Weapon> getNewWeapon(Object object) {
-        validation(object);
-        Hero hero = (Hero) object;
-        return getAvailableWeapon(hero.getHeroClass());
+    public static List<Weapon> getNewWeapon(Object object) {
+        Hero hero = validation(object);
+        return getAvailableWeapon(getHeroClass(hero));
     }
 
-    private List<Weapon> getAvailableWeapon(HeroClass heroClass) {
+    private static List<Weapon> getAvailableWeapon(HeroClass heroClass) {
         return allAvailableWeapon
                 .stream()
                 .filter((Weapon weapon) -> weapon.getClassRestrictions().contains(heroClass))
                 .collect(Collectors.toList());
     }
 
-    private List<Armor> getAvailableArmour(HeroClass heroClass) {
+    private static List<Armor> getAvailableArmour(HeroClass heroClass) {
         return allAvailableArmor
                 .stream()
                 .filter((Armor armor) -> armor.getClassRestrictions().contains(heroClass))
                 .collect(Collectors.toList());
     }
 
-    private boolean validation(Object object) {
+    private static HeroClass getHeroClass(Hero hero){
+        return hero.getHeroClass;
+    }
+
+    private static Hero validation(Object object) {
+        Hero hero = null;
         try {
-            if (!(object instanceof Hero)) {
-                return false;
+            if (object instanceof Hero) {
+                hero = (Hero) object;
+                return hero;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IllegalArgumentException ex) {
+            ex.getStackTrace();
         }
-        return true;
+        return null;
     }
 }
