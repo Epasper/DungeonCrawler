@@ -1,8 +1,11 @@
 package com.dungeoncrawler.Javiarenka.Board;
 
+import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.character.Monster;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -15,6 +18,12 @@ public class BoardController {
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         return "fightBoard";
+    }
+
+    @PostMapping("/fightBoard/attack")
+    public String attackMonster(Hero heroFromForm, Monster monsterFromForm) {
+        service.getSelectedHero().attack(monsterFromForm);
+        return "attackSuccess";
     }
 
     @GetMapping("/fightBoard/selectHero")

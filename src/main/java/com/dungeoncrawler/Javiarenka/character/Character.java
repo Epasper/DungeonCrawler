@@ -4,6 +4,7 @@ public class Character {
 
     private String name;
     private int hp;
+    private boolean isAlive = true;
 
     public Character() {
     }
@@ -30,5 +31,13 @@ public class Character {
     }
 
     void attack(Character character){
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 }
