@@ -1,6 +1,8 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-    public class Monster extends Character {
+import java.util.Random;
+
+public class Monster extends Character {
 
     private String race;
     private int damageStrength;
@@ -32,7 +34,22 @@ package com.dungeoncrawler.Javiarenka.character;
 
     @Override
     String attack(Character hero) {
-        hero.setHp(hero.getHp() - damageStrength);
+        Hero attackedHero = (Hero)hero;
+
+        if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
+            attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
+        } else {
+            attackedHero.setHp(attackedHero.getHp());
+        }
+
+        Random random = new Random();
+        int hitPossibility = random.nextInt(100);
+
+        if (hitPossibility >= attackedHero.getEquippedArmor().getChanceToHitReduction()) {
+            attack(attackedHero);
+        } else {
+            attackedHero.setHp(attackedHero.getHp());
+        }
         return null;
         }
     }
