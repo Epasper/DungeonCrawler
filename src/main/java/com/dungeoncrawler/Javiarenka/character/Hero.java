@@ -124,7 +124,12 @@ public class Hero extends Character {
     public String attack(Character monster) {
         String message;
         String hit = "hit ";
-        String damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
+        String damageDealt;
+        if (equippedWeapon != null) {
+            damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
+        } else {
+            damageDealt = " and dealt 1 damage.";
+        }
         if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
