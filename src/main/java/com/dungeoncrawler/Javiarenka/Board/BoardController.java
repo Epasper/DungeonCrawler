@@ -17,13 +17,20 @@ public class BoardController {
     public String fightGet(Model model) {
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
+        model.addAttribute("consoleText", service.getMessageOutput());
         return "fightBoard";
     }
 
-    @PostMapping("/fightBoard/attack")
-    public String attackMonster(Hero heroFromForm, Monster monsterFromForm) {
-        service.getSelectedHero().attack(monsterFromForm);
-        return "attackSuccess";
+    @GetMapping("/fightBoard/attackHero")
+    public RedirectView attackHero(Hero heroFromForm, Monster monsterFromForm) {
+        service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedHero()));
+        return new RedirectView("");
+    }
+
+    @GetMapping("/fightBoard/attackMonster")
+    public RedirectView attackMonster(Hero heroFromForm, Monster monsterFromForm) {
+        service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedMonster()));
+        return new RedirectView("");
     }
 
     @GetMapping("/fightBoard/selectHero")

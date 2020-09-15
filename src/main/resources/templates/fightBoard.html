@@ -97,7 +97,7 @@
             </tr>
             </tbody>
         </table>
-        <button>Attack the monster</button>
+        <a th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
     </td>
     <td>
         <table class="table">
@@ -112,7 +112,8 @@
             <tbody>
             <tr th:each="monster: ${monsters}">
                 <td>
-                    <a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}" th:text="${monster.getName()}"></a>
+                    <a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
+                       th:text="${monster.getName()}"></a>
                 </td>
                 <td th:text="${monster.getRace()}"></td>
                 <td th:text="${monster.getHp()}"></td>
@@ -120,8 +121,9 @@
             </tr>
             </tbody>
         </table>
-        <button>Attack the hero</button>
+        <a th:href="@{/fightBoard/attackHero}">Attack the hero</a>
     </td>
 </table>
+<p th:text="${consoleText}"></p>
 </body>
 </html>

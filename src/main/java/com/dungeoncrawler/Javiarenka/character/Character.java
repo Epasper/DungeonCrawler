@@ -30,7 +30,8 @@ public class Character {
         this.hp = hp;
     }
 
-    void attack(Character character){
+    String attack(Character character){
+        return null;
     }
 
     public boolean isAlive() {

@@ -16,6 +16,7 @@ public class BoardService {
     private List<Monster> monsters = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
+    private String messageOutput = "";
 
     public BoardService() {
         heroes.add(new Hero("Joe", 70, "Jenkins", HeroClass.ARCHER, StartingArmor.CLOTH_ARMOR, StartingWeapon.SHORT_BOW, 20));
@@ -24,6 +25,14 @@ public class BoardService {
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    public String getMessageOutput() {
+        return messageOutput;
+    }
+
+    public void setMessageOutput(String messageOutput) {
+        this.messageOutput = messageOutput;
     }
 
     public static void attackMonster(Hero heroFromForm, Monster monsterFromForm) {

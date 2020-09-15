@@ -121,7 +121,10 @@ public class Hero extends Character {
     }
 
     @Override
-    public void attack(Character monster) {
+    public String attack(Character monster) {
+        String message;
+        String hit = "hit ";
+        String damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
         if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
@@ -130,14 +133,16 @@ public class Hero extends Character {
         if (monster.getHp() < 1) {
             monster.setAlive(false);
         }
+        message = "Hero " + getName() + " attacked a " + monster.getName() + ", " + hit + damageDealt;
+        return message;
     }
 
     public void addMoney(int amount) {
         this.money = this.money + amount;
     }
 
-    public void removeMoney (int amount) throws NoMoreMoneyException {
-        if (amount > this.money){
+    public void removeMoney(int amount) throws NoMoreMoneyException {
+        if (amount > this.money) {
             throw new NoMoreMoneyException();
         }
         this.money = this.money - amount;

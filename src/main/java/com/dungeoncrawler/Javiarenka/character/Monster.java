@@ -31,7 +31,8 @@ package com.dungeoncrawler.Javiarenka.character;
     }
 
     @Override
-    void attack(Character hero) {
+    String attack(Character hero) {
         hero.setHp(hero.getHp() - damageStrength);
+        return null;
         }
     }
