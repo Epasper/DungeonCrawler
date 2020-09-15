@@ -5,7 +5,16 @@ package com.dungeoncrawler.Javiarenka.character;
     private String race;
     private int damageStrength;
 
-    public String getRace() {
+        public Monster() {
+        }
+
+        public Monster(String name, int hp, String race, int damageStrength) {
+            super(name, hp);
+            this.race = race;
+            this.damageStrength = damageStrength;
+        }
+
+        public String getRace() {
         return race;
     }
 
@@ -22,7 +31,8 @@ package com.dungeoncrawler.Javiarenka.character;
     }
 
     @Override
-    void attack(Character hero) {
+    String attack(Character hero) {
         hero.setHp(hero.getHp() - damageStrength);
+        return null;
         }
     }

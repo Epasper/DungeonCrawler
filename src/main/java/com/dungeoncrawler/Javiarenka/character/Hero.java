@@ -14,6 +14,22 @@ public class Hero extends Character {
     private int money;
     private int unarmedAttackDamage = 1;
 
+    public Hero(String name, int hp) {
+        super(name, hp);
+    }
+
+    public Hero(String name, int hp, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+        super(name, hp);
+        this.surname = surname;
+        this.heroClass = heroClass;
+        this.equippedArmor = equippedArmor;
+        this.equippedWeapon = equippedWeapon;
+        this.money = money;
+    }
+
+    public Hero() {
+    }
+
     @Override
     public String toString() {
         return "Hero{" +
@@ -105,7 +121,15 @@ public class Hero extends Character {
     }
 
     @Override
-    public void attack(Character monster) {
+    public String attack(Character monster) {
+        String message;
+        String hit = "hit ";
+        String damageDealt;
+        if (equippedWeapon != null) {
+            damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
+        } else {
+            damageDealt = " and dealt 1 damage.";
+        }
         if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
@@ -114,14 +138,16 @@ public class Hero extends Character {
         if (monster.getHp() < 1) {
             monster.setAlive(false);
         }
+        message = "Hero " + getName() + " attacked a " + monster.getName() + ", " + hit + damageDealt;
+        return message;
     }
 
     public void addMoney(int amount) {
         this.money = this.money + amount;
     }
 
-    public void removeMoney (int amount) throws NoMoreMoneyException {
-        if (amount > this.money){
+    public void removeMoney(int amount) throws NoMoreMoneyException {
+        if (amount > this.money) {
             throw new NoMoreMoneyException();
         }
         this.money = this.money - amount;
