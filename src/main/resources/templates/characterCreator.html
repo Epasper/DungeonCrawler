@@ -19,10 +19,10 @@
         <div class="content">
             <h1 class="createHeroTitle">Create your Hero!</h1>
             <div class="name">
-                <input id="heroName" type="text" value="Name" th:field="*{name}">
-                <button th:onclick="'javascript:addNameToField(\'' + heroName + '\');'">Generate</button>
-                <input id="heroSurname" type="text" value="Surname" th:field="*{surname}">
-                <button th:onclick="'javascript:addNameToField(\'' + heroSurname + '\');'">Generate</button>
+                <input id="heroName" type="text" placeholder="Name" th:field="*{name}">
+                <button th:onclick="'javascript:addNameToField(\'' + heroName + '\');'">Generate Name</button>
+                <input id="heroSurname" type="text" placeholder="Surname" th:field="*{surname}">
+                <button th:onclick="'javascript:addNameToField(\'' + heroSurname + '\');'">Generate Surname</button>
             </div>
             <div class="classContent">
                 <h2>Class</h2>

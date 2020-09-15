@@ -112,7 +112,6 @@ h2 {
     text-shadow: 4px 1px 2px black, 0 0 25px rgba(177, 207, 102, 1), 0 0 5px rgba(7, 175, 173, 1);
 }
 
-
 input {
     border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -125,4 +124,27 @@ input {
     -moz-box-shadow: inset 0px 0px 15px #003f15;
     -webkit-box-shadow: inset 0px 0px 15px #003f15;
     font-size: 1.5em;
+}
+
+button {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-color: rgba(177, 207, 102, 1);
+    color: white;
+    box-shadow: 0 0 40px 40px rgba(1, 44, 26, 0.5) inset, 0 0 0 0 rgba(1, 44, 26, 0.5);
+    background-color: rgba(146, 190, 161, 0.5);
+    transition: 0.2s;
+    margin: 10px;
+    padding: 10px;
+    cursor: pointer;
+    width: 130px;
+}
+
+button:hover {
+    box-shadow: 1px 1px 2px black, 0 0 25px rgba(177, 207, 102, 1), 0 0 5px rgba(7, 175, 173, 1);
+}
+
+button:active {
+    background-color: rgba(146, 190, 161, 1);
 }
