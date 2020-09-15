@@ -5,6 +5,9 @@ package com.dungeoncrawler.Javiarenka.character;
     private String race;
     private int damageStrength;
 
+        public Monster() {
+        }
+
         public Monster(String name, int hp, String race, int damageStrength) {
             super(name, hp);
             this.race = race;
