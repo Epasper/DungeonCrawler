@@ -33,7 +33,7 @@ public class Monster extends Character {
     }
 
     @Override
-    void attack(Character hero) {
+    String attack(Character hero) {
         Hero attackedHero = (Hero)hero;
 
         if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
@@ -50,5 +50,6 @@ public class Monster extends Character {
         } else {
             attackedHero.setHp(attackedHero.getHp());
         }
+        return null;
         }
     }
