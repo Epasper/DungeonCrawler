@@ -27,19 +27,13 @@ public class Monster extends Character {
     void attack(Character hero) {
         Hero attackedHero = (Hero)hero;
 
-        if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
-            attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
-        } else {
-            attackedHero.setHp(attackedHero.getHp());
-        }
-
         Random random = new Random();
         int hitPossibility = random.nextInt(100);
 
-        if (hitPossibility >= attackedHero.getEquippedArmor().getChanceToHitReduction()) {
-            attack(attackedHero);
-        } else {
-            attackedHero.setHp(attackedHero.getHp());
+        if (hitPossibility <= attackedHero.getEquippedArmor().getChanceToHitReduction()) { return; }
+
+        if (attackedHero.getEquippedArmor().getDamageReduction() <= damageStrength) {
+            attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
         }
         }
     }
