@@ -3,6 +3,7 @@ package com.dungeoncrawler.Javiarenka.shop;
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
+import com.dungeoncrawler.Javiarenka.equipment.Equipment;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 
 import java.util.ArrayList;
@@ -12,32 +13,45 @@ import java.util.stream.Collectors;
 
 public class Shop {
 
-    private static List<Armor> allAvailableArmor = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
-    private static List<Weapon> allAvailableWeapon = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
+    private static List<Equipment> allAvailableEquipment = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
+//    private static List<Armor> allAvailableArmor = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
+//    private static List<Weapon> allAvailableWeapon = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo
 
-    public static List<Armor> getNewArmor(Object object) {
+    public static List<Equipment> getNewEquipment(Object object) {
         Hero hero = validation(object);
-        return getAvailableArmour(getHeroClass(hero));
+        return getAvailableEquipment(getHeroClass(hero));
     }
 
-    public static List<Weapon> getNewWeapon(Object object) {
-        Hero hero = validation(object);
-        return getAvailableWeapon(getHeroClass(hero));
-    }
+//    public static List<Armor> getNewArmor(Object object) {
+//        Hero hero = validation(object);
+//        return getAvailableArmour(getHeroClass(hero));
+//    }
+//
+//    public static List<Weapon> getNewWeapon(Object object) {
+//        Hero hero = validation(object);
+//        return getAvailableWeapon(getHeroClass(hero));
+//    }
 
-    private static List<Weapon> getAvailableWeapon(HeroClass heroClass) {
-        return allAvailableWeapon
+    private static List<Equipment> getAvailableEquipment(HeroClass heroClass) {
+        return allAvailableEquipment
                 .stream()
-                .filter((Weapon weapon) -> weapon.getClassRestrictions().contains(heroClass))
+                .filter((Equipment equipment) -> equipment.getClassRestrictions().contains(heroClass))
                 .collect(Collectors.toList());
     }
 
-    private static List<Armor> getAvailableArmour(HeroClass heroClass) {
-        return allAvailableArmor
-                .stream()
-                .filter((Armor armor) -> armor.getClassRestrictions().contains(heroClass))
-                .collect(Collectors.toList());
-    }
+//    private static List<Weapon> getAvailableWeapon(HeroClass heroClass) {
+//        return allAvailableWeapon
+//                .stream()
+//                .filter((Weapon weapon) -> weapon.getClassRestrictions().contains(heroClass))
+//                .collect(Collectors.toList());
+//    }
+//
+//    private static List<Armor> getAvailableArmour(HeroClass heroClass) {
+//        return allAvailableArmor
+//                .stream()
+//                .filter((Armor armor) -> armor.getClassRestrictions().contains(heroClass))
+//                .collect(Collectors.toList());
+//    }
 
     private static HeroClass getHeroClass(Hero hero){
         return hero.getHeroClass();
