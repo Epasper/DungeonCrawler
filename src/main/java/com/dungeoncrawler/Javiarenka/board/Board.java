@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.Board;
+package com.dungeoncrawler.Javiarenka.board;
 
 public class Board {
     private int boardX;

@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.Board;
+package com.dungeoncrawler.Javiarenka.board;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.HeroClass;

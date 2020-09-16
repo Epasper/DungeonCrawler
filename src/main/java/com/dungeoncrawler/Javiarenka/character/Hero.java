@@ -105,7 +105,7 @@ public class Hero extends Character {
     }
 
     public String getWeaponName() {
-        return weaponName;
+        return getEquippedWeapon().getName();
     }
 
     public void setWeaponName(String weaponName) {
@@ -113,7 +113,7 @@ public class Hero extends Character {
     }
 
     public String getArmorName() {
-        return armorName;
+        return getEquippedArmor().getName();
     }
 
     public void setArmorName(String armorName) {
@@ -151,5 +151,9 @@ public class Hero extends Character {
             throw new NoMoreMoneyException();
         }
         this.money = this.money - amount;
+    }
+
+    public int getTotalHp() {
+        return getHp() + equippedArmor.getAdditionalHp();
     }
 }
