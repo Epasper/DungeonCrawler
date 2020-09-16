@@ -5,11 +5,12 @@
 }
 
 body {
-    background-image: linear-gradient("../images/floor.jpg");
+    background-image: url("../images/floor.jpg");
+    background-repeat: repeat;
+    background-size: contain;
 }
 
 .container {
-    background-color: grey;
     height: 90vh;
     width: 100%
 }
@@ -23,12 +24,55 @@ body {
     transform: translate(-50%, -10%);
     width: 70vw;
     height: 50vh;
+    border: 10px ridge green;
+}
+
+.view p {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -5%);
 }
 
 .info {
-    background-color: lightblue;
+    border: 10px ridge green;
+    background-color: lightgreen;
     position: absolute;
     bottom: 5%;
     left: 50%;
+    width: 80%;
     transform: translate(-50%, 10%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1fr;
+    grid-row-gap: 1fr;
+    align-items: center;
+}
+
+
+.heroBoard ul li {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1fr;
+    grid-row-gap: 1fr;
+    list-style: none;
+    align-items: center;
+    align-self: center;
+}
+
+.monsterBoard ul li {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1fr;
+    grid-row-gap: 1fr;
+    list-style: none;
+    align-items: center;
+    align-self: center;
+}
+
+.info p {
+    display: inline;
 }

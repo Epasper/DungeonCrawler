@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Character Creator</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
     </script>
@@ -11,7 +11,7 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="../css/fightBoardStyle.css">
 
 <body>
@@ -75,15 +75,44 @@
     <!--</form>-->
     <div class="container">
         <div class="view">
-            <img src="" alt="">
-            <img src="" alt="">
-            <img src="" alt="">
-            <img src="" alt="">
-            <img src="" alt="">
-            <img src="" alt="">
+            <p th:text="${consoleText}"></p>
+            <div class="heroSprites"> <img src="" alt="">
+                <img src="" alt="">
+                <img src="" alt=""></div>
+            <div class="monsterSprites"> <img src="" alt="">
+                <img src="" alt="">
+                <img src="" alt=""></div>
         </div>
-        <div class="info">
-            <table width=“100%”>
+        <div class="info grid-container">
+
+            <div class="heroBoard">
+                <ul th:each="hero: ${heroes}">
+                    <li><a th:href="@{/fightBoard/selectHero(heroName=${hero.getName()})}"
+                            th:text="${hero.getName()}"></a>
+                        <p th:text="${hero.getHeroClass()}"></p>
+                        <p th:text="${hero.getHp()}"></p>
+                        <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}">
+                        </p>
+                        <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
+                        </p>
+                        <p th:text="${hero.isAlive()}"></p>
+                    </li>
+                </ul>
+                <a th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
+            </div>
+            <div class="monsterBoard">
+                <ul th:each="monster: ${monsters}">
+                    <li><a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
+                            th:text="${monster.getName()}"></a>
+                        <p th:text="${monster.getRace()}"></p>
+                        <p th:text="${monster.getHp()}"></p>
+                        <p th:text="${monster.getDamageStrength()}"></p>
+                        <p th:text="${monster.isAlive()}"></p>
+                    </li>
+                </ul>
+                <a th:href="@{/fightBoard/attackHero}">Attack the hero</a>
+            </div>
+            <!-- <table width=“100%”>
                 <td>
                     <table class="table">
                         <thead>
@@ -94,7 +123,7 @@
                                 <th>Weapon(Damage dealt)</th>
                                 <th>Armor(Damage reduction)</th>
                                 <th>Is alive?</th>
-                                <!--                <th>Total HP</th>-->
+                                               <th>Total HP</th>
                                 <th>|</th>
                             </tr>
                         </thead>
@@ -113,7 +142,7 @@
                                     th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
                                 </td>
                                 <td th:text="${hero.isAlive()}"></td>
-                                <!--                <td th:text="${hero.getTotalHp()}"></td>-->
+                                               <td th:text="${hero.getTotalHp()}"></td>
                                 <td>|</td>
                             </tr>
                         </tbody>
@@ -144,15 +173,15 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!--        todo: fix the button when no monster and/or hero was previously pressed-->
+                           todo: fix the button when no monster and/or hero was previously pressed
                     <a th:href="@{/fightBoard/attackHero}">Attack the hero</a>
                 </td>
-            </table>
+            </table> -->
         </div>
     </div>
 
     <!--todo: fix the list view-->
-    <p th:text="${consoleText}"></p>
+
 </body>
 
 </html>
