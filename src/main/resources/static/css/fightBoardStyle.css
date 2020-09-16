@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient("../images/floor.jpg");
+}
+
+.container {
+    background-color: grey;
+    height: 90vh;
+    width: 100%
+}
+
+.view {
+    background-image: url("../images/battle-background.png");
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 70vw;
+    height: 50vh;
+}
+
+.info {
+    background-color: lightblue;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%, 10%);
+}
