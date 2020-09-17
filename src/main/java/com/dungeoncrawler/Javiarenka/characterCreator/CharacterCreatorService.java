@@ -3,7 +3,6 @@ package com.dungeoncrawler.Javiarenka.characterCreator;
 import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 @Service
@@ -15,7 +14,6 @@ public class CharacterCreatorService {
     private Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
     private List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
     private List<String> availableClassesStringified = new ArrayList<>();
-
 
     public CharacterCreatorService() {
         verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingArmor.RUSTED_CHAIN_ARMOR, StartingArmor.LEATHER_ARMOR);

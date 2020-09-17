@@ -5,10 +5,17 @@ import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class BoardService {
     private List<Hero> heroes = new ArrayList<>();
@@ -18,12 +25,45 @@ public class BoardService {
     private List<String> messageOutput = new ArrayList<>();
 
     public BoardService() {
-        heroes.add(new Hero("Joe", 70, "Jenkins", HeroClass.ARCHER, StartingArmor.CLOTH_ARMOR, StartingWeapon.SHORT_BOW, 20));
-        heroes.add(new Hero("Mike", 120, "Trashold", HeroClass.KNIGHT, StartingArmor.RUSTED_CHAIN_ARMOR, StartingWeapon.SHORT_SWORD, 12));
-        heroes.add(new Hero("Chase", 50, "Kingsman", HeroClass.WIZARD, StartingArmor.LEATHER_ARMOR, StartingWeapon.STAFF_OF_FIRE, 15));
+//        heroes.add(new Hero("Joe", 70, "Jenkins", HeroClass.ARCHER, StartingArmor.CLOTH_ARMOR, StartingWeapon.SHORT_BOW, 20));
+//        heroes.add(new Hero("Mike", 120, "Trashold", HeroClass.KNIGHT, StartingArmor.RUSTED_CHAIN_ARMOR, StartingWeapon.SHORT_SWORD, 12));
+//        heroes.add(new Hero("Chase", 50, "Kingsman", HeroClass.WIZARD, StartingArmor.LEATHER_ARMOR, StartingWeapon.STAFF_OF_FIRE, 15));
+        loadAllHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    public List<String> getAllHeroNamesAndSurnames() {
+        File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/");
+        File[] listOfFiles = folder.listFiles();
+        List<String> allHeroNamesAndSurnames = new ArrayList<>();
+
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                if (file.isFile() && file.getName().contains("---")) {
+                    allHeroNamesAndSurnames.add(file.getName());
+                    System.out.println("File " + file.getName());
+                }
+            }
+        }
+        return allHeroNamesAndSurnames;
+    }
+
+    public void loadAllHeroes() {
+        heroes.clear();
+        for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
+            try {
+                Gson gson = new Gson();
+                Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
+                Hero hero = gson.fromJson(reader, Hero.class);
+                System.out.println(hero);
+                heroes.add(hero);
+                reader.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public List<String> getMessageOutput() {

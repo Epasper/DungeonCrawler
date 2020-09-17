@@ -1,0 +1,37 @@
+{
+  "surname": "Trashold",
+  "heroClass": "KNIGHT",
+  "equippedArmor": {
+    "damageReduction": 15,
+    "chanceToHitReduction": 50,
+    "additionalHp": 0,
+    "name": "Rusted Chain Armor",
+    "weight": 12.0,
+    "price": 30.0,
+    "classRestrictions": [
+      "KNIGHT",
+      "WARRIOR",
+      "ARCHER"
+    ]
+  },
+  "equippedWeapon": {
+    "damageType": "DMG_BLUDGEONING",
+    "damageDealt": 5,
+    "name": "Club",
+    "weight": 7.0,
+    "price": 8.0,
+    "classRestrictions": [
+      "KNIGHT",
+      "WARRIOR",
+      "HEALER"
+    ]
+  },
+  "weaponName": "Club",
+  "armorName": "Rusted Chain Armor",
+  "className": "Knight",
+  "money": 0,
+  "unarmedAttackDamage": 1,
+  "name": "Mike",
+  "hp": 0,
+  "isAlive": true
+}

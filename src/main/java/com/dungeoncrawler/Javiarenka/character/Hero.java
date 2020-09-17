@@ -2,6 +2,12 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 public class Hero extends Character {
     private String surname;
@@ -101,11 +107,21 @@ public class Hero extends Character {
     }
 
     public void saveThisHero() {
-        //TODO: DUN-26: Zapisać postać w lokalnym pliku
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();;
+        try {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/"+getName() + "---" + getSurname()+".txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getWeaponName() {
-        return getEquippedWeapon().getName();
+        return weaponName;
     }
 
     public void setWeaponName(String weaponName) {
@@ -113,7 +129,7 @@ public class Hero extends Character {
     }
 
     public String getArmorName() {
-        return getEquippedArmor().getName();
+        return armorName;
     }
 
     public void setArmorName(String armorName) {
