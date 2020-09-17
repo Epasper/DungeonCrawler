@@ -1,13 +1,12 @@
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
-    <title>Character Creator</title>
+    <title>Fight!</title>
     <link rel="stylesheet" href="../css/fightBoardStyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <body>
-
     <div class="container">
         <div class="view">
             <p th:text="${consoleText}"></p>
@@ -34,6 +33,8 @@
                         <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
                         </p>
                         <p th:text="${hero.isAlive()}"></p>
+                        <p th:text="${hero.isAlive()}"></p>
+                        <p th:text="${hero.getTotalHp()}"></p>
                     </li>
                 </ul>
                 <a class="attack" th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
@@ -50,76 +51,6 @@
                 </ul>
                 <a class="attack" th:href="@{/fightBoard/attackHero}">Attack the hero</a>
             </div>
-            <!-- <table width=“100%”>
-                <td>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Hero</th>
-                                <th>Class</th>
-                                <th>HP</th>
-                                <th>Weapon(Damage dealt)</th>
-                                <th>Armor(Damage reduction)</th>
-                                <th>Is alive?</th>
-                                               <th>Total HP</th>
-                                <th>|</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="hero: ${heroes}">
-                                <td>
-                                    <a th:href="@{/fightBoard/selectHero(heroName=${hero.getName()})}"
-                                        th:text="${hero.getName()}"></a>
-                                </td>
-                                <td th:text="${hero.getHeroClass()}"></td>
-                                <td th:text="${hero.getHp()}"></td>
-                                <td
-                                    th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}">
-                                </td>
-                                <td
-                                    th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
-                                </td>
-                                <td th:text="${hero.isAlive()}"></td>
-                                               <td th:text="${hero.getTotalHp()}"></td>
-                                <td>|</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
-                </td>
-                <td>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Monster</th>
-                                <th>Race</th>
-                                <th>HP</th>
-                                <th>Damage strength</th>
-                                <th>Is alive?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="monster: ${monsters}">
-                                <td>
-                                    <a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
-                                        th:text="${monster.getName()}"></a>
-                                </td>
-                                <td th:text="${monster.getRace()}"></td>
-                                <td th:text="${monster.getHp()}"></td>
-                                <td th:text="${monster.getDamageStrength()}"></td>
-                                <td th:text="${monster.isAlive()}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                           todo: fix the button when no monster and/or hero was previously pressed
-                    <a th:href="@{/fightBoard/attackHero}">Attack the hero</a>
-                </td>
-            </table> -->
-        </div>
-    </div>
-
-    <!--todo: fix the list view-->
-
 </body>
 
 </html>

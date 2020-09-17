@@ -110,12 +110,15 @@ body {
     text-align: center;
 }
 
+.heroBoard {
+    width: auto;
+}
+
 .attack {
     padding: 1rem;
     margin: 1rem;
     border: 2px solid black;
     color: black;
-    /* transition: 0.3s; */
 }
 
 .attack:hover {
