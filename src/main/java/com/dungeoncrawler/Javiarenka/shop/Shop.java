@@ -13,7 +13,7 @@ public class Shop {
 
     private static List<Equipment> allAvailableEquipment = new ArrayList<>(Arrays.asList(null, null, null, null, null)); // todo: list of available Equipment
 
-    private static List<Equipment> getNewEquipment(Object object) {
+    public static List<Equipment> getNewEquipment(Object object) {
         Hero hero = validation(object);
         return getAvailableEquipment(hero);
     }
@@ -27,7 +27,7 @@ public class Shop {
                 .collect(Collectors.toList());
     }
 
-    private static Hero validation(Object object) {
+    private static Hero validation(Object object){
         Hero hero = null;
         try {
             if (object instanceof Hero) {
