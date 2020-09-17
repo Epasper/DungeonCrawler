@@ -30,6 +30,6 @@
   "money": 0,
   "unarmedAttackDamage": 1,
   "name": "Chase",
-  "hp": 0,
+  "hp": 50,
   "isAlive": true
 }

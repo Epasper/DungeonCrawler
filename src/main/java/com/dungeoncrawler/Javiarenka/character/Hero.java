@@ -24,8 +24,9 @@ public class Hero extends Character {
         super(name, hp);
     }
 
-    public Hero(String name, int hp, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
-        super(name, hp);
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+        super();
+        super.setName(name);
         this.surname = surname;
         this.heroClass = heroClass;
         this.equippedArmor = equippedArmor;
@@ -106,12 +107,34 @@ public class Hero extends Character {
         this.money = money;
     }
 
+    public void setHpByHeroClass() {
+        switch (heroClass) {
+            case WARRIOR:
+                setHp(100);
+                break;
+            case ROGUE:
+                setHp(60);
+                break;
+            case ARCHER:
+                setHp(70);
+                break;
+            case KNIGHT:
+                setHp(120);
+            case HEALER:
+                setHp(80);
+            case WIZARD:
+                setHp(50);
+        }
+    }
+
     public void saveThisHero() {
+        setHpByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .create();;
+                .create();
+        ;
         try {
-            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/"+getName() + "---" + getSurname()+".txt");
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
             gson.toJson(this, writer);
             writer.flush();
             writer.close();

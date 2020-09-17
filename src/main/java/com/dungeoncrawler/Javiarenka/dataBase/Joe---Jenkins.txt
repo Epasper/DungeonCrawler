@@ -32,6 +32,6 @@
   "money": 0,
   "unarmedAttackDamage": 1,
   "name": "Joe",
-  "hp": 0,
+  "hp": 70,
   "isAlive": true
 }
