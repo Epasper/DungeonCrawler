@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Created Characters ###
+/src/main/**/dataBase/
+!/src/main/**/dataBase/Chase---Kingsman.txt
+!/src/main/**/dataBase/Joe---Jenkins.txt
+!/src/main/**/dataBase/Mike---Trashold.txt
