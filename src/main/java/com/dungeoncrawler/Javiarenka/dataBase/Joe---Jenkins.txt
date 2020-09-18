@@ -1,0 +1,37 @@
+{
+  "surname": "Jenkins",
+  "heroClass": "ARCHER",
+  "equippedArmor": {
+    "damageReduction": 10,
+    "chanceToHitReduction": 30,
+    "additionalHp": 0,
+    "name": "Leather Armor",
+    "weight": 8.0,
+    "price": 20.0,
+    "classRestrictions": [
+      "ARCHER",
+      "ROGUE",
+      "WARRIOR"
+    ]
+  },
+  "equippedWeapon": {
+    "damageType": "DMG_PIERCING",
+    "damageDealt": 8,
+    "name": "Short Bow",
+    "weight": 5.0,
+    "price": 10.0,
+    "classRestrictions": [
+      "ROGUE",
+      "WARRIOR",
+      "ARCHER"
+    ]
+  },
+  "weaponName": "Short Bow",
+  "armorName": "Leather Armor",
+  "className": "Archer",
+  "money": 0,
+  "unarmedAttackDamage": 1,
+  "name": "Joe",
+  "hp": 70,
+  "isAlive": true
+}

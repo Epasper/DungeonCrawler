@@ -1,0 +1,35 @@
+{
+  "surname": "Kingsman",
+  "heroClass": "WIZARD",
+  "equippedArmor": {
+    "damageReduction": 4,
+    "chanceToHitReduction": 10,
+    "additionalHp": 0,
+    "name": "Cloth Armor",
+    "weight": 5.0,
+    "price": 10.0,
+    "classRestrictions": [
+      "WIZARD",
+      "ROGUE",
+      "HEALER"
+    ]
+  },
+  "equippedWeapon": {
+    "damageType": "DMG_FIRE",
+    "damageDealt": 5,
+    "name": "Staff of Fire",
+    "weight": 8.0,
+    "price": 20.0,
+    "classRestrictions": [
+      "WIZARD"
+    ]
+  },
+  "weaponName": "Staff of Fire",
+  "armorName": "Cloth Armor",
+  "className": "Wizard",
+  "money": 0,
+  "unarmedAttackDamage": 1,
+  "name": "Chase",
+  "hp": 50,
+  "isAlive": true
+}

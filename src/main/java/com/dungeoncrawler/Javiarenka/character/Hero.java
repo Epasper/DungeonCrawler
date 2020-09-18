@@ -2,6 +2,12 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 public class Hero extends Character {
     private String surname;
@@ -18,8 +24,9 @@ public class Hero extends Character {
         super(name, hp);
     }
 
-    public Hero(String name, int hp, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
-        super(name, hp);
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+        super();
+        super.setName(name);
         this.surname = surname;
         this.heroClass = heroClass;
         this.equippedArmor = equippedArmor;
@@ -100,12 +107,44 @@ public class Hero extends Character {
         this.money = money;
     }
 
+    public void setHpByHeroClass() {
+        switch (heroClass) {
+            case WARRIOR:
+                setHp(100);
+                break;
+            case ROGUE:
+                setHp(60);
+                break;
+            case ARCHER:
+                setHp(70);
+                break;
+            case KNIGHT:
+                setHp(120);
+            case HEALER:
+                setHp(80);
+            case WIZARD:
+                setHp(50);
+        }
+    }
+
     public void saveThisHero() {
-        //TODO: DUN-26: Zapisać postać w lokalnym pliku
+        setHpByHeroClass();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        ;
+        try {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getWeaponName() {
-        return getEquippedWeapon().getName();
+        return weaponName;
     }
 
     public void setWeaponName(String weaponName) {
@@ -113,7 +152,7 @@ public class Hero extends Character {
     }
 
     public String getArmorName() {
-        return getEquippedArmor().getName();
+        return armorName;
     }
 
     public void setArmorName(String armorName) {
