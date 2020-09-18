@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("../images/floor.jpg");
+    background-repeat: repeat;
+    background-size: contain;
+}
+
+.container {
+    height: 90vh;
+    width: 100%
+}
+
+.view {
+    background-image: url("../images/battle-background.png");
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 70vw;
+    height: 50vh;
+    border: 10px ridge green;
+}
+
+.view p {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -5%);
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+.view img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
+
+.firstHero {
+    bottom: 5%;
+    left: 5%;
+}
+
+.secondHero {
+    bottom: 10%;
+    left: 15%;
+}
+
+.thirdHero {
+    bottom: 5%;
+    left: 25%;
+}
+
+.monsterSprites img {
+    transform: scale(-1, 1);
+    position: absolute;
+    height: 100px;
+    width: auto;
+}
+
+.firstMonster {
+    bottom: 5%;
+    right: 5%;
+}
+
+.secondMonster {
+    bottom: 10%;
+    right: 15%;
+}
+
+.thirdMonster {
+    bottom: 5%;
+    right: 25%;
+}
+
+.info {
+    border: 10px ridge green;
+    background-color: rgba(155, 165, 131, 0.8);
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    width: 80%;
+    transform: translate(-50%, 10%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 1fr;
+    grid-row-gap: 1fr;
+}
+
+.info ul li {
+    list-style: none;
+}
+
+
+.info p,
+.info a {
+    display: inline-block;
+    text-align: center;
+    font-size: 10px;
+    padding: 0.5rem;
+    text-decoration: none;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+.heroBoard {
+    width: auto;
+}
+
+.attack {
+    padding: 1rem;
+    margin: 1rem;
+    border: 2px solid black;
+    color: black;
+}
+
+.attack:hover {
+    color: white;
+    background-color: green;
+}
+
+.monsterBoard {
+    margin-left: 5rem;
+}
