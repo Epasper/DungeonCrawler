@@ -35,28 +35,29 @@ public class Monster extends Character {
     @Override
     public String attack(Character hero) {
         String message;
-        String killMessage = "";
         Hero attackedHero = (Hero) hero;
+        int dealtDamage = (damageStrength - attackedHero.getEquippedArmor().getDamageReduction());
 
         Random random = new Random();
         int hitPossibility = random.nextInt(100);
 
         if (!attackedHero.isAlive()) {
-            message = "Monster " + getName() + " can't attack Hero " + attackedHero.getName() + " because he is dead!";
-        } else if (hitPossibility <= attackedHero.getEquippedArmor().getChanceToHitReduction()) {
-            message = "Monster " + getName() + " missed attack on Hero " + attackedHero.getName() + "!";
-        } else if (attackedHero.getEquippedArmor().getDamageReduction() < damageStrength) {
-            attackedHero.setHp(attackedHero.getHp() + attackedHero.getEquippedArmor().getDamageReduction() - damageStrength);
-            message = "Monster " + getName() + " attacked Hero " + attackedHero.getName() + " and dealt " +
-                    (damageStrength - attackedHero.getEquippedArmor().getDamageReduction()) + " damage. ";
-            if (attackedHero.getHp() < 1) {
-                attackedHero.setAlive(false);
-                attackedHero.setHp(0);
-                killMessage += "Hero " + attackedHero.getName() + " has been killed by Monster " + getName() + " !";
-            }
+            return String.format("Monster %s can't attack Hero %s because he is dead!", getName(), attackedHero.getName());
         } else {
-            message = "Monster " + getName() + " is to weak to attack Hero " + attackedHero.getName() + "!";
+            if (hitPossibility <= attackedHero.getEquippedArmor().getChanceToHitReduction()) {
+                return String.format("Monster %s missed attack on Hero %s!", getName(), attackedHero.getName());
+            } else if (attackedHero.getEquippedArmor().getDamageReduction() < damageStrength) {
+                attackedHero.setHp(attackedHero.getHp() - dealtDamage);
+                message = String.format("Monster %s attacked Hero %s and dealt %d damage. ", getName(), attackedHero.getName(), dealtDamage);
+                if (attackedHero.getHp() < 1) {
+                    attackedHero.setAlive(false);
+                    attackedHero.setHp(0);
+                    message += String.format("Hero %s has been killed by Monster %s!", attackedHero.getName(), getName());
+                }
+                return message;
+            } else {
+                return String.format("%s is to weak to attack Hero %s!", getName(), attackedHero.getName());
+            }
         }
-        return message + killMessage;
     }
 }
