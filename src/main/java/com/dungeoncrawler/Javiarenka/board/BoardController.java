@@ -25,6 +25,8 @@ public class BoardController {
     public RedirectView attackHero(Hero heroFromForm, Monster monsterFromForm) {
         if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
             service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedMonster().attack(service.getSelectedHero()));
+            service.setSelectedHero(null);
+            service.setSelectedMonster(null);
         } else {
             service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
         }
@@ -35,6 +37,8 @@ public class BoardController {
     public RedirectView attackMonster(Hero heroFromForm, Monster monsterFromForm) {
         if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
             service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedMonster()));
+            service.setSelectedHero(null);
+            service.setSelectedMonster(null);
         } else {
             service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
         }
@@ -46,7 +50,6 @@ public class BoardController {
         service.setSelectedHero(service.getCurrentHeroByName(heroName));
         System.out.println("Selected Hero: " + service.getSelectedHero().getName());
         return new RedirectView("");
-        // todo unselect hero after attack
     }
 
     @GetMapping("/fightBoard/selectMonster")
@@ -54,6 +57,5 @@ public class BoardController {
         service.setSelectedMonster(service.getCurrentMonsterByName(monsterName));
         System.out.println("Selected Monster: " + service.getSelectedMonster().getName());
         return new RedirectView("");
-        // todo unselect monster after attack
     }
 }
