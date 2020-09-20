@@ -36,7 +36,6 @@ public class PartySelectorService {
             try {
                 Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
                 Hero hero = gson.fromJson(reader, Hero.class);
-                System.out.println(hero);
                 allHeroes.add(hero);
                 reader.close();
             } catch (IOException ex) {
@@ -55,7 +54,6 @@ public class PartySelectorService {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().contains("---")) {
                     allHeroNamesAndSurnames.add(file.getName());
-                    System.out.println("File " + file.getName());
                 }
             }
         }

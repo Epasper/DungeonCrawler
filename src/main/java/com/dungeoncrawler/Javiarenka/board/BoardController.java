@@ -44,7 +44,6 @@ public class BoardController {
     @GetMapping("/fightBoard/selectHero")
     public RedirectView selectHero(Model model, @RequestParam(value = "heroName") String heroName) {
         service.setSelectedHero(service.getCurrentHeroByName(heroName));
-        System.out.println("Selected Hero: " + service.getSelectedHero().getName());
         return new RedirectView("");
         // todo unselect hero after attack
     }
@@ -52,7 +51,6 @@ public class BoardController {
     @GetMapping("/fightBoard/selectMonster")
     public RedirectView selectMonster(Model model, @RequestParam(value = "monsterName") String monsterName) {
         service.setSelectedMonster(service.getCurrentMonsterByName(monsterName));
-        System.out.println("Selected Monster: " + service.getSelectedMonster().getName());
         return new RedirectView("");
         // todo unselect monster after attack
     }

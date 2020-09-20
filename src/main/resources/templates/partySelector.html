@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Character Creator</title>
+    <link rel="stylesheet" href="../css/partySelectorStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
 </head>
-<body>
 
+<body>
+    <div th:id="selectArmor+${armor.getName()}"
+        th:each="hero: ${heroes}" th:value="${hero.getName() + hero.getSurname()}">
+    </div>
 </body>
+
 </html>
