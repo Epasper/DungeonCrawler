@@ -5,6 +5,7 @@ import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
+import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -23,9 +24,11 @@ public class BoardService {
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
+    private PartySelectorService partySelectorService = new PartySelectorService();
 
     public BoardService() {
-        loadAllHeroes();
+        //todo: remove this call and insert the call for selected hero list.
+        heroes = partySelectorService.loadAllHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));

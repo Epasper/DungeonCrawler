@@ -8,12 +8,12 @@ import java.util.*;
 @Service
 public class CharacterCreatorService {
 
-    private List<Weapon> startingWeapons = new ArrayList<>();
-    private List<Armor> startingArmors = new ArrayList<>();
-    private Map<String, Set<String>> characterClassToAvailableArmor = new HashMap<>();
-    private Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
-    private List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
-    private List<String> availableClassesStringified = new ArrayList<>();
+    private final List<Weapon> startingWeapons = new ArrayList<>();
+    private final List<Armor> startingArmors = new ArrayList<>();
+    private final Map<String, Set<String>> characterClassToAvailableArmor = new HashMap<>();
+    private final Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
+    private final List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
+    private final List<String> availableClassesStringified = new ArrayList<>();
 
     public CharacterCreatorService() {
         verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingArmor.RUSTED_CHAIN_ARMOR, StartingArmor.LEATHER_ARMOR);
