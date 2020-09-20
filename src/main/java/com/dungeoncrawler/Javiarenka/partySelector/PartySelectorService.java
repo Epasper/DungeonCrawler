@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.partySelector;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.google.gson.Gson;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +12,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class PartySelectorService {
 
-    List<Hero>allAvailableHeroes;
+    private List<Hero>allAvailableHeroes;
 
     public PartySelectorService() {
         this.allAvailableHeroes = loadAllHeroes();
     }
 
+    public List<Hero> getAllAvailableHeroes() {
+        return allAvailableHeroes;
+    }
+
+    public void setAllAvailableHeroes(List<Hero> allAvailableHeroes) {
+        this.allAvailableHeroes = allAvailableHeroes;
+    }
+
     public List<Hero> loadAllHeroes() {
         List<Hero> allHeroes = new ArrayList<>();
-        allAvailableHeroes.clear();
         Gson gson = new Gson();
         for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
             try {
@@ -37,7 +46,7 @@ public class PartySelectorService {
         return allHeroes;
     }
 
-    public List<String> getAllHeroNamesAndSurnames() {
+    private List<String> getAllHeroNamesAndSurnames() {
         File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/");
         File[] listOfFiles = folder.listFiles();
         List<String> allHeroNamesAndSurnames = new ArrayList<>();
