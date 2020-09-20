@@ -6,6 +6,7 @@
     <title>Character Creator</title>
     <link rel="stylesheet" href="../css/partySelectorStyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <script th:src="@{partySelector.js}"></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@
             <p th:text="${hero.isAlive()}"></p>
             <p th:text="${hero.isAlive()}"></p>
             <p th:text="${hero.getTotalHp()}"></p>
-        <button th:src=""></button>
+        <button th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
     </div>
 </body>
 
