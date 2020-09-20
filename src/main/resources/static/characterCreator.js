@@ -1,16 +1,23 @@
-var globalHeroClass = '';
+let globalHeroClass = '';
+let isWeaponSelected = false;
+let isArmorSelected = false;
+let isHeroClassSelected = false;
+let errorMessages = [];
 
-function sendAjaxRequest(heroClass) {
+function selectHeroClass(heroClass) {
     sendAjaxArmorRequest(heroClass);
     sendAjaxWeaponRequest(heroClass);
     globalHeroClass = heroClass;
+    isHeroClassSelected = true;
+    isArmorSelected = false;
+    isWeaponSelected = false;
 }
 
 function sendAjaxArmorRequest(heroClass) {
     let outerSelection;
     fetch(`http://localhost:8080/charClassToArmor/` + heroClass, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -34,8 +41,8 @@ function sendAjaxArmorRequest(heroClass) {
 function sendAjaxWeaponRequest(heroClass) {
     let outerSelection;
     fetch(`http://localhost:8080/charClassToWeapon/` + heroClass, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -58,8 +65,8 @@ function sendAjaxWeaponRequest(heroClass) {
 
 function selectArmor(armorName) {
     fetch(`http://localhost:8080/charClassToArmor`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -70,12 +77,13 @@ function selectArmor(armorName) {
             let firstSelect = document.getElementById('selectArmor' + armorName);
             firstSelect.className = 'selection selection-success armorImg';
         });
+    isArmorSelected = true;
 }
 
 function selectWeapon(weaponName) {
     fetch(`http://localhost:8080/charClassToWeapon`, {
-            method: 'get'
-        })
+        method: 'get'
+    })
         .then(function (response) {
             return response.json();
         }).then(async function (data) {
@@ -86,25 +94,54 @@ function selectWeapon(weaponName) {
             let firstSelect = document.getElementById('selectWeapon' + weaponName);
             firstSelect.className = 'selection selection-success weaponImg';
         });
+    isWeaponSelected = true;
 }
 
 function saveCharacter() {
-    let request = new XMLHttpRequest();
-    const url = `http://localhost:8080/saveCharacter`
-    request.open("POST", url, true);
-    request.setRequestHeader('Content-Type', 'application/json');
-    const name = document.getElementById('heroName').value;
-    const surname = document.getElementById('heroSurname').value;
-    const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
-    const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
-    const heroClass = globalHeroClass;
-    const hero = {
-        name: name,
-        surname: surname,
-        weaponName: weaponName,
-        armorName: armorName,
-        className: heroClass
+    if (validateCharacter()) {
+        let request = new XMLHttpRequest();
+        const url = `http://localhost:8080/saveCharacter`
+        request.open("POST", url, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        const name = document.getElementById('heroName').value;
+        const surname = document.getElementById('heroSurname').value;
+        const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
+        const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
+        const heroClass = globalHeroClass;
+        const hero = {
+            name: name,
+            surname: surname,
+            weaponName: weaponName,
+            armorName: armorName,
+            className: heroClass
+        }
+        const heroJSON = JSON.stringify(hero);
+        request.send(heroJSON);
+        window.alert(`Character ${name} ${surname} has been saved to the database`);
     }
-    const heroJSON = JSON.stringify(hero);
-    request.send(heroJSON);
+    else {
+        window.alert(errorMessages.join('\n'));
+    }
+}
+
+function validateCharacter() {
+    errorMessages = [];
+    let name = document.getElementById('heroName').value ? true : false;
+    let surname = document.getElementById('heroSurname').value ? true : false;
+    if (!name) {
+        errorMessages.push('Please choose a name for your character.');
+    }
+    if (!surname) {
+        errorMessages.push('Please choose a surname for your character.');
+    }
+    if (!isHeroClassSelected) {
+        errorMessages.push('Please select a hero class for your character');
+    }
+    if (!isWeaponSelected) {
+        errorMessages.push('Please select a starting weapon for your character');
+    }
+    if (!isArmorSelected)
+        errorMessages.push('Please select a starting armor for your character');
+    if (name && surname && isWeaponSelected && isArmorSelected && isHeroClassSelected) return true;
+    return false;
 }
