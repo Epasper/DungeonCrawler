@@ -21,4 +21,6 @@ public class PartySelectorController {
         model.addAttribute("heroes", service.getAllAvailableHeroes());
         return "partySelector";
     }
+
+    //todo: save Party button that would save the chosen party to hard drive
 }
