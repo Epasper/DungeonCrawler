@@ -16,6 +16,7 @@ import java.util.List;
 public class PartySelectorService {
 
     private List<Hero>allAvailableHeroes;
+    private List<Hero>selectedHeroes;
 
     public PartySelectorService() {
         this.allAvailableHeroes = loadAllHeroes();

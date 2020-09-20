@@ -9,8 +9,19 @@
 </head>
 
 <body>
-    <div th:id="selectArmor+${armor.getName()}"
+    <div th:id="selectHero+${hero.getName()+hero.getSurname()}"
         th:each="hero: ${heroes}" th:value="${hero.getName() + hero.getSurname()}">
+        <li>
+            <a th:text="${hero.getName()}"></a>
+<!--             todo: edit the selected hero's equipment button       th:href="@{/editEquipment/selectHero(heroName=${hero.getName()})}"-->
+            <p th:text="${hero.getHeroClass()}"></p>
+            <p th:text="${hero.getHp()}"></p>
+            <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
+            <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
+            <p th:text="${hero.isAlive()}"></p>
+            <p th:text="${hero.isAlive()}"></p>
+            <p th:text="${hero.getTotalHp()}"></p>
+        <button th:src=""></button>
     </div>
 </body>
 
