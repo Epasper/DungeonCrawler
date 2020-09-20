@@ -1,8 +1,8 @@
-var globalHeroClass = '';
-var isWeaponSelected = false;
-var isArmorSelected = false;
-var isHeroClassSelected = false;
-var errorMessages = [];
+let globalHeroClass = '';
+let isWeaponSelected = false;
+let isArmorSelected = false;
+let isHeroClassSelected = false;
+let errorMessages = [];
 
 function selectHeroClass(heroClass) {
     sendAjaxArmorRequest(heroClass);
