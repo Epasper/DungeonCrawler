@@ -117,7 +117,7 @@ function saveCharacter() {
         }
         const heroJSON = JSON.stringify(hero);
         request.send(heroJSON);
-        window.alert("Character has been saved to the database");
+        window.alert(`Character ${name} ${surmane} has been saved to the database`);
     }
     else {
         window.alert(errorMessages.join('\n'));
