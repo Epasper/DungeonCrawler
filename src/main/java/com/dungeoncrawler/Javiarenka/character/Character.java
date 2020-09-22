@@ -1,10 +1,12 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-public class Character {
+public abstract class Character {
 
     private String name;
     private int hp;
-    private boolean isAlive = true;
+    private boolean isAlive;
+    private CharacterStatus currentStatus;
+
 
     public Character() {
     }
@@ -12,6 +14,8 @@ public class Character {
     public Character(String name, int hp) {
         this.name = name;
         this.hp = hp;
+        this.isAlive = true;
+        this.currentStatus = CharacterStatus.DEFAULT;
     }
 
     public String getName() {
@@ -30,7 +34,7 @@ public class Character {
         this.hp = hp;
     }
 
-    String attack(Character character){
+    String attack(Character character) {
         return null;
     }
 
@@ -40,5 +44,13 @@ public class Character {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public CharacterStatus getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(CharacterStatus currentStatus) {
+        this.currentStatus = currentStatus;
     }
 }
