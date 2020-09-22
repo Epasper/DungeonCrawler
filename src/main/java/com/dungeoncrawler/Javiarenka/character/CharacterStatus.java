@@ -36,4 +36,14 @@ public enum CharacterStatus {
     public String toString() {
         return this.characterStatusString;
     }
+
+    public static CharacterStatus getCharacterStatusByName(String name) {
+        name = name.toUpperCase();
+        for (CharacterStatus status : values()) {
+            if (status.characterStatusString.equals(name)) {
+                return status;
+            }
+        }
+        return null;
+    }
 }
