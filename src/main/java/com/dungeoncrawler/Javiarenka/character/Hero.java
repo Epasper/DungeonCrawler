@@ -8,6 +8,8 @@ import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Hero extends Character {
     private String surname;
@@ -18,13 +20,15 @@ public class Hero extends Character {
     private String armorName;
     private String className;
     private int money;
+    private ArrayList<Skill> skills;
     private int unarmedAttackDamage = 1;
 
     public Hero(String name, int hp) {
         super(name, hp);
     }
 
-    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon,
+                int money, ArrayList<Skill> skills) {
         super();
         super.setName(name);
         this.surname = surname;
@@ -32,6 +36,7 @@ public class Hero extends Character {
         this.equippedArmor = equippedArmor;
         this.equippedWeapon = equippedWeapon;
         this.money = money;
+        this.skills = skills;
     }
 
     public Hero() {
@@ -194,5 +199,21 @@ public class Hero extends Character {
 
     public int getTotalHp() {
         return getHp() + equippedArmor.getAdditionalHp();
+    }
+
+    public ArrayList<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(ArrayList<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public void setSkillsByHeroClass() {
+        ArrayList<Skill> skills = new ArrayList<>();
+        switch (heroClass) {
+            case ROGUE:
+//                skills.add();//TODO
+        }
     }
 }
