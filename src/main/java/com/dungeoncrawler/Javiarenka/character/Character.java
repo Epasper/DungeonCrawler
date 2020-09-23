@@ -1,10 +1,15 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-public class Character {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Character {
 
     private String name;
     private int hp;
-    private boolean isAlive = true;
+    private boolean isAlive;
+    private List<CharacterStatus> allCharacterStatuses;
+
 
     public Character() {
     }
@@ -12,6 +17,8 @@ public class Character {
     public Character(String name, int hp) {
         this.name = name;
         this.hp = hp;
+        this.isAlive = true;
+        this.allCharacterStatuses = new ArrayList<>();
     }
 
     public String getName() {
@@ -30,9 +37,7 @@ public class Character {
         this.hp = hp;
     }
 
-    String attack(Character character){
-        return null;
-    }
+    public abstract String attack(Character character);
 
     public boolean isAlive() {
         return isAlive;
@@ -40,5 +45,19 @@ public class Character {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    public List<CharacterStatus> getAllCharacterStatuses() {
+        return allCharacterStatuses;
+    }
+
+    public void setAllCharacterStatuses(List<CharacterStatus> allCharacterStatuses) {
+        this.allCharacterStatuses = allCharacterStatuses;
+    }
+
+    public boolean checkForStatus(String statusName) {
+        List<CharacterStatus> statusList = getAllCharacterStatuses();
+        return statusList.stream()
+                .anyMatch((CharacterStatus status) -> status.equalsCharacterStatus(statusName));
     }
 }
