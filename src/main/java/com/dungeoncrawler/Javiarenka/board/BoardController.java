@@ -14,7 +14,8 @@ public class BoardController {
 
     @GetMapping("/fightBoard")
     public String fightGet(Model model) {
-        service.loadAllHeroes();
+        service.clearSelectedHeroes();
+        service.setHeroes(service.getPartySelectorService().loadSelectedHeroes());
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());
@@ -44,7 +45,6 @@ public class BoardController {
     @GetMapping("/fightBoard/selectHero")
     public RedirectView selectHero(Model model, @RequestParam(value = "heroName") String heroName) {
         service.setSelectedHero(service.getCurrentHeroByName(heroName));
-        System.out.println("Selected Hero: " + service.getSelectedHero().getName());
         return new RedirectView("");
         // todo unselect hero after attack
     }
@@ -52,7 +52,6 @@ public class BoardController {
     @GetMapping("/fightBoard/selectMonster")
     public RedirectView selectMonster(Model model, @RequestParam(value = "monsterName") String monsterName) {
         service.setSelectedMonster(service.getCurrentMonsterByName(monsterName));
-        System.out.println("Selected Monster: " + service.getSelectedMonster().getName());
         return new RedirectView("");
         // todo unselect monster after attack
     }
