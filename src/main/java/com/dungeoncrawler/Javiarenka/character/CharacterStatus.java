@@ -1,7 +1,7 @@
 package com.dungeoncrawler.Javiarenka.character;
 
 public enum CharacterStatus {
-    DEFAULT("DEFAULT"), // TODO:
+    DEFAULT("DEFAULT"),
     FOCUSED("FOCUSED"),
     UNFOCUSED("UNFOCUSED"),
     EXPOSED("EXPOSED"),

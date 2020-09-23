@@ -8,7 +8,7 @@ public abstract class Character {
     private String name;
     private int hp;
     private boolean isAlive;
-    private List<CharacterStatus> currentStatus;
+    private List<CharacterStatus> allCharacterStatuses;
 
 
     public Character() {
@@ -18,7 +18,7 @@ public abstract class Character {
         this.name = name;
         this.hp = hp;
         this.isAlive = true;
-        this.currentStatus = new ArrayList<>();
+        this.allCharacterStatuses = new ArrayList<>();
     }
 
     public String getName() {
@@ -37,9 +37,7 @@ public abstract class Character {
         this.hp = hp;
     }
 
-    String attack(Character character) {
-        return null;
-    }
+    public abstract String attack(Character character);
 
     public boolean isAlive() {
         return isAlive;
@@ -49,16 +47,16 @@ public abstract class Character {
         isAlive = alive;
     }
 
-    public List<CharacterStatus> getCurrentStatus() {
-        return currentStatus;
+    public List<CharacterStatus> getAllCharacterStatuses() {
+        return allCharacterStatuses;
     }
 
-    public void setCurrentStatus(List<CharacterStatus> currentStatus) {
-        this.currentStatus = currentStatus;
+    public void setAllCharacterStatuses(List<CharacterStatus> allCharacterStatuses) {
+        this.allCharacterStatuses = allCharacterStatuses;
     }
 
-    public boolean checkForStatus(String statusName) { // todo: perhaps it should return CharacterStatus
-        List<CharacterStatus> statusList = getCurrentStatus();
+    public boolean checkForStatus(String statusName) {
+        List<CharacterStatus> statusList = getAllCharacterStatuses();
         return statusList.stream()
                 .anyMatch((CharacterStatus status) -> status.equalsCharacterStatus(statusName));
     }
