@@ -2,11 +2,11 @@ package com.dungeoncrawler.Javiarenka.partySelector;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class PartySelectorService {
 
-    private List<Hero>allAvailableHeroes;
-    private List<Hero>selectedHeroes;
+    private List<Hero> allAvailableHeroes;
+    private List<Hero> selectedHeroes;
 
     public PartySelectorService() {
         this.allAvailableHeroes = loadAllHeroes();
@@ -30,18 +30,40 @@ public class PartySelectorService {
         this.allAvailableHeroes = allAvailableHeroes;
     }
 
+    public List<Hero> loadSelectedHeroes() {
+        Gson gson = new Gson();
+        List<Hero> selectedHeroes = new ArrayList<>();
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/Selected Party.txt"));
+            List<String> listOfNamesAndSurnames = gson.fromJson(reader, new TypeToken<List<String>>() {}.getType());
+            for (String nameAndSurname : listOfNamesAndSurnames){
+                Hero hero = loadAHeroByNameAndSurname(nameAndSurname+".txt");
+                selectedHeroes.add(hero);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return selectedHeroes;
+    }
+
+    public Hero loadAHeroByNameAndSurname(String nameAndSurname) {
+        Hero hero = new Hero();
+        try {
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
+            hero = gson.fromJson(reader, Hero.class);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hero;
+    }
+
     public List<Hero> loadAllHeroes() {
         List<Hero> allHeroes = new ArrayList<>();
-        Gson gson = new Gson();
         for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
-            try {
-                Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
-                Hero hero = gson.fromJson(reader, Hero.class);
-                allHeroes.add(hero);
-                reader.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            Hero hero = loadAHeroByNameAndSurname(nameAndSurname);
+            allHeroes.add(hero);
         }
         return allHeroes;
     }
@@ -55,9 +77,26 @@ public class PartySelectorService {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().contains("---")) {
                     allHeroNamesAndSurnames.add(file.getName());
+                } else {
+                    continue;
                 }
             }
         }
         return allHeroNamesAndSurnames;
+    }
+
+    public void saveTheParty(List<String> listOfChosenNames) {
+        List<Hero> heroList = new ArrayList<>();
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        try {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/Selected Party.txt");
+            gson.toJson(listOfChosenNames, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

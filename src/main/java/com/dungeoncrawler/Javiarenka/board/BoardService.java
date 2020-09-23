@@ -27,11 +27,15 @@ public class BoardService {
     private PartySelectorService partySelectorService = new PartySelectorService();
 
     public BoardService() {
-        //todo: remove this call and insert the call for selected hero list.
-        heroes = partySelectorService.loadAllHeroes();
+        clearSelectedHeroes();
+        heroes = partySelectorService.loadSelectedHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    public void clearSelectedHeroes(){
+        heroes.clear();
     }
 
     public List<String> getAllHeroNamesAndSurnames() {
@@ -62,6 +66,14 @@ public class BoardService {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public PartySelectorService getPartySelectorService() {
+        return partySelectorService;
+    }
+
+    public void setPartySelectorService(PartySelectorService partySelectorService) {
+        this.partySelectorService = partySelectorService;
     }
 
     public List<String> getMessageOutput() {

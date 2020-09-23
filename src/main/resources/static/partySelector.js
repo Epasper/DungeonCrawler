@@ -23,3 +23,13 @@ function removeCharacterFromParty(characterNameAndSurname) {
     console.log('HeroRemoved' + selectedCharacters.join('\n'));
     return 'unselected';
 }
+
+function accept() {
+    let request = new XMLHttpRequest();
+    const url = `http://localhost:8080/partySelector`
+    request.open("POST", url, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    const json = JSON.stringify(selectedCharacters);
+    request.send(json)
+    //todo: redirect to main menu
+}

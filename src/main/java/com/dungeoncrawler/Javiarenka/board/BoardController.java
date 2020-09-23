@@ -14,6 +14,8 @@ public class BoardController {
 
     @GetMapping("/fightBoard")
     public String fightGet(Model model) {
+        service.clearSelectedHeroes();
+        service.setHeroes(service.getPartySelectorService().loadSelectedHeroes());
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());

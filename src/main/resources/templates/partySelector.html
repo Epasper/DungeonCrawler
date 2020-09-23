@@ -24,6 +24,9 @@
             <p th:text="${hero.getTotalHp()}"></p>
         <button class="unselected" th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
     </div>
+<div>
+    <button class="accept" th:onclick="'javascript:accept();'">Accept</button>
+</div>
 </body>
 
 </html>
