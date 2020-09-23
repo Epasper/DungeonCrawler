@@ -3,8 +3,6 @@ package com.dungeoncrawler.Javiarenka.character;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-
 public class Skill {
     @Getter
     @Setter
@@ -56,14 +54,5 @@ public class Skill {
         this.staminaCost = staminaCost;
         this.appliesStatus = appliesStatus;
         this.appliedStatusDuration = appliedStatusDuration;
-    }
-
-    public static HashSet<Skill> defaultSkills() {
-        HashSet<Skill> defaultSkills = new HashSet<>();
-        defaultSkills.add(new Skill("Ally Healing", 0, 10, true,
-                false, SkillTarget.ALLY, 1, 20, 0, CharacterStatus.DEFAULT, 1)),
-                (new Skill("Ally Healing", 5, 15, false,
-                        true, SkillTarget.ALLY_AND_ENEMY, 2, 5, 10, CharacterStatus.DEFAULT, 1));
-        return defaultSkills;
     }
 }

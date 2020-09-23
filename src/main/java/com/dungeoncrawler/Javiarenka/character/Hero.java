@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
+import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Hero extends Character {
     private String surname;
@@ -210,10 +212,11 @@ public class Hero extends Character {
     }
 
     public void setSkillsByHeroClass() {
-        ArrayList<Skill> skills = new ArrayList<>();
+        List<Skill> skills = SkillResources.defaultSkills();
         switch (heroClass) {
-            case ROGUE:
-//                skills.add();//TODO
+            case HEALER:
+//               return skills.stream()
+//                       .filter()//TODO
         }
     }
 }
