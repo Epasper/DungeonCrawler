@@ -5,6 +5,8 @@ import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,23 +16,46 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Hero extends Character {
+    @Getter
+    @Setter
     private String surname;
+    @Getter
+    @Setter
     private HeroClass heroClass;
+    @Getter
+    @Setter
     private Armor equippedArmor;
+    @Getter
+    @Setter
     private Weapon equippedWeapon;
+    @Getter
+    @Setter
     private String weaponName;
+    @Getter
+    @Setter
     private String armorName;
+    @Getter
+    @Setter
     private String className;
+    @Getter
+    @Setter
     private int money;
-    private ArrayList<Skill> skills;
+    @Getter
+    @Setter
+    private List<Skill> skills;
+    @Getter
+    @Setter
     private int unarmedAttackDamage = 1;
+
+    public Hero() {
+    }
 
     public Hero(String name, int hp) {
         super(name, hp);
     }
 
     public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon,
-                int money, ArrayList<Skill> skills) {
+                int money, List<Skill> skills) {
         super();
         super.setName(name);
         this.surname = surname;
@@ -39,9 +64,6 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
         this.money = money;
         this.skills = skills;
-    }
-
-    public Hero() {
     }
 
     @Override
@@ -56,62 +78,6 @@ public class Hero extends Character {
                 ", armorName='" + armorName + '\'' +
                 ", money=" + money +
                 '}';
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public int getUnarmedAttackDamage() {
-        return unarmedAttackDamage;
-    }
-
-    public void setUnarmedAttackDamage(int unarmedAttackDamage) {
-        this.unarmedAttackDamage = unarmedAttackDamage;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public HeroClass getHeroClass() {
-        return heroClass;
-    }
-
-    public void setHeroClass(HeroClass heroClass) {
-        this.heroClass = heroClass;
-    }
-
-    public Armor getEquippedArmor() {
-        return equippedArmor;
-    }
-
-    public void setEquippedArmor(Armor equippedArmor) {
-        this.equippedArmor = equippedArmor;
-    }
-
-    public Weapon getEquippedWeapon() {
-        return equippedWeapon;
-    }
-
-    public void setEquippedWeapon(Weapon equippedWeapon) {
-        this.equippedWeapon = equippedWeapon;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 
     public void setHpByHeroClass() {
@@ -139,7 +105,6 @@ public class Hero extends Character {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
-        ;
         try {
             Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
             gson.toJson(this, writer);
@@ -148,22 +113,6 @@ public class Hero extends Character {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getWeaponName() {
-        return weaponName;
-    }
-
-    public void setWeaponName(String weaponName) {
-        this.weaponName = weaponName;
-    }
-
-    public String getArmorName() {
-        return armorName;
-    }
-
-    public void setArmorName(String armorName) {
-        this.armorName = armorName;
     }
 
     @Override
@@ -201,14 +150,6 @@ public class Hero extends Character {
 
     public int getTotalHp() {
         return getHp() + equippedArmor.getAdditionalHp();
-    }
-
-    public ArrayList<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(ArrayList<Skill> skills) {
-        this.skills = skills;
     }
 
     public void setSkillsByHeroClass() {
