@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Character Creator</title>
+    <link rel="stylesheet" href="../css/partySelectorStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
+    <script th:src="@{partySelector.js}"></script>
+</head>
+
+<body>
+    <div th:id="selectHero+${hero.getName()+hero.getSurname()}"
+        th:each="hero: ${heroes}" th:value="${hero.getName() + hero.getSurname()}">
+        <li>
+            <a th:text="${hero.getName()}"></a>
+<!--             todo: edit the selected hero's equipment button       th:href="@{/editEquipment/selectHero(heroName=${hero.getName()})}"-->
+            <p th:text="${hero.getHeroClass()}"></p>
+            <p th:text="${hero.getHp()}"></p>
+            <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
+            <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
+            <p th:text="${hero.isAlive()}"></p>
+            <p th:text="${hero.isAlive()}"></p>
+            <p th:text="${hero.getTotalHp()}"></p>
+        <button class="unselected" th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
+    </div>
+<div>
+    <button class="accept" th:onclick="'javascript:accept();'">Accept</button>
+</div>
+</body>
+
+</html>

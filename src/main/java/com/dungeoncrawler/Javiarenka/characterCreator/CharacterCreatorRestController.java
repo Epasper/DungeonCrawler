@@ -41,7 +41,6 @@ public class CharacterCreatorRestController {
         hero.setEquippedWeapon(StartingWeapon.getWeaponByName(hero.getWeaponName()));
         hero.setEquippedArmor(StartingArmor.getArmorByName(hero.getArmorName()));
         hero.saveThisHero();
-        System.out.println(hero.toString());
         return null;
     }
 }

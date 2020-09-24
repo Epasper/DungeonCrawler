@@ -5,6 +5,7 @@ import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
+import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -23,12 +24,18 @@ public class BoardService {
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
+    private PartySelectorService partySelectorService = new PartySelectorService();
 
     public BoardService() {
-        loadAllHeroes();
+        clearSelectedHeroes();
+        heroes = partySelectorService.loadSelectedHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    public void clearSelectedHeroes(){
+        heroes.clear();
     }
 
     public List<String> getAllHeroNamesAndSurnames() {
@@ -40,7 +47,6 @@ public class BoardService {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().contains("---")) {
                     allHeroNamesAndSurnames.add(file.getName());
-                    System.out.println("File " + file.getName());
                 }
             }
         }
@@ -54,13 +60,20 @@ public class BoardService {
             try {
                 Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
                 Hero hero = gson.fromJson(reader, Hero.class);
-                System.out.println(hero);
                 heroes.add(hero);
                 reader.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public PartySelectorService getPartySelectorService() {
+        return partySelectorService;
+    }
+
+    public void setPartySelectorService(PartySelectorService partySelectorService) {
+        this.partySelectorService = partySelectorService;
     }
 
     public List<String> getMessageOutput() {

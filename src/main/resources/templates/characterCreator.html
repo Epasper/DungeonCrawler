@@ -29,7 +29,7 @@
                 <div class="box">
                     <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
                         th:value="${heroClass}" th:field="*{heroClass}" th:id="selectClass+${heroClass}"
-                        th:onclick="'javascript:sendAjaxRequest(\'' + ${class} + '\');'">
+                        th:onclick="'javascript:selectHeroClass(\'' + ${class} + '\');'">
                         <img th:attr="src=@{'../images/' + ${class} + '.png'},title=${class},alt=${class}" />
                         <p th:text="${class}"></p>
                     </div>
