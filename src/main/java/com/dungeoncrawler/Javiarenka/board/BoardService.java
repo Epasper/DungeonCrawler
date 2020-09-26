@@ -34,7 +34,7 @@ public class BoardService {
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
     }
 
-    public void clearSelectedHeroes(){
+    public void clearSelectedHeroes() {
         heroes.clear();
     }
 

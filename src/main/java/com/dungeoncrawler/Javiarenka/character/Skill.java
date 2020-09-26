@@ -68,4 +68,11 @@ public class Skill {
                 staminaCost, appliesStatuses, appliedStatusDuration);
         this.classRestrictions = classRestrictions;
     }
+
+    @Override
+    public String toString() {
+        return "Skill{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

@@ -11,9 +11,8 @@ import lombok.Setter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hero extends Character {
     @Getter
@@ -100,8 +99,13 @@ public class Hero extends Character {
         }
     }
 
+    public int getTotalHp() {
+        return getHp() + equippedArmor.getAdditionalHp();
+    }
+
     public void saveThisHero() {
         setHpByHeroClass();
+        setSkillsByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -148,16 +152,11 @@ public class Hero extends Character {
         this.money = this.money - amount;
     }
 
-    public int getTotalHp() {
-        return getHp() + equippedArmor.getAdditionalHp();
-    }
-
     public void setSkillsByHeroClass() {
-        List<Skill> skills = SkillResources.defaultSkills();
-        switch (heroClass) {
-            case HEALER:
-//               return skills.stream()
-//                       .filter()//TODO
-        }
+        List<Skill> defaultSkills = SkillResources.defaultSkills();
+        List<Skill> skillsFiltered = defaultSkills.stream()
+                .filter(skill -> skill.getClassRestrictions().contains(getHeroClass()))
+                .collect(Collectors.toList());
+        setSkills(skillsFiltered);
     }
 }
