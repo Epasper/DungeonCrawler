@@ -1,10 +1,7 @@
 package com.dungeoncrawler.Javiarenka.board;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
-import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
-import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 
@@ -16,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class BoardService {
     private List<Hero> heroes = new ArrayList<>();
