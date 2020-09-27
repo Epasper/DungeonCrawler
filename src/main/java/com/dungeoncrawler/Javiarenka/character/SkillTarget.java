@@ -1,12 +1,16 @@
 package com.dungeoncrawler.Javiarenka.character;
 
 public enum SkillTarget {
-    SELF("Self"),
-    ENEMY("One enemy"),
-    ALL_ENEMIES("All enemies"),
     ALLY("Ally"),
     ALL_ALLIES("All allies"),
+    ENEMY("One enemy"),
+    ALL_ENEMIES("All enemies"),
     ALLY_AND_ENEMY("Ally and enemy"),
+    SELF("Self"),
+    SELF_AND_ALLY("Self and ally"),
+    SELF_AND_ENEMY("Self and enemy"),
+    SELF_AND_ALL_ALLIES("Self and all allies"),
+    SELF_AND_ALL_ENEMIES("Self and all enemies"),
     EVERYBODY("Everybody");
 
     private final String SkillTargetString;
