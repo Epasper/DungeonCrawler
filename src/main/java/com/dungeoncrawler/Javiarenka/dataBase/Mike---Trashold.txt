@@ -31,7 +31,8 @@
   "className": "Knight",
   "money": 0,
   "unarmedAttackDamage": 1,
+  "isSelectedForParty": false,
   "name": "Mike",
-  "hp": 120,
+  "hp": 50,
   "isAlive": true
 }

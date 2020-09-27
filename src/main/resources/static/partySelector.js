@@ -1,5 +1,13 @@
 let selectedCharacters = [];
 
+function loadAlreadySelectedHeroes(){
+    const selectedElements = document.getElementsByClassName('selected');
+    for (let item of selectedElements) {
+        selectedCharacters.push(item.id);
+    }
+    console.log(selectedCharacters);
+}
+
 function selectCharacter(characterNameAndSurname) {
     let currentElement = document.getElementById(characterNameAndSurname);
     console.log(currentElement.className);
