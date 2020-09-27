@@ -23,6 +23,7 @@ public class BoardService {
     private PartySelectorService partySelectorService = new PartySelectorService();
 
     public BoardService() {
+        messageOutput.add("Fight log:");
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
