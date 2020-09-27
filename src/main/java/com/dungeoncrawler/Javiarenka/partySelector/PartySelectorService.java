@@ -41,7 +41,7 @@ public class PartySelectorService {
                 selectedHeroes.add(hero);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            selectedHeroes = new ArrayList<>();
         }
         return selectedHeroes;
     }
