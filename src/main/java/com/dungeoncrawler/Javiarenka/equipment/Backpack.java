@@ -11,6 +11,10 @@ public class Backpack implements Collection<Equipment> {
     Armor armsSlot;
     Map<Integer, Equipment> baggage;
 
+    public Backpack() {
+        baggage = new HashMap<>();
+    }
+
     @Override
     public int size() {
         int size = 0;
