@@ -174,14 +174,27 @@ public class Backpack implements Collection<Equipment> {
 
     @Override
     public boolean addAll(Collection collection) {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
+        for (Object o : collection) {
+            if (o instanceof Equipment) {
+                try {
+                    putEquipmentToFirstAvailableSlot((Equipment) o);
+                } catch (InventorySlotsFullException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //todo implement the maximum baggage size and support its logic here
+        return true;
     }
 
     @Override
     public void clear() {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
+        leftHandSlot = null;
+        rightHandSlot = null;
+        armsSlot = null;
+        chestSlot = null;
+        feetSlot = null;
+        baggage.clear();
     }
 
     @Override
@@ -202,8 +215,20 @@ public class Backpack implements Collection<Equipment> {
 
     @Override
     public boolean removeAll(Collection collection) {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
+        for (Object o : collection) {
+            {
+                try {
+                    if (o instanceof Equipment) {
+                        this.remove(o);
+                    } else {
+                        throw new InvalidEquipmentTypeException();
+                    }
+                } catch (InvalidEquipmentTypeException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return true;
     }
 
     @Override
