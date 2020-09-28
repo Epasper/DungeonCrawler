@@ -10,6 +10,7 @@ public class Backpack implements Collection<Equipment> {
     Armor feetSlot;
     Armor armsSlot;
     Map<Integer, Equipment> baggage;
+    static int NUMBER_OF_WORN_EQUIPMENT_SLOTS = 5;
 
     public Backpack() {
         baggage = new HashMap<>();
@@ -47,9 +48,59 @@ public class Backpack implements Collection<Equipment> {
 
     @Override
     public Iterator<Equipment> iterator() {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
+        return new Iterator<Equipment>() {
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                if (currentIndex > NUMBER_OF_WORN_EQUIPMENT_SLOTS) {
+                    return currentIndex < size() && baggage.get(currentIndex) != null;
+                } else {
+                    switch (currentIndex) {
+                        case 1:
+                            return leftHandSlot != null;
+                        case 2:
+                            return rightHandSlot != null;
+                        case 3:
+                            return chestSlot != null;
+                        case 4:
+                            return feetSlot != null;
+                        case 5:
+                            return armsSlot != null;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public Equipment next() {
+                currentIndex++;
+                if (currentIndex > NUMBER_OF_WORN_EQUIPMENT_SLOTS) {
+                    return baggage.get(currentIndex);
+                } else {
+                    switch (currentIndex) {
+                        case 1:
+                            return leftHandSlot;
+                        case 2:
+                            return rightHandSlot;
+                        case 3:
+                            return chestSlot;
+                        case 4:
+                            return feetSlot;
+                        case 5:
+                            return armsSlot;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
     }
+
 
     @Override
     public Object[] toArray() {

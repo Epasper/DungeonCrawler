@@ -59,12 +59,22 @@ public class PartySelectorService {
         return hero;
     }
 
+    public static void main(String[] args) {
+        PartySelectorService ps = new PartySelectorService();
+        System.out.println(ps.loadAllHeroes());
+        for (Hero h : ps.loadAllHeroes()){
+            System.out.println(h);
+            h.saveThisHero();
+        }
+    }
+
     public List<Hero> loadAllHeroes() {
         List<Hero> allHeroes = new ArrayList<>();
         for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
             Hero hero = loadAHeroByNameAndSurname(nameAndSurname);
             allHeroes.add(hero);
         }
+        System.out.println(allHeroes);
         return allHeroes;
     }
 
@@ -77,8 +87,6 @@ public class PartySelectorService {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().contains("---")) {
                     allHeroNamesAndSurnames.add(file.getName());
-                } else {
-                    continue;
                 }
             }
         }

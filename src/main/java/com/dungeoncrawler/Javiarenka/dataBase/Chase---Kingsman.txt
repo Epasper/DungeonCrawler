@@ -29,7 +29,9 @@
   "className": "Wizard",
   "money": 0,
   "unarmedAttackDamage": 1,
+  "backpack": [],
   "name": "Chase",
   "hp": 50,
-  "isAlive": true
+  "isAlive": true,
+  "allCharacterStatuses": []
 }

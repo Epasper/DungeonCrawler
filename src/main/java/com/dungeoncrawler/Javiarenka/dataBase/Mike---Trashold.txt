@@ -31,7 +31,9 @@
   "className": "Knight",
   "money": 0,
   "unarmedAttackDamage": 1,
+  "backpack": [],
   "name": "Mike",
-  "hp": 120,
-  "isAlive": true
+  "hp": 50,
+  "isAlive": true,
+  "allCharacterStatuses": []
 }

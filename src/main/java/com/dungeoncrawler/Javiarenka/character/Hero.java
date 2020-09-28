@@ -13,25 +13,96 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hero extends Character {
-    @Getter @Setter
     private String surname;
-    @Getter @Setter
     private HeroClass heroClass;
-    @Getter @Setter
     private Armor equippedArmor;
-    @Getter @Setter
     private Weapon equippedWeapon;
-    @Getter @Setter
     private String weaponName;
-    @Getter @Setter
     private String armorName;
-    @Getter @Setter
     private String className;
-    @Getter @Setter
     private int money;
-    @Getter @Setter
     private int unarmedAttackDamage = 1;
     private Backpack backpack = new Backpack();
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public HeroClass getHeroClass() {
+        return heroClass;
+    }
+
+    public void setHeroClass(HeroClass heroClass) {
+        this.heroClass = heroClass;
+    }
+
+    public Armor getEquippedArmor() {
+        return equippedArmor;
+    }
+
+    public void setEquippedArmor(Armor equippedArmor) {
+        this.equippedArmor = equippedArmor;
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(Weapon equippedWeapon) {
+        this.equippedWeapon = equippedWeapon;
+    }
+
+    public String getWeaponName() {
+        return weaponName;
+    }
+
+    public void setWeaponName(String weaponName) {
+        this.weaponName = weaponName;
+    }
+
+    public String getArmorName() {
+        return armorName;
+    }
+
+    public void setArmorName(String armorName) {
+        this.armorName = armorName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getUnarmedAttackDamage() {
+        return unarmedAttackDamage;
+    }
+
+    public void setUnarmedAttackDamage(int unarmedAttackDamage) {
+        this.unarmedAttackDamage = unarmedAttackDamage;
+    }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public void setBackpack(Backpack backpack) {
+        this.backpack = backpack;
+    }
 
     public Hero(String name, int hp) {
         super(name, hp);

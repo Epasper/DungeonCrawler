@@ -31,7 +31,9 @@
   "className": "Archer",
   "money": 0,
   "unarmedAttackDamage": 1,
+  "backpack": [],
   "name": "Joe",
   "hp": 70,
-  "isAlive": true
+  "isAlive": true,
+  "allCharacterStatuses": []
 }
