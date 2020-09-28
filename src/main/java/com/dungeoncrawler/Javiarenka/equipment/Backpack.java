@@ -47,7 +47,8 @@ public class Backpack implements Collection<Equipment> {
 
     @Override
     public Iterator<Equipment> iterator() {
-        return null;
+        //todo if there's a need to use this method, we'll have to write it.
+        throw new UnsupportedOperationException();
     }
 
     @Override
