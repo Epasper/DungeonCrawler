@@ -24,7 +24,7 @@ public class Backpack implements Collection<Equipment> {
         size = feetSlot == null ? size : size + 1;
         size = armsSlot == null ? size : size + 1;
         size = size + baggage.size();
-        return 0;
+        return size;
     }
 
     public int baggageSize() {
