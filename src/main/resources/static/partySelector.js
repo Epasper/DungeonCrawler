@@ -5,7 +5,6 @@ function loadAlreadySelectedHeroes(){
     for (let item of selectedElements) {
         selectedCharacters.push(item.id);
     }
-    console.log(selectedCharacters);
 }
 
 function selectCharacter(characterNameAndSurname) {
