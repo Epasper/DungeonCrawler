@@ -2,7 +2,7 @@ package com.dungeoncrawler.Javiarenka.equipment;
 
 import java.util.*;
 
-public class Backpack implements Collection<Equipment> {
+public class Backpack {
 
     Weapon leftHandSlot;
     Equipment rightHandSlot;
@@ -16,7 +16,6 @@ public class Backpack implements Collection<Equipment> {
         baggage = new HashMap<>();
     }
 
-    @Override
     public int size() {
         int size = 0;
         size = leftHandSlot == null ? size : size + 1;
@@ -32,21 +31,18 @@ public class Backpack implements Collection<Equipment> {
         return baggage.size();
     }
 
-    @Override
     public boolean isEmpty() {
         if (leftHandSlot != null || rightHandSlot != null || chestSlot != null || feetSlot != null || armsSlot != null) {
             return false;
         } else return baggage == null || baggage.isEmpty();
     }
 
-    @Override
     public boolean contains(Object o) {
         if (leftHandSlot.equals(o) || rightHandSlot.equals(o) || chestSlot.equals(o) || feetSlot.equals(o) || armsSlot.equals(o)) {
             return true;
         } else return baggage.containsValue(o);
     }
 
-    @Override
     public Iterator<Equipment> iterator() {
         return new Iterator<Equipment>() {
             private int currentIndex = 0;
@@ -102,12 +98,10 @@ public class Backpack implements Collection<Equipment> {
     }
 
 
-    @Override
     public Object[] toArray() {
         return new Object[]{leftHandSlot, rightHandSlot, chestSlot, feetSlot, armsSlot, baggage};
     }
 
-    @Override
     public boolean add(Equipment equipment) {
         try {
             putEquipmentToFirstAvailableSlot(equipment);
@@ -168,7 +162,6 @@ public class Backpack implements Collection<Equipment> {
         return false;
     }
 
-    @Override
     public boolean remove(Object o) {
         if (!this.contains(o)) {
             throw new NoSuchElementException();
@@ -223,7 +216,6 @@ public class Backpack implements Collection<Equipment> {
         return true;
     }
 
-    @Override
     public boolean addAll(Collection collection) {
         for (Object o : collection) {
             if (o instanceof Equipment) {
@@ -238,7 +230,6 @@ public class Backpack implements Collection<Equipment> {
         return true;
     }
 
-    @Override
     public void clear() {
         leftHandSlot = null;
         rightHandSlot = null;
@@ -258,13 +249,11 @@ public class Backpack implements Collection<Equipment> {
         return super.hashCode();
     }
 
-    @Override
     public boolean retainAll(Collection collection) {
         //todo if there's a need to use this method, we'll have to write it.
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public boolean removeAll(Collection collection) {
         for (Object o : collection) {
             {
@@ -282,22 +271,33 @@ public class Backpack implements Collection<Equipment> {
         return true;
     }
 
-    @Override
     public boolean containsAll(Collection collection) {
         //todo if there's a need to use this method, we'll have to write it.
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public Object[] toArray(Object[] objects) {
         //todo if there's a need to use this method, we'll have to write it.
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public String toString() {
+        return "Backpack{" +
+                "leftHandSlot=" + leftHandSlot +
+                ", rightHandSlot=" + rightHandSlot +
+                ", chestSlot=" + chestSlot +
+                ", feetSlot=" + feetSlot +
+                ", armsSlot=" + armsSlot +
+                ", baggage=" + baggage +
+                '}';
+    }
+
     public void putEquipmentToFirstAvailableSlot(Equipment equipment) throws InventorySlotsFullException {
-        for (Integer i = 0; i < baggage.size(); i++) {
+        for (Integer i = 0; i < baggage.size() + 1; i++) {
             if (!baggage.containsKey(i)) {
                 baggage.put(i, equipment);
+                break;
             }
         }
         throw new InventorySlotsFullException();

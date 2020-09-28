@@ -35,9 +35,10 @@ public class PartySelectorService {
         List<Hero> selectedHeroes = new ArrayList<>();
         try {
             Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/Selected Party.txt"));
-            List<String> listOfNamesAndSurnames = gson.fromJson(reader, new TypeToken<List<String>>() {}.getType());
-            for (String nameAndSurname : listOfNamesAndSurnames){
-                Hero hero = loadAHeroByNameAndSurname(nameAndSurname+".txt");
+            List<String> listOfNamesAndSurnames = gson.fromJson(reader, new TypeToken<List<String>>() {
+            }.getType());
+            for (String nameAndSurname : listOfNamesAndSurnames) {
+                Hero hero = loadAHeroByNameAndSurname(nameAndSurname + ".txt");
                 selectedHeroes.add(hero);
             }
         } catch (IOException e) {
@@ -62,8 +63,8 @@ public class PartySelectorService {
     public static void main(String[] args) {
         PartySelectorService ps = new PartySelectorService();
         System.out.println(ps.loadAllHeroes());
-        for (Hero h : ps.loadAllHeroes()){
-            System.out.println(h);
+        for (Hero h : ps.loadAllHeroes()) {
+            h.addStartingBackpackItems();
             h.saveThisHero();
         }
     }
@@ -71,10 +72,10 @@ public class PartySelectorService {
     public List<Hero> loadAllHeroes() {
         List<Hero> allHeroes = new ArrayList<>();
         for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
-            Hero hero = loadAHeroByNameAndSurname(nameAndSurname);
+            Hero hero = new Hero();
+            hero = loadAHeroByNameAndSurname(nameAndSurname);
             allHeroes.add(hero);
         }
-        System.out.println(allHeroes);
         return allHeroes;
     }
 

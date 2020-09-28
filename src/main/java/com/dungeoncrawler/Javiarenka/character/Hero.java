@@ -3,14 +3,10 @@ package com.dungeoncrawler.Javiarenka.character;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Hero extends Character {
     private String surname;
@@ -106,6 +102,7 @@ public class Hero extends Character {
 
     public Hero(String name, int hp) {
         super(name, hp);
+        addStartingBackpackItems();
     }
 
     public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
@@ -120,10 +117,14 @@ public class Hero extends Character {
 
     public Hero() {
         super();
-        backpack.add(new MundaneItem("Chipped Claw",0.02,2,3));
-        backpack.add(new MundaneItem("Pretty Stone",0.06,1,6));
-        backpack.add(new MundaneItem("Broken Branch",0.05,2, 7));
-        backpack.add(new MundaneItem("Coal Ore Chunk",0.2,12,3));
+        addStartingBackpackItems();
+    }
+
+    public void addStartingBackpackItems() {
+        backpack.add(new MundaneItem("Chipped Claw", 0.02, 2, 3));
+        backpack.add(new MundaneItem("Pretty Stone", 0.06, 1, 6));
+        backpack.add(new MundaneItem("Broken Branch", 0.05, 2, 7));
+        backpack.add(new MundaneItem("Coal Ore Chunk", 0.2, 12, 3));
     }
 
     @Override
@@ -131,12 +132,13 @@ public class Hero extends Character {
         return "Hero{" +
                 "name='" + super.getName() + '\'' +
                 "surname='" + surname + '\'' +
-                ", heroClass=" + heroClass +
-                ", equippedArmor=" + equippedArmor +
-                ", equippedWeapon=" + equippedWeapon +
+                ", heroClass=" + heroClass + '\'' +
+                ", equippedArmor=" + equippedArmor + '\'' +
+                ", equippedWeapon=" + equippedWeapon + '\'' +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money +
+                ", money=" + money + '\'' +
+                ", backpack=" + backpack.toString() +
                 '}';
     }
 
@@ -207,6 +209,7 @@ public class Hero extends Character {
         }
         this.money = this.money - amount;
     }
+
     public int getTotalHp() {
         return getHp() + equippedArmor.getAdditionalHp();
     }
