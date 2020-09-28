@@ -21,7 +21,6 @@ public class PartySelectorController {
 
     @PostMapping("/partySelector")
     public RedirectView postPartySelect(@RequestBody List<String> listOfChosenNames) {
-        System.out.println("postMethodCalledSuccessfully: " + listOfChosenNames.toString());
         service.saveTheParty(listOfChosenNames);
         //todo: return to main menu instead
         return new RedirectView("/fightBoard");

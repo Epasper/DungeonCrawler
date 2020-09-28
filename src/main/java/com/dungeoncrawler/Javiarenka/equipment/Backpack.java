@@ -4,13 +4,69 @@ import java.util.*;
 
 public class Backpack {
 
-    Weapon leftHandSlot;
-    Equipment rightHandSlot;
-    Armor chestSlot;
-    Armor feetSlot;
-    Armor armsSlot;
-    Map<Integer, Equipment> baggage;
-    static int NUMBER_OF_WORN_EQUIPMENT_SLOTS = 5;
+    private Weapon leftHandSlot;
+    private Equipment rightHandSlot;
+    private Armor chestSlot;
+    private Armor feetSlot;
+    private Armor armsSlot;
+    private Map<Integer, Equipment> baggage;
+    private static int NUMBER_OF_WORN_EQUIPMENT_SLOTS = 5;
+
+    public Weapon getLeftHandSlot() {
+        return leftHandSlot;
+    }
+
+    public void setLeftHandSlot(Weapon leftHandSlot) {
+        this.leftHandSlot = leftHandSlot;
+    }
+
+    public Equipment getRightHandSlot() {
+        return rightHandSlot;
+    }
+
+    public void setRightHandSlot(Equipment rightHandSlot) {
+        this.rightHandSlot = rightHandSlot;
+    }
+
+    public Armor getChestSlot() {
+        return chestSlot;
+    }
+
+    public void setChestSlot(Armor chestSlot) {
+        this.chestSlot = chestSlot;
+    }
+
+    public Armor getFeetSlot() {
+        return feetSlot;
+    }
+
+    public void setFeetSlot(Armor feetSlot) {
+        this.feetSlot = feetSlot;
+    }
+
+    public Armor getArmsSlot() {
+        return armsSlot;
+    }
+
+    public void setArmsSlot(Armor armsSlot) {
+        this.armsSlot = armsSlot;
+    }
+
+    public Map<Integer, Equipment> getBaggage() {
+        return baggage;
+    }
+
+    public void setBaggage(Map<Integer, Equipment> baggage) {
+        this.baggage = baggage;
+    }
+
+    public static int getNumberOfWornEquipmentSlots() {
+        return NUMBER_OF_WORN_EQUIPMENT_SLOTS;
+    }
+
+    public static void setNumberOfWornEquipmentSlots(int numberOfWornEquipmentSlots) {
+        NUMBER_OF_WORN_EQUIPMENT_SLOTS = numberOfWornEquipmentSlots;
+    }
 
     public Backpack() {
         baggage = new HashMap<>();
@@ -37,14 +93,14 @@ public class Backpack {
         } else return baggage == null || baggage.isEmpty();
     }
 
-    public boolean contains(Object o) {
+    public boolean contains(Equipment o) {
         if (leftHandSlot.equals(o) || rightHandSlot.equals(o) || chestSlot.equals(o) || feetSlot.equals(o) || armsSlot.equals(o)) {
             return true;
         } else return baggage.containsValue(o);
     }
 
     public Iterator<Equipment> iterator() {
-        return new Iterator<Equipment>() {
+        return new Iterator<>() {
             private int currentIndex = 0;
 
             @Override
@@ -144,7 +200,7 @@ public class Backpack {
                     break;
                 case RIGHT_HAND:
                     if (equipment instanceof Weapon) {
-                        rightHandSlot = (Weapon) equipment;
+                        rightHandSlot = equipment;
                     } else {
                         throw new InvalidEquipmentTypeException();
                     }
@@ -162,7 +218,7 @@ public class Backpack {
         return false;
     }
 
-    public boolean remove(Object o) {
+    public boolean remove(Equipment o) {
         if (!this.contains(o)) {
             throw new NoSuchElementException();
         } else {
@@ -216,20 +272,6 @@ public class Backpack {
         return true;
     }
 
-    public boolean addAll(Collection collection) {
-        for (Object o : collection) {
-            if (o instanceof Equipment) {
-                try {
-                    putEquipmentToFirstAvailableSlot((Equipment) o);
-                } catch (InventorySlotsFullException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        //todo implement the maximum baggage size and support its logic here
-        return true;
-    }
-
     public void clear() {
         leftHandSlot = null;
         rightHandSlot = null;
@@ -247,38 +289,6 @@ public class Backpack {
     @Override
     public int hashCode() {
         return super.hashCode();
-    }
-
-    public boolean retainAll(Collection collection) {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
-    }
-
-    public boolean removeAll(Collection collection) {
-        for (Object o : collection) {
-            {
-                try {
-                    if (o instanceof Equipment) {
-                        this.remove(o);
-                    } else {
-                        throw new InvalidEquipmentTypeException();
-                    }
-                } catch (InvalidEquipmentTypeException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean containsAll(Collection collection) {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
-    }
-
-    public Object[] toArray(Object[] objects) {
-        //todo if there's a need to use this method, we'll have to write it.
-        throw new UnsupportedOperationException();
     }
 
     @Override

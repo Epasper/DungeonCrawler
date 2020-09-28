@@ -112,6 +112,8 @@ public class Hero extends Character {
         this.heroClass = heroClass;
         this.equippedArmor = equippedArmor;
         this.equippedWeapon = equippedWeapon;
+        this.backpack.setRightHandSlot(equippedWeapon);
+        this.backpack.setChestSlot(equippedArmor);
         this.money = money;
     }
 

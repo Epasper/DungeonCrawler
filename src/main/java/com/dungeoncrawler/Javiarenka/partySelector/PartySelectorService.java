@@ -60,20 +60,10 @@ public class PartySelectorService {
         return hero;
     }
 
-    public static void main(String[] args) {
-        PartySelectorService ps = new PartySelectorService();
-        System.out.println(ps.loadAllHeroes());
-        for (Hero h : ps.loadAllHeroes()) {
-            h.addStartingBackpackItems();
-            h.saveThisHero();
-        }
-    }
-
     public List<Hero> loadAllHeroes() {
         List<Hero> allHeroes = new ArrayList<>();
         for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
-            Hero hero = new Hero();
-            hero = loadAHeroByNameAndSurname(nameAndSurname);
+            Hero hero = loadAHeroByNameAndSurname(nameAndSurname);
             allHeroes.add(hero);
         }
         return allHeroes;
