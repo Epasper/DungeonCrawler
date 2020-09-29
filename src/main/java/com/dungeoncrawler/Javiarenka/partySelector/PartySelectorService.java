@@ -38,7 +38,7 @@ public class PartySelectorService {
             List<String> listOfNamesAndSurnames = gson.fromJson(reader, new TypeToken<List<String>>() {
             }.getType());
             for (String nameAndSurname : listOfNamesAndSurnames) {
-                Hero hero = loadAHeroByNameAndSurname(nameAndSurname);
+                Hero hero = loadAHeroByNameAndSurname(nameAndSurname + ".txt");
                 selectedHeroes.add(hero);
             }
         } catch (IOException e) {
@@ -80,8 +80,6 @@ public class PartySelectorService {
             for (File file : listOfFiles) {
                 if (file.isFile() && file.getName().contains("---")) {
                     allHeroNamesAndSurnames.add(file.getName());
-                } else {
-                    continue;
                 }
             }
         }

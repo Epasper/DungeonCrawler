@@ -1,7 +1,6 @@
 package com.dungeoncrawler.Javiarenka.character;
 
-import com.dungeoncrawler.Javiarenka.equipment.Armor;
-import com.dungeoncrawler.Javiarenka.equipment.Weapon;
+import com.dungeoncrawler.Javiarenka.equipment.*;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +18,7 @@ public class Hero extends Character {
     private String armorName;
     private String className;
     private int money;
+    private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
 
@@ -90,9 +90,17 @@ public class Hero extends Character {
         return unarmedAttackDamage;
     }
 
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public void setBackpack(Backpack backpack) {
+        this.backpack = backpack;
+    }
+
     public boolean isSelectedForParty() {
-        System.out.println(isSelectedForParty);
-        return isSelectedForParty;
+        return this.isSelectedForParty;
     }
 
     public void setSelectedForParty(boolean selectedForParty) {
@@ -101,19 +109,31 @@ public class Hero extends Character {
 
     public Hero(String name, int hp) {
         super(name, hp);
+        addStartingBackpackItems();
     }
 
     public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
-        super();
+        this();
         super.setName(name);
         this.surname = surname;
         this.heroClass = heroClass;
         this.equippedArmor = equippedArmor;
         this.equippedWeapon = equippedWeapon;
+        this.backpack.setRightHandSlot(equippedWeapon);
+        this.backpack.setChestSlot(equippedArmor);
         this.money = money;
     }
 
     public Hero() {
+        super();
+        addStartingBackpackItems();
+    }
+
+    public void addStartingBackpackItems() {
+        backpack.add(new MundaneItem("Chipped Claw", 0.02, 2, 3));
+        backpack.add(new MundaneItem("Pretty Stone", 0.06, 1, 6));
+        backpack.add(new MundaneItem("Broken Branch", 0.05, 2, 7));
+        backpack.add(new MundaneItem("Coal Ore Chunk", 0.2, 12, 3));
     }
 
     @Override
@@ -121,12 +141,13 @@ public class Hero extends Character {
         return "Hero{" +
                 "name='" + super.getName() + '\'' +
                 "surname='" + surname + '\'' +
-                ", heroClass=" + heroClass +
-                ", equippedArmor=" + equippedArmor +
-                ", equippedWeapon=" + equippedWeapon +
+                ", heroClass=" + heroClass + '\'' +
+                ", equippedArmor=" + equippedArmor + '\'' +
+                ", equippedWeapon=" + equippedWeapon + '\'' +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money +
+                ", money=" + money + '\'' +
+                ", backpack=" + backpack.toString() +
                 '}';
     }
 
@@ -197,6 +218,7 @@ public class Hero extends Character {
         }
         this.money = this.money - amount;
     }
+
     public int getTotalHp() {
         return getHp() + equippedArmor.getAdditionalHp();
     }

@@ -17,6 +17,15 @@ public class Equipment {
         this.classRestrictions = classRestriction;
     }
 
+    public Equipment(String name, double weight, double price) {
+        this.name = name;
+        this.weight = weight;
+        this.price = price;
+    }
+
+    public Equipment() {
+    }
+
     public List<HeroClass> getClassRestrictions() {
         return classRestrictions;
     }
