@@ -25,35 +25,35 @@
         </div>
     </div>
     <div class="info grid-container">
-
-        <div class="heroBoard">
-            <ul th:each="hero: ${heroes}">
-                <li><a th:href="@{/fightBoard/selectHero(heroName=${hero.getName()})}"
-                       th:text="${hero.getName()}"></a>
-                    <p th:text="${hero.getHeroClass()}"></p>
-                    <p th:text="${hero.getHp()}"></p>
-                    <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}">
-                    </p>
-                    <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
-                    </p>
-                    <p th:text="${hero.isAlive()}"></p>
-                    <p th:text="${hero.isAlive()}"></p>
-                    <p th:text="${hero.getTotalHp()}"></p>
-                </li>
-            </ul>
-            <a class="attack" th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
-        </div>
-        <div class="monsterBoard">
-            <ul th:each="monster: ${monsters}">
-                <li><a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
-                       th:text="${monster.getName()}"></a>
-                    <p th:text="${monster.getRace()}"></p>
-                    <p th:text="${monster.getHp()}"></p>
-                    <p th:text="${monster.getDamageStrength()}"></p>
-                    <p th:text="${monster.isAlive()}"></p>
-                </li>
-            </ul>
-            <a class="attack" th:href="@{/fightBoard/attackHero}">Attack the hero</a>
+            <div class="heroBoard">
+                <ul th:each="hero: ${heroes}">
+                    <li><a th:href="@{/fightBoard/selectHero(heroName=${hero.getName()})}"
+                            th:text="${hero.getName()}"></a>
+                        <p th:text="${hero.getHeroClass()}"></p>
+                        <p th:text="${hero.getHp()}"></p>
+                        <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}">
+                        </p>
+                        <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}">
+                        </p>
+                        <p th:text="${hero.isAlive()}"></p>
+                        <p th:text="${hero.getTotalHp()}"></p>
+                        <p th:text="${hero.getSkills()}"></p>
+                    </li>
+                </ul>
+                <a class="attack" th:href="@{/fightBoard/attackMonster}">Attack the monster</a>
+            </div>
+            <div class="monsterBoard">
+                <ul th:each="monster: ${monsters}">
+                    <li><a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
+                            th:text="${monster.getName()}"></a>
+                        <p th:text="${monster.getRace()}"></p>
+                        <p th:text="${monster.getHp()}"></p>
+                        <p th:text="${monster.getDamageStrength()}"></p>
+                        <p th:text="${monster.isAlive()}"></p>
+                    </li>
+                </ul>
+                <a class="attack" th:href="@{/fightBoard/attackHero}">Attack the hero</a>
+            </div>
         </div>
     </div>
 </div>
