@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <link rel="stylesheet" href="../css/mapStyle.css"> -->
+    <link rel="stylesheet" th:href="@{../css/mapStyle.css}">
+    <script src="../dungeonMap.js"></script>
+</head>
+<body>
+<div class="stage-grid" id="grid">
+        <th:block th:each="tile: ${tiles}">
+            <div th:id="${tile.x} + '-' + ${tile.y}"
+                 th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'"
+                 th:class="'tile '+${tile.type}"></div>
+        </th:block>
+</div>
+</body>
+</html>
