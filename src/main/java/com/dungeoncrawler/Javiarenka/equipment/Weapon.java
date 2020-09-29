@@ -14,6 +14,10 @@ public class Weapon extends Equipment {
         this.damageDealt = damageDealt;
     }
 
+    public Weapon() {
+
+    }
+
     public DamageType getDamageType() {
         return damageType;
     }

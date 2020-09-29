@@ -3,11 +3,10 @@ package com.dungeoncrawler.Javiarenka.character;
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
+import com.dungeoncrawler.Javiarenka.equipment.*;
+import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -15,54 +14,137 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Hero extends Character {
-    @Getter
-    @Setter
     private String surname;
-    @Getter
-    @Setter
     private HeroClass heroClass;
-    @Getter
-    @Setter
     private Armor equippedArmor;
-    @Getter
-    @Setter
     private Weapon equippedWeapon;
-    @Getter
-    @Setter
     private String weaponName;
-    @Getter
-    @Setter
     private String armorName;
-    @Getter
-    @Setter
     private String className;
-    @Getter
-    @Setter
     private int money;
-    @Getter
-    @Setter
     private List<Skill> skills;
-    @Getter
-    @Setter
     private int unarmedAttackDamage = 1;
+    private Backpack backpack = new Backpack();
+    private final int unarmedAttackDamage = 1;
+    private boolean isSelectedForParty;
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public HeroClass getHeroClass() {
+        return heroClass;
+    }
+
+    public void setHeroClass(HeroClass heroClass) {
+        this.heroClass = heroClass;
+    }
+
+    public Armor getEquippedArmor() {
+        return equippedArmor;
+    }
+
+    public void setEquippedArmor(Armor equippedArmor) {
+        this.equippedArmor = equippedArmor;
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void setEquippedWeapon(Weapon equippedWeapon) {
+        this.equippedWeapon = equippedWeapon;
+        this.money = money;
+        this.skills = skills;
+    }
+
+    public String getWeaponName() {
+        return weaponName;
+    }
+
+    public void setWeaponName(String weaponName) {
+        this.weaponName = weaponName;
+    }
+
+    public String getArmorName() {
+        return armorName;
+    }
+
+    public void setArmorName(String armorName) {
+        this.armorName = armorName;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getUnarmedAttackDamage() {
+        return unarmedAttackDamage;
+    }
+
+    public Backpack getBackpack() {
+        return backpack;
+    }
+
+    public void setBackpack(Backpack backpack) {
+        this.backpack = backpack;
+    }
+
+    public boolean isSelectedForParty() {
+        return this.isSelectedForParty;
+    }
+
+    public void setSelectedForParty(boolean selectedForParty) {
+        isSelectedForParty = selectedForParty;
+    }
+  
     public Hero() {
+    }
+  
+    public Hero() {
+        super();
+        addStartingBackpackItems();
     }
 
     public Hero(String name, int hp) {
         super(name, hp);
+        addStartingBackpackItems();
     }
 
-    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon,
-                int money, List<Skill> skills) {
-        super();
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<Skill> skills) {
+        this();
         super.setName(name);
         this.surname = surname;
         this.heroClass = heroClass;
         this.equippedArmor = equippedArmor;
         this.equippedWeapon = equippedWeapon;
+        this.backpack.setRightHandSlot(equippedWeapon);
+        this.backpack.setChestSlot(equippedArmor);
         this.money = money;
         this.skills = skills;
+    }
+
+    public void addStartingBackpackItems() {
+        backpack.add(new MundaneItem("Chipped Claw", 0.02, 2, 3));
+        backpack.add(new MundaneItem("Pretty Stone", 0.06, 1, 6));
+        backpack.add(new MundaneItem("Broken Branch", 0.05, 2, 7));
+        backpack.add(new MundaneItem("Coal Ore Chunk", 0.2, 12, 3));
     }
 
     @Override
@@ -70,12 +152,13 @@ public class Hero extends Character {
         return "Hero{" +
                 "name='" + super.getName() + '\'' +
                 "surname='" + surname + '\'' +
-                ", heroClass=" + heroClass +
-                ", equippedArmor=" + equippedArmor +
-                ", equippedWeapon=" + equippedWeapon +
+                ", heroClass=" + heroClass + '\'' +
+                ", equippedArmor=" + equippedArmor + '\'' +
+                ", equippedWeapon=" + equippedWeapon + '\'' +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money +
+                ", money=" + money + '\'' +
+                ", backpack=" + backpack.toString() +
                 '}';
     }
 

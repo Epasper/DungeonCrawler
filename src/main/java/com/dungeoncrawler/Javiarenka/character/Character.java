@@ -12,13 +12,14 @@ public abstract class Character {
 
 
     public Character() {
+        this.isAlive = true;
+        this.allCharacterStatuses = new ArrayList<>();
     }
 
     public Character(String name, int hp) {
+        this();
         this.name = name;
         this.hp = hp;
-        this.isAlive = true;
-        this.allCharacterStatuses = new ArrayList<>();
     }
 
     public String getName() {

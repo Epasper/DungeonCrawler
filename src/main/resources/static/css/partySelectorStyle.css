@@ -1,7 +1,116 @@
-.unselected{
-background-color: lightblue;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.selected{
-background-color: lightgreen;
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.unselected {
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    background-color: #16161a;
+    border-radius: 5px;
+    color: #fff;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    padding: 8px 35px;
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s;
+    transform-style: preserve-3d;
+    perspective: 1px;
+    margin: 0 40px;
+}
+
+.selected {
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    background-color: darkolivegreen;
+    border-radius: 5px;
+    color: #fff;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+    padding: 8px 35px;
+    display: inline-block;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s;
+    transform-style: preserve-3d;
+    perspective: 1px;
+    margin: 0 40px;
+}
+
+.unselected::before {
+    content: "";
+    display: block;
+    border-radius: 8px;
+    position: absolute;
+    left: 19px;
+    right: 19px;
+    top: -12px;
+    bottom: -12px;
+    background-color: #28a571;
+    transform: perspective(1px) translateZ(-0.1px);
+    transition: all 0.3s;
+}
+
+.unselected:focus::before,
+.unselected:hover::before {
+    left: -10px;
+    right: -10px;
+    top: -9px;
+    bottom: -9px;
+}
+
+.unselected:active::before {
+    top: -8px;
+    bottom: -8px;
+}
+
+.infobox {
+    min-width: 500px;
+    height: 210px;
+    background-color: #0f0f0fcc;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    margin: 25px;
+}
+
+h1 {
+    color: white;
+    margin: 10px 5px;
+}
+
+p,
+a {
+    color: white;
+    margin: 0px 5px;
+}
+
+.accept {
+    background: #4483b4;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    min-width: 500px;
+    text-align: center;
+    border: none;
+    padding: 5px 10px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    margin: 10px 5px;
 }
