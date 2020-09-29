@@ -25,11 +25,15 @@ public class BoardController {
     @GetMapping("/fightBoard/attackHero")
     public RedirectView attackHero(Hero heroFromForm, Monster monsterFromForm) {
         if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
-            service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedMonster().attack(service.getSelectedHero()));
+            //todo: remove this later
+            service.getMessageOutput().clear();
+            service.getMessageOutput().add(service.getSelectedMonster().attack(service.getSelectedHero()));
             service.setSelectedHero(null);
             service.setSelectedMonster(null);
         } else {
-            service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
+            //todo: remove this later
+            service.getMessageOutput().clear();
+            service.getMessageOutput().add("Hero or Monster not selected!");
         }
         return new RedirectView("");
     }
@@ -37,11 +41,15 @@ public class BoardController {
     @GetMapping("/fightBoard/attackMonster")
     public RedirectView attackMonster(Hero heroFromForm, Monster monsterFromForm) {
         if (service.getSelectedHero() != null && service.getSelectedMonster() != null) {
-            service.setMessageOutput(service.getMessageOutput() + "\r\n" + service.getSelectedHero().attack(service.getSelectedMonster()));
+            //todo: remove this later
+            service.getMessageOutput().clear();
+            service.getMessageOutput().add(service.getSelectedHero().attack(service.getSelectedMonster()));
             service.setSelectedHero(null);
             service.setSelectedMonster(null);
         } else {
-            service.setMessageOutput(service.getMessageOutput() + "\r\n" + "Hero or Monster not selected!");
+            //todo: remove this later
+            service.getMessageOutput().clear();
+            service.getMessageOutput().add("Hero or Monster not selected!");
         }
         return new RedirectView("");
     }

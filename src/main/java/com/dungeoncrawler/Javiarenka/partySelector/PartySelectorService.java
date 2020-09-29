@@ -50,8 +50,10 @@ public class PartySelectorService {
     public Hero loadAHeroByNameAndSurname(String nameAndSurname) {
         Hero hero = new Hero();
         try {
+            String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname;
+            fileLocation = fileLocation.endsWith(".txt") ? fileLocation : fileLocation + ".txt";
             Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
+            Reader reader = Files.newBufferedReader(Paths.get(fileLocation));
             hero = gson.fromJson(reader, Hero.class);
             reader.close();
         } catch (IOException e) {
@@ -85,7 +87,15 @@ public class PartySelectorService {
     }
 
     public void saveTheParty(List<String> listOfChosenNames) {
-        List<Hero> heroList = new ArrayList<>();
+        for (Hero hero : this.loadAllHeroes()) {
+            hero.setSelectedForParty(false);
+            hero.saveThisHero();
+        }
+        for (String heroName : listOfChosenNames) {
+            Hero hero = loadAHeroByNameAndSurname(heroName);
+            hero.setSelectedForParty(true);
+            hero.saveThisHero();
+        }
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();

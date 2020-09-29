@@ -15,13 +15,17 @@ public class PartySelectorController {
 
     @GetMapping("/partySelector")
     public String partySelect(Model model) {
+        service.setAllAvailableHeroes(service.loadAllHeroes());
         model.addAttribute("heroes", service.getAllAvailableHeroes());
         return "partySelector";
     }
 
     @PostMapping("/partySelector")
-    public RedirectView postPartySelect(@RequestBody List<String> listOfChosenNames) {
+    public RedirectView postPartySelect(@RequestBody List<String> listOfChosenNames, Model model) {
+        System.out.println("postMethodCalledSuccessfully: " + listOfChosenNames.toString());
         service.saveTheParty(listOfChosenNames);
+        service.setAllAvailableHeroes(service.loadAllHeroes());
+        model.addAttribute("heroes", service.getAllAvailableHeroes());
         //todo: return to main menu instead
         return new RedirectView("/fightBoard");
     }

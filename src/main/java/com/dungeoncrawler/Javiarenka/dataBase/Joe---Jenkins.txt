@@ -67,6 +67,7 @@
       }
     }
   },
+  "isSelectedForParty": true,
   "name": "Joe",
   "hp": 70,
   "isAlive": true,

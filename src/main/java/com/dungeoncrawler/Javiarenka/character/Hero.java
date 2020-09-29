@@ -1,6 +1,7 @@
 package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.equipment.*;
+import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,8 +18,9 @@ public class Hero extends Character {
     private String armorName;
     private String className;
     private int money;
-    private int unarmedAttackDamage = 1;
     private Backpack backpack = new Backpack();
+    private final int unarmedAttackDamage = 1;
+    private boolean isSelectedForParty;
 
     public String getSurname() {
         return surname;
@@ -98,6 +100,14 @@ public class Hero extends Character {
 
     public void setBackpack(Backpack backpack) {
         this.backpack = backpack;
+      
+    public boolean isSelectedForParty() {
+        System.out.println(isSelectedForParty);
+        return isSelectedForParty;
+    }
+
+    public void setSelectedForParty(boolean selectedForParty) {
+        isSelectedForParty = selectedForParty;
     }
 
     public Hero(String name, int hp) {
