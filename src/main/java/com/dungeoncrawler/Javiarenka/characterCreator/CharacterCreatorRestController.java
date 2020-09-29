@@ -37,9 +37,13 @@ public class CharacterCreatorRestController {
 
     @PostMapping("/saveCharacter")
     public Hero saveCharacter(@RequestBody Hero hero) {
+        Armor selectedArmor = StartingArmor.getArmorByName(hero.getArmorName());
+        Weapon selectedWeapon = StartingWeapon.getWeaponByName(hero.getWeaponName());
         hero.setHeroClass(HeroClass.getHeroClassByName(hero.getClassName()));
-        hero.setEquippedWeapon(StartingWeapon.getWeaponByName(hero.getWeaponName()));
-        hero.setEquippedArmor(StartingArmor.getArmorByName(hero.getArmorName()));
+        hero.getBackpack().setChestSlot(selectedArmor);
+        hero.setEquippedWeapon(selectedWeapon);
+        hero.getBackpack().setRightHandSlot(selectedWeapon);
+        hero.setEquippedArmor(selectedArmor);
         hero.saveThisHero();
         return null;
     }

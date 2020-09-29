@@ -6,8 +6,8 @@
     "chanceToHitReduction": 30,
     "additionalHp": 0,
     "name": "Leather Armor",
-    "weight": 8.0,
-    "price": 20.0,
+    "weight": 8,
+    "price": 20,
     "classRestrictions": [
       "ARCHER",
       "ROGUE",
@@ -18,8 +18,8 @@
     "damageType": "DMG_PIERCING",
     "damageDealt": 8,
     "name": "Short Bow",
-    "weight": 5.0,
-    "price": 10.0,
+    "weight": 5,
+    "price": 10,
     "classRestrictions": [
       "ROGUE",
       "WARRIOR",
@@ -32,6 +32,31 @@
   "money": 0,
   "unarmedAttackDamage": 1,
   "backpack": {
+    "leftHandSlot": {
+      "damageType": "DMG_PIERCING",
+      "damageDealt": 8,
+      "name": "Short Bow",
+      "weight": 5,
+      "price": 10,
+      "classRestrictions": [
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "chestSlot": {
+      "damageReduction": 10,
+      "chanceToHitReduction": 30,
+      "additionalHp": 0,
+      "name": "Leather Armor",
+      "weight": 8,
+      "price": 20,
+      "classRestrictions": [
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
     "baggage": {
       "0": {
         "maxStackSize": 0,
@@ -39,7 +64,7 @@
         "isQuestItem": false,
         "name": "Chipped Claw",
         "weight": 0.02,
-        "price": 2.0
+        "price": 2
       },
       "1": {
         "maxStackSize": 0,
@@ -47,7 +72,7 @@
         "isQuestItem": false,
         "name": "Pretty Stone",
         "weight": 0.06,
-        "price": 1.0
+        "price": 1
       },
       "2": {
         "maxStackSize": 0,
@@ -55,7 +80,7 @@
         "isQuestItem": false,
         "name": "Broken Branch",
         "weight": 0.05,
-        "price": 2.0
+        "price": 2
       },
       "3": {
         "maxStackSize": 0,
@@ -63,7 +88,7 @@
         "isQuestItem": false,
         "name": "Coal Ore Chunk",
         "weight": 0.2,
-        "price": 12.0
+        "price": 12
       }
     }
   },
