@@ -68,6 +68,5 @@
   "isSelectedForParty": true,
   "name": "Chase",
   "hp": 50,
-  "isAlive": true,
-  "allCharacterStatuses": []
+  "isAlive": true
 }

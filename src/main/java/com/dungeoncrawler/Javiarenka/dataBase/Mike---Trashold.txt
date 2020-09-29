@@ -70,7 +70,6 @@
   "name": "Mike",
   "hp": 50,
   "isAlive": true,
-  "allCharacterStatuses": []
   "isSelectedForParty": false,
   "name": "Mike",
   "hp": 50,

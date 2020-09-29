@@ -90,9 +90,6 @@ public class Hero extends Character {
         return unarmedAttackDamage;
     }
 
-    public void setUnarmedAttackDamage(int unarmedAttackDamage) {
-        this.unarmedAttackDamage = unarmedAttackDamage;
-    }
 
     public Backpack getBackpack() {
         return backpack;
@@ -100,10 +97,10 @@ public class Hero extends Character {
 
     public void setBackpack(Backpack backpack) {
         this.backpack = backpack;
-      
+    }
+
     public boolean isSelectedForParty() {
-        System.out.println(isSelectedForParty);
-        return isSelectedForParty;
+        return this.isSelectedForParty;
     }
 
     public void setSelectedForParty(boolean selectedForParty) {
