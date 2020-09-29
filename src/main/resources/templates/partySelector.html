@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
     <script th:src="@{partySelector.js}"></script>
+    <script type="text/javascript">
+    window.onload = loadAlreadySelectedHeroes;
+    </script>
 </head>
 
 <body>
@@ -21,7 +24,7 @@
         <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
         <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
         <p th:text="${hero.getTotalHp()}"></p>
-        <button class="unselected" th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
+        <button th:class="${hero.isSelectedForParty()} ? 'selected' : 'unselected'" th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
     </div>
 </div>
 <div>
