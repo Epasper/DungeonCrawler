@@ -8,12 +8,13 @@
     <script src="../dungeonMap.js"></script>
 </head>
 <body>
-<div class="stage-grid" id="grid">
+<div class="stage-container">
+    <div class="stage-grid" id="grid">
         <th:block th:each="tile: ${tiles}">
-            <div th:id="${tile.x} + '-' + ${tile.y}"
-                 th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'"
-                 th:class="'tile '+${tile.type}"></div>
+            <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile '+${tile.type}"></div>
+                 <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
         </th:block>
+    </div>
 </div>
 </body>
 </html>

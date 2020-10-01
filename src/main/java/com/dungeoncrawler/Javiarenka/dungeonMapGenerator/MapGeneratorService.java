@@ -36,7 +36,7 @@ public class MapGeneratorService
         rb.addDoorToAllRooms();
         stage.saveToTxt();
         //buildHtml(stage);
-        buildCSS(stage);
+        //buildCSS(stage);
 
         return stage;
     }

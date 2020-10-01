@@ -23,23 +23,29 @@ html, body {
 .tile {
     color: rgba(0,0,0,0);
     font-size: 10px;
+    transition: 0.3s;
     /* border: rgb(0,0,0) solid; */
     /* border-width: 1px; */
 }
 
 .tile:hover {
-    border: rgb(0,0,0) solid;
-    color: rgba(0,0,0,1);
+    /*color: rgba(0,0,0,1);*/
+    /*opacity: 0.5;*/
+    border: rgba(0,0,0,0.95) solid;
     border-width: 1px;
 }
 
+.stage-container{
+    display: flex;
+    justify-content: center;
+}
 
 .stage-grid{
 	display: grid;
-	grid-template-columns: repeat(30, 1fr);
-	grid-template-rows: repeat(20, 1fr);
-	grid-column-gap: 0;
-	grid-row-gap: 0;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
 	height: 60vh;
 	width: 60.0vh;
 }

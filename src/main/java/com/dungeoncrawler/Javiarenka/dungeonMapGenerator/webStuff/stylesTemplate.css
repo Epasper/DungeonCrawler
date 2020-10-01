@@ -32,3 +32,18 @@ html, body {
     color: rgba(0,0,0,1);
     border-width: 1px;
 }
+
+.stage-container{
+    display: flex;
+    justify-content: center;
+}
+
+.stage-grid{
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-column-gap: 1px;
+	grid-row-gap: 1px;
+	height: 60vh;
+	width: 60.0vh;
+}

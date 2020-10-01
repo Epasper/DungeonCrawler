@@ -486,6 +486,29 @@ public class RoomBuilder
         }
     }
 
+    public Tile randomizeSeed(BuildDirection buildDir, int randomReach)
+    {
+        Tile outputSeed;
+        outputSeed = getNextAvailableSeedTile(buildDir);
+        int randomNumberVertical = getRandomNumberInRange(0, randomReach);
+        int randomNumberHorizontal = getRandomNumberInRange(0, randomReach);
+
+        if (randomNumberHorizontal==0 && randomNumberVertical ==0)
+        {
+            return outputSeed;
+        }
+
+
+        switch(buildDir)
+        {
+            case RD:
+                //outputSeed = stage.getTile()
+                break;
+        }
+
+
+        return outputSeed;
+    }
 
     public Tile getNextAvailableSeedTile(BuildDirection buildDir) //throws IOException
     {
