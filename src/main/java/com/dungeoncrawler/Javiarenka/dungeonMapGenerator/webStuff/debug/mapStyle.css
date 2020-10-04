@@ -83,8 +83,8 @@ html, body {
 
 .stage-grid{
 	display: grid;
-	grid-template-columns: repeat(100, 1fr);
-	grid-template-rows: repeat(100, 1fr);
+	grid-template-columns: repeat(200, 1fr);
+	grid-template-rows: repeat(200, 1fr);
 	grid-column-gap: 0;
 	grid-row-gap: 0;
 	height: 90vh;

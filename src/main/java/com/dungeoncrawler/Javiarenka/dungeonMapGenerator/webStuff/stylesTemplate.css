@@ -16,16 +16,16 @@ html, body {
     background-color: rgb(70, 70, 70);
 }
 
+.OBSTRUCTION {
+    background-color: rgb(50, 50, 50);
+}
+
 .DEBUG {
     background-color: red;
 }
 
 .BREADCRUMB {
     background-color: #006400;
-}
-
-.OBSTRUCTION {
-    background-color: rgb(50, 50, 50);
 }
 
 .UNREACHABLE {

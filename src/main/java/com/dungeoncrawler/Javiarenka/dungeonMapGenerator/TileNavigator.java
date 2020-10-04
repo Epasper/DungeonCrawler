@@ -350,9 +350,6 @@ public class TileNavigator
         List<Tile> possiblePathTiles = new ArrayList<>();
         int possiblePathsNumber = 0;
 
-        //TODO: wygląda na to, że na bardzo dużych mapach może powstać pokój z korytarzem naokoło niepołączonym z resztą labiryntu
-        // co zawsze będzie zwracało ślepy zaułek
-
         do
         {
             walkedTiles.add(currentTile);

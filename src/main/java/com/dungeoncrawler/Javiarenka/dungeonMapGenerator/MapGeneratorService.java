@@ -10,7 +10,7 @@ public class MapGeneratorService
 
     public static void main(String[] args) throws IOException
     {
-        Stage stage = new Stage(100, 100);
+        Stage stage = new Stage(200, 200);
         RoomBuilder rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
@@ -39,6 +39,8 @@ public class MapGeneratorService
         stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
+        rb.removeShortBranches(10);
+        rb.removeCorridorClusters();
         stage.saveToTxt();
         //buildHtml(stage);
         buildCSS(stage);
@@ -127,8 +129,6 @@ public class MapGeneratorService
 
         writer.append(getGridCSSString(stage));
         //writer.append(getAllTilesCSSString(stage));
-
-        //TODO: JS -> change style sheet
 
         reader.close();
         writer.close();

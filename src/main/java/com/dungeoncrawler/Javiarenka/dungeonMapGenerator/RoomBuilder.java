@@ -597,8 +597,6 @@ public class RoomBuilder
 
     private void squeezeSurroundingDoubleCorridors(Room room)
     {
-
-        //TODO: nie zawsze poprawnie squeezuje -> sprawdzić dokładnie
         for (Wall wall : room.getWalls())
         {
             squeezeDoubleCorridor(wall);
@@ -615,7 +613,6 @@ public class RoomBuilder
 
     private boolean allRoomsAreReachable()
     {
-        //TODO: coś nie tak - zwłaszcza dla narożnych pól pokoju(???)
         Tile currentTile;
         Tile neighboringTile;
         boolean roomReachable;
@@ -715,8 +712,6 @@ public class RoomBuilder
             }
             else
             {
-                //TODO: jeśli powstał ślepy odcinek korytarza, to spróbować go wypełnić
-
                 stage.setTileTypes(unreachableCorridorTiles, TileType.CUTOFF);
 //                MapGeneratorService.buildDebugSite(stage);
 //                MapGeneratorService.buildDebugSite(stage);
@@ -901,10 +896,12 @@ public class RoomBuilder
     {
         List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
         List<Tile> clusteredCorridors = allCorridors.stream()
-                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 4)
+                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 3)
                 .collect(Collectors.toList());
 
         clusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+        //MapGeneratorService.buildDebugSite(stage);
+        //MapGeneratorService.buildDebugSite(stage);
 
         clusteredCorridors.stream() //wyrzucamy wszystkie skupiska mniejsze niż 4
                 .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() < 4)
@@ -912,6 +909,8 @@ public class RoomBuilder
 
         clusteredCorridors.clear();
         clusteredCorridors.addAll(new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION))));
+        //MapGeneratorService.buildDebugSite(stage);
+        //MapGeneratorService.buildDebugSite(stage);
 
         clusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
         List<Tile> removableTiles = new ArrayList<>();
@@ -919,24 +918,30 @@ public class RoomBuilder
         for (Tile tile : clusteredCorridors)
         {
             tile.setType(TileType.OBSTRUCTION);
-            if (tileNav.getUnreachableCorridorTiles().length == 0)
+            if (tileNav.getUnreachableCorridorTiles().length == 0 && allRoomsAreReachable())
             {
                 removableTiles.add(tile);
             }
             tile.setType(TileType.CORRIDOR);
         }
 
+
+
         if (removableTiles.size() >= 1)
         {
+//            removableTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
+//            MapGeneratorService.buildDebugSite(stage);
+//            MapGeneratorService.buildDebugSite(stage);
+//            removableTiles.forEach(tile -> tile.setType(TileType.CORRIDOR));
             do
             {
                 removableTiles.get(0).setType(TileType.OBSTRUCTION);
-                if (tileNav.getUnreachableCorridorTiles().length > 0)
+                if (tileNav.getUnreachableCorridorTiles().length > 0 && allRoomsAreReachable())
                 {
                     removableTiles.get(0).setType(TileType.CORRIDOR);
                 }
                 removableTiles.remove(0);
-            } while (removableTiles.size() > 1);
+            } while (removableTiles.size() > 0);
         }
     }
 }

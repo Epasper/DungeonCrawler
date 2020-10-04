@@ -54,7 +54,7 @@ function updateGrid() {
     var gridStyle = grid.style
     var width = getMapWidth()
     var height = getMapHeight()
-    var mapHeightPercentage = 60
+    var mapHeightPercentage = 80
     var mapWidthPercentage = width / height * mapHeightPercentage
     gridStyle.gridTemplateColumns = `repeat(${width}, 1fr)`
     gridStyle.gridTemplateRows = `repeat(${height}, 1fr)`

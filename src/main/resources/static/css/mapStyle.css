@@ -8,8 +8,16 @@ html, body {
     background-color: #A9A9A9;
 }
 
+.CURRENT_PATH {
+    background-color: #7FFF00;
+}
+
 .WALL {
     background-color: rgb(70, 70, 70);
+}
+
+.OBSTRUCTION {
+    background-color: rgb(50, 50, 50);
 }
 
 .DEBUG {
@@ -18,10 +26,6 @@ html, body {
 
 .BREADCRUMB {
     background-color: #006400;
-}
-
-.OBSTRUCTION {
-    background-color: rgb(65, 65, 65);
 }
 
 .UNREACHABLE {
@@ -33,7 +37,11 @@ html, body {
 }
 
 .EXCLUDED {
-    background-color: #DAA520;
+    background-color: #800000;
+}
+
+.INTERSECTION {
+    background-color: #DB7093;
 }
 
 .ROOM {
@@ -75,11 +83,11 @@ html, body {
 
 .stage-grid{
 	display: grid;
-	grid-template-columns: repeat(30, 1fr);
-	grid-template-rows: repeat(30, 1fr);
+	grid-template-columns: repeat(200, 1fr);
+	grid-template-rows: repeat(100, 1fr);
 	grid-column-gap: 0;
 	grid-row-gap: 0;
-	height: 60vh;
-	width: 60.0vh;
+	height: 90vh;
+	width: 180.0vh;
 }
 
