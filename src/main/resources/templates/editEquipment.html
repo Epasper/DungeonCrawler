@@ -10,22 +10,22 @@
 <div class="container">
     <div class="infobox" th:object="${backpack}">
         <div th:inline="text">
-            Left hand slot: [[${backpack.leftHandSlot} ? ${backpack.leftHandSlot.name} : 'No equipment']]
+            <p>Left hand slot: [[${backpack.leftHandSlot} ? ${backpack.leftHandSlot.name} : 'No equipment']]</p>
         </div>
         <div th:inline="text">
-            Right hand slot: [[${backpack.rightHandSlot} ? ${backpack.rightHandSlot.name} : 'No equipment']]
+            <p>Right hand slot: [[${backpack.rightHandSlot} ? ${backpack.rightHandSlot.name} : 'No equipment']]</p>
         </div>
         <div th:inline="text">
-            Chest slot: [[${backpack.chestSlot} ? ${backpack.chestSlot.name} : 'No equipment']]
+            <p>Chest slot: [[${backpack.chestSlot} ? ${backpack.chestSlot.name} : 'No equipment']]</p>
         </div>
         <div th:inline="text">
-            Feet slot: [[${backpack.feetSlot} ? ${backpack.feetSlot.name} : 'No equipment']]
+            <p>Feet slot: [[${backpack.feetSlot} ? ${backpack.feetSlot.name} : 'No equipment']]</p>
         </div>
         <div th:inline="text">
-            Arms slot: [[${backpack.armsSlot} ? ${backpack.armsSlot.name} : 'No equipment']]
+            <p>Arms slot: [[${backpack.armsSlot} ? ${backpack.armsSlot.name} : 'No equipment']]</p>
         </div>
         <div>
-            Hero's Backpack:
+            <p>Hero's Backpack:</p>
         </div>
         <div th:each="item : ${backpack.getBaggage()}">
             <div th:text="${item.key + 1} + '. ' + ${item.value.getName()}">
