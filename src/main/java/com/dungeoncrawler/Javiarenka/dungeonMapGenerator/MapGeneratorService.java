@@ -10,7 +10,7 @@ public class MapGeneratorService
 
     public static void main(String[] args) throws IOException
     {
-        Stage stage = new Stage(50,50);
+        Stage stage = new Stage(100, 100);
         RoomBuilder rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
@@ -24,7 +24,9 @@ public class MapGeneratorService
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
+        rb.removeCorridorClusters();
         buildDebugSite(stage);
+        stage.saveToTxt();
     }
 
     public Stage generateMap(int width, int height) throws IOException
@@ -150,7 +152,7 @@ public class MapGeneratorService
         StringBuilder sb = new StringBuilder();
         int columnsNo = stage.getWidth();
         int rowsNo = stage.getHeight();
-        int mapHeightPercentage = 60;
+        int mapHeightPercentage = 90;
         double widthRatio = columnsNo / rowsNo;
 
         sb.append(".stage-grid").append("{").append("\n");

@@ -55,6 +55,20 @@ public class TileNavigator
         return outputArray;
     }
 
+    public List<Tile> getSurroundingTiles(Tile middleTile)
+    {
+        List<Tile> outputList = new ArrayList<>();
+        Map<Direction, Tile> crossTiles = getNeighboringTilesWithDirections(middleTile);
+
+        outputList.addAll(crossTiles.values());
+        outputList.add(getNextTile(crossTiles.get(Direction.UP),Direction.LEFT));
+        outputList.add(getNextTile(crossTiles.get(Direction.UP),Direction.RIGHT));
+        outputList.add(getNextTile(crossTiles.get(Direction.DOWN),Direction.LEFT));
+        outputList.add(getNextTile(crossTiles.get(Direction.DOWN),Direction.RIGHT));
+
+        return outputList;
+    }
+
 //    public Tile[] getNeighboringTiles(Tile middleTile, TileType type)
 //    {
 //        List<Tile> neighboursList = new ArrayList<>(Arrays.asList(getNeighboringTiles(middleTile)));
@@ -88,6 +102,14 @@ public class TileNavigator
     {
         Tile[] neighboringTiles = getNeighboringTiles(checkedTile);
         return numberOfTilesOfTypeIn(type, neighboringTiles);
+    }
+
+    public int numberOfSurroundingOfType(TileType type, Tile checkedTile)
+    {
+        Tile[] surroundingTiles = new Tile[8];
+        getSurroundingTiles(checkedTile).toArray(surroundingTiles);
+
+        return numberOfTilesOfTypeIn(type, surroundingTiles);
     }
 
     public int numberOfNeighborsOfType(TileType type, Tile[] checkedTiles)
@@ -128,38 +150,7 @@ public class TileNavigator
         return outputArray;
     }
 
-    private Set<Tile> getTouchingTilesOfType(Set<Tile> entrySet, TileType targetType)
-    {
-        Set<Tile> outputSet = new HashSet<>();
-        Set<Tile> sameTouchingTiles = new HashSet<>();
-        outputSet.addAll(entrySet);
-
-
-        for (Tile tile : outputSet)
-        {
-            Tile[] neighboringTiles = getNeighboringTiles(tile);
-            for (Tile neighboringTile : neighboringTiles)
-            {
-                if (neighboringTile.getType() == targetType)
-                {
-                    sameTouchingTiles.add(neighboringTile);
-                }
-            }
-        }
-
-        outputSet.addAll(sameTouchingTiles);
-
-        if (outputSet.size() == entrySet.size())
-        {
-            return outputSet;
-        }
-        else
-        {
-            return getTouchingTilesOfType(outputSet, targetType);
-        }
-    }
-
-    Set<Tile> getTouchingTilesOfType2(Tile sourceTile, TileType targetType)
+    Set<Tile> getTouchingTilesOfType(Tile sourceTile, TileType targetType)
     {
 
         Set<Tile> touchingTiles = new HashSet<>();
@@ -170,33 +161,19 @@ public class TileNavigator
         int touchingTilesNo = 1;
         int prevTouchingTilesNo;
 
-        //DEBUG
-        //sourceTile.setType(TileType.BREADCRUMB);
-
         do
         {
             prevTouchingTilesNo = touchingTilesNo;
-
             touchingTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
-            //MapGeneratorService.buildDebugSite(stage);
-            //MapGeneratorService.buildDebugSite(stage);
 
             for (Tile tile : touchingTiles)
             {
                 neighboringTilesOfSameType.addAll(getNeighboringTiles(tile, targetType));
             }
 
-
             neighboringTilesOfSameType.forEach(tile -> tile.setType(TileType.CUTOFF));
-            //MapGeneratorService.buildDebugSite(stage);
-            //MapGeneratorService.buildDebugSite(stage);
-
             outputSet.addAll(neighboringTilesOfSameType);
-            //outputSet.forEach(tile -> tile.setType(TileType.BREADCRUMB));
             neighboringTilesOfSameType.removeAll(touchingTiles);
-            //MapGeneratorService.buildDebugSite(stage);
-            //MapGeneratorService.buildDebugSite(stage);
-
             touchingTilesNo = outputSet.size();
             touchingTiles = new HashSet<>(neighboringTilesOfSameType);
             neighboringTilesOfSameType.clear();
@@ -204,17 +181,6 @@ public class TileNavigator
 
         outputSet.forEach(tile -> tile.setType(targetType));
         return outputSet;
-    }
-
-    Set<Tile> getTouchingTilesOfType(Tile sourceTile, TileType targetType)
-    {
-        Set<Tile> touchingTilesOfType = new HashSet<>();
-
-        //touchingTilesOfType.add(sourceTile);
-        //touchingTilesOfType = getTouchingTilesOfType(touchingTilesOfType, targetType);
-        touchingTilesOfType = getTouchingTilesOfType2(sourceTile, targetType);
-
-        return touchingTilesOfType;
     }
 
     Set<Tile> getTouchingTilesOfSameType(Tile sourceTile)

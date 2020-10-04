@@ -853,7 +853,7 @@ public class RoomBuilder
 
         shortSections = sections.stream()
                 .filter(corridorSection -> corridorSection.getSection()
-                .stream().allMatch(tile -> tileNav.numberOfNeighborsOfType(TileType.DOOR, tile) == 0))
+                        .stream().allMatch(tile -> tileNav.numberOfNeighborsOfType(TileType.DOOR, tile) == 0))
                 .collect(Collectors.toList());
 
         for (CorridorSection section : shortSections)
@@ -871,4 +871,46 @@ public class RoomBuilder
         intersections.forEach(tile -> tile.setType(TileType.CORRIDOR));
     }
 
+    public void removeCorridorClusters()
+    {
+        List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
+        List<Tile> clusteredCorridors = allCorridors.stream()
+                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 4)
+                .collect(Collectors.toList());
+
+        clusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+
+        clusteredCorridors.stream() //wyrzucamy wszystkie skupiska mniejsze niż 4
+                .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() < 4)
+                .forEach(tile -> tile.setType(TileType.CORRIDOR));
+
+        clusteredCorridors.clear();
+        clusteredCorridors.addAll(new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION))));
+
+        clusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
+        List<Tile> removableTiles = new ArrayList<>();
+
+        for (Tile tile : clusteredCorridors)
+        {
+            tile.setType(TileType.OBSTRUCTION);
+            if (tileNav.getUnreachableCorridorTiles().length == 0)
+            {
+                removableTiles.add(tile);
+            }
+            tile.setType(TileType.CORRIDOR);
+        }
+
+        if (removableTiles.size() >= 1)
+        {
+            do
+            {
+                removableTiles.get(0).setType(TileType.OBSTRUCTION);
+                if (tileNav.getUnreachableCorridorTiles().length > 0)
+                {
+                    removableTiles.get(0).setType(TileType.CORRIDOR);
+                }
+                removableTiles.remove(0);
+            } while (removableTiles.size() > 1);
+        }
+    }
 }
