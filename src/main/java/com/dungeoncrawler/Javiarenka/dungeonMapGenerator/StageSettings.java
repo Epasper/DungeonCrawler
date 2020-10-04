@@ -9,4 +9,5 @@ public class StageSettings
     static int roomHeightPercentage = 25;
     static int minRoomWidth = 4;
     static int minRoomHeight = 4;
+    static double maxRatio = 1.5;
 }

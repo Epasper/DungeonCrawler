@@ -1,7 +1,9 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class RoomBuilder
@@ -260,6 +262,19 @@ public class RoomBuilder
         }
     }
 
+    private double getRatio(int width, int height)
+    {
+        return (width >= height) ? (double)width / (double)height : (double)height / (double)width;
+    }
+
+    private void reduceTheRatio(AtomicInteger width, AtomicInteger height)
+    {
+        AtomicInteger biggerSize = (height.intValue() > width.intValue()) ? height : width;
+        AtomicInteger smallerSize = (height.intValue() > width.intValue()) ? width : height;
+
+        biggerSize.set((int)(smallerSize.intValue() * StageSettings.maxRatio));
+    }
+
     public boolean insertRoom(Tile seedTile, int roomWidth, int roomHeight, BuildDirection buildDirection) //throws IOException
     {
         int availableWidth;
@@ -295,11 +310,11 @@ public class RoomBuilder
         availableWidth = getAvailableWidth(checkedColumn, buildDirection);
         availableHeight = getAvailableHeight(checkedRow, buildDirection);
 
-        boolean roomPlaceable = false;
+        //boolean roomPlaceable = false;
 
         if (!((availableWidth >= StageSettings.minRoomWidth) && (availableHeight >= StageSettings.minRoomHeight)))
         {
-            System.out.println("Not enough space to fit any room. Tile locked in wall");
+            //System.out.println("Not enough space to fit any room. Tile locked in wall");
             seedTile.setType(TileType.WALL);
             return false;
         }
@@ -313,7 +328,18 @@ public class RoomBuilder
         maxRoomWidth = Math.min(maxRoomWidth, roomWidth);
         maxRoomHeight = Math.min(maxRoomHeight, roomHeight);
 
-        Room room = new Room(getTilesRectangle(seedTile, maxRoomWidth, maxRoomHeight, buildDirection));
+        AtomicInteger setWidth = new AtomicInteger(maxRoomWidth);
+        AtomicInteger setHeight = new AtomicInteger(maxRoomHeight);
+
+        double ratio = getRatio(maxRoomWidth, maxRoomHeight);
+        if (ratio > StageSettings.maxRatio)
+        {
+            reduceTheRatio(setWidth, setHeight);
+        }
+
+        System.out.println("Room size: " + setWidth.intValue() + "/" + setHeight.intValue());
+
+        Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection));
         System.out.println(room.toString());
 
         surroundWithCorridor(room);
