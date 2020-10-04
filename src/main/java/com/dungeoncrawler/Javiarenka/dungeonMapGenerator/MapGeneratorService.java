@@ -10,19 +10,19 @@ public class MapGeneratorService
 
     public static void main(String[] args) throws IOException
     {
-        //Stage stage = new Stage(StageSettings.stageWidth, StageSettings.stageHeight);
-        Stage stage = new Stage(20,20);
-        RoomBuilder rb = new RoomBuilder(stage);
-
-        stage.createPeripheralCorridor();
-        stage.createPeripheralWall();
-        rb.fillStageWithRooms();
+//        Stage stage = new Stage(20,20);
+//        RoomBuilder rb = new RoomBuilder(stage);
+//        stage.createPeripheralCorridor();
+//        stage.createPeripheralWall();
+//        rb.fillStageWithRooms();
+//        rb.obstructPercentageOfCorridors(10);
+//        rb.addDoorToAllRooms();
+//        stage.saveToTxt();
+        Stage stageTxt = new Stage("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+        RoomBuilder rb = new RoomBuilder(stageTxt);
+        rb.scanTilesForRooms();
         rb.obstructPercentageOfCorridors(60);
-        rb.addDoorToAllRooms();
-        stage.saveToTxt();
-
-        //buildHtml(stage);
-        buildCSS(stage);
+        buildDebugSite(stageTxt);
     }
 
     public Stage generateMap(int width, int height) throws IOException
@@ -32,21 +32,34 @@ public class MapGeneratorService
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
         rb.fillStageWithRooms();
+        stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
         stage.saveToTxt();
         //buildHtml(stage);
-        //buildCSS(stage);
+        buildCSS(stage);
 
         return stage;
     }
 
-    public static void buildHtml(Stage stage) throws IOException
+    public static void buildDebugSite(Stage stage)
     {
-        //File file = new File("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/stage.html");
-        File file = new File("./src/main/resources/templates/dungeonMap.html");
+        try
+        {
+            buildDebugHtml(stage);
+            buildDebugCSS(stage);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static void buildDebugHtml(Stage stage) throws IOException
+    {
+        File file = new File("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/debug/stage.html");
+        //File file = new File("./src/main/resources/templates/dungeonMap.html");
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        BufferedReader reader = new BufferedReader(new FileReader("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/stageTemplate.html"));
+        BufferedReader reader = new BufferedReader(new FileReader("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/debug/stageTemplate.html"));
         String s;
 
         while ((s = reader.readLine()) != null)
@@ -55,6 +68,9 @@ public class MapGeneratorService
             writer.newLine();
         }
 
+
+        writer.append("<div class=\"stage-container\">");
+        writer.newLine();
         writer.append("\t").append("<div class=\"stage-grid\">");
         writer.newLine();
 
@@ -70,15 +86,28 @@ public class MapGeneratorService
 
         writer.append("\t").append("</div>");
         writer.newLine();
+        writer.append("</div>");
+        writer.newLine();
 
         writer.append("</body>").append("\n").append("</html>");
         reader.close();
         writer.close();
     }
 
+    public static void buildDebugCSS(Stage stage) throws IOException
+    {
+        buildCSS(stage, "./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/debug/mapStyle.css");
+
+    }
+
     public static void buildCSS(Stage stage) throws IOException
     {
-        File file = new File("./src/main/resources/static/css/mapStyle.css");
+        buildCSS(stage, "./src/main/resources/static/css/mapStyle.css");
+    }
+
+    public static void buildCSS(Stage stage, String pathname) throws IOException
+    {
+        File file = new File(pathname);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         BufferedReader reader = new BufferedReader(new FileReader("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/stylesTemplate.css"));
         String s;

@@ -1,12 +1,10 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Stage
 {
@@ -21,6 +19,7 @@ public class Stage
         height = stageHeight;
 
         tiles = new Tile[width][height];
+
         for (int coordY = 0; coordY < height; coordY++)
         {
             for (int coordX = 0; coordX < width; coordX++)
@@ -44,6 +43,29 @@ public class Stage
                 tiles[coordX][coordY] = stageTiles[coordX][coordY];
             }
         }
+    }
+
+    Stage(String filePath) throws IOException
+    {
+        File file = new File(filePath);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StageTxtParser stp = new StageTxtParser(filePath);
+
+
+        width = stp.getWidth();
+        height = stp.getHeight();
+        tiles = new Tile[width][height];
+
+        for (int coordY = 0; coordY < height; coordY++)
+        {
+            for (int coordX = 0; coordX < width; coordX++)
+            {
+                tiles[coordX][coordY] = new Tile(coordX, coordY);
+                tiles[coordX][coordY].setType(stp.getTileTypeValue(coordX, coordY));
+            }
+
+        }
+
     }
 
     public int getWidth()
@@ -203,13 +225,18 @@ public class Stage
         return sb.toString();
     }
 
-    public void saveToTxt() throws IOException
+    public void saveToTxt(String path) throws IOException
     {
-        File file = new File("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/stage.txt");
+        File file = new File(path);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
         writer.append(this.toString());
         writer.close();
+    }
+
+    public void saveToTxt() throws IOException
+    {
+        saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/stage.txt");
     }
 
     public void setTileTypes(Tile[] tiles, TileType targetType)
@@ -292,6 +319,18 @@ public class Stage
         return outputRange;
     }
 
+    public Tile[] getNeighboringTiles(Tile middleTile)
+    {
+        Tile[] outputArray = new Tile[Direction.SIZE];
+        int i = 0;
+        for (Direction dir : Direction.VALUES)
+        {
+            outputArray[i] = getNextTile(middleTile, dir);
+            i++;
+        }
+        return outputArray;
+    }
+
 //    void surroundWithCorridor(Room room) //throws IOException
 //    {
 //        Tile[][] surroundingTiles = getSurroundingTiles(room.getTiles());
@@ -334,5 +373,20 @@ public class Stage
             }
         }
         return null;
+    }
+
+    public Tile getRandomTileOfType(TileType type)
+    {
+        Tile[] tiles = getTilesOfType(type);
+        Random rand = new Random();
+
+        if (tiles.length > 1)
+        {
+            return tiles[rand.nextInt(tiles.length - 1)];
+        }
+        else
+        {
+            return tiles[0];
+        }
     }
 }

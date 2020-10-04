@@ -6,11 +6,13 @@ import java.util.*;
 public class RoomBuilder
 {
     private Stage stage;
+    private TileNavigator tileNav;
     private Tile[] seeds = new Tile[BuildDirection.SIZE];
 
     public RoomBuilder(Stage stage)
     {
         this.stage = stage;
+        this.tileNav = new TileNavigator(stage);
 
         seeds[0] = stage.getTile(2, 2); //RD
         seeds[1] = stage.getTile(stage.getWidth() - 3, 2); //LD
@@ -296,7 +298,7 @@ public class RoomBuilder
 
         if (!((availableWidth >= StageSettings.minRoomWidth) && (availableHeight >= StageSettings.minRoomHeight)))
         {
-            System.out.println("Not enough space to fit any room. mapGenerator.Tile locked in wall");
+            System.out.println("Not enough space to fit any room. Tile locked in wall");
             seedTile.setType(TileType.WALL);
             return false;
         }
@@ -319,6 +321,71 @@ public class RoomBuilder
         //stage.saveToTxt();
 
         return true;
+    }
+
+    private Tile[][] getRangeFromSet(Set<Tile> tilesSet)
+    {
+        int minX, maxX, minY, maxY;
+
+        minX = tilesSet.stream()
+                .min(Comparator.comparing(Tile::getX)).get().getX();
+        maxX = tilesSet.stream()
+                .max(Comparator.comparing(Tile::getX)).get().getX();
+        minY = tilesSet.stream()
+                .min(Comparator.comparing(Tile::getY)).get().getY();
+        maxY = tilesSet.stream()
+                .max(Comparator.comparing(Tile::getY)).get().getY();
+
+        int width = maxX - minX + 1;
+        int height = maxY - minY + 1;
+
+        Tile[][] outputArray = new Tile[width][height];
+
+        for (Tile tile : tilesSet)
+        {
+            outputArray[tile.getX() - minX][tile.getY() - minY] = tile;
+        }
+
+        return outputArray;
+    }
+
+    public void scanTilesForRooms()
+    {
+        Tile seedTile;
+        List<Tile> roomTilesList = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.ROOM)));
+
+        do
+        {
+            Tile currentTile = stage.getFirstTileOfType(TileType.ROOM);
+            seedTile = stage.getTile(currentTile.getX() - 1, currentTile.getY() - 1);
+
+            Set<Tile> innerRoomTilesSet = tileNav.getTouchingTilesOfSameType(currentTile);
+
+            Tile[][] innerRoomArray = getRangeFromSet(innerRoomTilesSet);
+            Tile[][] outerRoomArray = stage.getSurroundingTiles(innerRoomArray);
+
+            Room room = new Room(getTilesRectangle(seedTile, outerRoomArray.length, outerRoomArray[0].length, BuildDirection.RD));
+            stage.updateRoomsSet(room);
+
+            for (Tile tile : innerRoomTilesSet)
+            {
+                roomTilesList.remove(tile);
+                tile.setType(TileType.ROOM_SCANNED);
+            }
+            try
+            {
+                stage.saveToTxt();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        } while (roomTilesList.size() > 0);
+
+        Tile[] scannedTiles = stage.getTilesOfType(TileType.ROOM_SCANNED);
+        for (Tile tile : scannedTiles)
+        {
+            tile.setType(TileType.ROOM);
+        }
     }
 
 
@@ -357,95 +424,6 @@ public class RoomBuilder
 
         return insertRoom(seedTile, randRoomWidth, randRoomHeight, buildDirection);
 
-    }
-
-    public Tile getNextTileLooped(Tile tile, BuildDirection buildDir)
-    {
-        Tile nextTile = new Tile();
-        try
-        {
-            switch (buildDir)
-            {
-
-                case RD:
-                    if (tile.getX() == stage.getWidth() - 1) //jeśli jest na prawym skraju planszy
-                    {
-                        if (tile.getY() == stage.getHeight() - 1) //jeśli jest też na samym dole planszy
-                        {
-                            nextTile = stage.getTile(0, 0); //resetuj w lewy górny róg
-                        }
-                        else
-                        {
-                            nextTile = stage.getTile(0, tile.getY() + 1);
-                        }
-                    }
-                    else
-                    {
-                        nextTile = stage.getTile(tile.getX() + 1, tile.getY());
-                    }
-                    break;
-
-                case LD:
-                    if (tile.getX() == 0) //jeśli jest na lewym skraju planszy
-                    {
-                        if (tile.getY() == stage.getHeight() - 1) //jeśli jest też na samym dole planszy
-                        {
-                            nextTile = stage.getTile(stage.getWidth() - 1, 0); //resetuj w prawy górny róg
-                        }
-                        else
-                        {
-                            nextTile = stage.getTile(stage.getWidth() - 1, tile.getY() + 1);
-                        }
-                    }
-                    else
-                    {
-                        nextTile = stage.getTile(tile.getX() - 1, tile.getY());
-                    }
-                    break;
-
-                case RU:
-                    if (tile.getX() == stage.getWidth() - 1) //jeśli jest na prawym skraju planszy
-                    {
-                        if (tile.getY() == 0) //jeśli jest też na samej górze planszy
-                        {
-                            nextTile = stage.getTile(0, stage.getHeight() - 1); //resetuj w lewy dolny róg
-                        }
-                        else
-                        {
-                            nextTile = stage.getTile(0, tile.getY() - 1);
-                        }
-                    }
-                    else
-                    {
-                        nextTile = stage.getTile(tile.getX() + 1, tile.getY());
-                    }
-                    break;
-
-                case LU:
-                    if (tile.getX() == 0) //jeśli jest na lewym skraju planszy
-                    {
-                        if (tile.getY() == 0) //jeśli jest też na samej górze planszy
-                        {
-                            nextTile = stage.getTile(stage.getWidth() - 1, stage.getHeight() - 1); //resetuj w prawy dolny róg
-                        }
-                        else
-                        {
-                            nextTile = stage.getTile(stage.getWidth() - 1, tile.getY() - 1);
-                        }
-                    }
-                    else
-                    {
-                        nextTile = stage.getTile(tile.getX() - 1, tile.getY());
-                    }
-                    break;
-
-            }
-        } catch (Exception e)
-        {
-            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
-            //e.printStackTrace();
-        }
-        return nextTile;
     }
 
     public Tile getRandomEmptyTile()
@@ -493,19 +471,18 @@ public class RoomBuilder
         int randomNumberVertical = getRandomNumberInRange(0, randomReach);
         int randomNumberHorizontal = getRandomNumberInRange(0, randomReach);
 
-        if (randomNumberHorizontal==0 && randomNumberVertical ==0)
+        if (randomNumberHorizontal == 0 && randomNumberVertical == 0)
         {
             return outputSeed;
         }
 
 
-        switch(buildDir)
+        switch (buildDir)
         {
             case RD:
                 //outputSeed = stage.getTile()
                 break;
         }
-
 
         return outputSeed;
     }
@@ -524,25 +501,25 @@ public class RoomBuilder
             switch (buildDir)
             {
                 case RD:
-                    outputSeed = getNextTileLooped(outputSeed, BuildDirection.RD);
+                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RD);
                     //outputSeed = getRandomEmptyTile();
                     setSeedByDirection(outputSeed, BuildDirection.RD);
                     break;
 
                 case LD:
-                    outputSeed = getNextTileLooped(outputSeed, BuildDirection.LD);
+                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LD);
                     //outputSeed = getRandomEmptyTile();
                     setSeedByDirection(outputSeed, BuildDirection.LD);
                     break;
 
                 case RU:
-                    outputSeed = getNextTileLooped(outputSeed, BuildDirection.RU);//
+                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RU);//
                     //outputSeed = getRandomEmptyTile();
                     setSeedByDirection(outputSeed, BuildDirection.RU);
                     break;
 
                 case LU:
-                    outputSeed = getNextTileLooped(outputSeed, BuildDirection.LU);//
+                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LU);//
                     //outputSeed = getRandomEmptyTile();
                     setSeedByDirection(outputSeed, BuildDirection.LU);
                     break;
@@ -593,6 +570,8 @@ public class RoomBuilder
 
     private void squeezeSurroundingDoubleCorridors(Room room)
     {
+
+        //TODO: nie zawsze poprawnie squeezuje -> sprawdzić dokładnie
         for (Wall wall : room.getWalls())
         {
             squeezeDoubleCorridor(wall);
@@ -607,72 +586,10 @@ public class RoomBuilder
         }
     }
 
-    private Map<Direction, Tile> getNeighboringTilesWithDirections(Tile tile)
-    {
-        Map<Direction, Tile> outputMap = new HashMap<>();
-
-        for (Direction dir : Direction.values())
-        {
-            outputMap.put(dir, stage.getNextTile(tile, dir));
-        }
-        return outputMap;
-    }
-
-    public boolean allCorridorsAreReachable() //throws IOException
-    {
-        Tile currentTile = stage.getFirstTileOfType(TileType.CORRIDOR);
-        Tile scannedTile;
-        List<Tile> walkedTiles = new ArrayList<>();
-        List<Tile> possiblePathTiles = new ArrayList<>();
-
-        //TODO: jest bug - istnieje mała szansa, że pierwsze wylosowane pole będzie jednopolowym ślepym zaułkiem, wtedy possible path tiles = 0
-
-        do
-        {
-            walkedTiles.add(currentTile);
-            currentTile.setType(TileType.WALKED);
-            Map<Direction, Tile> neighboringTiles = getNeighboringTilesWithDirections(currentTile);
-            for (Direction dir : neighboringTiles.keySet())
-            {
-                scannedTile = neighboringTiles.get(dir);
-                if (scannedTile.getType() == TileType.CORRIDOR)
-                {
-                    possiblePathTiles.add(scannedTile);
-                    scannedTile.setType(TileType.BREADCRUMB);
-                }
-                else if (scannedTile.getType() == TileType.BREADCRUMB)
-                {
-                    possiblePathTiles.remove(scannedTile);
-                    possiblePathTiles.add(scannedTile);
-                }
-            }
-
-            if (possiblePathTiles.size() > 0)
-            {
-                currentTile = possiblePathTiles.get(possiblePathTiles.size() - 1);
-                possiblePathTiles.remove(possiblePathTiles.size() - 1);
-            }
-            //stage.saveToTxt();
-        } while (possiblePathTiles.size() > 0);
-
-        walkedTiles.add(currentTile);
-        currentTile.setType(TileType.WALKED);
-        //stage.saveToTxt();
-
-        Tile[] leftoverCorridorTiles = stage.getTilesOfType(TileType.CORRIDOR);
-
-        for (Tile walkedTile : walkedTiles)
-        {
-            walkedTile.setType(TileType.CORRIDOR);
-        }
-
-        //System.out.println("Nie każde pole korytarza jest dostępne dla zwiedzających xD");
-        return leftoverCorridorTiles.length <= 0;
-
-    }
-
     private boolean allRoomsAreReachable()
     {
+
+        //TODO: coś nie tak - zwłaszcza dla narożnych pól pokoju(???)
         Tile currentTile;
         Tile neighboringTile;
         boolean roomReachable;
@@ -692,9 +609,17 @@ public class RoomBuilder
                         break;
                     }
                 }
-                if (roomReachable) break;
+                if (roomReachable)
+                {
+
+                    break;
+                }
             }
-            if (!roomReachable) return false;
+            if (!roomReachable)
+            {
+
+                return false;
+            }
         }
 
         return true;
@@ -720,7 +645,8 @@ public class RoomBuilder
 
     public void createObstructionsInCorridors(int targetObstructionsCount) //throws IOException
     {
-        int possibleTries = 20 * targetObstructionsCount;
+        //int possibleTries = 20 * targetObstructionsCount;
+        int possibleTries = 15 * targetObstructionsCount;
         createObstructionsInCorridors(targetObstructionsCount, possibleTries);
     }
 
@@ -729,25 +655,109 @@ public class RoomBuilder
         int triesCounter = 0;
         int createdObstructionsNumber = 0;
         Tile randomCorridorTile;
+        ArrayList<Tile> corridorTiles;
+        corridorTiles = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
+        List<Tile> excludedTiles = new ArrayList<>();
 
         do
         {
+            //randomCorridorTile = getRandomTileOfType(TileType.CORRIDOR);
+            //TODO: usunąć ifa poniżej po wyeliminowaniu buga
+            if (corridorTiles.size() == 0)
+            {
+                int i = 0;
+                i++;
+                MapGeneratorService.buildDebugSite(stage);
+                MapGeneratorService.buildDebugSite(stage);
+            }
 
-            randomCorridorTile = getRandomTileOfType(TileType.CORRIDOR);
-            randomCorridorTile.setType(TileType.OBSTRUCTION);
-            if (allCorridorsAreReachable() && allRoomsAreReachable())
+            randomCorridorTile = tileNav.getRandomTileFromList(corridorTiles);
+            randomCorridorTile.setType(TileType.DEBUG);
+            MapGeneratorService.buildDebugSite(stage);
+            MapGeneratorService.buildDebugSite(stage);
+
+            Tile[] unreachableCorridorTiles = tileNav.getUnreachableCorridorTiles();
+            randomCorridorTile.setType(TileType.UNREACHABLE);
+            stage.setTileTypes(unreachableCorridorTiles, TileType.UNREACHABLE);
+            MapGeneratorService.buildDebugSite(stage);
+            MapGeneratorService.buildDebugSite(stage);
+
+            if (unreachableCorridorTiles.length <= 0 && allRoomsAreReachable())
             {
                 createdObstructionsNumber++;
+                randomCorridorTile.setType(TileType.OBSTRUCTION);
+                corridorTiles.remove(randomCorridorTile);
+                MapGeneratorService.buildDebugSite(stage);
+                MapGeneratorService.buildDebugSite(stage);
+                System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
             }
             else
             {
-                triesCounter++;
-                //System.out.println("Liczba prób: " + triesCounter + "/" + possibleTries);
-                randomCorridorTile.setType(TileType.CORRIDOR);
+                //TODO: jeśli powstał ślepy odcinek korytarza, to spróbować go wypełnić
+
+                stage.setTileTypes(unreachableCorridorTiles, TileType.CUTOFF);
+                MapGeneratorService.buildDebugSite(stage);
+                MapGeneratorService.buildDebugSite(stage);
+
+                if (allRoomsAreReachable())
+                {
+                    createdObstructionsNumber++;
+                    corridorTiles.remove(randomCorridorTile);
+                    for (Tile obstructedCorridorTile : unreachableCorridorTiles)
+                    {
+                        obstructedCorridorTile.setType(TileType.OBSTRUCTION);
+                        corridorTiles.remove(obstructedCorridorTile);
+                    }
+                    randomCorridorTile.setType(TileType.OBSTRUCTION);
+                    MapGeneratorService.buildDebugSite(stage);
+                    MapGeneratorService.buildDebugSite(stage);
+                    createdObstructionsNumber = createdObstructionsNumber + unreachableCorridorTiles.length;
+                    System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
+                }
+                else
+                {
+                    stage.setTileTypes(unreachableCorridorTiles, TileType.CORRIDOR);
+                    triesCounter++;
+                    System.out.println("Liczba prób: " + triesCounter + "/" + possibleTries);
+                    randomCorridorTile.setType(TileType.CORRIDOR);
+                    MapGeneratorService.buildDebugSite(stage);
+                    MapGeneratorService.buildDebugSite(stage);
+                    corridorTiles.remove(randomCorridorTile);
+                    excludedTiles.add(randomCorridorTile);
+
+
+                    //TODO: można spróbować excludować nie tylko to 1 pole, ale też wszystkie sąsiadujące aż do najbliższych skrzyżowań,
+                    // ale po obu stronach musi być skrzyżowanie (trzeba przeanalizować bardziej)
+                    // lub jeśli korytarz jest prosty (nie ma rozgałęzień) to można zblokować cały odcinek między dwoma excludami
+
+                    Tile[] intersections = tileNav.getCorridorIntersectionTiles();
+
+                    for (Tile tile : excludedTiles)
+                    {
+                        tile.setType(TileType.EXCLUDED);
+                    }
+                    MapGeneratorService.buildDebugSite(stage);
+                    MapGeneratorService.buildDebugSite(stage);
+
+                    Set<Tile> neighboringAreaOfExcludedTile = tileNav.getTouchingTilesOfType(randomCorridorTile,TileType.CORRIDOR);
+//                    for(Tile tile : intersections)
+//                    {
+//                        tile.setType(TileType.INTERSECTION);
+//                    }
+
+                    if (neighboringAreaOfExcludedTile.stream().noneMatch(this.tileNav::isIntersection))
+                    {
+
+                    }
+
+
+                    for (Tile tile : excludedTiles)
+                    {
+                        tile.setType(TileType.CORRIDOR);
+                    }
+                }
             }
         } while (createdObstructionsNumber < targetObstructionsCount && triesCounter < possibleTries);
-
-        System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
 
     }
 
