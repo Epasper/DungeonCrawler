@@ -1,6 +1,7 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TileNavigator
 {
@@ -11,7 +12,69 @@ public class TileNavigator
         this.stage = stage;
     }
 
-    private int numberOfTilesOfTypeIn(TileType type, Tile[] tileArray)
+    public Tile getNextTile(Tile tile, Direction dir)
+    {
+        Tile nextTile = new Tile();
+        try
+        {
+            switch (dir)
+            {
+                case DOWN:
+                    nextTile = stage.getTile(tile.getX(), tile.getY() + 1);
+                    break;
+
+                case RIGHT:
+                    nextTile = stage.getTile(tile.getX() + 1, tile.getY());
+                    break;
+
+                case UP:
+                    nextTile = stage.getTile(tile.getX(), tile.getY() - 1);
+                    break;
+
+                case LEFT:
+                    nextTile = stage.getTile(tile.getX() - 1, tile.getY());
+                    break;
+            }
+        } catch (Exception e)
+        {
+            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
+            //e.printStackTrace();
+        }
+        return nextTile;
+    }
+
+    public Tile[] getNeighboringTiles(Tile middleTile)
+    {
+        Tile[] outputArray = new Tile[Direction.SIZE];
+        int i = 0;
+        for (Direction dir : Direction.VALUES)
+        {
+            outputArray[i] = getNextTile(middleTile, dir);
+            i++;
+        }
+        return outputArray;
+    }
+
+//    public Tile[] getNeighboringTiles(Tile middleTile, TileType type)
+//    {
+//        List<Tile> neighboursList = new ArrayList<>(Arrays.asList(getNeighboringTiles(middleTile)));
+//        List<Tile> neighboursOfType = neighboursList.stream().filter(tile -> tile.getType() == type).collect(Collectors.toList());
+//        Tile[] outputArray = new Tile[neighboursOfType.size()];
+//
+//        neighboursOfType.toArray(outputArray);
+//
+//        return outputArray;
+//    }
+
+    public List<Tile> getNeighboringTiles(Tile middleTile, TileType type)
+    {
+        List<Tile> neighboursList = new ArrayList<>(Arrays.asList(getNeighboringTiles(middleTile)));
+        List<Tile> neighboursOfType = neighboursList.stream().filter(tile -> tile.getType() == type).collect(Collectors.toList());
+
+        return neighboursOfType;
+    }
+
+    public int numberOfTilesOfTypeIn(TileType type, Tile[] tileArray)
     {
         int i = 0;
         for (Tile tile : tileArray)
@@ -21,9 +84,27 @@ public class TileNavigator
         return i;
     }
 
+    public int numberOfNeighborsOfType(TileType type, Tile checkedTile)
+    {
+        Tile[] neighboringTiles = getNeighboringTiles(checkedTile);
+        return numberOfTilesOfTypeIn(type, neighboringTiles);
+    }
+
+    public int numberOfNeighborsOfType(TileType type, Tile[] checkedTiles)
+    {
+        int counter = 0;
+        for (Tile tile : checkedTiles)
+        {
+            Tile[] neighboringTiles = getNeighboringTiles(tile);
+            counter += numberOfTilesOfTypeIn(type, neighboringTiles);
+        }
+
+        return counter;
+    }
+
     boolean isIntersection(Tile checkedTile)
     {
-        Tile[] neighboringTiles = stage.getNeighboringTiles(checkedTile);
+        Tile[] neighboringTiles = getNeighboringTiles(checkedTile);
         return numberOfTilesOfTypeIn(TileType.CORRIDOR, neighboringTiles) >= 3;
     }
 
@@ -35,7 +116,7 @@ public class TileNavigator
 
         for (Tile tile : corridorTiles)
         {
-            neighboringTiles = stage.getNeighboringTiles(tile);
+            neighboringTiles = getNeighboringTiles(tile);
             if (numberOfTilesOfTypeIn(TileType.CORRIDOR, neighboringTiles) >= 3)
             {
                 intersectionTiles.add(tile);
@@ -56,7 +137,7 @@ public class TileNavigator
 
         for (Tile tile : outputSet)
         {
-            Tile[] neighboringTiles = stage.getNeighboringTiles(tile);
+            Tile[] neighboringTiles = getNeighboringTiles(tile);
             for (Tile neighboringTile : neighboringTiles)
             {
                 if (neighboringTile.getType() == targetType)
@@ -78,12 +159,60 @@ public class TileNavigator
         }
     }
 
+    Set<Tile> getTouchingTilesOfType2(Tile sourceTile, TileType targetType)
+    {
+
+        Set<Tile> touchingTiles = new HashSet<>();
+        touchingTiles.add(sourceTile);
+        Set<Tile> outputSet = new HashSet<>(touchingTiles);
+        Set<Tile> neighboringTilesOfSameType = new HashSet<>();
+
+        int touchingTilesNo = 1;
+        int prevTouchingTilesNo;
+
+        //DEBUG
+        //sourceTile.setType(TileType.BREADCRUMB);
+
+        do
+        {
+            prevTouchingTilesNo = touchingTilesNo;
+
+            touchingTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
+            //MapGeneratorService.buildDebugSite(stage);
+            //MapGeneratorService.buildDebugSite(stage);
+
+            for (Tile tile : touchingTiles)
+            {
+                neighboringTilesOfSameType.addAll(getNeighboringTiles(tile, targetType));
+            }
+
+
+            neighboringTilesOfSameType.forEach(tile -> tile.setType(TileType.CUTOFF));
+            //MapGeneratorService.buildDebugSite(stage);
+            //MapGeneratorService.buildDebugSite(stage);
+
+            outputSet.addAll(neighboringTilesOfSameType);
+            //outputSet.forEach(tile -> tile.setType(TileType.BREADCRUMB));
+            neighboringTilesOfSameType.removeAll(touchingTiles);
+            //MapGeneratorService.buildDebugSite(stage);
+            //MapGeneratorService.buildDebugSite(stage);
+
+            touchingTilesNo = outputSet.size();
+            touchingTiles = new HashSet<>(neighboringTilesOfSameType);
+            neighboringTilesOfSameType.clear();
+        } while (touchingTilesNo > prevTouchingTilesNo);
+
+        outputSet.forEach(tile -> tile.setType(targetType));
+        return outputSet;
+    }
+
     Set<Tile> getTouchingTilesOfType(Tile sourceTile, TileType targetType)
     {
         Set<Tile> touchingTilesOfType = new HashSet<>();
-        touchingTilesOfType.add(sourceTile);
 
-        touchingTilesOfType = getTouchingTilesOfType(touchingTilesOfType, targetType);
+        //touchingTilesOfType.add(sourceTile);
+        //touchingTilesOfType = getTouchingTilesOfType(touchingTilesOfType, targetType);
+        touchingTilesOfType = getTouchingTilesOfType2(sourceTile, targetType);
 
         return touchingTilesOfType;
     }
@@ -203,7 +332,7 @@ public class TileNavigator
 
         for (Direction dir : Direction.values())
         {
-            outputMap.put(dir, stage.getNextTile(tile, dir));
+            outputMap.put(dir, getNextTile(tile, dir));
         }
         return outputMap;
     }
@@ -211,23 +340,44 @@ public class TileNavigator
     private boolean evaluatePick(Tile chosenTile)
     {
         Set<Tile> connectedTiles = getTouchingTilesOfSameType(chosenTile);
-        connectedTiles.forEach(tile -> tile.setType(TileType.OBSTRUCTION));
+        connectedTiles.forEach(tile -> tile.setType(TileType.CUTOFF));
         List<Tile> unreachableTiles = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
 
-        MapGeneratorService.buildDebugSite(stage);
-        MapGeneratorService.buildDebugSite(stage);
-        connectedTiles.forEach(tile -> tile.setType(TileType.CORRIDOR));
-        return unreachableTiles.size() > connectedTiles.size();
+        //uwaga: generowanie HTMLa tutaj może powodować się zawieszanie programu
+        //MapGeneratorService.buildDebugSite(stage);
+        //MapGeneratorService.buildDebugSite(stage);
+        //System.out.println("evaluatePick");
+
+        if (unreachableTiles.size() > connectedTiles.size())
+        {
+            return true;
+        }
+        else
+        {
+            //connectedTiles.forEach(tile -> tile.setType(TileType.CORRIDOR));
+            new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CUTOFF))).forEach(tile -> tile.setType(TileType.CORRIDOR));
+            return false;
+        }
+        //return unreachableTiles.size() > connectedTiles.size();
     }
 
     public Tile[] getUnreachableCorridorTiles() //throws IOException
     {
         //Tile currentTile = stage.getFirstTileOfType(TileType.CORRIDOR);
         Tile currentTile;
+        //int tries = 0;
+
         do
         {
             currentTile = stage.getRandomTileOfType(TileType.CORRIDOR);
+            //tries++;
+//            if (tries > 10)
+//            {
+//                System.out.println("break!");
+//            }
         } while (evaluatePick(currentTile));
+        //MapGeneratorService.buildDebugSite(stage);
+        //MapGeneratorService.buildDebugSite(stage);
 
         Tile scannedTile;
         List<Tile> walkedTiles = new ArrayList<>();
@@ -302,10 +452,5 @@ public class TileNavigator
 
         //System.out.println("Nie każde pole korytarza jest dostępne dla zwiedzających xD");
         return leftoverCorridorTiles;
-
-        //TODO: może dojść do sytuacji, gdzie analizowane pole będzie tak odgrodzone od reszty mapy, że będzie bardzo malutkie - w tym przypadku
-        // przydałoby się analizować pozostałe, większe pole
-        // Ewentualnie, zamiast zawsze pierwszego wolneg pola do analizy, wybierać randomowe pole
-
     }
 }

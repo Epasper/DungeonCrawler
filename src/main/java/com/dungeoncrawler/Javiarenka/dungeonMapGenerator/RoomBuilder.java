@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RoomBuilder
 {
@@ -62,19 +63,19 @@ public class RoomBuilder
                 switch (dir)
                 {
                     case DOWN:
-                        nextTile = stage.getNextTile(tile, Direction.DOWN);
+                        nextTile = tileNav.getNextTile(tile, Direction.DOWN);
                         break;
 
                     case RIGHT:
-                        nextTile = stage.getNextTile(tile, Direction.RIGHT);
+                        nextTile = tileNav.getNextTile(tile, Direction.RIGHT);
                         break;
 
                     case UP:
-                        nextTile = stage.getNextTile(tile, Direction.UP);
+                        nextTile = tileNav.getNextTile(tile, Direction.UP);
                         break;
 
                     case LEFT:
-                        nextTile = stage.getNextTile(tile, Direction.LEFT);
+                        nextTile = tileNav.getNextTile(tile, Direction.LEFT);
                         break;
                 }
 
@@ -555,11 +556,11 @@ public class RoomBuilder
 
         for (Tile wallTile : wall.getWallTiles())
         {
-            firstNeighbor = stage.getNextTile(wallTile, dir);
-            secondNeighbor = stage.getNextTile(firstNeighbor, dir);
+            firstNeighbor = tileNav.getNextTile(wallTile, dir);
+            secondNeighbor = tileNav.getNextTile(firstNeighbor, dir);
             if (firstNeighbor.getType() == TileType.CORRIDOR && secondNeighbor.getType() == TileType.CORRIDOR) //podwójny korytarz
             {
-                thirdNeighbor = stage.getNextTile(secondNeighbor, dir);
+                thirdNeighbor = tileNav.getNextTile(secondNeighbor, dir);
                 if (thirdNeighbor.getType() != TileType.CORRIDOR) //sprawdza czy przypadkiem nie analizuje wzdłuż korytarza
                 {
                     firstNeighbor.setType(TileType.WALL);
@@ -588,7 +589,6 @@ public class RoomBuilder
 
     private boolean allRoomsAreReachable()
     {
-
         //TODO: coś nie tak - zwłaszcza dla narożnych pól pokoju(???)
         Tile currentTile;
         Tile neighboringTile;
@@ -599,10 +599,10 @@ public class RoomBuilder
             roomReachable = false;
             for (Wall wall : currentRoom.getWalls())
             {
-                for (int i = 1; i < wall.getWallTiles().length - 2; i++)    //przeszukaj pola ścian poza pierwszym i ostatnim (naroża pokoju)
+                for (int i = 1; i < wall.getWallTiles().length - 1; i++)    //przeszukaj pola ścian poza pierwszym i ostatnim (naroża pokoju)
                 {
                     currentTile = wall.getWallTiles()[i];
-                    neighboringTile = stage.getNextTile(currentTile, wall.getSide());
+                    neighboringTile = tileNav.getNextTile(currentTile, wall.getSide());
                     if (neighboringTile.getType() == TileType.CORRIDOR)
                     {
                         roomReachable = true;
@@ -611,13 +611,11 @@ public class RoomBuilder
                 }
                 if (roomReachable)
                 {
-
                     break;
                 }
             }
             if (!roomReachable)
             {
-
                 return false;
             }
         }
@@ -645,8 +643,7 @@ public class RoomBuilder
 
     public void createObstructionsInCorridors(int targetObstructionsCount) //throws IOException
     {
-        //int possibleTries = 20 * targetObstructionsCount;
-        int possibleTries = 15 * targetObstructionsCount;
+        int possibleTries = 10 * targetObstructionsCount;
         createObstructionsInCorridors(targetObstructionsCount, possibleTries);
     }
 
@@ -655,40 +652,39 @@ public class RoomBuilder
         int triesCounter = 0;
         int createdObstructionsNumber = 0;
         Tile randomCorridorTile;
-        ArrayList<Tile> corridorTiles;
-        corridorTiles = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
+        ArrayList<Tile> corridorTilesToObstruct;
+        corridorTilesToObstruct = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
         List<Tile> excludedTiles = new ArrayList<>();
 
         do
         {
-            //randomCorridorTile = getRandomTileOfType(TileType.CORRIDOR);
-            //TODO: usunąć ifa poniżej po wyeliminowaniu buga
-            if (corridorTiles.size() == 0)
-            {
-                int i = 0;
-                i++;
-                MapGeneratorService.buildDebugSite(stage);
-                MapGeneratorService.buildDebugSite(stage);
-            }
-
-            randomCorridorTile = tileNav.getRandomTileFromList(corridorTiles);
+            randomCorridorTile = tileNav.getRandomTileFromList(corridorTilesToObstruct);
             randomCorridorTile.setType(TileType.DEBUG);
-            MapGeneratorService.buildDebugSite(stage);
-            MapGeneratorService.buildDebugSite(stage);
+
+//            for (Tile tile : excludedTiles)
+//            {
+//                tile.setType(TileType.EXCLUDED);
+//            }
+//            MapGeneratorService.buildDebugSite(stage);
+//            MapGeneratorService.buildDebugSite(stage);
+//            for (Tile tile : excludedTiles)
+//            {
+//                tile.setType(TileType.CORRIDOR);
+//            }
 
             Tile[] unreachableCorridorTiles = tileNav.getUnreachableCorridorTiles();
             randomCorridorTile.setType(TileType.UNREACHABLE);
             stage.setTileTypes(unreachableCorridorTiles, TileType.UNREACHABLE);
-            MapGeneratorService.buildDebugSite(stage);
-            MapGeneratorService.buildDebugSite(stage);
+//            MapGeneratorService.buildDebugSite(stage);
+//            MapGeneratorService.buildDebugSite(stage);
 
             if (unreachableCorridorTiles.length <= 0 && allRoomsAreReachable())
             {
                 createdObstructionsNumber++;
                 randomCorridorTile.setType(TileType.OBSTRUCTION);
-                corridorTiles.remove(randomCorridorTile);
-                MapGeneratorService.buildDebugSite(stage);
-                MapGeneratorService.buildDebugSite(stage);
+                corridorTilesToObstruct.remove(randomCorridorTile);
+//                MapGeneratorService.buildDebugSite(stage);
+//                MapGeneratorService.buildDebugSite(stage);
                 System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
             }
             else
@@ -696,21 +692,21 @@ public class RoomBuilder
                 //TODO: jeśli powstał ślepy odcinek korytarza, to spróbować go wypełnić
 
                 stage.setTileTypes(unreachableCorridorTiles, TileType.CUTOFF);
-                MapGeneratorService.buildDebugSite(stage);
-                MapGeneratorService.buildDebugSite(stage);
+//                MapGeneratorService.buildDebugSite(stage);
+//                MapGeneratorService.buildDebugSite(stage);
 
                 if (allRoomsAreReachable())
                 {
                     createdObstructionsNumber++;
-                    corridorTiles.remove(randomCorridorTile);
+                    corridorTilesToObstruct.remove(randomCorridorTile);
                     for (Tile obstructedCorridorTile : unreachableCorridorTiles)
                     {
                         obstructedCorridorTile.setType(TileType.OBSTRUCTION);
-                        corridorTiles.remove(obstructedCorridorTile);
+                        corridorTilesToObstruct.remove(obstructedCorridorTile);
                     }
                     randomCorridorTile.setType(TileType.OBSTRUCTION);
-                    MapGeneratorService.buildDebugSite(stage);
-                    MapGeneratorService.buildDebugSite(stage);
+//                    MapGeneratorService.buildDebugSite(stage);
+//                    MapGeneratorService.buildDebugSite(stage);
                     createdObstructionsNumber = createdObstructionsNumber + unreachableCorridorTiles.length;
                     System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
                 }
@@ -718,17 +714,8 @@ public class RoomBuilder
                 {
                     stage.setTileTypes(unreachableCorridorTiles, TileType.CORRIDOR);
                     triesCounter++;
-                    System.out.println("Liczba prób: " + triesCounter + "/" + possibleTries);
+                    //System.out.println("Liczba prób: " + triesCounter + "/" + possibleTries);
                     randomCorridorTile.setType(TileType.CORRIDOR);
-                    MapGeneratorService.buildDebugSite(stage);
-                    MapGeneratorService.buildDebugSite(stage);
-                    corridorTiles.remove(randomCorridorTile);
-                    excludedTiles.add(randomCorridorTile);
-
-
-                    //TODO: można spróbować excludować nie tylko to 1 pole, ale też wszystkie sąsiadujące aż do najbliższych skrzyżowań,
-                    // ale po obu stronach musi być skrzyżowanie (trzeba przeanalizować bardziej)
-                    // lub jeśli korytarz jest prosty (nie ma rozgałęzień) to można zblokować cały odcinek między dwoma excludami
 
                     Tile[] intersections = tileNav.getCorridorIntersectionTiles();
 
@@ -736,20 +723,33 @@ public class RoomBuilder
                     {
                         tile.setType(TileType.EXCLUDED);
                     }
-                    MapGeneratorService.buildDebugSite(stage);
-                    MapGeneratorService.buildDebugSite(stage);
+//                    MapGeneratorService.buildDebugSite(stage);
+//                    MapGeneratorService.buildDebugSite(stage);
 
-                    Set<Tile> neighboringAreaOfExcludedTile = tileNav.getTouchingTilesOfType(randomCorridorTile,TileType.CORRIDOR);
-//                    for(Tile tile : intersections)
-//                    {
-//                        tile.setType(TileType.INTERSECTION);
-//                    }
+                    corridorTilesToObstruct.remove(randomCorridorTile);
+                    excludedTiles.add(randomCorridorTile);
 
-                    if (neighboringAreaOfExcludedTile.stream().noneMatch(this.tileNav::isIntersection))
+                    Set<Tile> neighboringAreaOfExcludedTile = tileNav.getTouchingTilesOfType(randomCorridorTile, TileType.CORRIDOR);
+                    if (neighboringAreaOfExcludedTile.stream().noneMatch(this.tileNav::isIntersection) && neighboringAreaOfExcludedTile.size() > 1)
                     {
+                        CorridorSection section = new CorridorSection(neighboringAreaOfExcludedTile, stage);
+                        Tile first = section.getSection().getFirst();
+                        Tile last = section.getSection().getLast();
 
+                        if (tileNav.numberOfNeighborsOfType(TileType.EXCLUDED, first) == 1 && tileNav.numberOfNeighborsOfType(TileType.EXCLUDED, last) == 1)
+                        {
+                            section.getSection()
+                                    .stream()
+                                    .forEach(tile ->
+                                    {
+                                        tile.setType(TileType.EXCLUDED);
+                                        corridorTilesToObstruct.remove(tile);
+                                        excludedTiles.add(tile);
+                                    });
+//                            MapGeneratorService.buildDebugSite(stage);
+//                            MapGeneratorService.buildDebugSite(stage);
+                        }
                     }
-
 
                     for (Tile tile : excludedTiles)
                     {
@@ -757,7 +757,10 @@ public class RoomBuilder
                     }
                 }
             }
-        } while (createdObstructionsNumber < targetObstructionsCount && triesCounter < possibleTries);
+            //System.out.println("Corridors potentially obstructable: " + corridorTilesToObstruct.size());
+            //System.out.println("createObstructionsInCorridors");
+        } while ((createdObstructionsNumber < targetObstructionsCount && triesCounter < possibleTries)
+                && (corridorTilesToObstruct.size() > 0));
 
     }
 
@@ -795,7 +798,7 @@ public class RoomBuilder
                 }
 
                 //System.out.println("checked wall tile: " + randomWallTile.getX() + "-" + randomWallTile.getY());
-                neighboringTile = stage.getNextTile(randomWallTile, wall.getSide());
+                neighboringTile = tileNav.getNextTile(randomWallTile, wall.getSide());
                 //System.out.println("checked neighboring tile: " + neighboringTile.getX() + "-" + neighboringTile.getY());
 
                 if (neighboringTile.getType() == TileType.CORRIDOR)
@@ -824,6 +827,48 @@ public class RoomBuilder
 //            System.out.println("mapGenerator.Room will try to add door: (" + room.getxPos() + "-" + room.getyPos() + ")");
             addDoorToRoom(room);
         }
+    }
+
+    public void removeShortBranches(int branchLength)
+    {
+        List<Tile> intersections = new ArrayList<>(Arrays.asList(tileNav.getCorridorIntersectionTiles()));
+        List<CorridorSection> sections = new ArrayList<>();
+        List<CorridorSection> shortSections;
+        intersections.forEach(tile -> tile.setType(TileType.INTERSECTION));
+        CorridorSection currentSection;
+
+        for (Tile intersectionTile : intersections)
+        {
+            List<Tile> branchesSeeds = tileNav.getNeighboringTiles(intersectionTile, TileType.CORRIDOR);
+            for (Tile branchStart : branchesSeeds)
+            {
+                currentSection = new CorridorSection(branchStart, stage);
+
+                if (currentSection.getLength() <= branchLength)
+                {
+                    sections.add(new CorridorSection(branchStart, stage));
+                }
+            }
+        }   //dostaniemy wszystkie branche do zadanej długości
+
+        shortSections = sections.stream()
+                .filter(corridorSection -> corridorSection.getSection()
+                .stream().allMatch(tile -> tileNav.numberOfNeighborsOfType(TileType.DOOR, tile) == 0))
+                .collect(Collectors.toList());
+
+        for (CorridorSection section : shortSections)
+        {
+            Tile[] sectionTiles = new Tile[section.getSection().size()];
+            section.getSection().toArray(sectionTiles);
+            int numberOfNeighboringIntersections = tileNav.numberOfNeighborsOfType(TileType.INTERSECTION, sectionTiles);
+
+            if (numberOfNeighboringIntersections <= 1)
+            {
+                section.getSection()
+                        .stream().forEach(tile -> tile.setType(TileType.OBSTRUCTION));
+            }
+        }
+        intersections.forEach(tile -> tile.setType(TileType.CORRIDOR));
     }
 
 }

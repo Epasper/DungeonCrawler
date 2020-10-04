@@ -10,19 +10,21 @@ public class MapGeneratorService
 
     public static void main(String[] args) throws IOException
     {
-//        Stage stage = new Stage(20,20);
-//        RoomBuilder rb = new RoomBuilder(stage);
-//        stage.createPeripheralCorridor();
-//        stage.createPeripheralWall();
-//        rb.fillStageWithRooms();
+        Stage stage = new Stage(50,50);
+        RoomBuilder rb = new RoomBuilder(stage);
+        stage.createPeripheralCorridor();
+        stage.createPeripheralWall();
+        rb.fillStageWithRooms();
 //        rb.obstructPercentageOfCorridors(10);
-//        rb.addDoorToAllRooms();
+//
 //        stage.saveToTxt();
-        Stage stageTxt = new Stage("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
-        RoomBuilder rb = new RoomBuilder(stageTxt);
-        rb.scanTilesForRooms();
+//        Stage stageTxt = new Stage("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+//        RoomBuilder rb = new RoomBuilder(stageTxt);
+        //rb.scanTilesForRooms();
         rb.obstructPercentageOfCorridors(60);
-        buildDebugSite(stageTxt);
+        rb.addDoorToAllRooms();
+        rb.removeShortBranches(10);
+        buildDebugSite(stage);
     }
 
     public Stage generateMap(int width, int height) throws IOException
@@ -135,10 +137,9 @@ public class MapGeneratorService
         StringBuilder sb = new StringBuilder();
         String type = tile.getType().name();
 
-        //sb.append("<div id=\"").append(col).append("-").append(row).append("\" ");
         sb.append("<div id=\"").append(tile.getIdString()).append("\" ");
         sb.append("class=\"tile ").append(type).append("\">");
-        sb.append(tile.getIdString());  //wstawi koordynaty diva
+        //sb.append(tile.getIdString());  //wstawi koordynaty diva
         sb.append("</div>");
 
         return sb.toString();

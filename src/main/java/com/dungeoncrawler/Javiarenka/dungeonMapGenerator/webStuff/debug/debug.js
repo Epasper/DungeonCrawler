@@ -1,12 +1,6 @@
-//if (document.readyState == "loading") {
-//    document.addEventListener('DOMContentLoaded', ready)
-//} else {
-//    location.reload();
-//}
-
- setTimeout(function() {
-   location.reload();
- }, 500);
+// setTimeout(function() {
+//   location.reload();
+// }, 500);
 
 if (document.readyState == "loading") {
     document.addEventListener('DOMContentLoaded', ready)

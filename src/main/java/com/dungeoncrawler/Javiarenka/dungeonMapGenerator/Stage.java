@@ -263,36 +263,36 @@ public class Stage
         setTileTypes(getColumn(width - 2, 1), TileType.CORRIDOR);
     }
 
-    public Tile getNextTile(Tile tile, Direction dir)
-    {
-        Tile nextTile = new Tile();
-        try
-        {
-            switch (dir)
-            {
-                case DOWN:
-                    nextTile = getTile(tile.getX(), tile.getY() + 1);
-                    break;
-
-                case RIGHT:
-                    nextTile = getTile(tile.getX() + 1, tile.getY());
-                    break;
-
-                case UP:
-                    nextTile = getTile(tile.getX(), tile.getY() - 1);
-                    break;
-
-                case LEFT:
-                    nextTile = getTile(tile.getX() - 1, tile.getY());
-                    break;
-            }
-        } catch (Exception e)
-        {
-            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
-            //e.printStackTrace();
-        }
-        return nextTile;
-    }
+//    public Tile getNextTile(Tile tile, Direction dir)
+//    {
+//        Tile nextTile = new Tile();
+//        try
+//        {
+//            switch (dir)
+//            {
+//                case DOWN:
+//                    nextTile = getTile(tile.getX(), tile.getY() + 1);
+//                    break;
+//
+//                case RIGHT:
+//                    nextTile = getTile(tile.getX() + 1, tile.getY());
+//                    break;
+//
+//                case UP:
+//                    nextTile = getTile(tile.getX(), tile.getY() - 1);
+//                    break;
+//
+//                case LEFT:
+//                    nextTile = getTile(tile.getX() - 1, tile.getY());
+//                    break;
+//            }
+//        } catch (Exception e)
+//        {
+//            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
+//            //e.printStackTrace();
+//        }
+//        return nextTile;
+//    }
 
     public Tile[][] getSurroundingTiles(Tile[][] range)
     {
@@ -319,17 +319,17 @@ public class Stage
         return outputRange;
     }
 
-    public Tile[] getNeighboringTiles(Tile middleTile)
-    {
-        Tile[] outputArray = new Tile[Direction.SIZE];
-        int i = 0;
-        for (Direction dir : Direction.VALUES)
-        {
-            outputArray[i] = getNextTile(middleTile, dir);
-            i++;
-        }
-        return outputArray;
-    }
+//    public Tile[] getNeighboringTiles(Tile middleTile)
+//    {
+//        Tile[] outputArray = new Tile[Direction.SIZE];
+//        int i = 0;
+//        for (Direction dir : Direction.VALUES)
+//        {
+//            outputArray[i] = getNextTile(middleTile, dir);
+//            i++;
+//        }
+//        return outputArray;
+//    }
 
 //    void surroundWithCorridor(Room room) //throws IOException
 //    {

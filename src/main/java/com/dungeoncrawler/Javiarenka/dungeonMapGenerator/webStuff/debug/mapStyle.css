@@ -25,7 +25,7 @@ html, body {
 }
 
 .OBSTRUCTION {
-    background-color: rgb(65, 65, 65);
+    background-color: rgb(50, 50, 50);
 }
 
 .UNREACHABLE {
@@ -83,8 +83,8 @@ html, body {
 
 .stage-grid{
 	display: grid;
-	grid-template-columns: repeat(20, 1fr);
-	grid-template-rows: repeat(20, 1fr);
+	grid-template-columns: repeat(50, 1fr);
+	grid-template-rows: repeat(50, 1fr);
 	grid-column-gap: 0;
 	grid-row-gap: 0;
 	height: 60vh;
