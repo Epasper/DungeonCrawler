@@ -28,7 +28,8 @@
             <p>Hero's Backpack:</p>
         </div>
         <div th:each="item : ${backpack.getBaggage()}">
-            <div th:text="${item.key + 1} + '. ' + ${item.value.getName()}">
+            <div th:inline="text">
+                <p>[[${item.key + 1} + '. ']] [[${item.value.name} ?: '---']]</p>
             </div>
         </div>
     </div>

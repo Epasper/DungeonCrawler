@@ -16,6 +16,7 @@ public class EquipmentController {
         service.setHeroBackpack(service.getCurrentlySelectedHero().getBackpack());
         model.addAttribute("hero", service.getCurrentlySelectedHero());
         model.addAttribute("backpack", service.getHeroBackpack());
+        model.addAttribute("baggageSlotsNumber", Backpack.getMaxBaggageCapacity());
         return "editEquipment";
     }
 }

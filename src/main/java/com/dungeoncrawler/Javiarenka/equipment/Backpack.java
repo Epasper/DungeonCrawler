@@ -1,5 +1,7 @@
 package com.dungeoncrawler.Javiarenka.equipment;
 
+import com.sun.istack.NotNull;
+
 import java.util.*;
 
 public class Backpack {
@@ -11,6 +13,22 @@ public class Backpack {
     private Armor armsSlot;
     private Map<Integer, Equipment> baggage;
     private static int NUMBER_OF_WORN_EQUIPMENT_SLOTS = 5;
+    private static int MAX_BAGGAGE_CAPACITY = 30;
+
+    public Backpack() {
+        baggage = new HashMap<>();
+        for (int i = 0; i < MAX_BAGGAGE_CAPACITY; i++) {
+            baggage.put(i, null);
+        }
+    }
+
+    public static int getMaxBaggageCapacity() {
+        return MAX_BAGGAGE_CAPACITY;
+    }
+
+    public static void setMaxBaggageCapacity(int maxBaggageCapacity) {
+        MAX_BAGGAGE_CAPACITY = maxBaggageCapacity;
+    }
 
     public Weapon getLeftHandSlot() {
         return leftHandSlot;
@@ -66,10 +84,6 @@ public class Backpack {
 
     public static void setNumberOfWornEquipmentSlots(int numberOfWornEquipmentSlots) {
         NUMBER_OF_WORN_EQUIPMENT_SLOTS = numberOfWornEquipmentSlots;
-    }
-
-    public Backpack() {
-        baggage = new HashMap<>();
     }
 
     public int size() {
@@ -244,7 +258,7 @@ public class Backpack {
         }
     }
 
-    public boolean remove(EquipmentSlots equipmentSlot) {
+    public boolean remove(@NotNull EquipmentSlots equipmentSlot) {
         switch (equipmentSlot) {
             case ARMS:
                 armsSlot = null;
@@ -304,8 +318,8 @@ public class Backpack {
     }
 
     public void putEquipmentToFirstAvailableSlot(Equipment equipment) throws InventorySlotsFullException {
-        for (Integer i = 0; i < baggage.size() + 1; i++) {
-            if (!baggage.containsKey(i)) {
+        for (Integer i = 0; i < MAX_BAGGAGE_CAPACITY; i++) {
+            if (baggage.get(i) == null) {
                 baggage.put(i, equipment);
                 break;
             }
