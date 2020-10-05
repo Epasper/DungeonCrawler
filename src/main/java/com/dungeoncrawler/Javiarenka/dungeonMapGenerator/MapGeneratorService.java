@@ -10,7 +10,7 @@ public class MapGeneratorService
 
     public static void main(String[] args) throws IOException
     {
-        Stage stage = new Stage(200, 200);
+        Stage stage = new Stage(50, 50);
         RoomBuilder rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
@@ -43,7 +43,7 @@ public class MapGeneratorService
         rb.removeCorridorClusters();
         stage.saveToTxt();
         //buildHtml(stage);
-        buildCSS(stage);
+        //buildCSS(stage);
 
         return stage;
     }

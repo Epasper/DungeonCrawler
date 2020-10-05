@@ -39,5 +39,5 @@ build/
 !/src/main/**/dataBase/Mike---Trashold.txt
 
 ### Dungeon Map Generator ###
-**/dungeonMapGenerator/txt
-**/dungeonMapGenerator/webStuff/debug
+**/dungeonMapGenerator/txt/
+**/dungeonMapGenerator/webStuff/debug/

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 @Controller
 //@RequestMapping("generateMap") //wtedy wszystkie metody poniżej będą zaczynać się od /generateMap/...
@@ -22,6 +23,10 @@ public class MapController
     {
         Stage stage = service.generateMap(width, height);
         model.addAttribute("tiles", stage.getTilesAsOneDimensionalArray());
+        int[] colNumbers = IntStream.range(0, stage.getWidth()).toArray();
+        int[] rowNumbers = IntStream.range(0, stage.getHeight()).toArray();
+        model.addAttribute("colNumbers", colNumbers);
+        model.addAttribute("rowNumbers", rowNumbers);
 
         return "dungeonMapThyme";
     }

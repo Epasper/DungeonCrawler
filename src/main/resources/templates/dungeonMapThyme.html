@@ -5,10 +5,25 @@
     <title>Title</title>
     <!-- <link rel="stylesheet" href="../css/mapStyle.css"> -->
     <link rel="stylesheet" th:href="@{../css/mapStyle.css}">
-    <script src="../dungeonMap.js"></script>
+    <script src="../dungeonMap.js" defer type="module"></script> <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
 </head>
 <body>
-<div class="stage-container">
+<div id="container-grid">
+    <div class="blank"></div>
+    <div class="coordinate-legend" id="coord-top">
+        <th:block th:each="colNo: ${colNumbers}">
+            <div th:id="'col-' + ${colNo}" th:class="'tile-legend'">
+                <p th:text="${colNo}"></p>
+            </div>
+        </th:block>
+    </div>
+    <div class="coordinate-legend" id="coord-side">
+        <th:block th:each="rowNo: ${rowNumbers}">
+            <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'">
+                <p th:text="${rowNo}"></p>
+            </div>
+        </th:block>
+    </div>
     <div class="stage-grid" id="grid">
         <th:block th:each="tile: ${tiles}">
             <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile '+${tile.type}"></div>
