@@ -1,4 +1,8 @@
+//import * as test from './mapSelection.js'
+import {select} from './mapSelection.js'
+
 const SIZE_REF = 90
+const mapGrid = document.getElementById(`grid`)
 var mapHeight
 var mapWidth
 var colorBackup
@@ -43,8 +47,10 @@ function clickedOnTile(clickedTile) {
     var tileType = clickedTile.classList[1]
     var request = new XMLHttpRequest();
     request.open('POST', 'http://localhost:8080/clickTile', true)
-    request.send('Tile: ' + tileId + ' (' + tileType + ') has been clicked!')
+    request.send('Tile: ' + tileId + ' (' + tileType + ') has been selected!')
     console.log('click!', clickedTile)
+
+    select(clickedTile, mapGrid)
 }
 
 function mouseEnteredOverTile(hoveredTile) {
@@ -130,20 +136,12 @@ function updateGrid() {
     var grid = document.getElementById('grid')
     var gridStyle = grid.style
     gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
-    //gridStyle.gridTemplateColumns = `repeat(80, 1fr)`
     gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
-    //gridStyle.height = `${SIZE_REF}vh`
-    //gridStyle.width = `${mapWidthPercentage}vh`
 }
 
 function updateTopLegend() {
     var gridStyle = document.getElementById(`coord-top`).style
     gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
-
-    // var legendTiles = document.getElementsByClassName(`tile-legend`)
-    // for (var legendTile of legendTiles) {
-    //     legendTile.style.fontSize = `${oneRowHeight * 0.75}vh`
-    // }
 }
 
 function resizeContainerGrid() {
