@@ -2,8 +2,8 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 public class StageSettings
 {
-    static final int DEFAULT_STAGE_WIDTH = 60;
-    static final int DEFAULT_STAGE_HEIGHT = 30;
+    static final int MIN_STAGE_WIDTH = 20;
+    static final int MIN_STAGE_HEIGHT = 20;
     static final int ROOM_WIDTH_PERCENTAGE = 25;
     static final int ROOM_HEIGHT_PERCENTAGE = 25;
     static final int MIN_ROOM_WIDTH = 4;

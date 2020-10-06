@@ -1,7 +1,7 @@
 //import * as test from './mapSelection.js'
 import {select} from './mapSelection.js'
 
-const SIZE_REF = 90
+const SIZE_REF = 80
 const mapGrid = document.getElementById(`grid`)
 var mapHeight
 var mapWidth
@@ -74,11 +74,11 @@ function mouseEnteredOverTile(hoveredTile) {
     col[0].style.fontSize = (`1.5vh`)
 
     row.forEach(element => {
-        brightness(element, 20)
+        brightness(element, 10)
     });
 
     col.forEach(element => {
-        brightness(element, 20)
+        brightness(element, 10)
     });
 
     console.log('on!', x, `/`, y)
@@ -153,6 +153,7 @@ function resizeContainerGrid() {
     var conteinerHeight = mapHeight + 1
     var containerWidth = mapWidth + 1
 
+    gridStyle.height = `${SIZE_REF}vh`
     gridStyle.width = `${containerWidth / conteinerHeight * SIZE_REF}vh`
 }
 
@@ -188,7 +189,7 @@ function brightness(tile, value) {
     b = currentColor.split(`(`)[1].split(`)`)[0].split(',')[2] * 1
 
     r += value
-    g += value + 20
+    g += value + 10
     b += value
 
     style.backgroundColor = `rgb(${r},${g},${b})`

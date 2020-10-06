@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+//TODO: bug w wyświetlaniu mapy dla wysokości mniejszej niż 30
+
 @Controller
 //@RequestMapping("generateMap") //wtedy wszystkie metody poniżej będą zaczynać się od /generateMap/...
 public class MapController
@@ -21,6 +23,8 @@ public class MapController
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/dungeonMap")
     public String generateMap(@RequestParam int width, @RequestParam int height, Model model) throws IOException
     {
+
+
         Stage stage = service.generateMap(width, height);
         model.addAttribute("tiles", stage.getTilesAsOneDimensionalArray());
         int[] colNumbers = IntStream.range(0, stage.getWidth()).toArray();
