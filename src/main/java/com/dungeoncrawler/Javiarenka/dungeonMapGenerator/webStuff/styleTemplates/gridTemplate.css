@@ -1,0 +1,9 @@
+.stage-grid{
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 10;
+	height: 80vmin;
+	width: 80vmin;
+}

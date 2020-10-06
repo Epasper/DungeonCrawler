@@ -50,7 +50,11 @@
 }
 
 .DOOR {
-    background-color: red;
+    background-color: sandybrown;
+}
+
+.DOOR_LOCKED {
+    background-color: maroon;
 }
 
 .tile {

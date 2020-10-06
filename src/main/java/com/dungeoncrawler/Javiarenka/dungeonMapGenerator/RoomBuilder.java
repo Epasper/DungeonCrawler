@@ -1,6 +1,5 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -35,20 +34,20 @@ public class RoomBuilder
 
     public int getMaxRoomWidth()
     {
-        int maxRoomWidth = (StageSettings.roomWidthPercentage * stage.getWidth()) / 100;
-        if (maxRoomWidth < StageSettings.minRoomWidth)
+        int maxRoomWidth = (StageSettings.ROOM_WIDTH_PERCENTAGE * stage.getWidth()) / 100;
+        if (maxRoomWidth < StageSettings.MIN_ROOM_WIDTH)
         {
-            maxRoomWidth = StageSettings.minRoomWidth;
+            maxRoomWidth = StageSettings.MIN_ROOM_WIDTH;
         }
         return maxRoomWidth;
     }
 
     public int getMaxRoomHeight()
     {
-        int maxRoomHeight = (StageSettings.roomHeightPercentage * stage.getHeight()) / 100;
-        if (maxRoomHeight < StageSettings.minRoomHeight)
+        int maxRoomHeight = (StageSettings.ROOM_HEIGHT_PERCENTAGE * stage.getHeight()) / 100;
+        if (maxRoomHeight < StageSettings.MIN_ROOM_HEIGHT)
         {
-            maxRoomHeight = StageSettings.minRoomHeight;
+            maxRoomHeight = StageSettings.MIN_ROOM_HEIGHT;
         }
         return maxRoomHeight;
     }
@@ -264,7 +263,7 @@ public class RoomBuilder
 
     private double getRatio(int width, int height)
     {
-        return (width >= height) ? (double)width / (double)height : (double)height / (double)width;
+        return (width >= height) ? (double) width / (double) height : (double) height / (double) width;
     }
 
     private void reduceTheRatio(AtomicInteger width, AtomicInteger height)
@@ -272,7 +271,7 @@ public class RoomBuilder
         AtomicInteger biggerSize = (height.intValue() > width.intValue()) ? height : width;
         AtomicInteger smallerSize = (height.intValue() > width.intValue()) ? width : height;
 
-        biggerSize.set((int)(smallerSize.intValue() * StageSettings.maxRatio));
+        biggerSize.set((int) (smallerSize.intValue() * StageSettings.MAX_ROOM_RATIO));
     }
 
     public boolean insertRoom(Tile seedTile, int roomWidth, int roomHeight, BuildDirection buildDirection) //throws IOException
@@ -312,7 +311,7 @@ public class RoomBuilder
 
         //boolean roomPlaceable = false;
 
-        if (!((availableWidth >= StageSettings.minRoomWidth) && (availableHeight >= StageSettings.minRoomHeight)))
+        if (!((availableWidth >= StageSettings.MIN_ROOM_WIDTH) && (availableHeight >= StageSettings.MIN_ROOM_HEIGHT)))
         {
             //System.out.println("Not enough space to fit any room. Tile locked in wall");
             seedTile.setType(TileType.WALL);
@@ -332,7 +331,7 @@ public class RoomBuilder
         AtomicInteger setHeight = new AtomicInteger(maxRoomHeight);
 
         double ratio = getRatio(maxRoomWidth, maxRoomHeight);
-        if (ratio > StageSettings.maxRatio)
+        if (ratio > StageSettings.MAX_ROOM_RATIO)
         {
             reduceTheRatio(setWidth, setHeight);
         }
@@ -446,8 +445,8 @@ public class RoomBuilder
         int maxRoomWidth = getMaxRoomWidth();
         int maxRoomHeight = getMaxRoomHeight();
 
-        int randRoomWidth = getRandomNumberInRange(StageSettings.minRoomWidth, maxRoomWidth);
-        int randRoomHeight = getRandomNumberInRange(StageSettings.minRoomHeight, maxRoomHeight);
+        int randRoomWidth = getRandomNumberInRange(StageSettings.MIN_ROOM_WIDTH, maxRoomWidth);
+        int randRoomHeight = getRandomNumberInRange(StageSettings.MIN_ROOM_HEIGHT, maxRoomHeight);
 
         return insertRoom(seedTile, randRoomWidth, randRoomHeight, buildDirection);
 
@@ -926,7 +925,6 @@ public class RoomBuilder
         }
 
 
-
         if (removableTiles.size() >= 1)
         {
 //            removableTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
@@ -943,5 +941,29 @@ public class RoomBuilder
                 removableTiles.remove(0);
             } while (removableTiles.size() > 0);
         }
+    }
+
+    private <E> List toList(E[] inputArray)
+    {
+        return new ArrayList(Arrays.asList(inputArray));
+    }
+
+    public void lockSomeDoor(int targetPercentage)
+    {
+        List<Tile> doorList = toList(stage.getTilesOfType(TileType.DOOR));
+        int doorToLock = doorList.size() * StageSettings.PERCENT_OF_DOOR_LOCKED / 100;
+
+        while (doorToLock > 0)
+        {
+            Tile randomDoorTile = doorList.get(getRandomNumberInRange(0, doorList.size() - 1));
+            randomDoorTile.setType(TileType.DOOR_LOCKED);
+            doorToLock--;
+            doorList.remove(randomDoorTile);
+        }
+    }
+
+    public void lockSomeDoor()
+    {
+        lockSomeDoor(StageSettings.PERCENT_OF_DOOR_LOCKED);
     }
 }

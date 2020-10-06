@@ -10,6 +10,7 @@ public enum TileType
     CORRIDOR(" "),
     INTERSECTION("+"),
     DOOR("."),
+    DOOR_LOCKED(":"),
     EMPTY("o"),
     WALKED("x"),
     BREADCRUMB("^"),

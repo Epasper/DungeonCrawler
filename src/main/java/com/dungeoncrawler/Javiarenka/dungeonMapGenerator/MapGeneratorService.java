@@ -25,6 +25,7 @@ public class MapGeneratorService
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
         rb.removeCorridorClusters();
+        rb.lockSomeDoor();
         buildDebugSite(stage);
         stage.saveToTxt();
     }
@@ -41,6 +42,7 @@ public class MapGeneratorService
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
         rb.removeCorridorClusters();
+        rb.lockSomeDoor();
         stage.saveToTxt();
         //buildHtml(stage);
         //buildCSS(stage);
