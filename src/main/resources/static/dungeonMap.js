@@ -19,7 +19,8 @@ function ready() {
 
     resizeContainerGrid()
     updateGrid()
-    updateTopLegend()
+    //updateTopLegend()
+    updateLegendGrids()
     injectTileListeners()
 }
 
@@ -142,6 +143,17 @@ function updateGrid() {
 function updateTopLegend() {
     var gridStyle = document.getElementById(`coord-top`).style
     gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
+}
+
+function updateSideLegend() {
+    var gridStyle = document.getElementById(`coord-side`).style
+    gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
+}
+
+function updateLegendGrids()
+{
+    updateTopLegend()
+    updateSideLegend()
 }
 
 function resizeContainerGrid() {

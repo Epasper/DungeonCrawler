@@ -16,8 +16,6 @@ import java.util.stream.IntStream;
 //@RequestMapping("generateMap") //wtedy wszystkie metody poniżej będą zaczynać się od /generateMap/...
 public class MapController
 {
-    //TODO: Thymeleaf generuje nazwy klas hmtl-owych CAPSem, bo bierze je z enuma. Wg sztuki - nazwy klas w htmlu powinny być pisane małymi literami
-
     MapGeneratorService service = new MapGeneratorService();
 
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "/dungeonMap")

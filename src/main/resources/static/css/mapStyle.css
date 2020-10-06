@@ -79,7 +79,7 @@
 	grid-template-rows: 1fr 29fr;
 	grid-column-gap: 0;
 	grid-row-gap: 0;
-	height: 80vh;
+	/*height: 80vh;*/
 	/*width: 80vh;*/
 }
 
