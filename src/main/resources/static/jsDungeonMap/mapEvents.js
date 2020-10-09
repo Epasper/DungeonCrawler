@@ -1,49 +1,73 @@
-//import * as test from './mapSelection.js'
-import {select} from './mapSelection.js'
+import {makeSelection, getX, getY, selectedTile} from './mapSelection.js'
+import {mapWidth, mapHeight} from './mapStyling.js'
+import {updateButtons} from './mapButtons.js'
+import {draw} from './mapRender.js'
+import { selectedHero } from './heroManager.js'
 
-const SIZE_REF = 80
 const mapGrid = document.getElementById(`grid`)
-var mapHeight
-var mapWidth
-var colorBackup
 
-if (document.readyState == "loading") {
-    document.addEventListener('DOMContentLoaded', ready)
-} else {
-    ready()
-}
-
-function ready() {
-    mapWidth = getMapWidth()
-    mapHeight = getMapHeight()
-
-    resizeContainerGrid()
-    updateGrid()
-    //updateTopLegend()
-    updateLegendGrids()
-    injectTileListeners()
-}
-
-function injectTileListeners() {
+export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
     for (var tile of tiles) {
         tile.addEventListener('click', function (event) {
-            clickedOnTile(event.target)
+            tileClicked(event.target)
         })
     }
     for (var tile of tiles) {
         tile.addEventListener('mouseenter', function (event) {
-            mouseEnteredOverTile(event.target)
+            tileMouseEntered(event.target)
         })
     }
     for (var tile of tiles) {
         tile.addEventListener('mouseleave', function (event) {
-            mouseLeftTheTile(event.target)
+            tileMouseLeft(event.target)
         })
     }
 }
 
-function clickedOnTile(clickedTile) {
+export function injectButtonsListeners() {
+    let spawnBtn = document.getElementById('spawn-hero-btn');
+    //console.log('spawn injected')
+    spawnBtn.addEventListener('click', spawnHero);
+    
+    let moveBtn = document.getElementById('move-hero-btn');
+    moveBtn.addEventListener('click', moveHero);
+}
+
+function spawnHero() {
+    let coordX = getX(selectedTile)
+    let coordY = getY(selectedTile)
+    //console.log('spawn event')
+
+    //XMLHttpRequest method
+    var request = new XMLHttpRequest();
+    request.onload = function(){
+        let data = JSON.parse(this.responseText);
+        ////console.log(data);
+    };
+
+    request.open('GET', `http://localhost:8080/spawnHero?coordX=${coordX}&coordY=${coordY}`, true)
+    request.send()
+
+    updateButtons();
+    draw();
+}
+
+function moveHero() {
+    let coordX = getX(selectedTile);
+    let coordY = getY(selectedTile);
+    let [heroId] = selectedHero.id.split('-').slice(-1); //slice (-1) zwroci tablicę o długosci 1 elementu od końca
+
+    var request = new XMLHttpRequest();
+    request.open('GET', `http://localhost:8080/moveHero?coordX=${coordX}&coordY=${coordY}&id=${heroId}`, true)
+    request.send()
+
+    updateButtons();
+    draw();
+
+}
+
+function tileClicked(clickedTile) {
     var tileId = clickedTile.id
     var tileType = clickedTile.classList[1]
     var request = new XMLHttpRequest();
@@ -51,15 +75,26 @@ function clickedOnTile(clickedTile) {
     request.send('Tile: ' + tileId + ' (' + tileType + ') has been selected!')
     console.log('click!', clickedTile)
 
-    select(clickedTile, mapGrid)
+    
+    request.open('POST', 'http://localhost:8080/getClickedTile', true)
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    let coordinates = {
+        x: getX(clickedTile),
+        y: getY(clickedTile)
+    }
+    const coordinatesJSON = JSON.stringify(coordinates)
+    request.send(coordinatesJSON)
+
+    makeSelection(clickedTile, mapGrid)
+
+    updateButtons()
+    draw()
 }
 
-function mouseEnteredOverTile(hoveredTile) {
+function tileMouseEntered(hoveredTile) {
     var tileId = ``
     tileId = hoveredTile.id
-    var tileType = hoveredTile.classList[1]
-
-    var grid = hoveredTile.parentElement
 
     var x = tileId.split(`-`)[0]
     var y = tileId.split(`-`)[1]
@@ -82,10 +117,10 @@ function mouseEnteredOverTile(hoveredTile) {
         brightness(element, 10)
     });
 
-    console.log('on!', x, `/`, y)
+    //console.log('on!', x, `/`, y)
 }
 
-function mouseLeftTheTile(exitedTile) {
+function tileMouseLeft(exitedTile) {
     var tileId = ``
     tileId = exitedTile.id
 
@@ -111,64 +146,6 @@ function mouseLeftTheTile(exitedTile) {
     });
 }
 
-function getMapWidth() {
-    var width = 0
-    var checkedTile
-
-    do {
-        checkedTile = document.getElementById(width + '-0')
-        width++
-    } while (checkedTile != null)
-    return width - 1
-}
-
-function getMapHeight() {
-    var height = 0
-    var checkedTile
-
-    do {
-        checkedTile = document.getElementById('0-' + height)
-        height++
-    } while (checkedTile != null)
-    return height - 1
-}
-
-function updateGrid() {
-    var grid = document.getElementById('grid')
-    var gridStyle = grid.style
-    gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
-    gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
-}
-
-function updateTopLegend() {
-    var gridStyle = document.getElementById(`coord-top`).style
-    gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
-}
-
-function updateSideLegend() {
-    var gridStyle = document.getElementById(`coord-side`).style
-    gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
-}
-
-function updateLegendGrids()
-{
-    updateTopLegend()
-    updateSideLegend()
-}
-
-function resizeContainerGrid() {
-    var grid = document.getElementById(`container-grid`)
-    var gridStyle = grid.style
-    gridStyle.gridTemplateRows = `1fr ${mapHeight}fr`
-    gridStyle.gridTemplateColumns = `1fr ${mapWidth}fr`
-
-    var conteinerHeight = mapHeight + 1
-    var containerWidth = mapWidth + 1
-
-    gridStyle.height = `${SIZE_REF}vh`
-    gridStyle.width = `${containerWidth / conteinerHeight * SIZE_REF}vh`
-}
-
 function getRowOfElements(rowNumber) {
     var row = [document.getElementById(`row-${rowNumber}`)]
     for (var i = 0; i < mapWidth; i++) {
@@ -189,7 +166,6 @@ function getColOfElements(colNumber) {
 
 function brightness(tile, value) {
     var currentColor = window.getComputedStyle(tile).backgroundColor
-    colorBackup = currentColor
     var style = tile.style
 
     var r = 0

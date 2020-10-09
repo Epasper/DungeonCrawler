@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -7,6 +8,19 @@ import java.io.*;
 @Service
 public class MapGeneratorService
 {
+
+    @Autowired
+    Stage stage;
+
+    public Stage getStage()
+    {
+        return stage;
+    }
+
+    public void setStage(Stage stage)
+    {
+        this.stage = stage;
+    }
 
     public static void main(String[] args) throws IOException
     {
@@ -32,7 +46,7 @@ public class MapGeneratorService
 
     public Stage generateMap(int width, int height) throws IOException
     {
-        Stage stage = new Stage(width, height);
+        stage = new Stage(width, height);
         RoomBuilder rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();

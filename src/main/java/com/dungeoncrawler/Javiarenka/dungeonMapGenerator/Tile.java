@@ -4,6 +4,7 @@ public class Tile
 {
     private int x;
     private int y;
+    private boolean occupied = false;
     private TileType type;
     //private HashMap<String,mapGenerator.Tile> surroundingTiles;
 
@@ -36,6 +37,16 @@ public class Tile
         return y;
     }
 
+    public boolean isOccupied()
+    {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied)
+    {
+        this.occupied = occupied;
+    }
+
     public String getIdString()
     {
         return (x + "-" + y);
@@ -65,5 +76,10 @@ public class Tile
     public TileType getType()
     {
         return type;
+    }
+
+    public boolean isWalkable()
+    {
+        return type.isWalkable();
     }
 }

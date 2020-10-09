@@ -5,6 +5,7 @@ public class Room extends Stage
     private int xPos;
     private int yPos;
     private Wall[] walls = new Wall[Direction.SIZE];
+    private Tile door;
 
     Room(int xCoord, int yCoord, int roomWidth, int roomHeight)
     {
@@ -78,5 +79,13 @@ public class Room extends Stage
         return walls[dir.ordinal()].getWallTiles();
     }
 
+    public Tile getDoor()
+    {
+        return door;
+    }
 
+    public void setDoor(Tile door)
+    {
+        this.door = door;
+    }
 }

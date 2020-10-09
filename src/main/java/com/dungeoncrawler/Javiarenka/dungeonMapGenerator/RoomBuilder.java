@@ -339,7 +339,7 @@ public class RoomBuilder
         System.out.println("Room size: " + setWidth.intValue() + "/" + setHeight.intValue());
 
         Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection));
-        System.out.println(room.toString());
+        System.out.println(room.asString());
 
         surroundWithCorridor(room);
         squeezeSurroundingDoubleCorridors(room);
@@ -823,7 +823,8 @@ public class RoomBuilder
 
                 if (neighboringTile.getType() == TileType.CORRIDOR)
                 {
-                    randomWallTile.setType(TileType.DOOR);
+                    randomWallTile.setType(TileType.DOOR_CLOSED);
+                    room.setDoor(randomWallTile);
                     //System.out.println("door created (" + randomWallTile.getX() + "-" + randomWallTile.getY() + ")");
                     doorCreated = true;
                     break forLoop;
@@ -873,7 +874,7 @@ public class RoomBuilder
 
         shortSections = sections.stream()
                 .filter(corridorSection -> corridorSection.getSection()
-                        .stream().allMatch(tile -> tileNav.numberOfNeighborsOfType(TileType.DOOR, tile) == 0))
+                        .stream().allMatch(tile -> tileNav.numberOfNeighborsOfType(TileType.DOOR_CLOSED, tile) == 0))
                 .collect(Collectors.toList());
 
         for (CorridorSection section : shortSections)
@@ -950,13 +951,15 @@ public class RoomBuilder
 
     public void lockSomeDoor(int targetPercentage)
     {
-        List<Tile> doorList = toList(stage.getTilesOfType(TileType.DOOR));
-        int doorToLock = doorList.size() * StageSettings.PERCENT_OF_DOOR_LOCKED / 100;
+        List<Tile> doorList = toList(stage.getTilesOfType(TileType.DOOR_CLOSED));
+        int doorToLock = doorList.size() * targetPercentage / 100;
 
         while (doorToLock > 0)
         {
             Tile randomDoorTile = doorList.get(getRandomNumberInRange(0, doorList.size() - 1));
             randomDoorTile.setType(TileType.DOOR_LOCKED);
+            Room room = stage.getRoomByDoor(randomDoorTile);
+            room.setTileTypes(room.getTilesOfType(TileType.ROOM), TileType.ROOM_LOCKED);
             doorToLock--;
             doorList.remove(randomDoorTile);
         }

@@ -1,17 +1,26 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
+@Scope("singleton")
+@Component("stage")
 public class Stage
 {
     private int width;
     private int height;
     private Tile[][] tiles;
     private List<Room> rooms = new ArrayList<>();
+    private HeroesManager heroesManager = new HeroesManager(this);
+
+    Stage(){}
 
     Stage(int stageWidth, int stageHeight)
     {
@@ -81,6 +90,26 @@ public class Stage
     public Tile[][] getTiles()
     {
         return tiles;
+    }
+
+    public HeroesManager getHeroesManager()
+    {
+        return heroesManager;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
+
+    public void setTiles(Tile[][] tiles)
+    {
+        this.tiles = tiles;
     }
 
     public Tile[] getTilesAsOneDimensionalArray()
@@ -191,6 +220,13 @@ public class Stage
         return rooms;
     }
 
+    public Room getRoomByDoor(Tile givenDoorTile)
+    {
+        return rooms.stream()
+                .filter(room -> room.getDoor().equals(givenDoorTile))
+                .collect(Collectors.toList()).get(0);
+    }
+
     public void printRow(int rowNumber)
     {
         System.out.println(getRowString(rowNumber));
@@ -201,8 +237,7 @@ public class Stage
         System.out.println(getColumnString(colNumber));
     }
 
-    @Override
-    public String toString()
+    public String asString()
     {
         StringBuilder sb = new StringBuilder();
 
@@ -230,7 +265,7 @@ public class Stage
         File file = new File(path);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
-        writer.append(this.toString());
+        writer.append(this.asString());
         writer.close();
     }
 
@@ -245,6 +280,12 @@ public class Stage
         {
             tile.setType(targetType);
         }
+    }
+
+    public void setTileTypes(TileType targetType)
+    {
+        Arrays.stream(getTilesAsOneDimensionalArray())
+                .forEach(tile -> tile.setType(targetType));
     }
 
     public void createPeripheralWall()
@@ -262,37 +303,6 @@ public class Stage
         setTileTypes(getColumn(1, 1), TileType.CORRIDOR);
         setTileTypes(getColumn(width - 2, 1), TileType.CORRIDOR);
     }
-
-//    public Tile getNextTile(Tile tile, Direction dir)
-//    {
-//        Tile nextTile = new Tile();
-//        try
-//        {
-//            switch (dir)
-//            {
-//                case DOWN:
-//                    nextTile = getTile(tile.getX(), tile.getY() + 1);
-//                    break;
-//
-//                case RIGHT:
-//                    nextTile = getTile(tile.getX() + 1, tile.getY());
-//                    break;
-//
-//                case UP:
-//                    nextTile = getTile(tile.getX(), tile.getY() - 1);
-//                    break;
-//
-//                case LEFT:
-//                    nextTile = getTile(tile.getX() - 1, tile.getY());
-//                    break;
-//            }
-//        } catch (Exception e)
-//        {
-//            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
-//            //e.printStackTrace();
-//        }
-//        return nextTile;
-//    }
 
     public Tile[][] getSurroundingTiles(Tile[][] range)
     {
@@ -318,27 +328,6 @@ public class Stage
         }
         return outputRange;
     }
-
-//    public Tile[] getNeighboringTiles(Tile middleTile)
-//    {
-//        Tile[] outputArray = new Tile[Direction.SIZE];
-//        int i = 0;
-//        for (Direction dir : Direction.VALUES)
-//        {
-//            outputArray[i] = getNextTile(middleTile, dir);
-//            i++;
-//        }
-//        return outputArray;
-//    }
-
-//    void surroundWithCorridor(Room room) //throws IOException
-//    {
-//        Tile[][] surroundingTiles = getSurroundingTiles(room.getTiles());
-//        for (int i = 0; i < surroundingTiles.length; i++)
-//        {
-//            setTileTypes(surroundingTiles[i], TileType.CORRIDOR);
-//        }
-//    }
 
     boolean areEmptyTiles()
     {

@@ -1,6 +1,8 @@
+import {updateButtons} from './mapButtons.js'
+
 export let selectedTile
 
-export function select(tile, grid) {
+export function makeSelection(tile, grid) {
     let existingSelection = document.getElementById(`selection`)
     if(existingSelection != null){
         console.log('remove!')
@@ -32,9 +34,13 @@ export function select(tile, grid) {
         selectedTile.dispatchEvent(ev)
     })
 
+    if (isHeroSpawnable(selectedTile)) {
+
+    }
+
 }
 
-function getX(tile) {
+export function getX(tile) {
     var tileId = ``
     tileId = tile.id
 
@@ -42,7 +48,7 @@ function getX(tile) {
     return x*1
 }
 
-function getY(tile) {
+export function getY(tile) {
     var tileId = ``
     tileId = tile.id
 
@@ -60,6 +66,12 @@ function clickedOnTile(clickedElement) {
     request.open('POST', 'http://localhost:8080/clickTile', true)
     request.send('Tile: ' + tileId + ' (' + tileType + ') has been de-selected!')
 
+    updateButtons();
+
     selectedTile = null
     clickedElement.remove();
+}
+
+function isHeroSpawnable(selectedTile) {
+
 }

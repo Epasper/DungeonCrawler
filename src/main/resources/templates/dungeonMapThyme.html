@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!-- <link rel="stylesheet" href="../css/mapStyle.css"> -->
-    <link rel="stylesheet" th:href="@{../css/mapStyle.css}">
-    <script src="../dungeonMap.js" defer type="module"></script> <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
+    <link rel="stylesheet" href="../css/mapStyle.css">
+    <!-- <link rel="stylesheet" th:href="@{../css/mapStyle.css}"> -->
+    <script src="../jsDungeonMap/dungeonMap.js" defer type="module"></script> <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
 </head>
 <body>
+
 <div id="container-grid">
     <div class="blank"></div>
     <div class="coordinate-legend" id="coord-top">
@@ -32,5 +34,12 @@
         </th:block>
     </div>
 </div>
+
+<div class="toolbar">
+    <button id="spawn-hero-btn" class= "button" disabled>Spawn Hero</button>
+    <button id="move-hero-btn" class= "button" disabled>Move Hero</button>
+
+</div>
+
 </body>
 </html>
