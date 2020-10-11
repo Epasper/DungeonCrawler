@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+:root {
+    --toolbar-height: 15vh;
+    --toolbar-padding: 1vh;
+    --toolbar-space: calc(var(--toolbar-height) - var(--toolbar-padding) * 2)
+}
+
 .CORRIDOR {
     background-color: #A9A9A9;
 }
@@ -80,10 +86,6 @@
     border-width: 0.2vmin;
 }
 
-/*.stage-container{
-    display: flex;
-    justify-content: center;
-}*/
 #container-grid {
     display: grid;
     grid-template-columns: 1fr 29fr;
@@ -91,8 +93,6 @@
     grid-column-gap: 0;
     grid-row-gap: 0;
     margin: 2.5vh auto;
-    /*height: 80vh;*/
-    /*width: 80vh;*/
 }
 
 .stage-grid {
@@ -148,8 +148,8 @@
 }
 
 #party {
-    border: 2px solid rgb(98, 192, 255);
-    background-color: rgba(88, 140, 236, 0.75);
+    border: 2px solid skyblue;
+    background-color: steelblue;
     transition: 0.25s;
     /* pointer-events: none;  */
 }
@@ -157,28 +157,6 @@
 #party:hover {
     border: 2px rgb(255, 255, 255) solid;
     box-shadow: 0 0 5px 0px #000;
-}
-
-.toolbar {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 15vh;
-    margin-top: 5vh;
-    box-shadow: inset 0 0 20px #000000;
-    min-height: 50 px;
-}
-
-.button {
-    /* box-sizing: border-box; */
-    height: calc(100% - 20px);
-    min-height: 20px;
-    padding: 1em;
-    margin: 10px;
 }
 
 @keyframes blink-border {
@@ -195,57 +173,3 @@
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
 }
-
-/* :root {
-    --border-width: 3px;
-    --corner-size: 10px;
-    --border-color: red;
-}
-
-.box-corners {
-    position: relative;
-}
-
-.box-corners::before,
-.box-corners::after {
-    content: "";
-    position: absolute;
-    width: var(--corner-size);
-    height: var(--corner-size);
-    border: var(--border-width) solid var(--border-color);
-}
-
-.box-corners::before {
-    left: 0;
-    top: 0;
-    border-bottom: none;
-    border-right: none;
-}
-
-.box-corners::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
-}
-
-.box-corners {
-    transition: background-color 0.3s ease-in-out;
-}
-
-
-.box-corners:hover {
-    background: rgba(0, 0, 0, 0.5) !important;
-}
-
-.box-corners::before,
-.box-corners::after {
-    box-sizing: border-box;
-    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
-}
-
-.box-corners:hover::before,
-.box-corners:hover::after {
-    width: 100%;
-    height: 100%;
-} */

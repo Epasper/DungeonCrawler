@@ -5,42 +5,70 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="../css/mapStyle.css">
+    <link rel="stylesheet" href="../css/mapStyleToolbar.css">
     <!-- <link rel="stylesheet" th:href="@{../css/mapStyle.css}"> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="../jsDungeonMap/dungeonMap.js" defer type="module"></script> <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
+    <script src="../jsDungeonMap/dungeonMap.js" defer type="module"></script>
+    <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
 </head>
+
 <body>
 
-<div id="container-grid">
-    <div class="blank"></div>
-    <div class="coordinate-legend" id="coord-top">
-        <th:block th:each="colNo: ${colNumbers}">
-            <div th:id="'col-' + ${colNo}" th:class="'tile-legend'">
-                <p th:text="${colNo}"></p>
-            </div>
-        </th:block>
+    <div id="container-grid">
+        <div class="blank"></div>
+        <div class="coordinate-legend" id="coord-top">
+            <th:block th:each="colNo: ${colNumbers}">
+                <div th:id="'col-' + ${colNo}" th:class="'tile-legend'">
+                    <p th:text="${colNo}"></p>
+                </div>
+            </th:block>
+        </div>
+        <div class="coordinate-legend" id="coord-side">
+            <th:block th:each="rowNo: ${rowNumbers}">
+                <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'">
+                    <p th:text="${rowNo}"></p>
+                </div>
+            </th:block>
+        </div>
+        <div class="stage-grid" id="grid">
+            <th:block th:each="tile: ${tiles}">
+                <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile '+${tile.type}"
+                    th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
+                </div>
+                <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
+            </th:block>
+        </div>
     </div>
-    <div class="coordinate-legend" id="coord-side">
-        <th:block th:each="rowNo: ${rowNumbers}">
-            <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'">
-                <p th:text="${rowNo}"></p>
-            </div>
-        </th:block>
-    </div>
-    <div class="stage-grid" id="grid">
-        <th:block th:each="tile: ${tiles}">
-            <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile '+${tile.type}" 
-            th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'"></div>
-                 <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
-        </th:block>
-    </div>
-</div>
 
-<div class="toolbar">
-    <button id="spawn-party-btn" class= "button" disabled>Spawn Party</button>
-    <button id="move-party-btn" class= "button" disabled>Move Party</button>
+    <div class="toolbar">
+        <div class="move-container">
+            <div id="move-margin"></div>
+            <div id="move-grid">
+                <!-- <div id="move-top-text" class="move-text"><p>Move</p></div> -->
+                <!-- <button id="btn-move-up" class="move-button" disabled></button> -->
+                <div class="move-button move-up"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
+                <!-- <div class="move-space"></div> -->
+                <!-- <button id="btn-move-left" class="move-button" disabled></button> -->
+                <div class="move-button move-left"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
+                <!-- <div class="move-space move-center"></div> -->
+                <!-- <button id="btn-move-right" class="move-button" disabled></button> -->
+                <div class="move-button move-right"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
+                <!-- <div class="move-space"></div> -->
+                <!-- <button id="btn-move-down" class="move-button" disabled></button> -->
+                <div class="move-button move-down"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
+                <!-- <div id="move-bottom-text" class="move-text"><p>Party</p></div> -->
+                <!-- <div class="move-space move-center"></div> -->
+                <button id="move-party-btn" class="button" disabled>Move Party</button>
+            </div>
+            <!-- <div class="move-space move-center"></div> -->
+        </div>
+        <!-- <button id="move-party-btn" class="button" disabled>Move Party</button> -->
+        <button id="spawn-party-btn" class="button" disabled>Spawn Party</button>
 
-</div>
+    </div>
+
+    
 
 </body>
+
 </html>

@@ -41,3 +41,4 @@ build/
 ### Dungeon Map Generator ###
 **/dungeonMapGenerator/txt/
 **/dungeonMapGenerator/webStuff/debug/
+/src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/backup/
