@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
 * {
     margin: 0;
     padding: 0;
@@ -5,6 +7,7 @@
 }
 
 body {
+    background: #2f2f31;
     background-image: url("../images/Equipment/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -31,6 +34,7 @@ body {
 }
 
 .container {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
 }
@@ -87,4 +91,25 @@ body {
     transform: translate(-50%, -50%);
     width: 80px;
     height: 80px;
+}
+
+.save-button {
+	background-color:#0d0e03;
+	border-radius:28px;
+	border:1px solid #47531a;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.save-button:hover {
+	background-color:#7a7919;
+}
+.save-button:active {
+	position:relative;
+	top:1px;
 }

@@ -11,6 +11,9 @@
 
 
 
+
+
+
     </script>
     <script src="editEquipment.js"></script>
 </head>
@@ -70,13 +73,15 @@
         <div th:each="item : ${backpack.getBaggage()}">
             <div th:inline="text">
                 <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
-                     ondragstart="drag(event)" ondragover="allowDrop(event)" th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
+                     ondragstart="drag(event)" ondragover="allowDrop(event)"
+                     th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
             </div>
         </div>
-        <!--        <button onclick="test()"></button>-->
+        <div class="button-container">
+            <button class="save-button" onclick="saveAndExit()">Save and exit</button>
+        </div>
     </div>
 </div>
-<div></div>
 
 </body>
 
