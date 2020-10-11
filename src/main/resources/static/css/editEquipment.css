@@ -12,9 +12,8 @@ body {
 
 .backpack-item {
     float: left;
-    width: 145;
-    height: 145;
-    background-color: #fff;
+    width: 145px;
+    height: 145px;
     font-size: 15px;
     text-align: center;
     display: table-cell;
@@ -23,9 +22,8 @@ body {
 
 .equipment-slot {
     float: left;
-    width: 145;
-    height: 145;
-    background-color: #fff;
+    width: 145px;
+    height: 145px;
     font-size: 15px;
     text-align: center;
     display: table-row;
@@ -37,14 +35,14 @@ body {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.container-silhouette{
+.container-silhouette {
     display: grid;
     grid-template-rows: repeat(1, 1fr);
     justify-items: center;
     align-items: center;
 }
 
-.container-silhouette img{
+.container-silhouette img {
     height: 435px;
 }
 
@@ -59,10 +57,34 @@ body {
     justify-items: right;
 }
 
+.left img {
+    width: 145px;
+    height: 145px;
+}
+
 .right {
     justify-items: left;
 }
 
+.right img {
+    justify-items: left;
+    width: 145px;
+    height: 145px;
+}
+
 .container:last-child {
     justify-items: left;
+}
+
+.empty-box {
+    position: relative;
+}
+
+.empty-box .inner-pics {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
 }

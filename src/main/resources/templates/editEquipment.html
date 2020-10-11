@@ -8,6 +8,8 @@
     <script th:inline="javascript">
         const currentHeroBackpack = [[${backpack}]];
 
+
+
     </script>
     <script src="editEquipment.js"></script>
 </head>
@@ -17,17 +19,35 @@
     <div class="infobox" th:object="${backpack}">
         <div class="container">
             <div class="container-inner left" th:inline="text">
-                <img th:src="${backpack.leftHandSlot == null} ? '../images/Equipment/emptyShield.png' : '../images/Equipment/demoEquipment.png'"/>
-                <img th:src="${backpack.rightHandSlot == null} ? '../images/Equipment/emptyWeapon.png' : '../images/Equipment/demoEquipment.png'"/>
-                <img th:src="${backpack.chestSlot == null} ? '../images/Equipment/emptyArmor.png' : '../images/Equipment/demoEquipment.png'"/>
+                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.headSlot != null} ? '../images/'+${backpack.headSlot.name}+'.png' : '../images/Equipment/emptyHead.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics"  th:src="${imageUrl}"/>
+                </div>
+                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.rightHandSlot != null} ? '../images/'+${backpack.rightHandSlot.name}+'.png' : '../images/Equipment/emptyWeapon.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics" th:src="${imageUrl}"/>
+                </div>
+                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.chestSlot != null} ? '../images/'+${backpack.chestSlot.name}+'.png' : '../images/Equipment/emptyArmor.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics" th:src="${imageUrl}"/>
+                </div>
             </div>
             <div class="container-silhouette">
                 <img src="../images/Equipment/silhouette.png"/>
             </div>
             <div class="container-inner right" th:inline="text">
-                <img th:src="${backpack.feetSlot == null} ? '../images/Equipment/emptyFeet.png' : '../images/Equipment/demoEquipment.png'"/>
-                <img th:src="${backpack.armsSlot == null} ? '../images/Equipment/emptyArms.png' : '../images/Equipment/demoEquipment.png'"/>
-                <img th:src="${backpack.armsSlot == null} ? '../images/Equipment/emptyArms.png' : '../images/Equipment/demoEquipment.png'"/>
+                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.armsSlot != null} ? '../images/'+${backpack.armsSlot.name}+'.png' : '../images/Equipment/emptyArms.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics" th:src="${imageUrl}"/>
+                </div>
+                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.leftHandSlot != null} ? '../images/'+${backpack.leftHandSlot.name}+'.png' : '../images/Equipment/emptyShield.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics" th:src="${imageUrl}"/>
+                </div>
+                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.feetSlot != null} ? '../images/'+${backpack.feetSlot.name}+'.png' : '../images/Equipment/emptyFeet.png')">
+                    <img src="../images/Equipment/emptyEquipmentSlot.png"/>
+                    <img class="inner-pics" th:src="${imageUrl}"/>
+                </div>
             </div>
         </div>
 

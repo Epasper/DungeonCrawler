@@ -8,6 +8,7 @@ public class Backpack {
 
     private Weapon leftHandSlot;
     private Equipment rightHandSlot;
+    private Armor headSlot;
     private Armor chestSlot;
     private Armor feetSlot;
     private Armor armsSlot;
@@ -20,6 +21,14 @@ public class Backpack {
         for (int i = 0; i < MAX_BAGGAGE_CAPACITY; i++) {
             baggage.put(i, new EmptyEquipmentSlot());
         }
+    }
+
+    public Armor getHeadSlot() {
+        return headSlot;
+    }
+
+    public void setHeadSlot(Armor headSlot) {
+        this.headSlot = headSlot;
     }
 
     public static int getMaxBaggageCapacity() {
