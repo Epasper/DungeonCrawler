@@ -4,34 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../css/editEquipment.css">
+    <script th:inline="javascript">
+        const currentHeroBackpack = [[${backpack}]];
+
+    </script>
+    <script src="editEquipment.js"></script>
 </head>
 
 <body>
-<div class="container">
+<div>
     <div class="infobox" th:object="${backpack}">
-        <div th:inline="text">
-            <p>Left hand slot: [[${backpack.leftHandSlot} ? ${backpack.leftHandSlot.name} : 'No equipment']]</p>
+        <div class="container">
+            <div class="container-inner left" th:inline="text">
+                <img th:src="${backpack.leftHandSlot == null} ? '../images/Equipment/emptyShield.png' : '../images/Equipment/demoEquipment.png'"/>
+                <img th:src="${backpack.rightHandSlot == null} ? '../images/Equipment/emptyWeapon.png' : '../images/Equipment/demoEquipment.png'"/>
+                <img th:src="${backpack.chestSlot == null} ? '../images/Equipment/emptyArmor.png' : '../images/Equipment/demoEquipment.png'"/>
+            </div>
+            <div class="container-silhouette">
+                <img src="../images/Equipment/silhouette.png"/>
+            </div>
+            <div class="container-inner right" th:inline="text">
+                <img th:src="${backpack.feetSlot == null} ? '../images/Equipment/emptyFeet.png' : '../images/Equipment/demoEquipment.png'"/>
+                <img th:src="${backpack.armsSlot == null} ? '../images/Equipment/emptyArms.png' : '../images/Equipment/demoEquipment.png'"/>
+                <img th:src="${backpack.armsSlot == null} ? '../images/Equipment/emptyArms.png' : '../images/Equipment/demoEquipment.png'"/>
+            </div>
         </div>
-        <div th:inline="text">
-            <p>Right hand slot: [[${backpack.rightHandSlot} ? ${backpack.rightHandSlot.name} : 'No equipment']]</p>
-        </div>
-        <div th:inline="text">
-            <p>Chest slot: [[${backpack.chestSlot} ? ${backpack.chestSlot.name} : 'No equipment']]</p>
-        </div>
-        <div th:inline="text">
-            <p>Feet slot: [[${backpack.feetSlot} ? ${backpack.feetSlot.name} : 'No equipment']]</p>
-        </div>
-        <div th:inline="text">
-            <p>Arms slot: [[${backpack.armsSlot} ? ${backpack.armsSlot.name} : 'No equipment']]</p>
-        </div>
+
         <div>
             <p>Hero's Backpack:</p>
         </div>
         <div th:each="item : ${backpack.getBaggage()}">
-            <div th:inline="text">
-                <p>[[${item.key + 1} + '. ']] [[${item.value.name} ?: '---']]</p>
+            <div class="backpack-item" th:inline="text">
+                <img th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
             </div>
         </div>
+        <!--        <button onclick="test()"></button>-->
     </div>
 </div>
 <div></div>

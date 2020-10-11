@@ -18,7 +18,7 @@ public class Backpack {
     public Backpack() {
         baggage = new HashMap<>();
         for (int i = 0; i < MAX_BAGGAGE_CAPACITY; i++) {
-            baggage.put(i, null);
+            baggage.put(i, new EmptyEquipmentSlot());
         }
     }
 
@@ -167,20 +167,6 @@ public class Backpack {
         };
     }
 
-
-    public Object[] toArray() {
-        return new Object[]{leftHandSlot, rightHandSlot, chestSlot, feetSlot, armsSlot, baggage};
-    }
-
-    public boolean add(Equipment equipment) {
-        try {
-            putEquipmentToFirstAvailableSlot(equipment);
-            return true;
-        } catch (InventorySlotsFullException e) {
-            return false;
-        }
-    }
-
     public boolean add(Equipment equipment, EquipmentSlots equipmentSlot) {
         try {
             switch (equipmentSlot) {
@@ -319,9 +305,9 @@ public class Backpack {
 
     public void putEquipmentToFirstAvailableSlot(Equipment equipment) throws InventorySlotsFullException {
         for (Integer i = 0; i < MAX_BAGGAGE_CAPACITY; i++) {
-            if (baggage.get(i) == null) {
+            if (baggage.get(i).getClass() == EmptyEquipmentSlot.class) {
                 baggage.put(i, equipment);
-                break;
+                return;
             }
         }
         throw new InventorySlotsFullException();

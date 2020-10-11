@@ -57,27 +57,169 @@
       ]
     },
     "baggage": {
-      "0": {
-        "name": "Chipped Claw",
-        "weight": 0.02,
-        "price": 2.0
-      },
-      "1": {
-        "name": "Pretty Stone",
-        "weight": 0.06,
-        "price": 1.0
-      },
-      "2": {
-        "name": "Broken Branch",
-        "weight": 0.05,
-        "price": 2.0
-      },
-      "3": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0
-      }
-    }
+         "0": {
+           "maxStackSize": 0,
+           "numberOfItems": 3,
+           "isQuestItem": false,
+           "name": "Chipped Claw",
+           "weight": 0.02,
+           "price": 2.0
+         },
+         "1": {
+           "maxStackSize": 0,
+           "numberOfItems": 6,
+           "isQuestItem": false,
+           "name": "Pretty Stone",
+           "weight": 0.06,
+           "price": 1.0
+         },
+         "2": {
+           "maxStackSize": 0,
+           "numberOfItems": 7,
+           "isQuestItem": false,
+           "name": "Broken Branch",
+           "weight": 0.05,
+           "price": 2.0
+         },
+         "3": {
+           "maxStackSize": 0,
+           "numberOfItems": 3,
+           "isQuestItem": false,
+           "name": "Coal Ore Chunk",
+           "weight": 0.2,
+           "price": 12.0
+         },
+         "4": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "5": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "6": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "7": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "8": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "9": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "10": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "11": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "12": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "13": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "14": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "15": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "16": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "17": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "18": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "19": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "20": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "21": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "22": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "23": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "24": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "25": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "26": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "27": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "28": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         },
+         "29": {
+           "name": "NO EQUIPMENT",
+           "weight": 0.0,
+           "price": 0.0
+         }
+       }
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": true,
