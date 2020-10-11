@@ -1,18 +1,35 @@
+let currentlySelectedStartingSlot;
+let currentlySelectedEquipment;
+
 function test() {
     console.log(currentHeroBackpack)
 }
 
-function allowDrop(ev) {
-    ev.preventDefault();
+function allowDrop(event) {
+    event.preventDefault();
 }
 
-function drag(ev) {
-    console.log(ev)
-    ev.dataTransfer.setData("text", ev.target.id);
+function drag(event) {
+    let targetSlot
+    const currentId = event.target.id;
+    if (currentId.includes('baggage')){
+        const baggageNumber = currentId.substring(8);
+        console.log(baggageNumber);
+        currentlySelectedEquipment = currentHeroBackpack.baggage[parseInt(baggageNumber)];
+    } else {
+        currentlySelectedEquipment = currentHeroBackpack[currentId];
+    }
+    // console.log(event)
+    // console.log(currentHeroBackpack)
+    console.log(currentId)
+    console.log(currentlySelectedEquipment)
+    event.dataTransfer.setData("text", event.target.id);
 }
 
-function drop(ev) {
-    ev.preventDefault();
-    console.log(ev)
-    var data = ev.dataTransfer.getData("text");
+function drop(event) {
+    event.preventDefault();
+    console.log(event)
+    console.log(event.target.id)
+    var data = event.dataTransfer.getData("text");
+    event.target.appendChild(document.getElementById(data));
 }

@@ -6,7 +6,8 @@
     <title>Title</title>
     <link rel="stylesheet" href="../css/editEquipment.css">
     <script th:inline="javascript">
-        const currentHeroBackpack = [[${backpack}]];
+        let currentHeroBackpack = [[${backpack}]];
+
 
 
 
@@ -19,34 +20,46 @@
     <div class="infobox" th:object="${backpack}">
         <div class="container">
             <div class="container-inner left" th:inline="text">
-                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.headSlot != null} ? '../images/'+${backpack.headSlot.name}+'.png' : '../images/Equipment/emptyHead.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.headSlot != null} ? '../images/'+${backpack.headSlot.name}+'.png' : '../images/Equipment/emptyHead.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics"  th:src="${imageUrl}"/>
+                    <img id="headSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
-                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.rightHandSlot != null} ? '../images/'+${backpack.rightHandSlot.name}+'.png' : '../images/Equipment/emptyWeapon.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.rightHandSlot != null} ? '../images/'+${backpack.rightHandSlot.name}+'.png' : '../images/Equipment/emptyWeapon.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics" th:src="${imageUrl}"/>
+                    <img id="rightHandSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
-                <div class="empty-box" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" ondrop="drop(event)" th:with="imageUrl=(${backpack.chestSlot != null} ? '../images/'+${backpack.chestSlot.name}+'.png' : '../images/Equipment/emptyArmor.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.chestSlot != null} ? '../images/'+${backpack.chestSlot.name}+'.png' : '../images/Equipment/emptyArmor.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics" th:src="${imageUrl}"/>
+                    <img id="chestSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
             </div>
             <div class="container-silhouette">
                 <img src="../images/Equipment/silhouette.png"/>
             </div>
             <div class="container-inner right" th:inline="text">
-                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.armsSlot != null} ? '../images/'+${backpack.armsSlot.name}+'.png' : '../images/Equipment/emptyArms.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.armsSlot != null} ? '../images/'+${backpack.armsSlot.name}+'.png' : '../images/Equipment/emptyArms.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics" th:src="${imageUrl}"/>
+                    <img id="armsSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
-                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.leftHandSlot != null} ? '../images/'+${backpack.leftHandSlot.name}+'.png' : '../images/Equipment/emptyShield.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.leftHandSlot != null} ? '../images/'+${backpack.leftHandSlot.name}+'.png' : '../images/Equipment/emptyShield.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics" th:src="${imageUrl}"/>
+                    <img id="leftHandSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
-                <div class="empty-box" ondrop="drop(event)" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)" th:with="imageUrl=(${backpack.feetSlot != null} ? '../images/'+${backpack.feetSlot.name}+'.png' : '../images/Equipment/emptyFeet.png')">
+                <div class="empty-box"
+                     th:with="imageUrl=(${backpack.feetSlot != null} ? '../images/'+${backpack.feetSlot.name}+'.png' : '../images/Equipment/emptyFeet.png')">
                     <img src="../images/Equipment/emptyEquipmentSlot.png"/>
-                    <img class="inner-pics" th:src="${imageUrl}"/>
+                    <img id="feetSlot" draggable="true" ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         ondrop="drop(event)" class="inner-pics" th:src="${imageUrl}"/>
                 </div>
             </div>
         </div>
@@ -55,8 +68,9 @@
             <p>Hero's Backpack:</p>
         </div>
         <div th:each="item : ${backpack.getBaggage()}">
-            <div class="backpack-item" th:inline="text">
-                <img th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
+            <div th:inline="text">
+                <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
+                     ondragstart="drag(event)" ondragover="allowDrop(event)" th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
             </div>
         </div>
         <!--        <button onclick="test()"></button>-->
