@@ -1,100 +1,78 @@
-import {makeSelection, getX, getY, selectedTile} from './mapSelection.js'
-import {mapWidth, mapHeight} from './mapStyling.js'
-import {updateButtons} from './mapButtons.js'
-import {draw} from './mapRender.js'
-import { selectedHero } from './heroManager.js'
+import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.js'
+import { mapWidth, mapHeight } from './mapStyling.js'
+import { updateButtons } from './mapButtons.js'
+import { draw } from './mapRender.js'
 
 const mapGrid = document.getElementById(`grid`)
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
     for (var tile of tiles) {
-        tile.addEventListener('click', function (event) {
-            tileClicked(event.target)
-        })
+        tile.addEventListener('click', tileClicked);
     }
     for (var tile of tiles) {
-        tile.addEventListener('mouseenter', function (event) {
-            tileMouseEntered(event.target)
-        })
+        tile.addEventListener('mouseenter', tileMouseEntered);
     }
     for (var tile of tiles) {
-        tile.addEventListener('mouseleave', function (event) {
-            tileMouseLeft(event.target)
-        })
+        tile.addEventListener('mouseleave', tileMouseLeft);
     }
 }
 
 export function injectButtonsListeners() {
-    let spawnBtn = document.getElementById('spawn-hero-btn');
-    //console.log('spawn injected')
-    spawnBtn.addEventListener('click', spawnHero);
-    
-    let moveBtn = document.getElementById('move-hero-btn');
-    moveBtn.addEventListener('click', moveHero);
+    let spawnBtn = document.getElementById('spawn-party-btn');
+    spawnBtn.addEventListener('click', spawnPartyBackend);
+
+    let moveBtn = document.getElementById('move-party-btn');
+    moveBtn.addEventListener('click', movePartyBackend);
 }
 
-function spawnHero() {
-    let coordX = getX(selectedTile)
-    let coordY = getY(selectedTile)
-    //console.log('spawn event')
+async function spawnPartyBackend() {
+    let coordX = getX(selectedGridTileDiv)
+    let coordY = getY(selectedGridTileDiv)
 
-    //XMLHttpRequest method
-    var request = new XMLHttpRequest();
-    request.onload = function(){
-        let data = JSON.parse(this.responseText);
-        ////console.log(data);
+    //Axios method:
+    const response = await axios.get(`http://localhost:8080/spawnParty?coordX=${coordX}&coordY=${coordY}`);
+    const backendParty = response.data;
+    console.log('spawn: ', backendParty)
+
+    updateButtons();
+    draw();
+}
+
+async function movePartyBackend() {
+    let coordX = getX(selectedGridTileDiv);
+    let coordY = getY(selectedGridTileDiv);
+    //let [heroId] = selectedHero.id.split('-').slice(-1); //slice (-1) zwroci tablicę o długosci 1 elementu od końca
+
+    await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
+
+    updateButtons();
+    draw();
+
+}
+
+async function tileClicked({target: clickedTileDiv}) {
+    var tileId = clickedTileDiv.id
+    var tileType = clickedTileDiv.classList[1]
+
+    let postData = {
+        x: getX(clickedTileDiv),
+        y: getY(clickedTileDiv),
+        message: `Tile: ${tileId} (${tileType}) has been selected!`
     };
 
-    request.open('GET', `http://localhost:8080/spawnHero?coordX=${coordX}&coordY=${coordY}`, true)
-    request.send()
+    const {data: clickedTileBackend} = await axios.post('http://localhost:8080/getClickedTile', postData);
+    console.log(clickedTileBackend);
 
-    updateButtons();
-    draw();
-}
-
-function moveHero() {
-    let coordX = getX(selectedTile);
-    let coordY = getY(selectedTile);
-    let [heroId] = selectedHero.id.split('-').slice(-1); //slice (-1) zwroci tablicę o długosci 1 elementu od końca
-
-    var request = new XMLHttpRequest();
-    request.open('GET', `http://localhost:8080/moveHero?coordX=${coordX}&coordY=${coordY}&id=${heroId}`, true)
-    request.send()
-
-    updateButtons();
-    draw();
-
-}
-
-function tileClicked(clickedTile) {
-    var tileId = clickedTile.id
-    var tileType = clickedTile.classList[1]
-    var request = new XMLHttpRequest();
-    request.open('POST', 'http://localhost:8080/clickTile', true)
-    request.send('Tile: ' + tileId + ' (' + tileType + ') has been selected!')
-    console.log('click!', clickedTile)
-
-    
-    request.open('POST', 'http://localhost:8080/getClickedTile', true)
-    request.setRequestHeader('Content-Type', 'application/json');
-
-    let coordinates = {
-        x: getX(clickedTile),
-        y: getY(clickedTile)
-    }
-    const coordinatesJSON = JSON.stringify(coordinates)
-    request.send(coordinatesJSON)
-
-    makeSelection(clickedTile, mapGrid)
+    makeSelection(clickedTileDiv, mapGrid)
 
     updateButtons()
     draw()
 }
 
-function tileMouseEntered(hoveredTile) {
+function tileMouseEntered({target: hoveredTileDiv}) {
     var tileId = ``
-    tileId = hoveredTile.id
+    tileId = hoveredTileDiv.id
 
     var x = tileId.split(`-`)[0]
     var y = tileId.split(`-`)[1]
@@ -120,9 +98,9 @@ function tileMouseEntered(hoveredTile) {
     //console.log('on!', x, `/`, y)
 }
 
-function tileMouseLeft(exitedTile) {
+function tileMouseLeft({target: exitedTileDiv}) {
     var tileId = ``
-    tileId = exitedTile.id
+    tileId = exitedTileDiv.id
 
     var x = tileId.split(`-`)[0]
     var y = tileId.split(`-`)[1]

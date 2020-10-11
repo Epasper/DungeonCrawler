@@ -1,43 +1,35 @@
 import {updateButtons} from './mapButtons.js'
 
-export let selectedTile
+export let selectedGridTileDiv
 
-export function makeSelection(tile, grid) {
+export function makeSelection(targetTile, mapGrid) {
     let existingSelection = document.getElementById(`selection`)
-    if(existingSelection != null){
+    if(existingSelection){
         console.log('remove!')
         existingSelection.remove()
     } else console.log('create!')
     
-    selectedTile = tile
-    const x = getX(tile) + 1
-    const y = getY(tile) + 1
+    selectedGridTileDiv = targetTile
+    const x = getX(targetTile) + 1
+    const y = getY(targetTile) + 1
 
-    const selectionTile = document.createElement(`div`)
-    selectionTile.style.gridRow = (`${y}`)
-    selectionTile.style.gridColumn = (`${x}`)
-    selectionTile.id = 'selection'
+    const selectionDivElement = document.createElement(`div`)
+    selectionDivElement.style.gridRow = (`${y}`)
+    selectionDivElement.style.gridColumn = (`${x}`)
+    selectionDivElement.id = 'selection'
 
-    console.log(getX(tile), `---`, getY(tile))
+    console.log(getX(targetTile), `---`, getY(targetTile))
+    mapGrid.appendChild(selectionDivElement)
 
-    grid.appendChild(selectionTile)
-
-    selectionTile.addEventListener('click', function (event) {
-        clickedOnTile(event.target)
-    })
-    selectionTile.addEventListener('mouseenter', function (event) {
+    selectionDivElement.addEventListener('click', clickedOnSelectionDiv);
+    selectionDivElement.addEventListener('mouseenter', function() {
         var ev = new Event('mouseenter')
-        selectedTile.dispatchEvent(ev)
+        selectedGridTileDiv.dispatchEvent(ev)
     })
-    selectionTile.addEventListener('mouseleave', function (event) {
+    selectionDivElement.addEventListener('mouseleave', function() {
         var ev = new Event('mouseleave')
-        selectedTile.dispatchEvent(ev)
+        selectedGridTileDiv.dispatchEvent(ev)
     })
-
-    if (isHeroSpawnable(selectedTile)) {
-
-    }
-
 }
 
 export function getX(tile) {
@@ -56,22 +48,21 @@ export function getY(tile) {
     return y*1
 }
 
-function clickedOnTile(clickedElement) {
-    var ev = new Event('mouseleave')
-    selectedTile.dispatchEvent(ev)
+async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
+    selectedGridTileDiv.dispatchEvent(new Event('mouseleave'));
+    let tileId = selectedGridTileDiv.id;
+    let tileType = selectedGridTileDiv.classList[1];
 
-    var tileId = selectedTile.id
-    var tileType = selectedTile.classList[1]
-    var request = new XMLHttpRequest();
-    request.open('POST', 'http://localhost:8080/clickTile', true)
-    request.send('Tile: ' + tileId + ' (' + tileType + ') has been de-selected!')
+    let postConfig ={
+        headers: {
+            'content-type': 'test/json'
+        }
+    }
+
+    const message = `Tile: ${tileId} (${tileType}) has been de-selected!`;
+    await axios.post('http://localhost:8080/clickTile', message, postConfig);
 
     updateButtons();
-
-    selectedTile = null
-    clickedElement.remove();
-}
-
-function isHeroSpawnable(selectedTile) {
-
+    selectedGridTileDiv = null;
+    clickedSelectionDiv.remove();
 }

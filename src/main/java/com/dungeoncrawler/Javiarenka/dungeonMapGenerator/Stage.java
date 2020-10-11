@@ -18,7 +18,7 @@ public class Stage
     private int height;
     private Tile[][] tiles;
     private List<Room> rooms = new ArrayList<>();
-    private HeroesManager heroesManager = new HeroesManager(this);
+    private PartyManager partyManager = new PartyManager(this);
 
     Stage(){}
 
@@ -92,9 +92,9 @@ public class Stage
         return tiles;
     }
 
-    public HeroesManager getHeroesManager()
+    public PartyManager getPartyManager()
     {
-        return heroesManager;
+        return partyManager;
     }
 
     public void setWidth(int width)

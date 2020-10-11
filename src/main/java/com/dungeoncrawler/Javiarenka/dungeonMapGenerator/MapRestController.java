@@ -2,8 +2,6 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,28 +18,36 @@ public class MapRestController
 
     //@GetMapping("/isSpawnable")
     @GetMapping("/checkSpawnability")
-    public boolean isHeroSpawnable(@RequestParam int coordX, @RequestParam int coordY)
+    public boolean isPartySpawnable(@RequestParam int coordX, @RequestParam int coordY)
     {
-        return service.getStage().getHeroesManager().isHeroSpawnable(coordX, coordY);
+        return service.getStage().getPartyManager().isPartySpawnable(coordX, coordY);
     }
 
-    @GetMapping("/spawnHero")
-    public HeroAvatar spawnHero(@RequestParam int coordX, @RequestParam int coordY)
+    @GetMapping("/spawnParty")
+    public PartyAvatar spawnParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        return service.getStage().getHeroesManager().spawnHero(coordX, coordY);
+        PartyAvatar party = service.getStage().getPartyManager().spawnParty(coordX, coordY);
+        System.out.println("party spawned on tile: " + coordX + "/" + coordY);
+        return party;
     }
 
-    @GetMapping("/moveHero")
-    public void movwHero(@RequestParam int coordX, @RequestParam int coordY, @RequestParam int id)
+    @GetMapping("/checkWalkability")
+    public boolean isTileWalkable(@RequestParam int coordX, @RequestParam int coordY)
     {
-        HeroesManager hm = service.getStage().getHeroesManager();
-        hm.moveHero(hm.getHeroById(id), coordX, coordY);
+        return service.getStage().getTile(coordX, coordY).isWalkable();
     }
 
-    @GetMapping("/getHeroes")
-    public List<HeroAvatar> getHeroesList()
+    @GetMapping("/moveParty")
+    public void moveParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        return service.getStage().getHeroesManager().getHeroes();
+        PartyManager pm = service.getStage().getPartyManager();
+        pm.moveParty(coordX, coordY);
+    }
+
+    @GetMapping("/getParty")
+    public PartyAvatar getParty()
+    {
+        return service.getStage().getPartyManager().getParty();
     }
 
     @PostMapping("/clickTile")
@@ -51,8 +57,16 @@ public class MapRestController
     }
 
     @PostMapping("/getClickedTile")
-    public Tile clickedTile2(@RequestBody Map<String, Integer> input)
+    public Tile clickedTile2(@RequestBody Map<String, String> input)
     {
-        return service.getStage().getTile(input.get("x"), input.get("y"));
+        int x = Integer.parseInt(input.get("x"));
+        int y = Integer.parseInt(input.get("y"));
+        String message = input.get("message");
+
+        Tile clickedTile = service.getStage().getTile(x, y);
+
+        if (!message.equals("")) System.out.println(message);
+
+        return clickedTile;
     }
 }

@@ -12,7 +12,3 @@ function ready() {
     injectTileListeners()
     injectButtonsListeners()
 }
-
-function spawnHero() {
-    console.log ('spawn')
-}
