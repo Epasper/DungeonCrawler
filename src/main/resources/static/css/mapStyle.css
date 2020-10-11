@@ -76,6 +76,7 @@
 .tile:hover {
     border: rgb(0, 0, 0) solid;
     color: rgba(0, 0, 0, 1);
+    /* box-shadow: inset 0px 0px 0.5rem 0px rgba(0, 0, 0, 0.5); */
     border-width: 0.2vmin;
 }
 
@@ -143,17 +144,19 @@
 
 #selection:hover {
     border: 2px rgb(255, 255, 255) solid;
+    box-shadow: 0 0 5px 0px #000;
 }
 
-.hero {
+#party {
     border: 2px solid rgb(98, 192, 255);
     background-color: rgba(88, 140, 236, 0.75);
     transition: 0.25s;
     /* pointer-events: none;  */
 }
 
-.hero:hover {
+#party:hover {
     border: 2px rgb(255, 255, 255) solid;
+    box-shadow: 0 0 5px 0px #000;
 }
 
 .toolbar {
@@ -176,7 +179,21 @@
     min-height: 20px;
     padding: 1em;
     margin: 10px;
+}
 
+@keyframes blink-border {
+    50% { 
+        border-color: rgb(255, 255, 255);
+        /* box-shadow: 0 0 5px 0px #000; */
+    }
+}
+
+.selected {
+    box-shadow: 0 0 5px 0px #000;
+    animation-name: blink-border;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
 }
 
 /* :root {

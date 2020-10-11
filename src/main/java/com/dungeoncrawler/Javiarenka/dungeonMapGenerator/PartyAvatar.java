@@ -1,13 +1,14 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
-public class HeroAvatar
+public class PartyAvatar
 {
-    int id;
+    //int id;
     Tile occupiedTile;
 
-    public HeroAvatar(int id, Tile occupiedTile)
+    //public PartyAvatar(int id, Tile occupiedTile)
+    public PartyAvatar(Tile occupiedTile)
     {
-        this.id = id;
+       // this.id = id;
         this.occupiedTile = occupiedTile;
     }
 
@@ -21,13 +22,13 @@ public class HeroAvatar
         this.occupiedTile = occupiedTile;
     }
 
-    public int getId()
-    {
-        return id;
-    }
+//    public int getId()
+//    {
+//        return id;
+//    }
 
-    public void setId(int id)
-    {
-        this.id = id;
-    }
+//    public void setId(int id)
+//    {
+//        this.id = id;
+//    }
 }

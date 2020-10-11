@@ -1,48 +1,37 @@
-import { selectedHero } from './heroManager.js';
-import { getX, getY, selectedTile } from './mapSelection.js'
+import { party } from './partyManager.js';
+import { getX, getY, selectedGridTileDiv } from './mapSelection.js'
 
-// async function isSpawnable() {
-//     const response = await fetch(`http://localhost:8080/isSpawnable?coordX=${coordX}&coordY=${coordY}`);
-//     const data = await response.json;
-
-//     return data;
-// }
 
 async function updateSpawnButton() {
-    let coordX = getX(selectedTile)
-    let coordY = getY(selectedTile)
+    let coordX = getX(selectedGridTileDiv)
+    let coordY = getY(selectedGridTileDiv)
 
-    //FETCH method
-    const response = await fetch(`http://localhost:8080/checkSpawnability?coordX=${coordX}&coordY=${coordY}`);
-    const data = await response.json();
+    //AXIOS method:
+    const response = await axios.get(`http://localhost:8080/checkSpawnability?coordX=${coordX}&coordY=${coordY}`);
+    let isSpawnable = response.data;
 
-    let isSpawnable = data;
+    //let isSpawnable = data;
     let isSelection = (document.getElementById('selection') != null)
-    let spawnButton = document.getElementById('spawn-hero-btn');
+    let spawnButton = document.getElementById('spawn-party-btn');
     if (isSpawnable && isSelection) {
         spawnButton.disabled = false;
     } else {
         spawnButton.disabled = true;
     }
-    
 
-    //XMLHttpRequest method
-    // var request = new XMLHttpRequest();
-    // request.onload = function(){
-    //     console.log(this);
-    //     let data = JSON.parse(this.responseText);
-    //     console.log(data);
-    // };
-
-    // request.open('GET', `http://localhost:8080/checkSpawnability?coordX=${coordX}&coordY=${coordY}`, true)
-    // request.send()
-
-    return data
+    return isSpawnable
 }
 
 function updateMoveButton() {
-    let moveButton = document.getElementById('move-hero-btn');
-    if (selectedHero) {
+    //TODO: button jest aktywny kiedy kliknięte jest pole, na ktore i tak nie można postawić drużyny
+    let moveButton = document.getElementById('move-party-btn');
+    
+    if(!party){
+        moveButton.disabled = true;
+        return;
+    }
+    
+    if (party.isSelected) {
         moveButton.disabled = false;
     } else {
         moveButton.disabled = true;
