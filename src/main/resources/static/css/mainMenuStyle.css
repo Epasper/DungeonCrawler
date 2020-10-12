@@ -1,0 +1,37 @@
+html,
+body,
+.container {
+    width: 100%;
+    height: 100%;
+    min-width: 500px;
+    min-height: 500px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#cloud-intro {
+    position: relative;
+    height: 100%;
+    background: url("../images/menuBackground/layers/clouds_1.png"),
+        url("../images/menuBackground/layers/clouds_2.png"),
+        url("../images/menuBackground/layers/ground_1.png"),
+        url("../images/menuBackground/layers/ground_2.png"),
+        url("../images/menuBackground/layers/ground_3.png"),
+        url("../images/menuBackground/layers/plant.png"),
+        url("../images/menuBackground/layers/rocks.png"),
+        url("../images/menuBackground/layers/sky.png");
+
+    animation: wind 20s linear infinite;
+}
+
+@keyframes wind {
+    0% {
+        background-position: 10% 0, 10% 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+
+    100% {
+        background-position: 500% 0, 550% 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+
+}
