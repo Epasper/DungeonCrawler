@@ -16,30 +16,23 @@
     height: var(--toolbar-height);
     margin-top: 5vh;
     box-shadow: inset 0 0 20px #000000;
-    /* min-height: 50 px; */
-
     padding: var(--toolbar-padding);
 }
 
 .button {
     /* box-sizing: border-box; */
     height: 100%;
-    /* min-height: 20px; */
     padding: 0 1em;
-    /* margin: 10px; */
 }
 
 #move-party-btn {
     z-index: 1;
-    /* pointer-events: none; */
     position: fixed;
     height: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
     transition: 0.4s;
 }
 
 #move-party-btn:disabled {
-    /* opacity: 1; */
-    /* color: red; */
     background-color: #A9A9A9;
 }
 
@@ -49,7 +42,6 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    /* background-color: #f6f3136e; */
     height: calc(var(--toolbar-height) * 1.2 );
     width: calc(var(--toolbar-height) * 1.2 );
     /* border: solid 1px yellow; */
@@ -60,11 +52,9 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    /* width: calc(var(--toolbar-height) - var(--toolbar-padding)*2); */
     width: var(--toolbar-space);
-    /* border: solid 1px red; */
-    /* opacity: 0.2; */
     transition: 1s;
+    /* border: solid 1px red; */
 }
 
 .move-container-hover:hover {
@@ -77,52 +67,17 @@
     grid-template-rows: repeat(3, 1fr);
     grid-column-gap: 0;
     grid-row-gap: 0;
-
-    /* height: calc(100% / 3); */
     height: 100%;
-    /* width: calc(100% / 3); */
     width: 100%;
     min-width: 0;
-
     /* border: solid 1px white; */
     transition: 0.5s;
 }
 
-/* .move-text {
-    display: flex;
-    justify-content: center;
-    overflow: visible;
-    height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    color: rgb(100, 100, 100);
-    
-}
-
-#move-top-text {
-    grid-area: 1 / 2 / 2 / 3;
-    align-items: flex-end;
-    padding: 5%;
-}
-
-#move-bottom-text {
-    grid-area: 3 / 2 / 4 / 3;
-    align-items: flex-start;
-    padding: 8%;
-} */
-
-/* #move-container:hover {
-    height: 200%;
-    width: calc((var(--toolbar-height) - var(--toolbar-padding)*2) * 2);
-} */
-
-/* #move-container:hover .move-button {
-    border: solid 2px skyblue;
-} */
-
 .move-container-hover:hover #move-grid {
     height: 100%;
     width: var(--toolbar-space);
-    /* width: calc(var(--toolbar-height) - var(--toolbar-padding)*2); */
+
 }
 
 .move-container-hover:hover #move-up {
@@ -135,20 +90,15 @@
 } */
 
 .move-container-hover:hover #move-left {
-    /* transform: translate(-100%, 0); */
     transform: translate(-100%, 0) rotate(-180deg);
-    /* background-image: url('../images/dungeonMap/arrow.svg'); */
-    /* transform: rotate(180deg); */
 }
 
 .move-container-hover:hover #move-right {
     transform: translate(100%, 0);
-    /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
 
 .move-container-hover:hover #move-down {
     transform: translate(0, 100%) rotate(90deg);
-    /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
 
 .move-container-hover:hover .move-img {
@@ -159,11 +109,6 @@
     transform: translate(calc(var(--toolbar-space) + var(--toolbar-padding)));
 }
 
-
-/* #move-container:hover .move-space {
-    opacity: 0;
-} */
-
 #move-right {
     z-index: 1;
 }
@@ -171,15 +116,6 @@
 #move-left {
     transform: rotate(180deg);
 }
-/* 
-.move-down {
-    transform: rotate(90deg);
-} */
-
-
-/* .move-up {
-    transform: rotate(-90deg);
-} */
 
 .move-img {
     pointer-events: none;
@@ -214,12 +150,9 @@
     /* transform: scale(5); */
 }
 
-
-
 .move-button:hover {
     border: white 2px solid;
     box-shadow: 0 0 10px 0px #000;
-    /* transform: scale(5); */
 }
 
 .move-button:hover > .move-img {
@@ -231,45 +164,24 @@
     border: white 2px solid;
     background-color: skyblue;
     box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.5);
-    /* transform: scale(0.5); */
 }
 
 .move-button-blocked{
     background-color: brown;
-    /* transform: scale(5); */
 }
 
 .move-button-blocked:hover {
     border: rgb(255, 255, 255) 2px solid;
-    /* background-color: #000; */
-    /* transform: scale(5); */
 }
 
 .move-button-blocked:active, .move-button-blocked-active {
     border: rgb(255, 255, 255) 2px solid;
     background-color: rgb(226, 16, 16);
     box-shadow: 0 0 10px 0px rgb(255, 0, 0);
-    /* transform: scale(5); */
 }
 
 
-
-
-/* .move-center {
-    position: fixed;
-    background-color: steelblue;
-    z-index: 1;
-    width: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
-    height: calc((var(--toolbar-height) - var(--toolbar-padding) * 2) / 3 + 2px) ;
-    transition: 0.2s;
-} */
-
-/* .move-space {
-    background-color: steelblue;
-    height: 100%;
-    transition: 0.25s;
-} */
-
+/* poniżej demo animowanej obramówki, gdzie obramowanie jest widoczne tylko na rogach kratki*/
 /* :root {
     --border-width: 3px;
     --corner-size: 10px;
