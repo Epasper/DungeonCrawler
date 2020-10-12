@@ -45,4 +45,7 @@ public class Armor extends Equipment{
         this.chanceToHitReduction = chanceToHitReduction;
         this.additionalHp = additionalHp;
     }
+
+    public Armor() {
+    }
 }
