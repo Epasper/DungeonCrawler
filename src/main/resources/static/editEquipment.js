@@ -10,8 +10,14 @@ const emptySlot = {
     imageLink: "../images/null"
 }
 
-function test() {
+function saveAndExit() {
     console.log(currentHeroBackpack)
+    let request = new XMLHttpRequest();
+    const url = `http://localhost:8080/editEquipment`
+    request.open("POST", url, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    const backpackJSON = JSON.stringify(currentHeroBackpack);
+    request.send(backpackJSON);
 }
 
 function allowDrop(event) {
