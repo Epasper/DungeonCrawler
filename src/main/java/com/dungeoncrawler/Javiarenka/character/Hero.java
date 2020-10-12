@@ -1,13 +1,15 @@
 package com.dungeoncrawler.Javiarenka.character;
 
+import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Hero extends Character {
     private String surname;
@@ -18,6 +20,7 @@ public class Hero extends Character {
     private String armorName;
     private String className;
     private int money;
+    private List<Skill> skills;
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
@@ -86,10 +89,13 @@ public class Hero extends Character {
         this.money = money;
     }
 
-    public int getUnarmedAttackDamage() {
-        return unarmedAttackDamage;
+    public List<Skill> getSkills() {
+        return skills;
     }
 
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
 
     public Backpack getBackpack() {
         return backpack;
@@ -99,6 +105,10 @@ public class Hero extends Character {
         this.backpack = backpack;
     }
 
+    public int getUnarmedAttackDamage() {
+        return unarmedAttackDamage;
+    }
+
     public boolean isSelectedForParty() {
         return this.isSelectedForParty;
     }
@@ -106,13 +116,18 @@ public class Hero extends Character {
     public void setSelectedForParty(boolean selectedForParty) {
         isSelectedForParty = selectedForParty;
     }
+  
+    public Hero() {
+        super();
+        addStartingBackpackItems();
+    }
 
     public Hero(String name, int hp) {
         super(name, hp);
         addStartingBackpackItems();
     }
 
-    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money) {
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<Skill> skills) {
         this();
         super.setName(name);
         this.surname = surname;
@@ -122,11 +137,7 @@ public class Hero extends Character {
         this.backpack.setRightHandSlot(equippedWeapon);
         this.backpack.setChestSlot(equippedArmor);
         this.money = money;
-    }
-
-    public Hero() {
-        super();
-        addStartingBackpackItems();
+        this.skills = skills;
     }
 
     public void addStartingBackpackItems() {
@@ -139,15 +150,15 @@ public class Hero extends Character {
     @Override
     public String toString() {
         return "Hero{" +
-                "name='" + super.getName() + '\'' +
                 "surname='" + surname + '\'' +
-                ", heroClass=" + heroClass + '\'' +
-                ", equippedArmor=" + equippedArmor + '\'' +
-                ", equippedWeapon=" + equippedWeapon + '\'' +
+                ", heroClass=" + heroClass +
+                ", equippedArmor=" + equippedArmor +
+                ", equippedWeapon=" + equippedWeapon +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money + '\'' +
-                ", backpack=" + backpack.toString() +
+                ", money=" + money +
+                ", skills=" + skills +
+                ", backpack=" + backpack +
                 '}';
     }
 
@@ -171,8 +182,13 @@ public class Hero extends Character {
         }
     }
 
+    public int getTotalHp() {
+        return getHp() + equippedArmor.getAdditionalHp();
+    }
+
     public void saveThisHero() {
         setHpByHeroClass();
+        setSkillsByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
@@ -219,7 +235,11 @@ public class Hero extends Character {
         this.money = this.money - amount;
     }
 
-    public int getTotalHp() {
-        return getHp() + equippedArmor.getAdditionalHp();
+    public void setSkillsByHeroClass() {
+        List<Skill> defaultSkills = SkillResources.defaultSkills();
+        List<Skill> skillsFiltered = defaultSkills.stream()
+                .filter(skill -> skill.getClassRestrictions().contains(getHeroClass()))
+                .collect(Collectors.toList());
+        setSkills(skillsFiltered);
     }
 }
