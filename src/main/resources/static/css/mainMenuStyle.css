@@ -8,6 +8,7 @@ body,
     margin: 0;
     padding: 0;
     overflow: hidden;
+    font-family: 'Berkshire Swash', Arial, cursive, sans-serif;
 }
 
 #cloud-intro {
@@ -23,6 +24,31 @@ body,
         url("../images/menuBackground/layers/sky.png");
 
     animation: wind 20s linear infinite;
+}
+
+.menu-container {
+    z-index: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 5%;
+    margin: 10%;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+a:hover {
+    color: darkblue;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 @keyframes wind {
