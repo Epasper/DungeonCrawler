@@ -29,6 +29,8 @@ function updateMoveButton() {
     let moveButton = document.getElementById('move-party-btn');
     let moveButtonsContainer = document.getElementById('move-ctrl');
 
+    
+    //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if(!party){
         moveButton.disabled = true;
         moveButtonsContainer.classList.remove('move-container-hover')

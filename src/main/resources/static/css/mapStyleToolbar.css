@@ -127,8 +127,12 @@
 
 .move-container-hover:hover #move-up {
     transform: translate(0, -100%) rotate(-90deg);
-    /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
+
+/* TODO: jeśli chcemy skalować któryś z guzików ruchu - trzeba użyć poniższego selektora*/
+/* #move-ctrl:hover #move-up:active, #move-ctrl:hover .move-button-active {
+    transform: translate(0, -100%) rotate(-90deg) scale(0.7);
+} */
 
 .move-container-hover:hover #move-left {
     /* transform: translate(-100%, 0); */
@@ -199,7 +203,7 @@
     /* grid-area: 2 / 2 / 3 / 3; */
     grid-row-start: 2;
     grid-column-start: 2;
-    transition: transform 0.5s;
+    transition: transform 0.6s;
     /* transition: 0.5s; */
     /* transition: background-image 0.5s; */
     /* background-image: url('../images/dungeonMap/diamond.svg'); */
@@ -215,8 +219,7 @@
 .move-button:hover {
     border: white 2px solid;
     box-shadow: 0 0 10px 0px #000;
-    transform: scale(5);
-    
+    /* transform: scale(5); */
 }
 
 .move-button:hover > .move-img {
@@ -237,16 +240,16 @@
 }
 
 .move-button-blocked:hover {
-    border: rgb(109, 30, 30) 2px solid;
+    border: rgb(255, 255, 255) 2px solid;
     /* background-color: #000; */
-    /* transform: scale(2); */
+    /* transform: scale(5); */
 }
 
 .move-button-blocked:active, .move-button-blocked-active {
-    border: rgb(109, 30, 30) 2px solid;
-    background-color: rgb(197, 0, 0);
-    box-shadow: 0 0 10px 0px rgba(255, 0, 0, 0.5);
-    /* transform: scale(0.9); */
+    border: rgb(255, 255, 255) 2px solid;
+    background-color: rgb(226, 16, 16);
+    box-shadow: 0 0 10px 0px rgb(255, 0, 0);
+    /* transform: scale(5); */
 }
 
 

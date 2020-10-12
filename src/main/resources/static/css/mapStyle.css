@@ -150,6 +150,9 @@
 }
 
 #party {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 2px solid skyblue;
     background-color: steelblue;
     transition: 0.25s;
@@ -178,4 +181,8 @@
     transition: 1s;
     /* animation-timing-function: ease-in-out; */
     animation-iteration-count: infinite;
+}
+
+#party-img {
+    transition: 0.5s;
 }

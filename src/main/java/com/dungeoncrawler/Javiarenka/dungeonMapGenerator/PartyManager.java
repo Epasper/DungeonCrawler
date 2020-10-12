@@ -76,6 +76,7 @@ public class PartyManager
     public boolean movePartyOneStep(Direction dir)
     {
         Tile targetTile = tileNav.getNextTile(party.occupiedTile, dir);
+        party.setDirection(dir);
         if (!targetTile.isWalkable()) return false;
         return teleportParty(targetTile);
     }
