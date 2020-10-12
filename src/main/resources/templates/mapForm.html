@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../jsDungeonMap/mapForm.js" defer></script>
+</head>
+<body>
+    <form action='/dungeonMap' onsubmit="return validate()" method='post'>
+        <label for="width">Map width:</label><br>
+        <input type='number' min="20" name='width' id="width"><br> <!--required-->
+        <label for="height">Map height:</label><br>
+        <input type='number' min="20" name='height' id="height"><br> <!--required-->
+        <br>
+        <input type='submit' value='Generate map!'>
+    </form>
+</body>
+</html>
