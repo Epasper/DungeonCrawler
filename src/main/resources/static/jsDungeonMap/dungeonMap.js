@@ -1,3 +1,4 @@
+import { updateButtons } from './mapButtons.js'
 import {injectTileListeners, injectButtonsListeners} from './mapEvents.js'
 import {adaptGrids} from './mapStyling.js'
 
@@ -11,4 +12,5 @@ function ready() {
     adaptGrids()
     injectTileListeners()
     injectButtonsListeners()
+    updateButtons()
 }

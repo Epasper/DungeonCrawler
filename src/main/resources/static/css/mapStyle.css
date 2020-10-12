@@ -80,10 +80,11 @@
 }
 
 .tile:hover {
-    border: rgb(0, 0, 0) solid;
+    border: rgb(0, 0, 0) solid ;
+    border-width: 0.15vmin;
+    /* transform: scale(1.15); */
     color: rgba(0, 0, 0, 1);
     /* box-shadow: inset 0px 0px 0.5rem 0px rgba(0, 0, 0, 0.5); */
-    border-width: 0.2vmin;
 }
 
 #container-grid {
@@ -144,6 +145,7 @@
 
 #selection:hover {
     border: 2px rgb(255, 255, 255) solid;
+    transform: scale(1.1);
     box-shadow: 0 0 5px 0px #000;
 }
 
@@ -157,12 +159,15 @@
 #party:hover {
     border: 2px rgb(255, 255, 255) solid;
     box-shadow: 0 0 5px 0px #000;
+    transform: scale(1.2); 
 }
 
 @keyframes blink-border {
-    50% { 
+    10% { 
         border-color: rgb(255, 255, 255);
         /* box-shadow: 0 0 5px 0px #000; */
+        transform: scale(1.2);
+        /* box-shadow: 0 0 10px 2px #000; */
     }
 }
 
@@ -170,6 +175,7 @@
     box-shadow: 0 0 5px 0px #000;
     animation-name: blink-border;
     animation-duration: 1s;
-    animation-timing-function: ease-in-out;
+    transition: 1s;
+    /* animation-timing-function: ease-in-out; */
     animation-iteration-count: infinite;
 }

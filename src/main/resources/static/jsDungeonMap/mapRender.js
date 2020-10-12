@@ -1,9 +1,11 @@
 import { addParty, party } from './partyManager.js'
 
 export function draw() {
+    //TODO: mapa jest przerysowywana co kliknięcie, ale to powoduje nieładne efekty wizualne na zaznaczonej drużynie
+    // może by nie rysować party na nowo z każdym kliknięciem, jeśli nie zmiania się status samej drużyny
+    
     console.log('---DRAWING---')
     drawParty();
-
 }
 
 async function drawParty() {

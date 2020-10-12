@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @RestController
@@ -41,7 +42,17 @@ public class MapRestController
     public void moveParty(@RequestParam int coordX, @RequestParam int coordY)
     {
         PartyManager pm = service.getStage().getPartyManager();
-        pm.moveParty(coordX, coordY);
+        pm.teleportParty(coordX, coordY);
+    }
+
+    @GetMapping("/stepParty")
+    public void stepParty(@RequestParam Direction dir)
+    {
+        //TODO: nie można umieścić drużyny na polu, na którym wstępnie ją zespawnowano...
+
+        PartyManager pm = service.getStage().getPartyManager();
+        pm.movePartyOneStep(dir);
+        System.out.println("Party moved: " + dir);
     }
 
     @GetMapping("/getParty")
@@ -68,5 +79,11 @@ public class MapRestController
         if (!message.equals("")) System.out.println(message);
 
         return clickedTile;
+    }
+
+    @GetMapping("/movability")
+    public Map<Direction, Boolean> checkMovability()
+    {
+        return service.getStage().getPartyManager().evaluateMovability();
     }
 }

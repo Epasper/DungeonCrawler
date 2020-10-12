@@ -67,7 +67,7 @@
     transition: 1s;
 }
 
-.move-container:hover {
+.move-container-hover:hover {
     opacity: 1;
 }
 
@@ -119,43 +119,39 @@
     border: solid 2px skyblue;
 } */
 
-.move-container:hover #move-grid {
+.move-container-hover:hover #move-grid {
     height: 100%;
     width: var(--toolbar-space);
     /* width: calc(var(--toolbar-height) - var(--toolbar-padding)*2); */
 }
 
-.move-container:hover .move-up {
+.move-container-hover:hover #move-up {
     transform: translate(0, -100%) rotate(-90deg);
     /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
 
-.move-container:hover .move-left {
+.move-container-hover:hover #move-left {
     /* transform: translate(-100%, 0); */
     transform: translate(-100%, 0) rotate(-180deg);
     /* background-image: url('../images/dungeonMap/arrow.svg'); */
     /* transform: rotate(180deg); */
 }
 
-.move-container:hover .move-right {
+.move-container-hover:hover #move-right {
     transform: translate(100%, 0);
     /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
 
-.move-container:hover .move-down {
+.move-container-hover:hover #move-down {
     transform: translate(0, 100%) rotate(90deg);
     /* background-image: url('../images/dungeonMap/arrow.svg'); */
 }
 
-.move-container:hover .move-img {
+.move-container-hover:hover .move-img {
     opacity: 0.15;
 }
 
-.move-container:hover .move-center {
-    opacity: 0;
-}
-
-.move-container:hover #move-party-btn {
+.move-container-hover:hover #move-party-btn {
     transform: translate(calc(var(--toolbar-space) + var(--toolbar-padding)));
 }
 
@@ -164,11 +160,11 @@
     opacity: 0;
 } */
 
-.move-right {
+#move-right {
     z-index: 1;
 }
 
-.move-left {
+#move-left {
     transform: rotate(180deg);
 }
 /* 
@@ -182,6 +178,8 @@
 } */
 
 .move-img {
+    pointer-events: none;
+    user-select: none;
     width: 50%;
     opacity: 1;
     transition: 0.5s;
@@ -202,22 +200,57 @@
     grid-row-start: 2;
     grid-column-start: 2;
     transition: transform 0.5s;
+    /* transition: 0.5s; */
     /* transition: background-image 0.5s; */
     /* background-image: url('../images/dungeonMap/diamond.svg'); */
-    background-repeat: no-repeat;
-    background-position: center;
+    /* background-repeat: no-repeat; */
+    /* background-position: center; */
+    /* box-shadow: 0 0 10px 0px #000; */
     /* background-size: cover; */
+    /* transform: scale(5); */
 }
+
+
 
 .move-button:hover {
     border: white 2px solid;
     box-shadow: 0 0 10px 0px #000;
+    transform: scale(5);
+    
 }
 
 .move-button:hover > .move-img {
     opacity: 1;
     filter: drop-shadow(0 0 4px rgb(255, 255, 255));
 }
+
+.move-button:active, .move-button-active {
+    border: white 2px solid;
+    background-color: skyblue;
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.5);
+    /* transform: scale(0.5); */
+}
+
+.move-button-blocked{
+    background-color: brown;
+    /* transform: scale(5); */
+}
+
+.move-button-blocked:hover {
+    border: rgb(109, 30, 30) 2px solid;
+    /* background-color: #000; */
+    /* transform: scale(2); */
+}
+
+.move-button-blocked:active, .move-button-blocked-active {
+    border: rgb(109, 30, 30) 2px solid;
+    background-color: rgb(197, 0, 0);
+    box-shadow: 0 0 10px 0px rgba(255, 0, 0, 0.5);
+    /* transform: scale(0.9); */
+}
+
+
+
 
 /* .move-center {
     position: fixed;

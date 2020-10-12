@@ -80,6 +80,6 @@ public class Tile
 
     public boolean isWalkable()
     {
-        return type.isWalkable();
+        return type.isWalkable() && !isOccupied();
     }
 }
