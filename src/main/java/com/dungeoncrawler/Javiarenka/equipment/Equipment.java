@@ -9,21 +9,37 @@ public class Equipment {
     private double weight;
     private double price;
     private List<HeroClass> classRestrictions;
+    private String imageLink;
 
     public Equipment(String name, List<HeroClass> classRestriction, double weight, double price) {
         this.name = name;
         this.weight = weight;
         this.price = price;
         this.classRestrictions = classRestriction;
+        this.imageLink = constructImageLink();
     }
 
     public Equipment(String name, double weight, double price) {
         this.name = name;
         this.weight = weight;
         this.price = price;
+        this.imageLink = constructImageLink();
     }
 
     public Equipment() {
+        this.imageLink = constructImageLink();
+    }
+
+    private String constructImageLink(){
+        return "../images/" + this.name;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 
     public List<HeroClass> getClassRestrictions() {

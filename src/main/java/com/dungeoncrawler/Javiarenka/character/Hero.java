@@ -5,6 +5,7 @@ import com.dungeoncrawler.Javiarenka.equipment.*;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -116,7 +117,7 @@ public class Hero extends Character {
     public void setSelectedForParty(boolean selectedForParty) {
         isSelectedForParty = selectedForParty;
     }
-  
+
     public Hero() {
         super();
         addStartingBackpackItems();
@@ -141,10 +142,14 @@ public class Hero extends Character {
     }
 
     public void addStartingBackpackItems() {
-        backpack.add(new MundaneItem("Chipped Claw", 0.02, 2, 3));
-        backpack.add(new MundaneItem("Pretty Stone", 0.06, 1, 6));
-        backpack.add(new MundaneItem("Broken Branch", 0.05, 2, 7));
-        backpack.add(new MundaneItem("Coal Ore Chunk", 0.2, 12, 3));
+        try {
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem("Chipped Claw", 0.02, 2, 3));
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem("Pretty Stone", 0.06, 1, 6));
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem("Broken Branch", 0.05, 2, 7));
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem("Coal Ore Chunk", 0.2, 12, 3));
+        } catch (InventorySlotsFullException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
