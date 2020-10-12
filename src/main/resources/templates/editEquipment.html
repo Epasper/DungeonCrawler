@@ -14,6 +14,9 @@
 
 
 
+
+
+
     </script>
     <script src="editEquipment.js"></script>
 </head>
@@ -66,20 +69,16 @@
                 </div>
             </div>
         </div>
-
-        <div>
-            <p>Hero's Backpack:</p>
-        </div>
-        <div th:each="item : ${backpack.getBaggage()}">
-            <div th:inline="text">
-                <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
-                     ondragstart="drag(event)" ondragover="allowDrop(event)"
-                     th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
+        <div class="backpack">
+            <div th:each="item : ${backpack.getBaggage()}">
+                <div th:inline="text">
+                    <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
+                         ondragstart="drag(event)" ondragover="allowDrop(event)"
+                         th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
+                </div>
             </div>
         </div>
-        <div class="button-container">
-            <button class="save-button" onclick="saveAndExit()">Save and exit</button>
-        </div>
+        <button class="save-button" onclick="saveAndExit()">Save and exit</button>
     </div>
 </div>
 

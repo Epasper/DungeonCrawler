@@ -13,18 +13,21 @@ body {
     background-size: cover;
 }
 
+.backpack {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(10, 1fr);
+}
+
 .backpack-item {
-    float: left;
     width: 145px;
     height: 145px;
     font-size: 15px;
     text-align: center;
-    display: table-cell;
     vertical-align: middle;
 }
 
 .equipment-slot {
-    float: left;
     width: 145px;
     height: 145px;
     font-size: 15px;
@@ -94,22 +97,24 @@ body {
 }
 
 .save-button {
-	background-color:#0d0e03;
-	border-radius:28px;
-	border:1px solid #47531a;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:17px;
-	padding:16px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
+    background-color: #0d0e03;
+    border-radius: 10px;
+    border: 1px solid #47531a;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 17px;
+    padding: 16px 31px;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 0px #2f6627;
 }
+
 .save-button:hover {
-	background-color:#7a7919;
+    background-color: #7a7919;
 }
+
 .save-button:active {
-	position:relative;
-	top:1px;
+    position: relative;
+    top: 1px;
 }
