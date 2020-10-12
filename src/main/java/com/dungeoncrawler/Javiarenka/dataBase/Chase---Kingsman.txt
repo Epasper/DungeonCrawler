@@ -102,9 +102,9 @@
         "imageLink": "../images/null"
       },
       "1": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
+        "name": "Pretty Stone",
+        "weight": 0.06,
+        "price": 1.0,
         "imageLink": "../images/null"
       },
       "2": {
@@ -132,9 +132,9 @@
         "imageLink": "../images/null"
       },
       "6": {
-        "name": "Pretty Stone",
-        "weight": 0.06,
-        "price": 1.0,
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
         "imageLink": "../images/null"
       },
       "7": {
