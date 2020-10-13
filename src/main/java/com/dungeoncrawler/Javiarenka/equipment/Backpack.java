@@ -7,7 +7,7 @@ import java.util.*;
 public class Backpack {
 
     private Weapon leftHandSlot;
-    private Equipment rightHandSlot;
+    private Weapon rightHandSlot;
     private Armor headSlot;
     private Armor chestSlot;
     private Armor feetSlot;
@@ -51,7 +51,7 @@ public class Backpack {
         return rightHandSlot;
     }
 
-    public void setRightHandSlot(Equipment rightHandSlot) {
+    public void setRightHandSlot(Weapon rightHandSlot) {
         this.rightHandSlot = rightHandSlot;
     }
 
@@ -209,7 +209,7 @@ public class Backpack {
                     break;
                 case RIGHT_HAND:
                     if (equipment instanceof Weapon) {
-                        rightHandSlot = equipment;
+                        rightHandSlot = (Weapon) equipment;
                     } else {
                         throw new InvalidEquipmentTypeException();
                     }
