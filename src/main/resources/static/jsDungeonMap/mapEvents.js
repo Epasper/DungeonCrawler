@@ -62,10 +62,10 @@ async function teleportPartyBackend() {
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
-    console.log(clickedMoveButton);
+    //console.log(clickedMoveButton);
     let [direction] = clickedMoveButton.id.split('-').slice(-1)
     direction = direction.toUpperCase();
-    console.log(direction);
+    //console.log(direction);
     await axios.get(`http://localhost:8080/stepParty?dir=${direction}`);
 
     updateButtons();
@@ -74,7 +74,7 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 
 async function keyPressedMove({ keyCode }) {
     const moveBtn = document.getElementById('move-party-btn');
-    if(moveBtn.disabled) return;
+    if (moveBtn.disabled) return;
     let dirBtn;
 
     switch (keyCode) {
@@ -103,15 +103,14 @@ async function keyPressedMove({ keyCode }) {
     let btnClasses = Array.from(dirBtn.classList);
     console.log(btnClasses);
     let tempActiveEmulationClassName = ''
-    if(btnClasses.some(className => {return className.includes('blocked')}))
-    {
+    if (btnClasses.some(className => { return className.includes('blocked') })) {
         tempActiveEmulationClassName = 'move-button-blocked-active';
     } else {
         tempActiveEmulationClassName = 'move-button-active';
     }
 
     dirBtn.classList.add(tempActiveEmulationClassName);
-    setTimeout( function () {
+    setTimeout(function () {
         dirBtn.classList.remove(tempActiveEmulationClassName);
     }, 100)
 }
@@ -120,14 +119,13 @@ async function tileClicked({ target: clickedTileDiv }) {
     var tileId = clickedTileDiv.id
     var tileType = clickedTileDiv.classList[1]
 
-    let postData = {
-        x: getX(clickedTileDiv),
-        y: getY(clickedTileDiv),
-        message: `Tile: ${tileId} (${tileType}) has been selected!`
-    };
+    const coordX = getX(clickedTileDiv);
+    const coordY = getY(clickedTileDiv);
+    const message = `Tile: ${tileId} (${tileType}) has been selected!`
 
-    const { data: clickedTileBackend } = await axios.post('http://localhost:8080/getClickedTile', postData);
-    console.log(clickedTileBackend);
+    const { data: clickedTileBackend3 } = await axios
+        .get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`)
+    console.log(clickedTileBackend3);
 
     makeSelection(clickedTileDiv, mapGrid)
 

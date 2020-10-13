@@ -17,7 +17,6 @@ public class MapRestController
         return service.getStage();
     }
 
-    //@GetMapping("/isSpawnable")
     @GetMapping("/checkSpawnability")
     public boolean isPartySpawnable(@RequestParam int coordX, @RequestParam int coordY)
     {
@@ -61,20 +60,11 @@ public class MapRestController
         return service.getStage().getPartyManager().getParty();
     }
 
-    @PostMapping("/clickTile")
-    public void clickedTile(@RequestBody String message)
+    @GetMapping("/getClickedTile")
+    public Tile clickedTile3(@RequestParam int coordX, @RequestParam int coordY, @RequestParam String message)
     {
-        System.out.println(message);
-    }
 
-    @PostMapping("/getClickedTile")
-    public Tile clickedTile2(@RequestBody Map<String, String> input)
-    {
-        int x = Integer.parseInt(input.get("x"));
-        int y = Integer.parseInt(input.get("y"));
-        String message = input.get("message");
-
-        Tile clickedTile = service.getStage().getTile(x, y);
+        Tile clickedTile = service.getStage().getTile(coordX, coordY);
 
         if (!message.equals("")) System.out.println(message);
 

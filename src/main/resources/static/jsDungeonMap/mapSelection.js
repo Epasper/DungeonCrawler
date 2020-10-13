@@ -53,14 +53,10 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     let tileId = selectedGridTileDiv.id;
     let tileType = selectedGridTileDiv.classList[1];
 
-    let postConfig ={
-        headers: {
-            'content-type': 'test/json'
-        }
-    }
-
+    const coordX = getX(selectedGridTileDiv);
+    const coordY = getY(selectedGridTileDiv);
     const message = `Tile: ${tileId} (${tileType}) has been de-selected!`;
-    await axios.post('http://localhost:8080/clickTile', message, postConfig);
+    await axios.get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`);
 
     updateButtons();
     selectedGridTileDiv = null;
