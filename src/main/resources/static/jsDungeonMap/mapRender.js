@@ -1,4 +1,5 @@
-import { addParty, directions, party } from './partyManager.js'
+import { addParty, party } from './partyManager.js'
+import { getDivFromBackendTile } from './mapSelection.js'
 
 let prevFacingDirection = 'none';
 
@@ -22,7 +23,7 @@ async function drawParty() {
     //debugger;
 
     //if (dir) party.direction = directions[dir];
-    
+
     let partyTile = document.getElementById(`party`);
     let partyImg = document.getElementById('party-img');
     if (!partyTile) {
@@ -48,31 +49,31 @@ async function drawParty() {
     // const grid = document.getElementById('grid');
     // grid.appendChild(partyTile);
 
-    if(partyImg){
+    if (partyImg) {
         let standardAnimationDuration = 0.1;
         const longerAnimationMultiplier = 2.5;
-        
+
         switch (dir) {
             case 'UP':
                 partyImg.style.opacity = ('0.4');
-                if(prevFacingDirection == 'RIGHT') {
+                if (prevFacingDirection == 'RIGHT') {
                     partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, right-to-up`
                     break;
-                } else if(prevFacingDirection == 'DOWN') {
+                } else if (prevFacingDirection == 'DOWN') {
                     standardAnimationDuration *= longerAnimationMultiplier;
                 }
                 partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up`
                 break;
             case 'LEFT':
                 partyImg.style.opacity = ('0.4');
-                if(prevFacingDirection == 'RIGHT') {
+                if (prevFacingDirection == 'RIGHT') {
                     standardAnimationDuration *= longerAnimationMultiplier;
                 }
                 partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, left`
                 break;
             case 'RIGHT':
                 partyImg.style.opacity = ('0.4');
-                if(prevFacingDirection == 'UP') {
+                if (prevFacingDirection == 'UP') {
                     partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up-to-right`
                     break;
                 } else if (prevFacingDirection == 'LEFT') {
@@ -82,7 +83,7 @@ async function drawParty() {
                 break;
             case 'DOWN':
                 partyImg.style.opacity = ('0.4');
-                if(prevFacingDirection == 'UP') {
+                if (prevFacingDirection == 'UP') {
                     standardAnimationDuration *= longerAnimationMultiplier;
                 }
                 partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, down`
@@ -92,7 +93,7 @@ async function drawParty() {
                 partyImg.style.transition = 'all 0.5s'
         }
         partyImg.style.animationDuration = `0s, ${standardAnimationDuration}s`
-        if(dir){
+        if (dir) {
             prevFacingDirection = dir;
         }
     }
@@ -101,4 +102,62 @@ async function drawParty() {
     grid.appendChild(partyTile);
 
     if (!party) addParty(partyTile);
+}
+
+export async function animateRoomChange(changedTilesData) {
+    const keys = Object.keys(changedTilesData);
+    console.log(keys);
+    const { type: newType } = changedTilesData[0][0];
+    const currentType = (newType == 'ROOM') ? 'ROOM_LOCKED' : 'ROOM';
+    let roomDiv;
+    let cascades = new Map();
+    keys.forEach(key => {
+        //group here:
+        let cascade = changedTilesData[key];
+        let divs = [];
+        cascade.forEach(backendTile => {
+            console.log(backendTile);
+            roomDiv = getDivFromBackendTile(backendTile);
+            console.log(roomDiv);
+
+            divs.push(roomDiv);
+            ////roomDiv.classList.remove(currentType);
+            ////roomDiv.classList.add(newType);
+        });
+        cascades.set(key, divs);
+
+    });
+
+    console.log(cascades)
+
+    for (let i = 0; i < cascades.size; i++) {
+        console.log(cascades.get(`${i}`));
+        setTimeout(function () {
+            cascades.get(`${i}`).forEach(div => {
+                div.classList.remove(currentType);
+                div.classList.add(newType);
+            })
+        }, (i + 1) * 100)
+    }
+
+
+
+
+    // setInterval(function () {
+    //     cascades.get(0).forEach(div => {
+    //         div.classList.remove(currentType);
+    //         div.classList.add(newType);
+    //     })
+    //     cascades.delete(0);
+    //     if (cascades.size == 0) clearInterval(this);
+    // }, 1000)
+
+    setTimeout(function () {
+
+    }, 1000)
+    // changedTilesData.forEach(cascade => {
+    //     cascade.forEach(backendTile => {
+    //         console.log(backendTile);
+    //     });
+    // });
 }

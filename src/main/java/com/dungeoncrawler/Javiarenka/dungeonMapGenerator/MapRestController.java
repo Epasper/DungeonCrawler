@@ -92,11 +92,35 @@ public class MapRestController
         return tn.getNextTile(service.getStage().getPartyManager().getParty().occupiedTile, dir);
     }
 
-    @GetMapping("/updateTileType")
-    public Tile updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType type)
+    @GetMapping("/openDoor")
+    public Object[] updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType newType)
     {
+        Object[] outputArray = new Object[2];
         Tile targetTile = service.getStage().getTile(coordX, coordY);
-        targetTile.setType(type);
-        return targetTile;
+        boolean willRoomChangeState = ((newType.isClosedDoor() && !targetTile.getType().isClosedDoor()) || (!newType.isClosedDoor() && targetTile.getType().isClosedDoor()));
+        if (targetTile.getType().isDoor() && willRoomChangeState)
+        {
+            Room room = service.getStage().getRoomByDoor(targetTile);
+            TileNavigator tn = new TileNavigator(service.getStage());
+            if (newType == TileType.DOOR_OPENED)
+            {
+                room.unlockRoomTiles();
+                outputArray[1] = tn.getTouchingTilesCascade(targetTile, TileType.ROOM);
+            }
+            else
+            {
+                room.lockRoomTiles();
+                outputArray[1] = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
+            }
+
+
+        }
+
+        targetTile.setType(newType);
+        outputArray[0] = targetTile;
+
+        return outputArray;
     }
+
+    //TODO: get room tiles, gdzie zwraca tablicę pól pokoju od strony drzwi, tak żeby potem tę tablicę wykorzystać dla animacji
 }

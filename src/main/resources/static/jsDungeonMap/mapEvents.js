@@ -236,9 +236,14 @@ function brightness(tile, value) {
     g += value + 10
     b += value
 
-    style.backgroundColor = `rgb(${r},${g},${b})`
+    //style.transition = `0s`;
+    style.backgroundColor = `rgb(${r},${g},${b})`;
 }
 
 function resetColor(tile) {
     tile.style.backgroundColor = ``
+    // setTimeout(function () {
+    //     tile.style.transition = ``;
+    // }, 2000)
+    
 }

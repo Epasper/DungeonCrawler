@@ -50,6 +50,16 @@ public enum TileType
         return tileTypesMap.get(strVal);
     }
 
+    public boolean isDoor()
+    {
+        return this.name().contains("DOOR");
+    }
+
+    public boolean isClosedDoor()
+    {
+        return (this.name().contains("CLOSED") || this.name().contains("LOCKED"));
+    }
+
     public boolean isWalkable()
     {
         return isWalkable;

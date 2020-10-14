@@ -61,10 +61,10 @@ public class TileNavigator
         Map<Direction, Tile> crossTiles = getNeighboringTilesWithDirections(middleTile);
 
         outputList.addAll(crossTiles.values());
-        outputList.add(getNextTile(crossTiles.get(Direction.UP),Direction.LEFT));
-        outputList.add(getNextTile(crossTiles.get(Direction.UP),Direction.RIGHT));
-        outputList.add(getNextTile(crossTiles.get(Direction.DOWN),Direction.LEFT));
-        outputList.add(getNextTile(crossTiles.get(Direction.DOWN),Direction.RIGHT));
+        outputList.add(getNextTile(crossTiles.get(Direction.UP), Direction.LEFT));
+        outputList.add(getNextTile(crossTiles.get(Direction.UP), Direction.RIGHT));
+        outputList.add(getNextTile(crossTiles.get(Direction.DOWN), Direction.LEFT));
+        outputList.add(getNextTile(crossTiles.get(Direction.DOWN), Direction.RIGHT));
 
         return outputList;
     }
@@ -404,5 +404,68 @@ public class TileNavigator
 
         //System.out.println("Nie każde pole korytarza jest dostępne dla zwiedzających xD");
         return leftoverCorridorTiles;
+    }
+
+    public Map<Integer, Set<Tile>> getTouchingTilesCascade(Tile sourceTile, TileType targetType)
+    {
+        Map<Integer, Set<Tile>> outputMap = new HashMap<>();
+        int cascadeCounter = 0;
+        Set<Tile> currentCascade;
+        Set<Tile> nextCascade = new HashSet<>();
+        Set<Tile> tempCascade = new HashSet<>();
+        Set<Tile> alreadyDone = new HashSet<>();
+
+        currentCascade = new HashSet<>(getNeighboringTiles(sourceTile, targetType));
+
+        outputMap.put(cascadeCounter, currentCascade);
+        alreadyDone.addAll(currentCascade);
+        cascadeCounter++;
+
+        while (currentCascade.size() > 0)
+        {
+            currentCascade.forEach(tile -> tempCascade.addAll(new HashSet<>(getNeighboringTiles(tile, targetType))));
+            nextCascade = tempCascade.stream().filter(tile -> !alreadyDone.contains(tile)).collect(Collectors.toSet());
+            outputMap.put(cascadeCounter, nextCascade);
+            currentCascade = nextCascade;
+            alreadyDone.addAll(currentCascade);
+            cascadeCounter++;
+        }
+
+        if (outputMap.get(cascadeCounter - 1).size() == 0) outputMap.remove(cascadeCounter - 1);
+
+        return outputMap;
+    }
+
+    Set<Tile> getTouchingTilesOfTypeX(Tile sourceTile, TileType targetType)
+    {
+
+        Set<Tile> touchingTiles = new HashSet<>();
+        touchingTiles.add(sourceTile);
+        Set<Tile> outputSet = new HashSet<>(touchingTiles);
+        Set<Tile> neighboringTilesOfSameType = new HashSet<>();
+
+        int touchingTilesNo = 1;
+        int prevTouchingTilesNo;
+
+        do
+        {
+            prevTouchingTilesNo = touchingTilesNo;
+            touchingTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
+
+            for (Tile tile : touchingTiles)
+            {
+                neighboringTilesOfSameType.addAll(getNeighboringTiles(tile, targetType));
+            }
+
+            neighboringTilesOfSameType.forEach(tile -> tile.setType(TileType.CUTOFF));
+            outputSet.addAll(neighboringTilesOfSameType);
+            neighboringTilesOfSameType.removeAll(touchingTiles);
+            touchingTilesNo = outputSet.size();
+            touchingTiles = new HashSet<>(neighboringTilesOfSameType);
+            neighboringTilesOfSameType.clear();
+        } while (touchingTilesNo > prevTouchingTilesNo);
+
+        outputSet.forEach(tile -> tile.setType(targetType));
+        return outputSet;
     }
 }

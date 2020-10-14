@@ -1,5 +1,6 @@
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
+import { animateRoomChange } from './mapRender.js'
 
 
 async function updateSpawnButton() {
@@ -68,9 +69,9 @@ async function updateDirectionalButtons() {
 async function updateActionButton() {
     let actionBtn = document.getElementById('action-btn');
     if (!isPartySelected()) return;
-    
+
     actionBtn.disabled = true;
-    
+
     //debugger;
     if (party.direction == directions.NONE) return;
 
@@ -79,18 +80,22 @@ async function updateActionButton() {
 
     let pointedDiv = getDivFromBackendTile(pointedTile);
     console.log('pointedDiv: ', pointedDiv);
-    
-    pointedDiv = {div: pointedDiv, type: pointedTile.type};
+
+    pointedDiv = { div: pointedDiv, type: pointedTile.type };
     console.log('pointedDiv: ', pointedDiv);
 
     if (pointedTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
-        let doorOperator = new DoorOperator(pointedDiv)
-        console.log('current door status: ', doorOperator.current.state)
+        let doorOperator = new DoorOperator(pointedDiv);
+        console.log('current door status: ', doorOperator.current.state);
         doorOperator.open();
-        console.log('current door status: ', doorOperator.current.state)
-        await axios.get(`http://localhost:8080/updateTileType?coordX=${pointedTile.x}&coordY=${pointedTile.y}&type=DOOR_${doorOperator.current.state}`)
+        console.log('current door status: ', doorOperator.current.state);
+        const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
+            &newType=DOOR_${doorOperator.current.state}`);
+        const changedTilesData = roomData[1];
 
+        console.log('changedTilesData: ' ,changedTilesData)
+        if (changedTilesData) animateRoomChange(changedTilesData);
         // doorOperator.open();
         // doorOperator.close();
         // doorOperator.close();
@@ -173,7 +178,7 @@ class DoorClosed extends Door {
     }
 
     close(div) {
-        console.log('locking the door') ;
+        console.log('locking the door');
         const newState = 'LOCKED';
         div.classList.remove(`DOOR_${this.state}`)
         div.classList.add(`DOOR_${newState}`)

@@ -27,6 +27,7 @@
 
 .OBSTRUCTION {
     background-color: rgb(50, 50, 50);
+    background-color: rgb(70, 70, 70);
 }
 
 .DEBUG {
@@ -55,25 +56,28 @@
 
 .ROOM {
     background-color: #BDB76B;
+    transition: background-color 1s;
 }
 
 .ROOM_LOCKED {
     background-color: #55522d;
+    background-color: rgb(70, 70, 70);
+    transition: background-color 1s;
 }
 
 .DOOR_CLOSED {
     background-color: sandybrown;
-    /* transition: 2s; */
+    transition: 1s;
 }
 
 .DOOR_OPENED {
     background-color:#a09b59;
-    transition: 2s;
+    transition: 1s;
 }
 
 .DOOR_LOCKED {
     background-color: maroon;
-    /* transition: 2s; */
+    transition: 1s;
 }
 
 .tile {
