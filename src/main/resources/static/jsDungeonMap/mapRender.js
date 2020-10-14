@@ -1,4 +1,4 @@
-import { addParty, party } from './partyManager.js'
+import { addParty, directions, party } from './partyManager.js'
 
 let prevFacingDirection = 'none';
 
@@ -16,10 +16,13 @@ async function drawParty() {
 
     if (!backendParty) return;
 
-    const [xCoord, yCoord, direction] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
-    console.log(`drawing party: x:${xCoord}/ y:${yCoord} facing: ${direction}`);
+    //debugger;
+    const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
+    console.log(`drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}`);
     //debugger;
 
+    //if (dir) party.direction = directions[dir];
+    
     let partyTile = document.getElementById(`party`);
     let partyImg = document.getElementById('party-img');
     if (!partyTile) {
@@ -49,7 +52,7 @@ async function drawParty() {
         let standardAnimationDuration = 0.1;
         const longerAnimationMultiplier = 2.5;
         
-        switch (direction) {
+        switch (dir) {
             case 'UP':
                 partyImg.style.opacity = ('0.4');
                 if(prevFacingDirection == 'RIGHT') {
@@ -89,8 +92,8 @@ async function drawParty() {
                 partyImg.style.transition = 'all 0.5s'
         }
         partyImg.style.animationDuration = `0s, ${standardAnimationDuration}s`
-        if(direction){
-            prevFacingDirection = direction;
+        if(dir){
+            prevFacingDirection = dir;
         }
     }
 

@@ -2,6 +2,7 @@ import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.j
 import { mapWidth, mapHeight } from './mapStyling.js'
 import { updateButtons } from './mapButtons.js'
 import { draw } from './mapRender.js'
+import { party, directions } from './partyManager.js'
 
 const mapGrid = document.getElementById(`grid`)
 
@@ -22,6 +23,9 @@ export function injectButtonsListeners() {
     let spawnBtn = document.getElementById('spawn-party-btn');
     spawnBtn.addEventListener('click', spawnPartyBackend);
 
+    let actionBtn = document.getElementById('action-btn');
+    actionBtn.addEventListener('click', makeAction);
+
     let moveBtn = document.getElementById('move-party-btn');
     moveBtn.addEventListener('click', teleportPartyBackend);
 
@@ -35,6 +39,13 @@ export function injectButtonsListeners() {
     });
 
     document.addEventListener('keydown', keyPressedMove);
+}
+
+function makeAction() {
+    let selectedTile = selectedGridTileDiv;
+    selectedTile.classList.remove('DOOR_CLOSED');
+    selectedTile.classList.add('DOOR_OPENED');
+    console.log('DOOOOOOOOOOOOOOOOOOOOOR');
 }
 
 async function spawnPartyBackend() {
@@ -63,10 +74,14 @@ async function teleportPartyBackend() {
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     //console.log(clickedMoveButton);
-    let [direction] = clickedMoveButton.id.split('-').slice(-1)
-    direction = direction.toUpperCase();
+    let [dir] = clickedMoveButton.id.split('-').slice(-1)
+    dir = dir.toUpperCase();
     //console.log(direction);
-    await axios.get(`http://localhost:8080/stepParty?dir=${direction}`);
+    //debugger;
+    //party.direction = directions[dir]
+    await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
+
+    party.direction = directions[dir];
 
     updateButtons();
     draw();

@@ -69,17 +69,6 @@ public class TileNavigator
         return outputList;
     }
 
-//    public Tile[] getNeighboringTiles(Tile middleTile, TileType type)
-//    {
-//        List<Tile> neighboursList = new ArrayList<>(Arrays.asList(getNeighboringTiles(middleTile)));
-//        List<Tile> neighboursOfType = neighboursList.stream().filter(tile -> tile.getType() == type).collect(Collectors.toList());
-//        Tile[] outputArray = new Tile[neighboursOfType.size()];
-//
-//        neighboursOfType.toArray(outputArray);
-//
-//        return outputArray;
-//    }
-
     public List<Tile> getNeighboringTiles(Tile middleTile, TileType type)
     {
         List<Tile> neighboursList = new ArrayList<>(Arrays.asList(getNeighboringTiles(middleTile)));

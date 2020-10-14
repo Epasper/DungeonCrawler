@@ -62,3 +62,7 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     selectedGridTileDiv = null;
     clickedSelectionDiv.remove();
 }
+
+export function getDivFromBackendTile({ x, y}) {
+    return document.getElementById(`${x}-${y}`);
+}

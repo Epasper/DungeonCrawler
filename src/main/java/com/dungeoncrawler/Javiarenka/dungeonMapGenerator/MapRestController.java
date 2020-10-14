@@ -31,6 +31,12 @@ public class MapRestController
         return party;
     }
 
+    @GetMapping("/getMap")
+    public Stage getMap()
+    {
+        return service.stage;
+    }
+
     @GetMapping("/checkWalkability")
     public boolean isTileWalkable(@RequestParam int coordX, @RequestParam int coordY)
     {
@@ -47,8 +53,6 @@ public class MapRestController
     @GetMapping("/stepParty")
     public void stepParty(@RequestParam Direction dir)
     {
-        //TODO: nie można umieścić drużyny na polu, na którym wstępnie ją zespawnowano...
-
         PartyManager pm = service.getStage().getPartyManager();
         pm.movePartyOneStep(dir);
         System.out.println("Party moved: " + dir);
@@ -61,13 +65,10 @@ public class MapRestController
     }
 
     @GetMapping("/getClickedTile")
-    public Tile clickedTile3(@RequestParam int coordX, @RequestParam int coordY, @RequestParam String message)
+    public Tile clickedTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam String message)
     {
-
         Tile clickedTile = service.getStage().getTile(coordX, coordY);
-
         if (!message.equals("")) System.out.println(message);
-
         return clickedTile;
     }
 
@@ -75,5 +76,20 @@ public class MapRestController
     public Map<Direction, Boolean> checkMovability()
     {
         return service.getStage().getPartyManager().evaluateMovability();
+    }
+
+    @GetMapping("/getPointedTile")
+    public Tile getPointedTile(@RequestParam Direction dir)
+    {
+        TileNavigator tn = new TileNavigator(service.getStage());
+        return tn.getNextTile(service.getStage().getPartyManager().getParty().occupiedTile, dir);
+    }
+
+    @GetMapping("/updateTileType")
+    public Tile updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType type)
+    {
+        Tile targetTile = service.getStage().getTile(coordX, coordY);
+        targetTile.setType(type);
+        return targetTile;
     }
 }

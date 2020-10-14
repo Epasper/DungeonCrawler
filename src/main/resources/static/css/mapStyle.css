@@ -63,14 +63,17 @@
 
 .DOOR_CLOSED {
     background-color: sandybrown;
+    /* transition: 2s; */
 }
 
 .DOOR_OPENED {
-    background-color: beige;
+    background-color:#a09b59;
+    transition: 2s;
 }
 
 .DOOR_LOCKED {
     background-color: maroon;
+    /* transition: 2s; */
 }
 
 .tile {

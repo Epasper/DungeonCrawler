@@ -1,12 +1,31 @@
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
 
+export const directions = {
+    UP: 'UP',
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT',
+    DOWN: 'DOWN',
+    NONE: 'NONE'
+}
+
+// let partyAvatar = {
+//     x: undefined,
+//     y: undefined,
+//     dir: directions.NONE
+// }
+
+
+
+
+
 //let heroes = [];
 export let party;
 
 export function addParty(partyTile) {
     party = {
         partyTileDiv: partyTile,
+        direction: directions.NONE,
         isSelected: false
     }
     partyTile.addEventListener('click', partyClick);

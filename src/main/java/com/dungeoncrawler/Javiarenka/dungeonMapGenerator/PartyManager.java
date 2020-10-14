@@ -7,7 +7,6 @@ public class PartyManager
 {
     private Stage stage;
     private TileNavigator tileNav;
-    private final int partyLimit = 2;
     private PartyAvatar party;
 
     public PartyManager(Stage stage)
@@ -34,7 +33,6 @@ public class PartyManager
     public boolean isPartySpawnable(Tile targetTile)
     {
         if (!targetTile.isWalkable()) return false;
-//        if (targetTile.isOccupied()) return false;
         if (isPartySpawned()) return false;
         return true;
     }

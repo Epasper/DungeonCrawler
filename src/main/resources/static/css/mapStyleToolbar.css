@@ -23,18 +23,28 @@
     /* box-sizing: border-box; */
     height: 100%;
     padding: 0 1em;
+    width: calc(var(--toolbar-space));
 }
 
 #move-party-btn {
     z-index: 1;
     position: fixed;
-    height: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
-    transition: 0.4s;
+    height: calc(var(--toolbar-space));
+    transition: all 0.4s, transform 0.4s;
+    /* transition: transform 0.4s; */
 }
 
-#move-party-btn:disabled {
-    background-color: #A9A9A9;
+#action-btn {
+    transition: 0.4s;
+    width: calc(2 * var(--toolbar-space));
 }
+
+.button:disabled {
+    background-color: #959595;
+}
+/* #move-party-btn:disabled {
+    background-color: #A9A9A9;
+} */
 
 #move-margin {
     /* pointer-events: none; */
