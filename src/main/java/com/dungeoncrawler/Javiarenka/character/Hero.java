@@ -25,6 +25,42 @@ public class Hero extends Character {
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
+    private int maxMagicShield;
+    private int currentMagicShield;
+    private int maxPhysicalShield;
+    private int currentPhysicalShield;
+
+    public int getMaxMagicShield() {
+        return maxMagicShield;
+    }
+
+    public void setMaxMagicShield(int maxMagicShield) {
+        this.maxMagicShield = maxMagicShield;
+    }
+
+    public int getCurrentMagicShield() {
+        return currentMagicShield;
+    }
+
+    public void setCurrentMagicShield(int currentMagicShield) {
+        this.currentMagicShield = currentMagicShield;
+    }
+
+    public int getMaxPhysicalShield() {
+        return maxPhysicalShield;
+    }
+
+    public void setMaxPhysicalShield(int maxPhysicalShield) {
+        this.maxPhysicalShield = maxPhysicalShield;
+    }
+
+    public int getCurrentPhysicalShield() {
+        return currentPhysicalShield;
+    }
+
+    public void setCurrentPhysicalShield(int currentPhysicalShield) {
+        this.currentPhysicalShield = currentPhysicalShield;
+    }
 
     public String getSurname() {
         return surname;
