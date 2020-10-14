@@ -54,8 +54,15 @@ public class MapRestController
     public void stepParty(@RequestParam Direction dir)
     {
         PartyManager pm = service.getStage().getPartyManager();
-        pm.movePartyOneStep(dir);
-        System.out.println("Party moved: " + dir);
+
+        if (pm.movePartyOneStep(dir))
+        {
+            System.out.println("Party moved: " + dir);
+        }
+        else
+        {
+            System.out.println("Party turned: " + dir);
+        }
     }
 
     @GetMapping("/getParty")
