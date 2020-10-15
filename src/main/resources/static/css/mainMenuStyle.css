@@ -9,6 +9,7 @@ body,
     padding: 0;
     overflow: hidden;
     font-family: 'Berkshire Swash', Arial, cursive, sans-serif;
+    color: white;
 }
 
 #cloud-intro {
