@@ -11,7 +11,6 @@ const emptySlot = {
 }
 
 function saveAndExit() {
-    console.log(currentHeroBackpack)
     let request = new XMLHttpRequest();
     const url = `http://localhost:8080/editEquipment`
     request.open("POST", url, true);
@@ -36,7 +35,6 @@ function drag(event) {
     draggedFromId = currentId;
     if (currentId.includes('baggage')) {
         const baggageNumber = currentId.substring(8);
-        console.log(baggageNumber);
         currentlySelectedEquipment = currentHeroBackpack.baggage[parseInt(baggageNumber)];
     } else {
         currentlySelectedEquipment = currentHeroBackpack[currentId];
@@ -44,7 +42,7 @@ function drag(event) {
 }
 function drop(event) {
     const currentId = event.target.id;
-    if (!draggedFromElement || currentId === draggedFromId) {
+    if (!draggedFromElement || currentId === draggedFromId || !isDropValid(currentId)) {
         draggedFromId = null;
         currentlySelectedEquipment = null;
         draggedFromElement = null;
@@ -70,8 +68,25 @@ function drop(event) {
     event.preventDefault();
 }
 
+function isDropValid(currentId) {
+    let draggedToElement = document.getElementById(currentId);
+    if (currentId.includes('baggage')) {
+        const baggageNumber = currentId.substring(8);
+        if (currentHeroBackpack.baggage[parseInt(baggageNumber)].name === "NO EQUIPMENT"){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    if (!currentlySelectedEquipment) return false;
+    if (currentId.toLowerCase().includes(currentlySelectedEquipment.occupyingSlot.replace(/_/g, "").toLowerCase())){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function defineDraggedFromEmptySlot(currentId) {
-    console.log(currentHeroBackpack);
     if (!currentId.includes('baggage') && !currentHeroBackpack[currentId]) return true;
     if (currentId.includes('baggage')) {
         const baggageNumber = currentId.substring(8);
@@ -90,7 +105,6 @@ function defineDraggedFromEmptySlot(currentId) {
 }
 
 function defineEmptyImageSrc(currentId) {
-    console.log(currentId);
     switch (currentId) {
         case 'headSlot':
             return '../images/Equipment/emptyHead.png';

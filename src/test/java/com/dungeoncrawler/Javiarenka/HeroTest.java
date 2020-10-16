@@ -5,6 +5,7 @@ import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.character.NoMoreMoneyException;
 import com.dungeoncrawler.Javiarenka.equipment.DamageType;
+import com.dungeoncrawler.Javiarenka.equipment.EquipmentSlots;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,9 +65,7 @@ public class HeroTest {
     @Test
     void testGetMoneyFromEmptyPocket(){
         testedHero.setMoney(0);
-        Exception exception = assertThrows(NoMoreMoneyException.class, () -> {
-            testedHero.removeMoney(20);
-        });
+        Exception exception = assertThrows(NoMoreMoneyException.class, () -> testedHero.removeMoney(20));
 
         String expectedMessage = NoMoreMoneyException.MESSAGE;
         String actualMessage = exception.getMessage();

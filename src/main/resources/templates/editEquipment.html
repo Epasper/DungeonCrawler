@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/editEquipment.css">
     <script th:inline="javascript">
         let currentHeroBackpack = [[${backpack}]];
+        console.log(currentHeroBackpack);
     </script>
     <script src="editEquipment.js"></script>
 </head>
@@ -62,9 +63,11 @@
         <div class="backpack">
             <div th:each="item : ${backpack.getBaggage()}">
                 <div th:inline="text">
-                    <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
-                         ondragstart="drag(event)" ondragover="allowDrop(event)"
-                         th:src="${item.value.name == 'NO EQUIPMENT'} ? '../images/Equipment/emptyEquipmentSlot.png' : '../images/Equipment/demoEquipment.png'"/>
+                    <div th:with="imageUrl=(${item.value.name != 'NO EQUIPMENT'} ? '../images/Equipment/'+${item.value.name}+'.png' : '../images/Equipment/emptyEquipmentSlot.png')">
+                        <img th:id="'baggage-'+${item.key}" class="backpack-item" ondrop="drop(event)" draggable="true"
+                             ondragstart="drag(event)" ondragover="allowDrop(event)"
+                             th:src="${imageUrl}"/>
+                    </div>
                 </div>
             </div>
         </div>
