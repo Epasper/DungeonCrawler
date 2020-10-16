@@ -2,13 +2,11 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 public class PartyAvatar
 {
-    //int id;
     Tile occupiedTile;
+    Direction direction;
 
-    //public PartyAvatar(int id, Tile occupiedTile)
     public PartyAvatar(Tile occupiedTile)
     {
-       // this.id = id;
         this.occupiedTile = occupiedTile;
     }
 
@@ -22,13 +20,14 @@ public class PartyAvatar
         this.occupiedTile = occupiedTile;
     }
 
-//    public int getId()
-//    {
-//        return id;
-//    }
+    public Direction getDirection()
+    {
+        return direction;
+    }
 
-//    public void setId(int id)
-//    {
-//        this.id = id;
-//    }
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
+
 }

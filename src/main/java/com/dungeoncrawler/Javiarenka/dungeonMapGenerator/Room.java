@@ -1,5 +1,7 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import java.util.Arrays;
+
 public class Room extends Stage
 {
     private int xPos;
@@ -87,5 +89,15 @@ public class Room extends Stage
     public void setDoor(Tile door)
     {
         this.door = door;
+    }
+
+    public void lockRoomTiles()
+    {
+        Arrays.stream(getTilesOfType(TileType.ROOM)).forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
+    }
+
+    public void unlockRoomTiles()
+    {
+        Arrays.stream(getTilesOfType(TileType.ROOM_LOCKED)).forEach(tile -> tile.setType(TileType.ROOM));
     }
 }

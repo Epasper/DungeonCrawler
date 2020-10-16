@@ -1,4 +1,5 @@
 const SIZE_REF = 80
+
 export let mapHeight = getMapHeight()
 export let mapWidth = getMapWidth()
 

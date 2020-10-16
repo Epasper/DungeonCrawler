@@ -2,6 +2,7 @@ import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.j
 import { mapWidth, mapHeight } from './mapStyling.js'
 import { updateButtons } from './mapButtons.js'
 import { draw } from './mapRender.js'
+import { party, directions } from './partyManager.js'
 
 const mapGrid = document.getElementById(`grid`)
 
@@ -22,8 +23,29 @@ export function injectButtonsListeners() {
     let spawnBtn = document.getElementById('spawn-party-btn');
     spawnBtn.addEventListener('click', spawnPartyBackend);
 
+    let actionBtn = document.getElementById('action-btn');
+    actionBtn.addEventListener('click', makeAction);
+
     let moveBtn = document.getElementById('move-party-btn');
-    moveBtn.addEventListener('click', movePartyBackend);
+    moveBtn.addEventListener('click', teleportPartyBackend);
+
+    let moveUpBtn = document.getElementById('move-up');
+    let moveDownBtn = document.getElementById('move-down');
+    let moveLeftBtn = document.getElementById('move-left');
+    let moveRightBtn = document.getElementById('move-right');
+    let moveButtons = [moveUpBtn, moveDownBtn, moveLeftBtn, moveRightBtn]
+    moveButtons.forEach(mvBtn => {
+        mvBtn.addEventListener('click', movePartyOneStepBackend);
+    });
+
+    document.addEventListener('keydown', keyPressedMove);
+}
+
+function makeAction() {
+    let selectedTile = selectedGridTileDiv;
+    selectedTile.classList.remove('DOOR_CLOSED');
+    selectedTile.classList.add('DOOR_OPENED');
+    console.log('DOOOOOOOOOOOOOOOOOOOOOR');
 }
 
 async function spawnPartyBackend() {
@@ -35,11 +57,11 @@ async function spawnPartyBackend() {
     const backendParty = response.data;
     console.log('spawn: ', backendParty)
 
-    updateButtons();
     draw();
+    updateButtons();
 }
 
-async function movePartyBackend() {
+async function teleportPartyBackend() {
     let coordX = getX(selectedGridTileDiv);
     let coordY = getY(selectedGridTileDiv);
     //let [heroId] = selectedHero.id.split('-').slice(-1); //slice (-1) zwroci tablicę o długosci 1 elementu od końca
@@ -48,21 +70,77 @@ async function movePartyBackend() {
 
     updateButtons();
     draw();
-
 }
 
-async function tileClicked({target: clickedTileDiv}) {
+async function movePartyOneStepBackend({ target: clickedMoveButton }) {
+    //console.log(clickedMoveButton);
+    let [dir] = clickedMoveButton.id.split('-').slice(-1)
+    dir = dir.toUpperCase();
+    //console.log(direction);
+    //debugger;
+    //party.direction = directions[dir]
+    await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
+
+    party.direction = directions[dir];
+
+    updateButtons();
+    draw();
+}
+
+async function keyPressedMove({ keyCode }) {
+    const moveBtn = document.getElementById('move-party-btn');
+    if (moveBtn.disabled) return;
+    let dirBtn;
+
+    switch (keyCode) {
+        case 37:    //LEFT
+            dirBtn = document.getElementById('move-left');
+            console.log('key left');
+            break;
+        case 38:    //UP
+            dirBtn = document.getElementById('move-up');
+            console.log('key up');
+            break;
+        case 39:    //RIGHT
+            dirBtn = document.getElementById('move-right');
+            console.log('key right');
+            break;
+        case 40:    //DOWN
+            dirBtn = document.getElementById('move-down');
+            console.log('key down');
+            break;
+        default:
+            return;
+    }
+    dirBtn.dispatchEvent(new Event('click'));
+
+    //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
+    let btnClasses = Array.from(dirBtn.classList);
+    console.log(btnClasses);
+    let tempActiveEmulationClassName = ''
+    if (btnClasses.some(className => { return className.includes('blocked') })) {
+        tempActiveEmulationClassName = 'move-button-blocked-active';
+    } else {
+        tempActiveEmulationClassName = 'move-button-active';
+    }
+
+    dirBtn.classList.add(tempActiveEmulationClassName);
+    setTimeout(function () {
+        dirBtn.classList.remove(tempActiveEmulationClassName);
+    }, 100)
+}
+
+async function tileClicked({ target: clickedTileDiv }) {
     var tileId = clickedTileDiv.id
     var tileType = clickedTileDiv.classList[1]
 
-    let postData = {
-        x: getX(clickedTileDiv),
-        y: getY(clickedTileDiv),
-        message: `Tile: ${tileId} (${tileType}) has been selected!`
-    };
+    const coordX = getX(clickedTileDiv);
+    const coordY = getY(clickedTileDiv);
+    const message = `Tile: ${tileId} (${tileType}) has been selected!`
 
-    const {data: clickedTileBackend} = await axios.post('http://localhost:8080/getClickedTile', postData);
-    console.log(clickedTileBackend);
+    const { data: clickedTileBackend3 } = await axios
+        .get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`)
+    console.log(clickedTileBackend3);
 
     makeSelection(clickedTileDiv, mapGrid)
 
@@ -70,7 +148,7 @@ async function tileClicked({target: clickedTileDiv}) {
     draw()
 }
 
-function tileMouseEntered({target: hoveredTileDiv}) {
+function tileMouseEntered({ target: hoveredTileDiv }) {
     var tileId = ``
     tileId = hoveredTileDiv.id
 
@@ -98,7 +176,7 @@ function tileMouseEntered({target: hoveredTileDiv}) {
     //console.log('on!', x, `/`, y)
 }
 
-function tileMouseLeft({target: exitedTileDiv}) {
+function tileMouseLeft({ target: exitedTileDiv }) {
     var tileId = ``
     tileId = exitedTileDiv.id
 
@@ -158,9 +236,14 @@ function brightness(tile, value) {
     g += value + 10
     b += value
 
-    style.backgroundColor = `rgb(${r},${g},${b})`
+    //style.transition = `0s`;
+    style.backgroundColor = `rgb(${r},${g},${b})`;
 }
 
 function resetColor(tile) {
     tile.style.backgroundColor = ``
+    // setTimeout(function () {
+    //     tile.style.transition = ``;
+    // }, 2000)
+    
 }

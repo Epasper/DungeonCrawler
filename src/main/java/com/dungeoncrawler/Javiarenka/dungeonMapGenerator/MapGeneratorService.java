@@ -57,9 +57,14 @@ public class MapGeneratorService
         rb.removeShortBranches(10);
         rb.removeCorridorClusters();
         rb.lockSomeDoor();
+        rb.closeRooms();
         stage.saveToTxt();
         //buildHtml(stage);
         //buildCSS(stage);
+
+//        TileNavigator tn = new TileNavigator(stage);
+//        tn.getTouchingTilesCascade(stage.getFirstTileOfType(TileType.DOOR_CLOSED), TileType.ROOM_LOCKED);
+
 
         return stage;
     }

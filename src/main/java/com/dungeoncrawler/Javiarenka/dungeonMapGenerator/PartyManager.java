@@ -1,14 +1,18 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PartyManager
 {
     private Stage stage;
-    private final int partyLimit = 2;
+    private TileNavigator tileNav;
     private PartyAvatar party;
 
     public PartyManager(Stage stage)
     {
         this.stage = stage;
+        this.tileNav = new TileNavigator(stage);
     }
 
     public PartyAvatar getParty()
@@ -21,18 +25,6 @@ public class PartyManager
         this.party = party;
     }
 
-//    private int getNextId()
-//    {
-//        return party.size() + 1;
-//    }
-
-//    public PartyAvatar getHeroById(int targetId)
-//    {
-//        return heroes.stream()
-//                .filter(partyAvatar -> partyAvatar.getId() == targetId)
-//                .findFirst()
-//                .orElse(null);
-//    }
     private boolean isPartySpawned()
     {
         return party != null;
@@ -41,7 +33,6 @@ public class PartyManager
     public boolean isPartySpawnable(Tile targetTile)
     {
         if (!targetTile.isWalkable()) return false;
-        if (targetTile.isOccupied()) return false;
         if (isPartySpawned()) return false;
         return true;
     }
@@ -63,14 +54,46 @@ public class PartyManager
         return party;
     }
 
-    public void moveParty(Tile targetTile)
+    public boolean teleportParty(Tile targetTile)
     {
-        if(targetTile.isWalkable() && !targetTile.isOccupied())
-        party.setOccupiedTile(targetTile);
+        if(targetTile.isWalkable())
+        {
+            party.occupiedTile.setOccupied(false);
+            party.setOccupiedTile(targetTile);
+            return true;
+        }
+        return false;
     }
 
-    public void moveParty(int xCoord, int yCoord)
+
+    public boolean teleportParty(int xCoord, int yCoord)
     {
-        moveParty(stage.getTile(xCoord, yCoord));
+        return teleportParty(stage.getTile(xCoord, yCoord));
+    }
+
+    public boolean movePartyOneStep(Direction dir)
+    {
+        if(party.direction != dir) {
+            party.setDirection(dir);
+            return false;
+        }
+
+        Tile targetTile = tileNav.getNextTile(party.occupiedTile, dir);
+        party.setDirection(dir);
+        if (!targetTile.isWalkable()) return false;
+        return teleportParty(targetTile);
+    }
+
+    public Map<Direction, Boolean> evaluateMovability()
+    {
+        Map<Direction, Boolean> outputMap = new HashMap<>();
+        Tile targetTile;
+
+        for(Direction dir : Direction.VALUES)
+        {
+            targetTile = tileNav.getNextTile(party.occupiedTile, dir);
+            outputMap.put(dir, targetTile.isWalkable());
+        }
+        return outputMap;
     }
 }

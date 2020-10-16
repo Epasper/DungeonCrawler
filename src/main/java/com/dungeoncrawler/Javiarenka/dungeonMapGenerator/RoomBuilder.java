@@ -959,7 +959,8 @@ public class RoomBuilder
             Tile randomDoorTile = doorList.get(getRandomNumberInRange(0, doorList.size() - 1));
             randomDoorTile.setType(TileType.DOOR_LOCKED);
             Room room = stage.getRoomByDoor(randomDoorTile);
-            room.setTileTypes(room.getTilesOfType(TileType.ROOM), TileType.ROOM_LOCKED);
+            room.lockRoomTiles();
+            //room.setTileTypes(room.getTilesOfType(TileType.ROOM), TileType.ROOM_LOCKED);
             doorToLock--;
             doorList.remove(randomDoorTile);
         }
@@ -968,5 +969,10 @@ public class RoomBuilder
     public void lockSomeDoor()
     {
         lockSomeDoor(StageSettings.PERCENT_OF_DOOR_LOCKED);
+    }
+
+    public void closeRooms()
+    {
+        stage.getRooms().forEach(Room::lockRoomTiles);
     }
 }
