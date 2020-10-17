@@ -18,7 +18,7 @@
     <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
         <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
             <div th:id="${i}+'---'+${j}">
-            </div>
+                <img th:src="@{tiles[${i}][${j}].getTileType().toString().equalsIgnoreCase('Grass')}"/>
         </th:block>
     </th:block>
 </div>

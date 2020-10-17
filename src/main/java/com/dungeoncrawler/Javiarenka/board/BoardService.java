@@ -44,17 +44,18 @@ public class BoardService {
         boardHeight = 8;
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
-        Random random = new Random(100);
+        Random random = new Random();
         int typeOfTile;
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 EncounterTile currentTile = new EncounterTile();
-                typeOfTile = random.nextInt();
+                typeOfTile = random.nextInt(100);
                 if (typeOfTile < 6) {
                     currentTile.setTileType(EncounterTileType.WET);
                 } else if (typeOfTile < 12) {
                     currentTile.setTileType(EncounterTileType.GRASS);
                 }
+                System.out.println(currentTile.getTileType());
                 tiles[i][j] = currentTile;
             }
         }
