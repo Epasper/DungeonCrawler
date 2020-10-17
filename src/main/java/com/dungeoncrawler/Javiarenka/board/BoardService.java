@@ -15,12 +15,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class BoardService {
-    private List<Hero> heroes = new ArrayList<>();
+    private List<Hero> heroes;
     private List<Monster> monsters = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
+    private int bardWidth;
+    private int boardHeight;
+    private Tile[][] tiles;
 
     public BoardService() {
         messageOutput.add("Fight log:");
@@ -29,6 +32,34 @@ public class BoardService {
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public void setMessageOutput(List<String> messageOutput) {
+        this.messageOutput = messageOutput;
+    }
+
+    public int getBardWidth() {
+        return bardWidth;
+    }
+
+    public void setBardWidth(int bardWidth) {
+        this.bardWidth = bardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public void setBoardHeight(int boardHeight) {
+        this.boardHeight = boardHeight;
     }
 
     public void clearSelectedHeroes() {
