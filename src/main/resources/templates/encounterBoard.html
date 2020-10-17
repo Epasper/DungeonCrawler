@@ -10,6 +10,7 @@
         let height = [[${boardHeight}]];
         let width = [[${boardWidth}]];
         document.documentElement.style.setProperty("--height", height);
+
     </script>
     <script src="encounterBoard.js"></script>
 </head>
@@ -19,6 +20,7 @@
         <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
             <div th:id="${i}+'---'+${j}">
                 <img th:src="@{tiles[${i}][${j}].getTileType().toString().equalsIgnoreCase('Grass')}"/>
+            </div>
         </th:block>
     </th:block>
 </div>
