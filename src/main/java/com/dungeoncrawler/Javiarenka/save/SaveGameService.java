@@ -28,7 +28,7 @@ public class SaveGameService {
             for (String name : listOfNamesAndSurnames) {
                 heroList.add(partySelectorService.loadAHeroByNameAndSurname(name));
             }
-            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/saves/Saved Game " + getAnotherFreeSavesNumber() + ".txt");
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/saves/Saved Game " + getNextFreeSaveNumber() + ".txt");
             gson.toJson(heroList, writer);
             writer.flush();
             writer.close();
@@ -37,7 +37,7 @@ public class SaveGameService {
         }
     }
 
-    private int getAnotherFreeSavesNumber() {
+    private int getNextFreeSaveNumber() {
         File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/saves");
         File[] listOfFiles = folder.listFiles();
         List<String> allHeroNamesAndSurnames = new ArrayList<>();
