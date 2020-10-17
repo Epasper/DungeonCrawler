@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Save game</title>
+    <link rel="stylesheet" href="../css/saveGameStyle.css">
+    <script th:src="@{saveGame.js}"></script>
+    <script type="text/javascript">
+    window.onload = loadAllSelectedHeroes;
+    </script>
+</head>
+
+<body>
+    <div th:each="hero: ${heroTeam}" th:value="${hero.getName() + hero.getSurname()}">
+        <p th:text="${hero.getName()}"></p>
+        <p th:text="${hero.getHeroClass()}"></p>
+        <p th:text="${hero.getHp()}"></p>
+        <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
+        <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
+        <p th:text="${hero.getTotalHp()}"></p>
+        <p th:text="${hero.isSelectedForParty()} ? 'selected' : 'unselected'" hidden></p>
+    </div>
+<div class="save" th:onclick="'javascript:saveGame();'">Save Game</div>
+</body>
+</html>
