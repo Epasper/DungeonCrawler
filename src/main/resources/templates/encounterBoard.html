@@ -5,17 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="../css/editEquipment.css">
-    <script src="editEquipment.js"></script>
+    <link rel="stylesheet" href="../css/encounterBoard.css">
+    <script th:inline="javascript">
+        let height = [[${boardHeight}]];
+        let width = [[${boardWidth}]];
+        document.documentElement.style.setProperty("--height", height);
+    </script>
+    <script src="encounterBoard.js"></script>
 </head>
 <body>
-<th:block th:each="i: ${#numbers.sequence(0, boardWidth)}">
-    <th:block th:each="i: ${#numbers.sequence(0, boardHeight)}">
-        <div>
-            <p>Test</p>
-        </div>
+<div class="wrapper">
+    <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
+        <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
+            <div th:id="${i}+'---'+${j}">
+            </div>
+        </th:block>
     </th:block>
-</th:block>
+</div>
 
 </body>
 </html>

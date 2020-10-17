@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.board;
 
-public class Tile {
+public class EncounterTile {
     private boolean isRoomTile;
     private boolean isOccupied;
     private boolean isDifficultTerrain;
@@ -8,14 +8,7 @@ public class Tile {
     private boolean isTrap;
     private int occupyingCharacterId;
     private int occupyingObstacleId;
-    private String tileType;
-
-    private final String TILE_TYPE_GRASS = "grass";
-    private final String TILE_TYPE_DIRT = "dirt";
-    private final String TILE_TYPE_STONE = "stone";
-    private final String TILE_TYPE_WET = "wet";
-    private final String TILE_TYPE_WATER = "water";
-    private final String TILE_TYPE_WALL = "wall";
+    private EncounterTileType tileType;
 
     public boolean isRoomTile() {
         return isRoomTile;
@@ -73,35 +66,12 @@ public class Tile {
         this.occupyingObstacleId = occupyingObstacleId;
     }
 
-    public String getTileType() {
+    public EncounterTileType getTileType() {
         return tileType;
     }
 
-    public void setTileType(String tileType) {
+    public void setTileType(EncounterTileType tileType) {
         this.tileType = tileType;
     }
 
-    public String getTILE_TYPE_GRASS() {
-        return TILE_TYPE_GRASS;
-    }
-
-    public String getTILE_TYPE_DIRT() {
-        return TILE_TYPE_DIRT;
-    }
-
-    public String getTILE_TYPE_STONE() {
-        return TILE_TYPE_STONE;
-    }
-
-    public String getTILE_TYPE_WET() {
-        return TILE_TYPE_WET;
-    }
-
-    public String getTILE_TYPE_WATER() {
-        return TILE_TYPE_WATER;
-    }
-
-    public String getTILE_TYPE_WALL() {
-        return TILE_TYPE_WALL;
-    }
 }

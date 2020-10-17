@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class BoardService {
@@ -25,9 +26,10 @@ public class BoardService {
     private PartySelectorService partySelectorService = new PartySelectorService();
     private int boardWidth;
     private int boardHeight;
-    private Tile[][] tiles;
+    private EncounterTile[][] tiles;
 
     public BoardService() {
+        heroes = new ArrayList<>();
         prepareTheBoard();
         messageOutput.add("Fight log:");
         clearSelectedHeroes();
@@ -39,16 +41,30 @@ public class BoardService {
 
     private void prepareTheBoard() {
         //todo: replace the hardcoded values with values from the entered room upon entering
-        boardHeight = 10;
+        boardHeight = 8;
         boardWidth = 16;
-        tiles = new Tile[boardWidth][boardHeight];
+        tiles = new EncounterTile[boardWidth][boardHeight];
+        Random random = new Random(100);
+        int typeOfTile;
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                EncounterTile currentTile = new EncounterTile();
+                typeOfTile = random.nextInt();
+                if (typeOfTile < 6) {
+                    currentTile.setTileType(EncounterTileType.WET);
+                } else if (typeOfTile < 12) {
+                    currentTile.setTileType(EncounterTileType.GRASS);
+                }
+                tiles[i][j] = currentTile;
+            }
+        }
     }
 
-    public Tile[][] getTiles() {
+    public EncounterTile[][] getTiles() {
         return tiles;
     }
 
-    public void setTiles(Tile[][] tiles) {
+    public void setTiles(EncounterTile[][] tiles) {
         this.tiles = tiles;
     }
 
