@@ -4,6 +4,7 @@ import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Service
 public class BoardService {
     private List<Hero> heroes;
     private List<Monster> monsters = new ArrayList<>();
@@ -21,17 +23,25 @@ public class BoardService {
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
-    private int bardWidth;
+    private int boardWidth;
     private int boardHeight;
     private Tile[][] tiles;
 
     public BoardService() {
+        prepareTheBoard();
         messageOutput.add("Fight log:");
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    private void prepareTheBoard() {
+        //todo: replace the hardcoded values with values from the entered room upon entering
+        boardHeight = 10;
+        boardWidth = 16;
+        tiles = new Tile[boardWidth][boardHeight];
     }
 
     public Tile[][] getTiles() {
@@ -46,12 +56,12 @@ public class BoardService {
         this.messageOutput = messageOutput;
     }
 
-    public int getBardWidth() {
-        return bardWidth;
+    public int getBoardWidth() {
+        return boardWidth;
     }
 
-    public void setBardWidth(int bardWidth) {
-        this.bardWidth = bardWidth;
+    public void setBoardWidth(int boardWidth) {
+        this.boardWidth = boardWidth;
     }
 
     public int getBoardHeight() {

@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class BoardController {
     BoardService service = new BoardService();
 
+    //todo: this functionality will be deprecated and replaced in future release
     @GetMapping("/fightBoard")
     public String fightGet(Model model) {
         service.clearSelectedHeroes();
@@ -20,6 +21,19 @@ public class BoardController {
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());
         return "fightBoard";
+    }
+
+    @GetMapping("/encounterBoard")
+    public String encounter(Model model) {
+        service.clearSelectedHeroes();
+        service.setHeroes(service.getPartySelectorService().loadSelectedHeroes());
+        model.addAttribute("heroes", service.getHeroes());
+        model.addAttribute("monsters", service.getMonsters());
+        model.addAttribute("consoleText", service.getMessageOutput());
+        model.addAttribute("boardWidth", service.getBoardWidth());
+        model.addAttribute("boardHeight", service.getBoardHeight());
+        model.addAttribute("tiles", service.getTiles());
+        return "encounterBoard";
     }
 
     @GetMapping("/fightBoard/attackHero")

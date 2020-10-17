@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/editEquipment.css">
+    <script src="editEquipment.js"></script>
+</head>
+<body>
+<th:block th:each="i: ${#numbers.sequence(0, boardWidth)}">
+    <th:block th:each="i: ${#numbers.sequence(0, boardHeight)}">
+        <div>
+            <p>Test</p>
+        </div>
+    </th:block>
+</th:block>
+
+</body>
+</html>
