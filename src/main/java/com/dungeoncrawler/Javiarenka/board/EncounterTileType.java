@@ -7,7 +7,8 @@ public enum EncounterTileType {
     WET("Wet"),
     WATER("Water"),
     WALL("Wall"),
-    STONE("Stone");
+    STONE("Stone"),
+    RUBBLE("Rubble");
 
     private final String encounterTileTypeString;
 

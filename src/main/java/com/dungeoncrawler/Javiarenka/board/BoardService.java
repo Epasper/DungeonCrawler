@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class BoardService {
@@ -27,6 +24,10 @@ public class BoardService {
     private int boardWidth;
     private int boardHeight;
     private EncounterTile[][] tiles;
+    private Map<String, String> imageSources = new HashMap<>();
+    private final String grassImageSource = "../images/encounterTiles/GrassTile1.png";
+    private final String stoneImageSource = "../images/encounterTiles/StoneFloor";
+    private final String rubbleImageSource = "../images/encounterTiles/rubble";
 
     public BoardService() {
         heroes = new ArrayList<>();
@@ -44,21 +45,40 @@ public class BoardService {
         boardHeight = 8;
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
+        rollForBoardTiles();
+    }
+
+    private void rollForBoardTiles() {
         Random random = new Random();
         int typeOfTile;
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
                 EncounterTile currentTile = new EncounterTile();
                 typeOfTile = random.nextInt(100);
-                if (typeOfTile < 6) {
-                    currentTile.setTileType(EncounterTileType.WET);
-                } else if (typeOfTile < 12) {
+                if (typeOfTile < 5) {
                     currentTile.setTileType(EncounterTileType.GRASS);
+                    imageSources.put((i + 1) + "---" + (j + 1), grassImageSource);
+                } else if (typeOfTile < 15) {
+                    currentTile.setTileType(EncounterTileType.RUBBLE);
+                    int randomElement = random.nextInt(3) + 1;
+                    imageSources.put((i + 1) + "---" + (j + 1), rubbleImageSource + randomElement + ".png");
+                } else {
+                    currentTile.setTileType(EncounterTileType.STONE);
+                    int randomElement = random.nextInt(7) + 1;
+                    imageSources.put((i + 1) + "---" + (j + 1), stoneImageSource + randomElement + ".png");
                 }
                 System.out.println(currentTile.getTileType());
                 tiles[i][j] = currentTile;
             }
         }
+    }
+
+    public Map<String, String> getImageSources() {
+        return imageSources;
+    }
+
+    public void setImageSources(Map<String, String> imageSources) {
+        this.imageSources = imageSources;
     }
 
     public EncounterTile[][] getTiles() {

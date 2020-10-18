@@ -17,8 +17,10 @@
 <div class="wrapper">
     <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
         <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
-            <div th:id="${i}+'---'+${j}">
-                <img th:src="@{tiles[${i}][${j}].getTileType().toString().equalsIgnoreCase('Grass')} ? 'GRASS' : 'Not Grass'" />
+            <div  th:with="currentId=${i}+'---'+${j}">
+                <div th:id="${currentId}" th:with="imageUrl=(${tileImages.get(currentId)})">
+                    <img th:src="${imageUrl}" />
+                </div>
             </div>
         </th:block>
     </th:block>

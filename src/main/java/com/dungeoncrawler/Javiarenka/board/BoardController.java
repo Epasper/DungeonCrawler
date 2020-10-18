@@ -33,6 +33,7 @@ public class BoardController {
         model.addAttribute("boardWidth", service.getBoardWidth());
         model.addAttribute("boardHeight", service.getBoardHeight());
         model.addAttribute("tiles", service.getTiles());
+        model.addAttribute("tileImages", service.getImageSources());
         return "encounterBoard";
     }
 
