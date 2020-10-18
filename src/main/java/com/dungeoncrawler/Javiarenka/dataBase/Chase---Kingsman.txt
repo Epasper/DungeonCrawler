@@ -282,7 +282,9 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": false,
+  "isSelectedForParty": true,
+  "encounterXPosition": 0,
+  "encounterYPosition": 0,
   "name": "Chase",
   "hp": 50,
   "isAlive": true,

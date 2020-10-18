@@ -25,16 +25,17 @@ public class BoardService {
     private int boardHeight;
     private EncounterTile[][] tiles;
     private Map<String, String> imageSources = new HashMap<>();
+    Random random = new Random();
     private final String grassImageSource = "../images/encounterTiles/GrassTile1.png";
     private final String stoneImageSource = "../images/encounterTiles/StoneFloor";
     private final String rubbleImageSource = "../images/encounterTiles/rubble";
 
     public BoardService() {
         heroes = new ArrayList<>();
-        prepareTheBoard();
         messageOutput.add("Fight log:");
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
+        prepareTheBoard();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
@@ -46,10 +47,35 @@ public class BoardService {
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
+        rollForInitialYCoordinates();
+    }
+
+    private void rollForInitialYCoordinates() {
+        List<Integer> YPositions = new ArrayList<>();
+        while (YPositions.size() < heroes.size()) {
+            int rollForInitialPosition = random.nextInt(boardHeight - 1) + 1;
+            int rollUpOrDown = Math.random() > 0.5 ? 1 : -1;
+            if (rollUpOrDown > 0 && rollForInitialPosition + heroes.size() > boardHeight) {
+                continue;
+            } else if (rollForInitialPosition - heroes.size() < 1) {
+                continue;
+            }
+            for (int i = 0; i < heroes.size(); i++) {
+                YPositions.add(rollForInitialPosition + rollUpOrDown);
+                rollForInitialPosition += rollUpOrDown;
+            }
+        }
+        System.out.println(heroes.size());
+        for (Hero hero : heroes) {
+            int randomListElement = random.nextInt(YPositions.size());
+            hero.setEncounterYPosition(YPositions.get(randomListElement));
+            YPositions.remove(randomListElement);
+            hero.setEncounterXPosition(1);
+            System.out.println(hero.getEncounterXPosition() + "-" + hero.getEncounterYPosition());
+        }
     }
 
     private void rollForBoardTiles() {
-        Random random = new Random();
         int typeOfTile;
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[0].length; j++) {
@@ -67,7 +93,6 @@ public class BoardService {
                     int randomElement = random.nextInt(7) + 1;
                     imageSources.put((i + 1) + "---" + (j + 1), stoneImageSource + randomElement + ".png");
                 }
-                System.out.println(currentTile.getTileType());
                 tiles[i][j] = currentTile;
             }
         }
