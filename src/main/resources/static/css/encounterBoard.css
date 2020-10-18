@@ -21,7 +21,17 @@ img {
 
 .hero-images{
     position: absolute;
-    z-index: 2;
+    transition: 0.2s ease-in-out;
+}
+
+.hero-images:hover {
+	/* width: 200px;
+	height: 200px;
+	margin-top: -130px;
+	margin-left: -130px;
+	top: 65%;
+    left: 65%; */
+    transform: scale(1.2);
 }
 
 .wrapper {
@@ -32,7 +42,7 @@ img {
 }
 
 .wrapper > div {
-    border: 2px solid #202020;
+    /* border: 2px solid #202020; */
     border-radius: 5px;
     background-color: #c0c0c0;
     color: #b6b6b6;
