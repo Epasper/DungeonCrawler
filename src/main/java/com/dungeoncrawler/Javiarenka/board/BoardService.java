@@ -33,9 +33,10 @@ public class BoardService {
     public BoardService() {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
+        prepareTheBoard();
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
-        prepareTheBoard();
+        rollForInitialYCoordinates();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
@@ -47,7 +48,6 @@ public class BoardService {
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
-        rollForInitialYCoordinates();
     }
 
     private void rollForInitialYCoordinates() {

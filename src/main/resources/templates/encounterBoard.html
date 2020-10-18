@@ -7,8 +7,9 @@
     <title>Title</title>
     <link rel="stylesheet" href="../css/encounterBoard.css">
     <script th:inline="javascript">
-        let height = [[${boardHeight}]];
-        let width = [[${boardWidth}]];
+        const height = [[${boardHeight}]];
+        const width = [[${boardWidth}]];
+        let heroes = [[${heroes}]];
         document.documentElement.style.setProperty("--height", height);
     </script>
     <script src="encounterBoard.js"></script>
@@ -17,14 +18,19 @@
 <div class="wrapper">
     <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
         <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
-            <div  th:with="currentId=${i}+'---'+${j}">
-                <div th:id="${currentId}" th:with="imageUrl=(${tileImages.get(currentId)})">
-                    <img th:src="${imageUrl}" />
+            <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
+                <div th:with="currentId=${i}+'---'+${j}">
+                    <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
+                        <img class="hero-images" th:id="${currentHeroId}" th:src="${imageUrl}" />
+                        <img class="background-images" th:id="${currentId}" th:src="${imageUrl}" />
+                    </div>
                 </div>
             </div>
         </th:block>
     </th:block>
 </div>
-
+<script>
+    initialize();
+</script>
 </body>
 </html>

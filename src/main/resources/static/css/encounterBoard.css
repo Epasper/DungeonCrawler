@@ -3,6 +3,27 @@
   --width: 1;
 }
 
+img {
+    width: 100px;
+    height: 100px;
+}
+
+.inner-container {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.background-images{
+    z-index: 1;
+    position: relative;
+}
+
+.hero-images{
+    position: absolute;
+    z-index: 2;
+}
+
 .wrapper {
     display: grid;
     grid-template-rows: repeat(var(--height), 100px);

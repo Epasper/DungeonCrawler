@@ -2,7 +2,6 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
-import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
