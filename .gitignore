@@ -42,3 +42,4 @@ build/
 **/dungeonMapGenerator/txt/
 **/dungeonMapGenerator/webStuff/debug/
 /src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/backup/
+/src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/
