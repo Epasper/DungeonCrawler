@@ -17,15 +17,17 @@
     <div id="container-grid">
         <div class="blank"></div>
         <div class="coordinate-legend" id="coord-top">
+            <div class = "blank" th:style="'grid-area: 1 / 1 / 2 / ' + ${colNumbers[colNumbers.length - 1] + 2}"></div>
             <th:block th:each="colNo: ${colNumbers}">
-                <div th:id="'col-' + ${colNo}" th:class="'tile-legend'">
+                <div th:id="'col-' + ${colNo}" th:class="'tile-legend'" th:style="'grid-area: 1 / ' + ${colNo + 1} + ' / 2 / ' + ${colNo + 2}">
                     <p th:text="${colNo}"></p>
                 </div>
             </th:block>
         </div>
         <div class="coordinate-legend" id="coord-side">
+            <div class = "blank" th:style="'grid-area: 1 / 1 / ' + ${rowNumbers[rowNumbers.length - 1] + 2} + ' / 2'"></div>
             <th:block th:each="rowNo: ${rowNumbers}">
-                <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'">
+                <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'" th:style="'grid-area: ' + ${rowNo + 1} + ' / 1 / ' + ${rowNo + 2} + ' / 2'">
                     <p th:text="${rowNo}"></p>
                 </div>
             </th:block>
@@ -37,6 +39,8 @@
                 </div>
                 <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
             </th:block>
+            <div id="cross-highlight-row" class="non-reactive"></div>
+            <div id="cross-highlight-col" class="non-reactive"></div>
         </div>
     </div>
 

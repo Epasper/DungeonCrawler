@@ -165,12 +165,16 @@ function tileMouseEntered({ target: hoveredTileDiv }) {
     row[0].style.fontSize = (`1.5vh`)
     col[0].style.fontSize = (`1.5vh`)
 
+    showCrossHighlightElements(hoveredTileDiv);
+
     row.forEach(element => {
-        brightness(element, 10)
+        // brightness(element, 10);
+        // addCrossHighlight(element);
     });
 
     col.forEach(element => {
-        brightness(element, 10)
+        // brightness(element, 10)
+        // addCrossHighlight(element);
     });
 
     //console.log('on!', x, `/`, y)
@@ -193,12 +197,16 @@ function tileMouseLeft({ target: exitedTileDiv }) {
     row[0].style.fontSize = (``)
     col[0].style.fontSize = (``)
 
+    hideCrossHighlightElements();
+
     row.forEach(element => {
-        resetColor(element)
+        // resetColor(element);
+        // removeCrossHighlight(element);
     });
 
     col.forEach(element => {
-        resetColor(element)
+        // resetColor(element);
+        // removeCrossHighlight(element);
     });
 }
 
@@ -238,6 +246,45 @@ function brightness(tile, value) {
 
     //style.transition = `0s`;
     style.backgroundColor = `rgb(${r},${g},${b})`;
+}
+
+function addCrossHighlight(divElement) {
+    divElement.classList.add('cross-highlight');
+}
+
+function removeCrossHighlight(divElement) {
+    divElement.classList.remove('cross-highlight');
+}
+
+function showCrossHighlightElements(centerDivElement) {
+    let rowElement = document.getElementById('cross-highlight-row');
+    let colElement = document.getElementById('cross-highlight-col');
+
+    rowElement.classList.add('cross-highlight');
+    colElement.classList.add('cross-highlight');
+ 
+    const currentRow = getY(centerDivElement);
+    const currentCol = getX(centerDivElement);
+
+    rowElement.style.gridArea = `${currentRow + 1} / 1 / ${currentRow + 2} / ${mapWidth + 1}`;
+    colElement.style.gridArea = `1 / ${currentCol + 1} / ${mapHeight + 1} / ${currentCol + 2}`;
+
+    let columnLegendTile = document.getElementById(`col-${currentCol}`);
+    let rowLegendTile = document.getElementById(`row-${currentRow}`);
+
+    columnLegendTile.classList.add('legend-highlight');
+    rowLegendTile.classList.add('legend-highlight');
+}
+
+function hideCrossHighlightElements() {
+    let rowElement = document.getElementById('cross-highlight-row');
+    let colElement = document.getElementById('cross-highlight-col');
+    let highlightedLegendTiles = Array.from(document.getElementsByClassName('legend-highlight'));
+
+    rowElement.classList.remove('cross-highlight');
+    colElement.classList.remove('cross-highlight');
+
+    highlightedLegendTiles.forEach(tile => tile.classList.remove('legend-highlight'));
 }
 
 function resetColor(tile) {
