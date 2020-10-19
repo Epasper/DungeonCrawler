@@ -46,25 +46,24 @@ public class MapGeneratorService
 
     public Stage generateMap(int width, int height) throws IOException
     {
+        RoomBuilder rb;
+
         stage = new Stage(width, height);
-        RoomBuilder rb = new RoomBuilder(stage);
+        rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
         rb.fillStageWithRooms();
         stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+        rb.removeCorridorClusters();
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
-        rb.removeCorridorClusters();
         rb.lockSomeDoor();
         rb.closeRooms();
+
         stage.saveToTxt();
         //buildHtml(stage);
         //buildCSS(stage);
-
-//        TileNavigator tn = new TileNavigator(stage);
-//        tn.getTouchingTilesCascade(stage.getFirstTileOfType(TileType.DOOR_CLOSED), TileType.ROOM_LOCKED);
-
 
         return stage;
     }
@@ -162,7 +161,7 @@ public class MapGeneratorService
 
         sb.append("<div id=\"").append(tile.getIdString()).append("\" ");
         sb.append("class=\"tile ").append(type).append("\">");
-        //sb.append(tile.getIdString());  //wstawi koordynaty diva
+        sb.append(tile.getIdString());  //wstawi koordynaty diva
         sb.append("</div>");
 
         return sb.toString();

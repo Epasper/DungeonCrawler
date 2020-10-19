@@ -28,7 +28,7 @@
 
 .OBSTRUCTION {
     background-color: rgb(50, 50, 50);
-    background-color: var(--default-tile-color);
+    /* background-color: var(--default-tile-color); */
 }
 
 .DEBUG {
@@ -62,7 +62,7 @@
 
 .ROOM_LOCKED {
     background-color: #55522d;
-    background-color: var(--default-tile-color);
+    /* background-color: var(--default-tile-color); */
     transition: background-color 1s;
 }
 

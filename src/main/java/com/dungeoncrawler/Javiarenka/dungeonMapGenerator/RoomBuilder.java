@@ -892,7 +892,90 @@ public class RoomBuilder
         intersections.forEach(tile -> tile.setType(TileType.CORRIDOR));
     }
 
+    private void removeBranchingTilesFromClusters(List<Tile> potentiallyClusteredCorridors, TileType targetType)
+    {
+        List<Tile> tilesToRemove = new ArrayList<>();
+        potentiallyClusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+
+        do
+        {
+            tilesToRemove.clear();
+            tilesToRemove = potentiallyClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, TileType.INTERSECTION).size() <= 1)
+                    .collect(Collectors.toList());
+
+            tilesToRemove.forEach(tile -> tile.setType(TileType.CORRIDOR));
+            potentiallyClusteredCorridors.removeAll(tilesToRemove);
+
+        } while (tilesToRemove.size() > 0);
+
+        potentiallyClusteredCorridors.forEach(tile -> tile.setType(targetType));
+    }
+
     public void removeCorridorClusters()
+    {
+        List<Tile> tempIntersect = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION)));
+        tempIntersect.forEach(tile -> tile.setType(TileType.CORRIDOR));
+
+        List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
+        List<Tile> potentialClusteredCorridors = allCorridors.stream()
+                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 4)
+                .collect(Collectors.toList());
+
+        potentialClusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+        removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        //powyższy kod sprawi, że w liście 'potentialClusteredCorridors' zostaną same Tile należące do prostokątnych clusterów
+
+        //poniżej - usuwanie z clusterów pól, które są narożnikiem otoczonym przez mur
+        List<Tile> cornerTiles;
+        do
+        {
+            cornerTiles = potentialClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, new TileType[]{TileType.WALL, TileType.OBSTRUCTION}).size() == 2)
+                    .collect(Collectors.toList());
+            if (cornerTiles.size() == 0) break;
+            Tile currentTile = cornerTiles.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            potentialClusteredCorridors.remove(currentTile);
+            cornerTiles.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        } while (cornerTiles.size() > 0);
+
+        //poniżej wyszukanie clusterów większych niż kwadrat 2x2, następnie zidentyfikowanie ich pól wewnętrznych:
+        List<Tile> bigClusters;
+        List<Tile> insideBigClusters;
+        do
+        {
+            bigClusters = potentialClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() > 4)
+                    .collect(Collectors.toList());
+            insideBigClusters = bigClusters.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, TileType.INTERSECTION).size() >= 3)
+                    .collect(Collectors.toList());
+            if (insideBigClusters.size() == 0) break;
+            Tile currentTile = insideBigClusters.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            potentialClusteredCorridors.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        } while (insideBigClusters.size() > 0);
+
+        //Do tego miejsca powinny już zostać tylko sclusterowane czwórki 2x2, gdzie każde pole stanowi odnogę odrębnego korytarza
+        potentialClusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
+        do
+        {
+            if (potentialClusteredCorridors.size() == 0) break;
+            Tile currentTile = potentialClusteredCorridors.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            if (tileNav.getUnreachableCorridorTiles().length > 0 || !allRoomsAreReachable())
+            {
+                currentTile.setType(TileType.CORRIDOR);
+            }
+            potentialClusteredCorridors.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.CORRIDOR);
+        } while (potentialClusteredCorridors.size() > 0);
+    }
+
+    public void removeCorridorClusters_backup()
     {
         List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
         List<Tile> clusteredCorridors = allCorridors.stream()
@@ -928,13 +1011,10 @@ public class RoomBuilder
 
         if (removableTiles.size() >= 1)
         {
-//            removableTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
-//            MapGeneratorService.buildDebugSite(stage);
-//            MapGeneratorService.buildDebugSite(stage);
-//            removableTiles.forEach(tile -> tile.setType(TileType.CORRIDOR));
             do
             {
                 removableTiles.get(0).setType(TileType.OBSTRUCTION);
+                //TODO: tu jest chyba bug - nie powinno być !allRoomsAreReachable() ?
                 if (tileNav.getUnreachableCorridorTiles().length > 0 && allRoomsAreReachable())
                 {
                     removableTiles.get(0).setType(TileType.CORRIDOR);
