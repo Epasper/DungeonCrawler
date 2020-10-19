@@ -10,7 +10,9 @@
         const height = [[${boardHeight}]];
         const width = [[${boardWidth}]];
         let heroes = [[${heroes}]];
+        let tiles = [[${tiles}]];
         document.documentElement.style.setProperty("--height", height);
+
     </script>
     <script src="encounterBoard.js"></script>
 </head>
@@ -21,8 +23,10 @@
             <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
                 <div th:with="currentId=${i}+'---'+${j}">
                     <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
-                        <img class="hero-images" th:id="${currentHeroId}" />
-                        <img class="background-images" th:id="${currentId}" th:src="${imageUrl}" />
+                        <div th:id="container+${currentId}">
+                        </div>
+                        <img class="hero-images" th:id="${currentHeroId}"/>
+                        <img class="background-images" th:id="${currentId}" th:src="${imageUrl}"/>
                     </div>
                 </div>
             </div>
@@ -31,6 +35,7 @@
 </div>
 <script>
     initialize();
+
 </script>
 </body>
 </html>

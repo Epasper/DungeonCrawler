@@ -8,7 +8,16 @@ public class EncounterTile {
     private boolean isTrap;
     private int occupyingCharacterId;
     private int occupyingObstacleId;
+    private boolean isWithinReach = false;
     private EncounterTileType tileType;
+
+    public boolean isWithinReach() {
+        return isWithinReach;
+    }
+
+    public void setWithinReach(boolean withinReach) {
+        isWithinReach = withinReach;
+    }
 
     public boolean isRoomTile() {
         return isRoomTile;
