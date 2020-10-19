@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Save game</title>
     <link rel="stylesheet" href="../css/saveGameStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
     <script th:src="@{saveGame.js}"></script>
     <script type="text/javascript">
     window.onload = loadAllSelectedHeroes;
@@ -11,15 +12,19 @@
 </head>
 
 <body>
-    <div th:each="hero: ${heroTeam}" th:value="${hero.getName() + hero.getSurname()}">
-        <p th:text="${hero.getName()}"></p>
-        <p th:text="${hero.getHeroClass()}"></p>
-        <p th:text="${hero.getHp()}"></p>
-        <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
-        <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
-        <p th:text="${hero.getTotalHp()}"></p>
+<div class="container">
+    <h1 class="title">My team</h1>
+    <div class="content">
+    <div class="infobox" th:each="hero: ${heroTeam}" th:value="${hero.getName() + hero.getSurname()}">
+        <p th:text="|Name: ${hero.getName()}|"></p>
+        <p th:text="|Class: ${hero.getHeroClass()}|"></p>
+        <p th:text="|Number of hp: ${hero.getHp()}|"></p>
+        <p th:text="|Current weapon: ${hero.getWeaponName() + ' (damage dealt: ' + hero.getEquippedWeapon().getDamageDealt() + ')'}|"></p>
+        <p th:text="|Current armour: ${hero.getArmorName() + ' (damage reduction: ' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
         <p th:text="${hero.isSelectedForParty()} ? 'selected' : 'unselected'" hidden></p>
     </div>
-<div class="save" th:onclick="'javascript:saveGame();'">Save Game</div>
+    </div>
+    <button th:onclick="'javascript:saveGame();'">Save Game</button>
+</div>
 </body>
 </html>
