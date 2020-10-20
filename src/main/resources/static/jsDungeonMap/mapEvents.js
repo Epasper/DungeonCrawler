@@ -165,6 +165,7 @@ function tileMouseEntered({ target: hoveredTileDiv }) {
     row[0].style.fontSize = (`1.5vh`)
     col[0].style.fontSize = (`1.5vh`)
 
+    hideCrossHighlightElements();
     showCrossHighlightElements(hoveredTileDiv);
 
     row.forEach(element => {
@@ -198,16 +199,6 @@ function tileMouseLeft({ target: exitedTileDiv }) {
     col[0].style.fontSize = (``)
 
     hideCrossHighlightElements();
-
-    row.forEach(element => {
-        // resetColor(element);
-        // removeCrossHighlight(element);
-    });
-
-    col.forEach(element => {
-        // resetColor(element);
-        // removeCrossHighlight(element);
-    });
 }
 
 function getRowOfElements(rowNumber) {

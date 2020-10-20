@@ -9,6 +9,7 @@ export function draw() {
 
     console.log('---DRAWING---')
     drawParty();
+    drawFogOfWar();
 }
 
 async function drawParty() {
@@ -102,6 +103,24 @@ async function drawParty() {
     grid.appendChild(partyTile);
 
     if (!party) addParty(partyTile);
+}
+
+async function drawFogOfWar() {
+    const response = await axios.get(`http://localhost:8080/getVisibilityData`);
+    const visibilityData = response.data;
+    let fogDiv;
+
+    //console.log(visibilityData)
+    visibilityData.forEach(tile => {
+        //console.log(tile);
+        fogDiv = getDivFromBackendTile(tile,'x');
+        //console.log(fogDiv)
+        if (tile.visibility == 0) {
+            fogDiv.style.opacity = '';
+        } else {
+            fogDiv.style.opacity = 1 - tile.visibility;
+        }
+    });
 }
 
 export async function animateRoomChange(changedTilesData) {

@@ -38,6 +38,9 @@
                     th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
                 </div>
                 <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
+                <div th:id="${tile.x} + 'x' + ${tile.y}" th:class="'fog-tile'"
+                    th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
+                </div>
             </th:block>
             <div id="cross-highlight-row" class="non-reactive"></div>
             <div id="cross-highlight-col" class="non-reactive"></div>

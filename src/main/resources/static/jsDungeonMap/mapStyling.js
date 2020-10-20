@@ -25,11 +25,16 @@ function getMapHeight() {
     return height - 1
 }
 
-function adaptMapGrid() {
-    var grid = document.getElementById('grid')
-    var gridStyle = grid.style
-    gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
-    gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
+function adaptMapAndFogGrids() {
+    var grid = document.getElementById('grid');
+    // var gridFog = document.getElementById(`fog-grid`);
+    var gridStyle = grid.style;
+    // var gridFogStyle = gridFog.style;
+
+    gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`;
+    // gridFogStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`;
+    gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`;
+    // gridFogStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`;
 }
 
 function adaptTopLegend() {
@@ -45,7 +50,7 @@ function adaptSideLegend() {
 export function adaptGrids()
 {
     adaptContainerGrid();
-    adaptMapGrid();
+    adaptMapAndFogGrids();
     adaptTopLegend();
     adaptSideLegend();
 }

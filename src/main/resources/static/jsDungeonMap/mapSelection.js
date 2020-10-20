@@ -25,14 +25,18 @@ export function makeSelection(targetTile, mapGrid) {
     mapGrid.appendChild(selectionDivElement)
 
     selectionDivElement.addEventListener('click', clickedOnSelectionDiv);
-    selectionDivElement.addEventListener('mouseenter', function () {
-        var ev = new Event('mouseenter')
-        selectedGridTileDiv.dispatchEvent(ev)
-    })
-    selectionDivElement.addEventListener('mouseleave', function () {
-        var ev = new Event('mouseleave')
-        selectedGridTileDiv.dispatchEvent(ev)
-    })
+    selectionDivElement.addEventListener('mouseenter', mouseEnteredSelectionDiv);
+    selectionDivElement.addEventListener('mouseleave', mouseLeftSelectionDiv);
+}
+
+function mouseEnteredSelectionDiv() {
+    var ev = new Event('mouseenter')
+    selectedGridTileDiv.dispatchEvent(ev)
+}
+
+function mouseLeftSelectionDiv() {
+    var ev = new Event('mouseleave')
+    selectedGridTileDiv.dispatchEvent(ev)
 }
 
 export function getX(tile) {
@@ -52,7 +56,7 @@ export function getY(tile) {
 }
 
 async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
-    selectedGridTileDiv.dispatchEvent(new Event('mouseleave'));
+    //selectedGridTileDiv.dispatchEvent(new Event('mouseleave'));
     let tileId = selectedGridTileDiv.id;
     let tileType = selectedGridTileDiv.classList[1];
 
@@ -66,6 +70,8 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     clickedSelectionDiv.remove();
 }
 
-export function getDivFromBackendTile({ x, y }) {
-    return document.getElementById(`${x}-${y}`);
+export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
+
+    // return document.getElementById(`${x}-${y}`);
+    return document.getElementById(`${x}${distinguisherSign}${y}`);
 }

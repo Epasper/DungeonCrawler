@@ -31,7 +31,6 @@ function isPartySelected() {
 }
 
 function updateMoveButton() {
-    //TODO: button jest aktywny kiedy kliknięte jest pole, na ktore i tak nie można postawić drużyny
     let moveButton = document.getElementById('move-party-btn');
     let moveButtonsContainer = document.getElementById('move-ctrl');
 
@@ -43,11 +42,10 @@ function updateMoveButton() {
         moveButton.disabled = true;
         moveButtonsContainer.classList.remove('move-container-hover')
     }
-
-    //TODO: sprawdzać czy kliknięte docelowe pole nadaje się do postawienia bohatera
 }
 
 async function updateDirectionalButtons() {
+    //TODO: buttony się nie updatują po otwarciu drzwi
     if (!isPartySelected()) return;
 
     let directionalButtons = Array.from(document.getElementsByClassName('move-button'));

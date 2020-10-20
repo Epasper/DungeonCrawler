@@ -398,7 +398,7 @@ public class TileNavigator
             }
         } catch (Exception e)
         {
-            System.out.println("Next tile unavailable. Stage Limit reached.");
+            //System.out.println("Next tile unavailable. Stage Limit reached.");
             //e.printStackTrace();
         }
         return nextTile;

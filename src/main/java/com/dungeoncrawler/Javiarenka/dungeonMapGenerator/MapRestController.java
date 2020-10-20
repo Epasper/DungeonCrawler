@@ -3,6 +3,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -112,15 +113,16 @@ public class MapRestController
                 room.lockRoomTiles();
                 outputArray[1] = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
             }
-
-
         }
-
         targetTile.setType(newType);
         outputArray[0] = targetTile;
 
         return outputArray;
     }
 
-    //TODO: get room tiles, gdzie zwraca tablicę pól pokoju od strony drzwi, tak żeby potem tę tablicę wykorzystać dla animacji
+    @GetMapping("/getVisibilityData")
+    public List<Tile> getVisibleTiles()
+    {
+        return service.getStage().getFogManager().getVisibleTiles();
+    }
 }

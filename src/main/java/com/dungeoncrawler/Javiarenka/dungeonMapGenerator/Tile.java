@@ -9,6 +9,9 @@ public class Tile
     private TileType type;
     //private HashMap<String,mapGenerator.Tile> surroundingTiles;
 
+    //TODO: dodać pole 'visited' które będzie true, jeśli dane pole było w zasięgu widoczności
+    // chodzi o to, żeby po obuszczeniu danego miejsca, nie znikało ono całkowicie w fog-of-war
+
     Tile()
     {
 

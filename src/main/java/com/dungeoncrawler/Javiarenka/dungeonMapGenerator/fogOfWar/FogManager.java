@@ -5,39 +5,35 @@ import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Stage;
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Tile;
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.TileNavigator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+//TODO: tworzenie fog of war w htmlu poprzez nowe Divy mocno spowalnia html. Spróbować zarządzać opacity istniejących divów poprzez dodawanie/usuwanie im dodatkowej klasy.
+// pod grid trzeba dodać duży div z czarnym backgroundem
 
 public class FogManager
 {
     private Stage stage;
     private TileNavigator tileNav;
     private PartyAvatar party;
+    private List<Tile> visibleTiles = new ArrayList<>();
 
     public FogManager(Stage stage)
     {
         this.stage = stage;
         this.tileNav = new TileNavigator(stage);
     }
-
-    public Stage getStage()
-    {
-        return stage;
-    }
-
-    public void setStage(Stage stage)
-    {
-        this.stage = stage;
-    }
-
-    public TileNavigator getTileNav()
-    {
-        return tileNav;
-    }
-
-    public void setTileNav(TileNavigator tileNav)
-    {
-        this.tileNav = tileNav;
-    }
+//
+//    public TileNavigator getTileNav()
+//    {
+//        return tileNav;
+//    }
+//
+//    public void setTileNav(TileNavigator tileNav)
+//    {
+//        this.tileNav = tileNav;
+//    }
 
     public PartyAvatar getParty()
     {
@@ -47,7 +43,7 @@ public class FogManager
     public void setParty(PartyAvatar party)
     {
         this.party = party;
-        evaluatePartyVisibilityCircle();
+        updateVisibility();
     }
 
     //==============================================================================================
@@ -60,16 +56,60 @@ public class FogManager
         int verticalDistance = Math.abs(party.getY() - tile.getY());
 
         double distance = Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
-        System.out.println("Distance to tile " + tile.getX() + "/" + tile.getY() + " is: " + distance);
         return distance;
     }
 
-    public void evaluatePartyVisibilityCircle()
+    public void updateVisibility()
     {
-        List<Tile> reachedTiles = tileNav.getSurroundingTilesFullSquare(party.getOccupiedTile(), FogSettings.PARTY_RADIUS);
+        List<Tile> previouslyVisibleTiles = new ArrayList<>(visibleTiles);
+        visibleTiles = evaluatePartyVisibilityCircle();
+
+        previouslyVisibleTiles = previouslyVisibleTiles.stream().filter(tile -> visibleTiles.indexOf(tile) == -1).collect(Collectors.toList());
+        previouslyVisibleTiles.forEach(tile -> tile.setVisibility(0));
+
+        visibleTiles.addAll(previouslyVisibleTiles);
+    }
+
+    public List<Tile> evaluatePartyVisibilityCircle()
+    {
+        List<Tile> reachedTiles = tileNav.getSurroundingTilesFullSquare(party.getOccupiedTile(), FogSettings.BORDER_VISIBILITY_RADIUS);
+
+        double x1 = FogSettings.FULL_VISIBILITY_RADIUS;
+        double y1 = 1;
+
+        double x2 = FogSettings.BORDER_VISIBILITY_RADIUS;
+        double y2 = 0;
+
+        double a;
+        double b;
+
+        a = (y2 - y1) / (x2 - x1);
+        b = y1 - (a * x1);
+
         reachedTiles.forEach(tile -> {
-            getDistanceToParty(tile);
+            double distance = getDistanceToParty(tile);
+            if (distance <= FogSettings.FULL_VISIBILITY_RADIUS)
+            {
+                tile.setVisibility(1);
+            }
+            else if (distance > FogSettings.BORDER_VISIBILITY_RADIUS)
+            {
+                tile.setVisibility(0);
+            }
+            else
+            {
+                tile.setVisibility(a * distance + b);
+                //System.out.println("Visibility of tile " + tile.getX() + "/" + tile.getY() + " is: " + (a * distance + b));
+            }
         });
+
+        return reachedTiles.stream().filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
+    }
+
+    public List<Tile> getVisibleTiles()
+    {
+//        return Arrays.stream(stage.getTilesAsOneDimensionalArray()).filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
+        return visibleTiles;
     }
 
 }

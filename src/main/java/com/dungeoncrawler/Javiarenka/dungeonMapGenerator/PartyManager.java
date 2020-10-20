@@ -15,6 +15,8 @@ public class PartyManager
         this.tileNav = new TileNavigator(stage);
     }
 
+
+
     public PartyAvatar getParty()
     {
         return party;
@@ -51,7 +53,7 @@ public class PartyManager
     {
         party = new PartyAvatar(targetTile);
         targetTile.setOccupied(true);
-//        stage.getFogManager().setParty(party);
+        stage.getFogManager().setParty(party);
         return party;
     }
 
@@ -61,6 +63,7 @@ public class PartyManager
         {
             party.occupiedTile.setOccupied(false);
             party.setOccupiedTile(targetTile);
+            stage.getFogManager().updateVisibility();
             return true;
         }
         return false;
