@@ -33,6 +33,7 @@
   "weaponName": "Short Bow",
   "armorName": "Leather Armor",
   "className": "Archer",
+  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -289,6 +290,7 @@
   "isSelectedForParty": true,
   "encounterXPosition": 0,
   "encounterYPosition": 0,
+  "isSelected": false,
   "name": "Joe",
   "hp": 70,
   "isAlive": true,

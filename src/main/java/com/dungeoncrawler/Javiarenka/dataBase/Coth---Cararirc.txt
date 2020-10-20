@@ -33,6 +33,7 @@
   "weaponName": "Club",
   "armorName": "Cloth Armor",
   "className": "Healer",
+  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -286,9 +287,10 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": true,
+  "isSelectedForParty": false,
   "encounterXPosition": 0,
   "encounterYPosition": 0,
+  "isSelected": false,
   "name": "Coth",
   "hp": 50,
   "isAlive": true,

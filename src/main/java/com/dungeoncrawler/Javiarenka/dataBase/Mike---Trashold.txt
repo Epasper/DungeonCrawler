@@ -33,6 +33,7 @@
   "weaponName": "Club",
   "armorName": "Rusted Chain Armor",
   "className": "Knight",
+  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -289,6 +290,7 @@
   "isSelectedForParty": true,
   "encounterXPosition": 0,
   "encounterYPosition": 0,
+  "isSelected": false,
   "name": "Mike",
   "hp": 50,
   "isAlive": true,

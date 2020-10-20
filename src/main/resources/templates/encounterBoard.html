@@ -23,9 +23,9 @@
             <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
                 <div th:with="currentId=${i}+'---'+${j}">
                     <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
-                        <div th:id="container+${currentId}">
+                        <div th:id="container+${currentId}" th:onclick="'javascript:moveTheHero(\'' + ${currentId} + '\');'">
                         </div>
-                        <img class="hero-images" th:id="${currentHeroId}"/>
+                        <img class="hero-images" th:id="${currentHeroId}" />
                         <img class="background-images" th:id="${currentId}" th:src="${imageUrl}"/>
                     </div>
                 </div>

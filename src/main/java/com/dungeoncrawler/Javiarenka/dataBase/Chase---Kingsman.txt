@@ -31,6 +31,7 @@
   "weaponName": "Staff of Fire",
   "armorName": "Cloth Armor",
   "className": "Wizard",
+  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -285,6 +286,7 @@
   "isSelectedForParty": true,
   "encounterXPosition": 0,
   "encounterYPosition": 0,
+  "isSelected": false,
   "name": "Chase",
   "hp": 50,
   "isAlive": true,
