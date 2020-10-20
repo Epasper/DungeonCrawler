@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class Stage
     private Tile[][] tiles;
     private List<Room> rooms = new ArrayList<>();
     private PartyManager partyManager = new PartyManager(this);
+    private FogManager fogManager = new FogManager(this);
 
     Stage(){}
 
@@ -72,9 +74,7 @@ public class Stage
                 tiles[coordX][coordY] = new Tile(coordX, coordY);
                 tiles[coordX][coordY].setType(stp.getTileTypeValue(coordX, coordY));
             }
-
         }
-
     }
 
     public int getWidth()
@@ -111,6 +111,17 @@ public class Stage
     {
         this.tiles = tiles;
     }
+
+    public FogManager getFogManager()
+    {
+        return fogManager;
+    }
+
+
+
+    //======================================================================================================
+    //======================================================================================================
+    //======================================================================================================
 
     public Tile[] getTilesAsOneDimensionalArray()
     {
@@ -323,7 +334,6 @@ public class Stage
                 {
                     outputRange[col][row] = new Tile(col, row);
                 }
-
             }
         }
         return outputRange;

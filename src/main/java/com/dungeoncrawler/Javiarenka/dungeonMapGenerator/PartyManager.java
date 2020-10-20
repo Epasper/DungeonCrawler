@@ -51,6 +51,7 @@ public class PartyManager
     {
         party = new PartyAvatar(targetTile);
         targetTile.setOccupied(true);
+//        stage.getFogManager().setParty(party);
         return party;
     }
 

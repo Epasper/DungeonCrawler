@@ -4,6 +4,7 @@ public class Tile
 {
     private int x;
     private int y;
+    private double visibility = 0;
     private boolean occupied = false;
     private TileType type;
     //private HashMap<String,mapGenerator.Tile> surroundingTiles;
@@ -35,6 +36,11 @@ public class Tile
     public int getY()
     {
         return y;
+    }
+
+    public double getVisibility()
+    {
+        return visibility;
     }
 
     public boolean isOccupied()
@@ -76,6 +82,11 @@ public class Tile
     public TileType getType()
     {
         return type;
+    }
+
+    public void setVisibility(double visibility)
+    {
+        this.visibility = visibility;
     }
 
     public boolean isWalkable()

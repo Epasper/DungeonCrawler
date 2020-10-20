@@ -30,4 +30,13 @@ public class PartyAvatar
         this.direction = direction;
     }
 
+    public int getX()
+    {
+        return occupiedTile.getX();
+    }
+
+    public int getY()
+    {
+        return occupiedTile.getY();
+    }
 }

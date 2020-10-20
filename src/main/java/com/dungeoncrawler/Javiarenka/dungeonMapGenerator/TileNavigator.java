@@ -14,31 +14,51 @@ public class TileNavigator
 
     public Tile getNextTile(Tile tile, Direction dir)
     {
-        Tile nextTile = new Tile();
+        return getNextTile(tile, dir, 1);
+    }
+
+    public Tile getNextTile(Tile tile, Direction dir, int numberOfSteps)
+    {
+        Tile nextTile = tile;
         try
         {
             switch (dir)
             {
                 case DOWN:
-                    nextTile = stage.getTile(tile.getX(), tile.getY() + 1);
+                    nextTile = stage.getTile(tile.getX(), tile.getY() + numberOfSteps);
                     break;
 
                 case RIGHT:
-                    nextTile = stage.getTile(tile.getX() + 1, tile.getY());
+                    nextTile = stage.getTile(tile.getX() + numberOfSteps, tile.getY());
                     break;
 
                 case UP:
-                    nextTile = stage.getTile(tile.getX(), tile.getY() - 1);
+                    nextTile = stage.getTile(tile.getX(), tile.getY() - numberOfSteps);
                     break;
 
                 case LEFT:
-                    nextTile = stage.getTile(tile.getX() - 1, tile.getY());
+                    nextTile = stage.getTile(tile.getX() - numberOfSteps, tile.getY());
                     break;
             }
         } catch (Exception e)
         {
             System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
             //e.printStackTrace();
+//            nextTile = new Tile(0, 0, TileType.ERROR);
+        }
+        return nextTile;
+    }
+
+    public Tile getNextTile(Tile tile, Direction[] directions, int numberOfSteps)
+    {
+        Tile nextTile = tile;
+
+        for (Direction dir : directions)
+        {
+            for (int i = 0; i < numberOfSteps; i++)
+            {
+                nextTile = getNextTile(nextTile, dir);
+            }
         }
         return nextTile;
     }
@@ -53,6 +73,110 @@ public class TileNavigator
             i++;
         }
         return outputArray;
+    }
+
+    public List<Tile> getLineOfTiles(Tile sourceTile, Direction dir, int length)
+    {
+        List<Tile> outputSet = new ArrayList<>();
+        Tile nextTile = sourceTile;
+        for (int i = 0; i < length; i++)
+        {
+            outputSet.add(nextTile);
+            nextTile = getNextTile(nextTile, dir);
+        }
+        return outputSet;
+    }
+
+    public List<Tile> getLineOfTilesHorizontal(Tile startTile, Tile endTile)
+    {
+        List<Tile> outputList = new ArrayList<>();
+        int distance = endTile.getX() - startTile.getX();
+
+        if (distance == 0)
+        {
+            outputList.add(startTile);
+            outputList.add(endTile);
+            return outputList;
+        }
+
+        Direction lineDir;
+        if (distance > 0)
+        {
+            lineDir = Direction.RIGHT;
+        }
+        else
+        {
+            lineDir = Direction.LEFT;
+            distance *= -1;
+        }
+        return getLineOfTiles(startTile, lineDir, distance + 1);
+    }
+
+    public List<Tile> getLineOfTilesVertical(Tile startTile, Tile endTile)
+    {
+        List<Tile> outputList = new ArrayList<>();
+        int distance = endTile.getY() - startTile.getY();
+
+        if (distance == 0)
+        {
+            outputList.add(startTile);
+            outputList.add(endTile);
+            return outputList;
+        }
+
+        Direction lineDir;
+        if (distance > 0)
+        {
+            lineDir = Direction.DOWN;
+        }
+        else
+        {
+            lineDir = Direction.UP;
+            distance *= -1;
+        }
+        return getLineOfTiles(startTile, lineDir, distance + 1);
+    }
+
+    public List<Tile> getSurroundingTilesRing(Tile middleTile, int radius)
+    {
+        List<Tile> outputCollection = new ArrayList<>();
+
+        Tile topLeftCornerTile = getNextTile(middleTile, new Direction[]{Direction.UP, Direction.LEFT}, radius);
+        Tile topRightCornerTile = getNextTile(middleTile, new Direction[]{Direction.UP, Direction.RIGHT}, radius);
+        Tile bottomLeftCornerTile = getNextTile(middleTile, new Direction[]{Direction.DOWN, Direction.LEFT}, radius);
+        Tile bottomRightCornerTile = getNextTile(middleTile, new Direction[]{Direction.DOWN, Direction.RIGHT}, radius);
+
+        List<Tile> topLine = getLineOfTilesHorizontal(topLeftCornerTile, topRightCornerTile);
+        List<Tile> bottomLine = getLineOfTilesHorizontal(bottomRightCornerTile, bottomLeftCornerTile);
+        List<Tile> leftLine = getLineOfTilesVertical(bottomLeftCornerTile, topLeftCornerTile);
+        List<Tile> rightLine = getLineOfTilesVertical(topRightCornerTile, bottomRightCornerTile);
+
+        outputCollection.addAll(topLine);
+        outputCollection.addAll(rightLine);
+        outputCollection.addAll(bottomLine);
+        outputCollection.addAll(leftLine);
+
+        outputCollection = outputCollection.stream().distinct().collect(Collectors.toList());
+
+        return outputCollection;
+    }
+
+    public List<Tile> getSurroundingTilesFullSquare(Tile middleTile, int radius)
+    {
+        List<Tile> outputCollection = new ArrayList<>();
+        List<Tile> currentRing;
+        int previousSize = -1;
+
+        for (int rad = 0; rad <= radius; rad++)
+        {
+            currentRing = getSurroundingTilesRing(middleTile, rad);
+            outputCollection.addAll(currentRing);
+            outputCollection = outputCollection.stream().distinct().collect(Collectors.toList());
+            if (previousSize == outputCollection.size()) break;
+            previousSize = outputCollection.size();
+        }
+
+        return outputCollection;
     }
 
     public List<Tile> getSurroundingTiles(Tile middleTile)

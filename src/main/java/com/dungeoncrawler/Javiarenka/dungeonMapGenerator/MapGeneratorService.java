@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +61,15 @@ public class MapGeneratorService
         rb.removeShortBranches(10);
         rb.lockSomeDoor();
         rb.closeRooms();
+
+//        TileNavigator tn = new TileNavigator(stage);
+//        tn.getLineOfTiles(stage.getTile(2, 2), Direction.DOWN,5).forEach(tile -> tile.setType(TileType.DEBUG));
+//        tn.getLineOfTiles(stage.getTile(2, 2), Direction.LEFT,5).forEach(tile -> tile.setType(TileType.DEBUG));
+
+//        tn.getSurroundingTilesFullSquare(stage.getTile(10,10),500).forEach(tile -> tile.setType(TileType.DEBUG));
+//        tn.getSurroundingTilesRing(stage.getTile(40,10),5).forEach(tile -> tile.setType(TileType.DEBUG));
+
+//        tn.getLineOfTilesVertical(stage.getTile(20,11),stage.getTile(30,2)).forEach(tile -> tile.setType(TileType.DEBUG));
 
         stage.saveToTxt();
         //buildHtml(stage);
