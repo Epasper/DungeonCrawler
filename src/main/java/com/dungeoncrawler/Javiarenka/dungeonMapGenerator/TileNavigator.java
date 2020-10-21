@@ -42,7 +42,7 @@ public class TileNavigator
             }
         } catch (Exception e)
         {
-            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
+//            System.out.println("Next tile unavailable. mapGenerator.Stage Limit reached.");
             //e.printStackTrace();
 //            nextTile = new Tile(0, 0, TileType.ERROR);
         }

@@ -1,6 +1,8 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +21,8 @@ public class Stage
     private int height;
     private Tile[][] tiles;
     private List<Room> rooms = new ArrayList<>();
-    private PartyManager partyManager = new PartyManager(this);
-    private FogManager fogManager = new FogManager(this);
+    //private PartyManager partyManager = new PartyManager(this);
+    //private FogManager fogManager = new FogManager(this);
 
     Stage(){}
 
@@ -92,10 +94,10 @@ public class Stage
         return tiles;
     }
 
-    public PartyManager getPartyManager()
-    {
-        return partyManager;
-    }
+//    public PartyManager getPartyManager()
+//    {
+//        return partyManager;
+//    }
 
     public void setWidth(int width)
     {
@@ -112,10 +114,10 @@ public class Stage
         this.tiles = tiles;
     }
 
-    public FogManager getFogManager()
-    {
-        return fogManager;
-    }
+//    public FogManager getFogManager()
+//    {
+//        return fogManager;
+//    }
 
 
 
@@ -386,6 +388,21 @@ public class Stage
         else
         {
             return tiles[0];
+        }
+    }
+
+    public void saveThisStage()
+    {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try
+        {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "stage.txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }

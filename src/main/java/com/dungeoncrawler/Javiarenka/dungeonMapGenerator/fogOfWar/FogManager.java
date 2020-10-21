@@ -4,7 +4,12 @@ import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.PartyAvatar;
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Stage;
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Tile;
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.TileNavigator;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +19,9 @@ import java.util.stream.Collectors;
 
 public class FogManager
 {
-    private Stage stage;
-    private TileNavigator tileNav;
-    private PartyAvatar party;
+    private transient Stage stage;
+    private transient TileNavigator tileNav;
+    private transient PartyAvatar party;
     private List<Tile> visibleTiles = new ArrayList<>();
 
     public FogManager(Stage stage)
@@ -110,6 +115,21 @@ public class FogManager
     {
 //        return Arrays.stream(stage.getTilesAsOneDimensionalArray()).filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
         return visibleTiles;
+    }
+
+    public void saveThisFogManager()
+    {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try
+        {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "fogManager.txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

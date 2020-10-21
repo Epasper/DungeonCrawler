@@ -37,8 +37,22 @@ export function injectButtonsListeners() {
     moveButtons.forEach(mvBtn => {
         mvBtn.addEventListener('click', movePartyOneStepBackend);
     });
-
     document.addEventListener('keydown', keyPressedMove);
+
+    let saveBtn = document.getElementById('save-btn')
+    saveBtn.addEventListener('click', requestMapSave)
+
+    let loadBtn = document.getElementById('load-btn')
+    loadBtn.addEventListener('click', requestMapLoad)
+}
+
+async function requestMapSave() {
+    await axios.get(`http://localhost:8080/saveMap`)
+}
+
+async function requestMapLoad() {
+    //await axios.get(`http://localhost:8080/loadMap`)
+    window.location.replace(`http://localhost:8080/loadMap`)
 }
 
 function makeAction() {

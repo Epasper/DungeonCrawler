@@ -21,13 +21,14 @@ public class MapRestController
     @GetMapping("/checkSpawnability")
     public boolean isPartySpawnable(@RequestParam int coordX, @RequestParam int coordY)
     {
-        return service.getStage().getPartyManager().isPartySpawnable(coordX, coordY);
+        return service.getPartyManager().isPartySpawnable(coordX, coordY);
     }
 
     @GetMapping("/spawnParty")
     public PartyAvatar spawnParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        PartyAvatar party = service.getStage().getPartyManager().spawnParty(coordX, coordY);
+        PartyAvatar party = service.getPartyManager().spawnParty(coordX, coordY);
+        service.getFogManager().setParty(party);
         System.out.println("party spawned on tile: " + coordX + "/" + coordY);
         return party;
     }
@@ -47,15 +48,15 @@ public class MapRestController
     @GetMapping("/moveParty")
     public void moveParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        PartyManager pm = service.getStage().getPartyManager();
+        PartyManager pm = service.getPartyManager();
         pm.teleportParty(coordX, coordY);
+        service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/stepParty")
     public void stepParty(@RequestParam Direction dir)
     {
-        PartyManager pm = service.getStage().getPartyManager();
-
+        PartyManager pm = service.getPartyManager();
         if (pm.movePartyOneStep(dir))
         {
             System.out.println("Party moved: " + dir);
@@ -64,12 +65,13 @@ public class MapRestController
         {
             System.out.println("Party turned: " + dir);
         }
+        service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/getParty")
     public PartyAvatar getParty()
     {
-        return service.getStage().getPartyManager().getParty();
+        return service.getPartyManager().getParty();
     }
 
     @GetMapping("/getClickedTile")
@@ -83,14 +85,14 @@ public class MapRestController
     @GetMapping("/movability")
     public Map<Direction, Boolean> checkMovability()
     {
-        return service.getStage().getPartyManager().evaluateMovability();
+        return service.getPartyManager().evaluateMovability();
     }
 
     @GetMapping("/getPointedTile")
     public Tile getPointedTile(@RequestParam Direction dir)
     {
         TileNavigator tn = new TileNavigator(service.getStage());
-        return tn.getNextTile(service.getStage().getPartyManager().getParty().occupiedTile, dir);
+        return tn.getNextTile(service.getPartyManager().getParty().getOccupiedTile(), dir);
     }
 
     @GetMapping("/openDoor")
@@ -123,6 +125,13 @@ public class MapRestController
     @GetMapping("/getVisibilityData")
     public List<Tile> getVisibleTiles()
     {
-        return service.getStage().getFogManager().getVisibleTiles();
+        return service.getFogManager().getVisibleTiles();
     }
+
+    @GetMapping("saveMap")
+    public void saveMap()
+    {
+        service.save();
+    }
+
 }

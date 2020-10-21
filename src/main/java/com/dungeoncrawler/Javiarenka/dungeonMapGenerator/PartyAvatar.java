@@ -2,8 +2,8 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 public class PartyAvatar
 {
-    Tile occupiedTile;
-    Direction direction;
+    private Tile occupiedTile;
+    private Direction direction;
 
     public PartyAvatar(Tile occupiedTile)
     {

@@ -1,10 +1,14 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 @Service
 public class MapGeneratorService
@@ -12,6 +16,8 @@ public class MapGeneratorService
 
     @Autowired
     Stage stage;
+    PartyManager partyManager;
+    FogManager fogManager;
 
     public Stage getStage()
     {
@@ -22,6 +28,30 @@ public class MapGeneratorService
     {
         this.stage = stage;
     }
+
+    public PartyManager getPartyManager()
+    {
+        return partyManager;
+    }
+
+    public void setPartyManager(PartyManager partyManager)
+    {
+        this.partyManager = partyManager;
+    }
+
+    public FogManager getFogManager()
+    {
+        return fogManager;
+    }
+
+    public void setFogManager(FogManager fogManager)
+    {
+        this.fogManager = fogManager;
+    }
+
+    //======================================================================================
+    //======================================================================================
+    //======================================================================================
 
     public static void main(String[] args) throws IOException
     {
@@ -71,6 +101,9 @@ public class MapGeneratorService
 
 //        tn.getLineOfTilesVertical(stage.getTile(20,11),stage.getTile(30,2)).forEach(tile -> tile.setType(TileType.DEBUG));
 
+
+        setPartyManager(new PartyManager(stage));
+        setFogManager(new FogManager(stage));
         stage.saveToTxt();
         //buildHtml(stage);
         //buildCSS(stage);
@@ -238,4 +271,53 @@ public class MapGeneratorService
 
         return sb.toString();
     }
+
+    public void save()
+    {
+        stage.saveThisStage();
+        partyManager.saveThisPartyManager();
+        fogManager.saveThisFogManager();
+    }
+
+    public void load()
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String fileName = "stage.txt";
+        Gson gson = new Gson();
+        Stage loadedStage = new Stage();
+        PartyManager loadedPartyManager = new PartyManager();
+
+        Reader reader;
+
+        try
+        {
+            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            loadedStage = gson.fromJson(reader, Stage.class);
+            reader.close();
+
+            fileName = "partyManager.txt";
+
+            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            loadedPartyManager = gson.fromJson(reader, PartyManager.class);
+            reader.close();
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        PartyManager referencedPartyManager = new PartyManager(loadedStage);
+        FogManager referencedFogManager = new FogManager(loadedStage);
+
+        if (!Objects.isNull(loadedPartyManager.getParty()))
+        {
+            referencedPartyManager.spawnParty(loadedPartyManager.getParty());
+            referencedFogManager.setParty(partyManager.getParty());
+        }
+
+        this.stage = loadedStage;
+        this.partyManager = referencedPartyManager;
+        this.fogManager = referencedFogManager;
+    }
+
 }

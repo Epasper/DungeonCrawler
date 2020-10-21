@@ -34,11 +34,12 @@ build/
 
 ### Created Characters ###
 /src/main/**/dataBase/
+!/src/main/**/dataBase/dungeonMap/
 !/src/main/**/dataBase/Chase---Kingsman.txt
 !/src/main/**/dataBase/Joe---Jenkins.txt
 !/src/main/**/dataBase/Mike---Trashold.txt
 
 ### Dungeon Map Generator ###
 **/dungeonMapGenerator/txt/
-**/dungeonMapGenerator/webStuff/debug/
+**/dungeonMapGenerator/webStuff/
 /src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/webStuff/backup/
