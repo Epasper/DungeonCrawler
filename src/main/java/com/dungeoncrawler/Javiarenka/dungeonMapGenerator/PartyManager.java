@@ -84,6 +84,7 @@ public class PartyManager
         {
             party.getOccupiedTile().setOccupied(false);
             party.setOccupiedTile(targetTile);
+            party.getOccupiedTile().setOccupied(true);
             return true;
         }
         return false;

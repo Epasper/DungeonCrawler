@@ -24,7 +24,9 @@ public class Stage
     //private PartyManager partyManager = new PartyManager(this);
     //private FogManager fogManager = new FogManager(this);
 
-    Stage(){}
+    Stage()
+    {
+    }
 
     Stage(int stageWidth, int stageHeight)
     {
@@ -120,7 +122,6 @@ public class Stage
 //    }
 
 
-
     //======================================================================================================
     //======================================================================================================
     //======================================================================================================
@@ -156,6 +157,27 @@ public class Stage
                 }
             }
         }
+        return outputTiles.toArray(new Tile[outputTiles.size()]);
+    }
+
+    public Tile[] getTilesOfType(TileType[] searchedTypes)
+    {
+        List<Tile> outputTiles = new ArrayList<>();
+
+        for (TileType searchedType : searchedTypes)
+        {
+            for (Tile[] column : tiles)
+            {
+                for (Tile tile : column)
+                {
+                    if (tile.getType() == searchedType)
+                    {
+                        outputTiles.add(tile);
+                    }
+                }
+            }
+        }
+
         return outputTiles.toArray(new Tile[outputTiles.size()]);
     }
 
@@ -237,7 +259,8 @@ public class Stage
     {
         return rooms.stream()
                 .filter(room -> room.getDoor().equals(givenDoorTile))
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList())
+                .get(0);
     }
 
     public void printRow(int rowNumber)
@@ -376,6 +399,26 @@ public class Stage
         return null;
     }
 
+    public Tile getFirstTileOfType(TileType[] types)
+    {
+
+        for (TileType type : types)
+        {
+            for (Tile[] column : tiles)
+            {
+                for (Tile tile : column)
+                {
+                    if (tile.getType() == type)
+                    {
+                        return tile;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     public Tile getRandomTileOfType(TileType type)
     {
         Tile[] tiles = getTilesOfType(type);
@@ -389,6 +432,16 @@ public class Stage
         {
             return tiles[0];
         }
+    }
+
+    public void linkRoomTilesReferencesToStageTiles()
+    {
+        RoomBuilder rb = new RoomBuilder(this);
+
+        rooms.forEach(room -> {
+            room.setTiles(rb.getTilesRectangle(this.getTile(room.getxPos(), room.getyPos()), room.getWidth(), room.getHeight(), BuildDirection.RD));
+            room.setDoor(this.getTile(room.getDoor().getX(), room.getDoor().getY()));
+        });
     }
 
     public void saveThisStage()

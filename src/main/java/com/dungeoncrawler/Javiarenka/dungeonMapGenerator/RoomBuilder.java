@@ -338,7 +338,7 @@ public class RoomBuilder
 
         System.out.println("Room size: " + setWidth.intValue() + "/" + setHeight.intValue());
 
-        Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection));
+        Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection), TileType.ROOM);
         System.out.println(room.asString());
 
         surroundWithCorridor(room);
@@ -378,11 +378,13 @@ public class RoomBuilder
     public void scanTilesForRooms()
     {
         Tile seedTile;
-        List<Tile> roomTilesList = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.ROOM)));
+        List<Tile> roomTilesList = new ArrayList<>(Arrays.asList(stage.getTilesOfType(new TileType[]{TileType.ROOM, TileType.ROOM_LOCKED})));
+        Map<Tile, TileType> tilesWithTypes = new HashMap<>();
 
         do
         {
-            Tile currentTile = stage.getFirstTileOfType(TileType.ROOM);
+            Tile currentTile = stage.getFirstTileOfType(new TileType[]{TileType.ROOM, TileType.ROOM_LOCKED});
+            TileType currentType = currentTile.getType();
             seedTile = stage.getTile(currentTile.getX() - 1, currentTile.getY() - 1);
 
             Set<Tile> innerRoomTilesSet = tileNav.getTouchingTilesOfSameType(currentTile);
@@ -390,13 +392,14 @@ public class RoomBuilder
             Tile[][] innerRoomArray = getRangeFromSet(innerRoomTilesSet);
             Tile[][] outerRoomArray = stage.getSurroundingTiles(innerRoomArray);
 
-            Room room = new Room(getTilesRectangle(seedTile, outerRoomArray.length, outerRoomArray[0].length, BuildDirection.RD));
+            Room room = new Room(getTilesRectangle(seedTile, outerRoomArray.length, outerRoomArray[0].length, BuildDirection.RD), currentType);
             stage.updateRoomsSet(room);
 
             for (Tile tile : innerRoomTilesSet)
             {
-                roomTilesList.remove(tile);
+                tilesWithTypes.put(tile, tile.getType());
                 tile.setType(TileType.ROOM_SCANNED);
+                roomTilesList.remove(tile);
             }
             try
             {
@@ -410,7 +413,7 @@ public class RoomBuilder
         Tile[] scannedTiles = stage.getTilesOfType(TileType.ROOM_SCANNED);
         for (Tile tile : scannedTiles)
         {
-            tile.setType(TileType.ROOM);
+            tile.setType(tilesWithTypes.get(tile));
         }
     }
 

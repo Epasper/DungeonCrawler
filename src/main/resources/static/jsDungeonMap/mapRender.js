@@ -125,7 +125,7 @@ async function drawFogOfWar() {
 
 export async function animateRoomChange(changedTilesData) {
     const keys = Object.keys(changedTilesData);
-    console.log(keys);
+    console.log('keys: ', keys);
     const { type: newType } = changedTilesData[0][0];
     const currentType = (newType == 'ROOM') ? 'ROOM_LOCKED' : 'ROOM';
     let roomDiv;

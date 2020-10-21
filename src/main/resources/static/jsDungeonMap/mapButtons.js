@@ -88,6 +88,9 @@ async function updateActionButton() {
         console.log('current door status: ', doorOperator.current.state);
         doorOperator.open();
         console.log('current door status: ', doorOperator.current.state);
+        console.log('pointed tile_22222222222222: ', pointedTile);
+        console.log(pointedTile.x);
+        console.log(pointedTile.y);
         const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
             &newType=DOOR_${doorOperator.current.state}`);
         const changedTilesData = roomData[1];

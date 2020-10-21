@@ -312,10 +312,15 @@ public class MapGeneratorService
         if (!Objects.isNull(loadedPartyManager.getParty()))
         {
             referencedPartyManager.spawnParty(loadedPartyManager.getParty());
-            referencedFogManager.setParty(partyManager.getParty());
+            referencedFogManager.setParty(referencedPartyManager.getParty());
         }
 
         this.stage = loadedStage;
+        //stage.getRooms().clear();
+        stage.linkRoomTilesReferencesToStageTiles();
+//        RoomBuilder rb = new RoomBuilder(stage);
+//        rb.scanTilesForRooms();
+
         this.partyManager = referencedPartyManager;
         this.fogManager = referencedFogManager;
     }

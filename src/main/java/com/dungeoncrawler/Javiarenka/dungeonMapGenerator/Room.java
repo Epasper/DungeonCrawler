@@ -23,7 +23,7 @@ public class Room extends Stage
         yPos = seedTile.getY();
     }
 
-    Room(Tile[][] roomTiles)
+    Room(Tile[][] roomTiles, TileType targetType)
     {
         super(roomTiles);
 
@@ -32,7 +32,7 @@ public class Room extends Stage
 
         for (int i = 0; i < getWidth(); i++)
         {
-            setTileTypes(roomTiles[i], TileType.ROOM);
+            setTileTypes(roomTiles[i], targetType);
         }
 
         createPeripheralWall();
@@ -58,7 +58,6 @@ public class Room extends Stage
                     break;
             }
         }
-
     }
 
     public int getxPos()
