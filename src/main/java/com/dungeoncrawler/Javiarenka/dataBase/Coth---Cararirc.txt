@@ -1,6 +1,6 @@
 {
-  "surname": "Kingsman",
-  "heroClass": "WIZARD",
+  "surname": "Cararirc",
+  "heroClass": "HEALER",
   "equippedArmor": {
     "damageReduction": 4,
     "chanceToHitReduction": 10,
@@ -17,72 +17,76 @@
     "imageLink": "../images/Cloth Armor"
   },
   "equippedWeapon": {
-    "damageType": "DMG_FIRE",
+    "damageType": "DMG_BLUDGEONING",
     "damageDealt": 5,
     "occupyingSlot": "RIGHT_HAND",
-    "name": "Staff of Fire",
-    "weight": 8.0,
-    "price": 20.0,
+    "name": "Club",
+    "weight": 7.0,
+    "price": 8.0,
     "classRestrictions": [
-      "WIZARD"
+      "KNIGHT",
+      "WARRIOR",
+      "HEALER"
     ],
-    "imageLink": "../images/Staff of Fire"
+    "imageLink": "../images/Club"
   },
-  "weaponName": "Staff of Fire",
+  "weaponName": "Club",
   "armorName": "Cloth Armor",
-  "className": "Wizard",
+  "className": "Healer",
   "speed": 3,
   "money": 0,
   "skills": [
     {
-      "name": "Hits and burns",
-      "additionalDamage": 10,
-      "additionalHp": 0,
+      "name": "Heals all allies",
+      "additionalDamage": 0,
+      "additionalHp": 10,
       "isMagicSkill": true,
       "isPhysicalSkill": false,
-      "target": "ENEMY",
-      "coolDown": 3,
-      "manaCost": 15,
-      "staminaCost": 5,
+      "target": "ALL_ALLIES",
+      "coolDown": 1,
+      "manaCost": 20,
+      "staminaCost": 0,
       "appliesStatuses": [
-        "BURNED"
+        "DEFAULT"
       ],
-      "appliedStatusDuration": 2,
+      "appliedStatusDuration": 1,
       "classRestrictions": [
-        "WIZARD"
+        "HEALER"
       ]
     },
     {
-      "name": "Hit and speeds up",
-      "additionalDamage": 2,
-      "additionalHp": 0,
+      "name": "Hits and heals itself",
+      "additionalDamage": 5,
+      "additionalHp": 15,
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "target": "SELF_AND_ENEMY",
-      "coolDown": 4,
+      "coolDown": 2,
       "manaCost": 5,
-      "staminaCost": 12,
+      "staminaCost": 10,
       "appliesStatuses": [
-        "HASTED"
+        "DEFAULT"
       ],
-      "appliedStatusDuration": 2,
+      "appliedStatusDuration": 1,
       "classRestrictions": [
-        "WIZARD"
+        "HEALER"
       ]
     }
   ],
   "backpack": {
     "rightHandSlot": {
-      "damageType": "DMG_FIRE",
+      "damageType": "DMG_BLUDGEONING",
       "damageDealt": 5,
       "occupyingSlot": "RIGHT_HAND",
-      "name": "Staff of Fire",
-      "weight": 8.0,
-      "price": 20.0,
+      "name": "Club",
+      "weight": 7.0,
+      "price": 8.0,
       "classRestrictions": [
-        "WIZARD"
+        "KNIGHT",
+        "WARRIOR",
+        "HEALER"
       ],
-      "imageLink": "../images/Staff of Fire"
+      "imageLink": "../images/Club"
     },
     "chestSlot": {
       "damageReduction": 4,
@@ -283,11 +287,11 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": true,
+  "isSelectedForParty": false,
   "encounterXPosition": 0,
   "encounterYPosition": 0,
   "isSelected": false,
-  "name": "Chase",
+  "name": "Coth",
   "hp": 50,
   "isAlive": true,
   "allCharacterStatuses": []

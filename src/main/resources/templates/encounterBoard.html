@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/encounterBoard.css">
+    <script th:inline="javascript">
+        const height = [[${boardHeight}]];
+        const width = [[${boardWidth}]];
+        let heroes = [[${heroes}]];
+        let tiles = [[${tiles}]];
+        document.documentElement.style.setProperty("--height", height);
+
+    </script>
+    <script src="encounterBoard.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
+        <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
+            <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
+                <div th:with="currentId=${i}+'---'+${j}">
+                    <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
+                        <div th:id="container+${currentId}" th:onclick="'javascript:moveTheHero(\'' + ${currentId} + '\');'">
+                        </div>
+                        <img class="hero-images" th:id="${currentHeroId}" />
+                        <img class="background-images" th:id="${currentId}" th:src="${imageUrl}"/>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</div>
+<script>
+    initialize();
+
+</script>
+</body>
+</html>
