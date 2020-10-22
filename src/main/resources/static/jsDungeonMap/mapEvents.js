@@ -3,6 +3,7 @@ import { mapWidth, mapHeight } from './mapStyling.js'
 import { updateButtons } from './mapButtons.js'
 import { draw } from './mapRender.js'
 import { party, directions } from './partyManager.js'
+import { finished, update } from './dungeonMap.js'
 
 const mapGrid = document.getElementById(`grid`)
 
@@ -38,6 +39,7 @@ export function injectButtonsListeners() {
         mvBtn.addEventListener('click', movePartyOneStepBackend);
     });
     document.addEventListener('keydown', keyPressedMove);
+    // document.addEventListener('keyup', keyPressedMove);
 
     let saveBtn = document.getElementById('save-btn')
     saveBtn.addEventListener('click', requestMapSave)
@@ -71,8 +73,10 @@ async function spawnPartyBackend() {
     const backendParty = response.data;
     console.log('spawn: ', backendParty)
 
-    await draw();
-    updateButtons();
+    // await draw();
+    // updateButtons();
+
+    await update();
 }
 
 async function teleportPartyBackend() {
@@ -82,8 +86,9 @@ async function teleportPartyBackend() {
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
-    await draw();
-    updateButtons();
+    // await draw();
+    // updateButtons();
+    await update();
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
@@ -97,8 +102,10 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 
     party.direction = directions[dir];
 
-    await draw();
-    updateButtons();
+    // await draw();
+    // updateButtons();
+
+    await update();
 }
 
 async function keyPressedMove({ keyCode }) {
@@ -109,28 +116,30 @@ async function keyPressedMove({ keyCode }) {
     switch (keyCode) {
         case 37:    //LEFT
             dirBtn = document.getElementById('move-left');
-            console.log('key left');
+            console.log('---KEY LOGGED: left---');
             break;
         case 38:    //UP
             dirBtn = document.getElementById('move-up');
-            console.log('key up');
+            console.log('---KEY LOGGED: up---');
             break;
         case 39:    //RIGHT
             dirBtn = document.getElementById('move-right');
-            console.log('key right');
+            console.log('---KEY LOGGED: right---');
             break;
         case 40:    //DOWN
             dirBtn = document.getElementById('move-down');
-            console.log('key down');
+            console.log('---KEY LOGGED: down---');
             break;
         default:
             return;
     }
+
+    console.log(`*** DISPATCH CLICK ***`)
     dirBtn.dispatchEvent(new Event('click'));
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);
-    console.log(btnClasses);
+    //console.log(btnClasses);
     let tempActiveEmulationClassName = ''
     if (btnClasses.some(className => { return className.includes('blocked') })) {
         tempActiveEmulationClassName = 'move-button-blocked-active';
@@ -142,6 +151,9 @@ async function keyPressedMove({ keyCode }) {
     setTimeout(function () {
         dirBtn.classList.remove(tempActiveEmulationClassName);
     }, 100)
+
+
+
 }
 
 async function tileClicked({ target: clickedTileDiv }) {
@@ -158,8 +170,9 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     makeSelection(clickedTileDiv, mapGrid)
 
-    await draw()
-    updateButtons()
+    // await draw()
+    // updateButtons()
+    await update();
 }
 
 function tileMouseEntered({ target: hoveredTileDiv }) {
@@ -267,7 +280,7 @@ function showCrossHighlightElements(centerDivElement) {
 
     rowElement.classList.add('cross-highlight');
     colElement.classList.add('cross-highlight');
- 
+
     const currentRow = getY(centerDivElement);
     const currentCol = getX(centerDivElement);
 
@@ -297,5 +310,5 @@ function resetColor(tile) {
     // setTimeout(function () {
     //     tile.style.transition = ``;
     // }, 2000)
-    
+
 }

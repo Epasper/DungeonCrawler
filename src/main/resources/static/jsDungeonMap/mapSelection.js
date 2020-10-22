@@ -39,19 +39,19 @@ function mouseLeftSelectionDiv() {
     selectedGridTileDiv.dispatchEvent(ev)
 }
 
-export function getX(tile) {
+export function getX(tile, separator = '-') {
     var tileId = ``
     tileId = tile.id
 
-    var x = tileId.split(`-`)[0]
+    var x = tileId.split(separator)[0]
     return x * 1
 }
 
-export function getY(tile) {
+export function getY(tile, separator = '-') {
     var tileId = ``
     tileId = tile.id
 
-    var y = tileId.split(`-`)[1]
+    var y = tileId.split(separator)[1]
     return y * 1
 }
 

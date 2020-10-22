@@ -105,7 +105,7 @@
     pointer-events: none;
     /* background-color: var(--default-tile-color); */
     background-color: rgb(30,30,30);
-    opacity: 0.9;
+    opacity: 0.99;
     transition: opacity 0.5s;
 }
 

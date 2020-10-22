@@ -125,7 +125,7 @@ public class MapRestController
     @GetMapping("/getVisibilityData")
     public List<Tile> getVisibleTiles()
     {
-        return service.getFogManager().getVisibleTiles();
+        return service.getFogManager().getTilesThatChangedVisibility();
     }
 
     @GetMapping("saveMap")

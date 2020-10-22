@@ -1,5 +1,5 @@
 import { addParty, party } from './partyManager.js'
-import { getDivFromBackendTile } from './mapSelection.js'
+import { getDivFromBackendTile, getX, getY } from './mapSelection.js'
 
 let prevFacingDirection = 'none';
 
@@ -8,8 +8,8 @@ export async function draw() {
     // może by nie rysować party na nowo z każdym kliknięciem, jeśli nie zmiania się status samej drużyny
 
     console.log('---DRAWING---')
-    drawParty();
-    drawFogOfWar();
+    await drawParty();
+    await drawFogOfWar();
 }
 
 async function drawParty() {
@@ -20,7 +20,7 @@ async function drawParty() {
 
     //debugger;
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
-    console.log(`drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}`);
+    console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
     //debugger;
 
     //if (dir) party.direction = directions[dir];
@@ -106,21 +106,47 @@ async function drawParty() {
 }
 
 async function drawFogOfWar() {
+
+    console.log(`---DRAWING FOG START---`)
     const response = await axios.get(`http://localhost:8080/getVisibilityData`);
+    console.log(`---DRAWING FOG after await---`)
     const visibilityData = response.data;
     let fogDiv;
-
+    let visibleFogDivs = [];
+    let hiddenCounter = 0;
+    let shownCounter = 0;
     //console.log(visibilityData)
+
     visibilityData.forEach(tile => {
         //console.log(tile);
-        fogDiv = getDivFromBackendTile(tile,'x');
+        fogDiv = getDivFromBackendTile(tile, 'x');
         //console.log(fogDiv)
         if (tile.visibility == 0) {
             fogDiv.style.opacity = '';
+            fogDiv.classList.remove('visible');
+            hiddenCounter++;
         } else {
             fogDiv.style.opacity = 1 - tile.visibility;
+            fogDiv.classList.add('visible');
+            visibleFogDivs.push(fogDiv);
+            shownCounter++;
         }
     });
+
+    
+
+    console.log('HIDDEN COUNTER: ', hiddenCounter);
+
+    let visibleTiles = Array.from(document.getElementsByClassName('visible'));
+    visibleTiles.forEach(fDiv => {
+
+        if (!visibleFogDivs.some(div => div === fDiv)) {
+            fDiv.style.opacity = '';
+            fogDiv.classList.remove('visible');
+        }
+    })
+
+
 }
 
 export async function animateRoomChange(changedTilesData) {

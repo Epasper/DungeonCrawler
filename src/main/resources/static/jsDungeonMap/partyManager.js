@@ -1,3 +1,4 @@
+import { update } from "./dungeonMap.js";
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
 
@@ -31,7 +32,7 @@ export function addParty(partyTile) {
     partyTile.addEventListener('click', partyClick);
 }
 
-function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyTileDiv. 
+async function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyTileDiv. 
     //{} oznacza że go destrukturyzujemy i pobieramy jego pole targetm a następnie przypisujemy je do zmiennej heroElement
 
     console.log(party.isSelected);
@@ -46,7 +47,8 @@ function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. 
         console.log(`Party was selected`);
     }
     
-    updateButtons();
-    draw();
+    await update();
 
+    // updateButtons();
+    // await draw();
 }

@@ -40,13 +40,6 @@ function updateMoveButton() {
     let moveButton = document.getElementById('move-party-btn');
     let moveButtonsContainer = document.getElementById('move-ctrl');
 
-    console.log('updateMoveButton - party element: ', document.getElementById('party'));
-    // if(!document.getElementById('party')) {
-    //     moveButton.style.opacity = '0';
-    // } else {
-    //     moveButton.style.opacity = '';
-    // }
-
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {
         moveButton.disabled = false;
@@ -64,7 +57,7 @@ async function updateDirectionalButtons() {
     let directionalButtons = Array.from(document.getElementsByClassName('move-button'));
 
     const { data: movabilityData } = await axios.get(`http://localhost:8080/movability`);
-    console.log('movability: ', movabilityData);
+    //console.log('movability: ', movabilityData);
 
     directionalButtons.forEach(dirBtn => {
         let [dir] = dirBtn.id.split('-').splice(-1);
@@ -87,13 +80,13 @@ async function updateActionButton() {
     if (party.direction == directions.NONE) return;
 
     const { data: pointedTile } = await axios.get(`http://localhost:8080/getPointedTile?dir=${party.direction}`);
-    console.log('pointed tile: ', pointedTile);
+    //console.log('pointed tile: ', pointedTile);
 
     let pointedDiv = getDivFromBackendTile(pointedTile);
-    console.log('pointedDiv: ', pointedDiv);
+    //console.log('pointedDiv: ', pointedDiv);
 
     pointedDiv = { div: pointedDiv, type: pointedTile.type };
-    console.log('pointedDiv: ', pointedDiv);
+    //console.log('pointedDiv: ', pointedDiv);
 
     if (pointedTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
@@ -108,17 +101,14 @@ async function updateActionButton() {
             &newType=DOOR_${doorOperator.current.state}`);
         const changedTilesData = roomData[1];
 
-        console.log('changedTilesData: ' ,changedTilesData)
+        //console.log('changedTilesData: ' ,changedTilesData)
         if (changedTilesData) animateRoomChange(changedTilesData);
-        // doorOperator.open();
-        // doorOperator.close();
-        // doorOperator.close();
-        // doorOperator.close();
+        
     }
 
 }
 
-export function updateButtons() {
+export async function updateButtons() {
     //TODO: Axios umożliwia wysyłanie setu zapytań - można więc zamiast w każdej funkcji poniżej kilka razy odpytywać serwer (axios.all()),
     // to raz zrobić większe odpytanie, a potem wyniki odpytania powrzucać do funkcji updatujących guziki
     updateSpawnButton();

@@ -89,7 +89,8 @@ public class Tile
 
     public void setVisibility(double visibility)
     {
-        this.visibility = visibility;
+//        this.visibility = visibility;
+        this.visibility = Math.min(1, visibility);
     }
 
     public boolean isWalkable()

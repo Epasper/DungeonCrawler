@@ -1,7 +1,9 @@
 import { updateButtons } from './mapButtons.js'
-import {injectTileListeners, injectButtonsListeners} from './mapEvents.js'
+import { injectTileListeners, injectButtonsListeners } from './mapEvents.js'
 import { draw } from './mapRender.js'
-import {adaptGrids} from './mapStyling.js'
+import { adaptGrids } from './mapStyling.js'
+
+export let finished = true;
 
 if (document.readyState == "loading") {
     document.addEventListener('DOMContentLoaded', ready)
@@ -14,8 +16,15 @@ async function ready() {
     adaptGrids()
     injectTileListeners()
     injectButtonsListeners()
-    await draw()
-    updateButtons()
+    await update();
+    // await draw()
+    // updateButtons()
+}
+
+export async function update() {
+    console.log(`================= UPDATE ==============`)
+    await draw();
+    await updateButtons();
 }
 
 // async function getMapObject() {
