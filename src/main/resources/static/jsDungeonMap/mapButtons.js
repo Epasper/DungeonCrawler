@@ -4,6 +4,12 @@ import { animateRoomChange } from './mapRender.js'
 
 
 async function updateSpawnButton() {
+    let spawnButton = document.getElementById('spawn-party-btn');
+    if(document.getElementById('party')) {
+        spawnButton.style.opacity = '0';
+        spawnButton.style.pointerEvents = 'none';
+    }
+
     if (!selectedGridTileDiv) return false;
 
     let coordX = getX(selectedGridTileDiv)
@@ -15,7 +21,7 @@ async function updateSpawnButton() {
 
     //let isSpawnable = data;
     let isSelection = (document.getElementById('selection') != null)
-    let spawnButton = document.getElementById('spawn-party-btn');
+    
     if (isSpawnable && isSelection) {
         spawnButton.disabled = false;
     } else {
@@ -33,6 +39,13 @@ function isPartySelected() {
 function updateMoveButton() {
     let moveButton = document.getElementById('move-party-btn');
     let moveButtonsContainer = document.getElementById('move-ctrl');
+
+    console.log('updateMoveButton - party element: ', document.getElementById('party'));
+    // if(!document.getElementById('party')) {
+    //     moveButton.style.opacity = '0';
+    // } else {
+    //     moveButton.style.opacity = '';
+    // }
 
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {

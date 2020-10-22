@@ -5,6 +5,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+//TODO - dodać randomizację budowania pokoi poprzez zmianę algorytmu wyszukiwania najbliższego seeda.
+// Zamiast najbliższego pola, niech losuje najbliższe pole, a potem lekko przesuwa je o pewien wektor.
+
 public class RoomBuilder
 {
     private Stage stage;

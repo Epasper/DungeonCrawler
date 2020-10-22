@@ -12,6 +12,15 @@ public class TileNavigator
         this.stage = stage;
     }
 
+    public double getDistanceBetweenTiles(Tile baseTile, Tile distantTile)
+    {
+        int horizontalDistance = Math.abs(baseTile.getX() - distantTile.getX());
+        int verticalDistance = Math.abs(baseTile.getY() - distantTile.getY());
+
+        double distance = Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
+        return distance;
+    }
+
     public Tile getNextTile(Tile tile, Direction dir)
     {
         return getNextTile(tile, dir, 1);
@@ -78,6 +87,12 @@ public class TileNavigator
     public List<Tile> getLineOfTiles(Tile sourceTile, Direction dir, int length)
     {
         List<Tile> outputSet = new ArrayList<>();
+//        if (length == 0)
+//        {
+//            outputSet.add(sourceTile);
+//            return outputSet;
+//        }
+
         Tile nextTile = sourceTile;
         for (int i = 0; i < length; i++)
         {
@@ -137,7 +152,7 @@ public class TileNavigator
         return getLineOfTiles(startTile, lineDir, distance + 1);
     }
 
-    public List<Tile> getSurroundingTilesRing(Tile middleTile, int radius)
+    public List<Tile> getSurroundingTilesRingSquare(Tile middleTile, int radius)
     {
         List<Tile> outputCollection = new ArrayList<>();
 
@@ -169,7 +184,7 @@ public class TileNavigator
 
         for (int rad = 0; rad <= radius; rad++)
         {
-            currentRing = getSurroundingTilesRing(middleTile, rad);
+            currentRing = getSurroundingTilesRingSquare(middleTile, rad);
             outputCollection.addAll(currentRing);
             outputCollection = outputCollection.stream().distinct().collect(Collectors.toList());
             if (previousSize == outputCollection.size()) break;
@@ -177,6 +192,30 @@ public class TileNavigator
         }
 
         return outputCollection;
+    }
+
+    public List<Tile> getConeOfTiles(Tile sourceTile, Direction dir, int range, double coneWideningRatio, int initialWideningValue)
+    {
+        Map<Integer, List<Tile>> coneTilesMap = new HashMap<>();
+        for (int level = 0; level <= range; level++)
+        {
+            List<Tile> currentLevelTiles = new ArrayList<>();
+            Tile midTile = getNextTile(sourceTile, dir, level);
+            if(level > 0 && midTile.equals(sourceTile)) break;  //kiedy stożek wychodzi poza planszę
+
+            int halfConeWidth = (int) (level * coneWideningRatio + initialWideningValue) + 1;
+            halfConeWidth = Math.min(halfConeWidth, range + 1);
+            currentLevelTiles.addAll(getLineOfTiles(midTile, Direction.getLeftPerpendicularDir(dir), halfConeWidth));
+            currentLevelTiles.addAll(getLineOfTiles(midTile, Direction.getRightPerpendicularDir(dir), halfConeWidth));
+            currentLevelTiles = currentLevelTiles.stream().distinct().collect(Collectors.toList());
+
+            currentLevelTiles = currentLevelTiles.stream().filter(tile -> getDistanceBetweenTiles(sourceTile, tile) <= range + 0.35).collect(Collectors.toList());
+
+            coneTilesMap.put(level, currentLevelTiles);
+        }
+        List<Tile> outputTiles = new ArrayList<>();
+        coneTilesMap.keySet().forEach(key -> outputTiles.addAll(coneTilesMap.get(key)));
+        return outputTiles;
     }
 
     public List<Tile> getSurroundingTiles(Tile middleTile)

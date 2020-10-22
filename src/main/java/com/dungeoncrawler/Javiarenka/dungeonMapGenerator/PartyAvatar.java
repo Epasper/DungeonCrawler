@@ -1,5 +1,7 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+//TODO: has a / is a ralationship -> poczytać
+
 public class PartyAvatar
 {
     private Tile occupiedTile;

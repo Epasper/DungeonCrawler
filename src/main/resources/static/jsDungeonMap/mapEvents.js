@@ -71,7 +71,7 @@ async function spawnPartyBackend() {
     const backendParty = response.data;
     console.log('spawn: ', backendParty)
 
-    draw();
+    await draw();
     updateButtons();
 }
 
@@ -82,8 +82,8 @@ async function teleportPartyBackend() {
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
+    await draw();
     updateButtons();
-    draw();
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
@@ -97,8 +97,8 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 
     party.direction = directions[dir];
 
+    await draw();
     updateButtons();
-    draw();
 }
 
 async function keyPressedMove({ keyCode }) {
@@ -158,8 +158,8 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     makeSelection(clickedTileDiv, mapGrid)
 
+    await draw()
     updateButtons()
-    draw()
 }
 
 function tileMouseEntered({ target: hoveredTileDiv }) {

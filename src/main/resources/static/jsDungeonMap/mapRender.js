@@ -3,7 +3,7 @@ import { getDivFromBackendTile } from './mapSelection.js'
 
 let prevFacingDirection = 'none';
 
-export function draw() {
+export async function draw() {
     //TODO: mapa jest przerysowywana co kliknięcie, ale to powoduje nieładne efekty wizualne na zaznaczonej drużynie
     // może by nie rysować party na nowo z każdym kliknięciem, jeśli nie zmiania się status samej drużyny
 

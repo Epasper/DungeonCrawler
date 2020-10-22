@@ -93,13 +93,8 @@ public class MapGeneratorService
         rb.closeRooms();
 
 //        TileNavigator tn = new TileNavigator(stage);
-//        tn.getLineOfTiles(stage.getTile(2, 2), Direction.DOWN,5).forEach(tile -> tile.setType(TileType.DEBUG));
-//        tn.getLineOfTiles(stage.getTile(2, 2), Direction.LEFT,5).forEach(tile -> tile.setType(TileType.DEBUG));
-
-//        tn.getSurroundingTilesFullSquare(stage.getTile(10,10),500).forEach(tile -> tile.setType(TileType.DEBUG));
-//        tn.getSurroundingTilesRing(stage.getTile(40,10),5).forEach(tile -> tile.setType(TileType.DEBUG));
-
-//        tn.getLineOfTilesVertical(stage.getTile(20,11),stage.getTile(30,2)).forEach(tile -> tile.setType(TileType.DEBUG));
+//        tn.getConeOfTiles(stage.getTile(14,27), Direction.UP, 8, 2, 1).forEach(tile -> tile.setType(TileType.DEBUG));
+//        tn.getConeOfTiles(stage.getTile(14,27), Direction.UP, 5, 1, 0).forEach(tile -> tile.setType(TileType.CUTOFF));
 
 
         setPartyManager(new PartyManager(stage));

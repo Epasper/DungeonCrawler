@@ -34,11 +34,21 @@
 
 .separator {
     width: 100%;
-    height: calc(var(--toolbar-padding) * 0.5);
-    min-height: calc(var(--toolbar-padding) * 0.5);
+    height: calc(var(--toolbar-padding) * 1);
+    min-height: calc(var(--toolbar-padding) * 1);
 }
 
 #move-party-btn {
+    /* display: none; */
+    z-index: 1;
+    position: fixed;
+    height: calc(var(--toolbar-space));
+    transition: all 0.4s, transform 0.4s;
+    /* transition: transform 0.4s; */
+}
+
+#spawn-party-btn {
+    /* display: none; */
     z-index: 1;
     position: fixed;
     height: calc(var(--toolbar-space));

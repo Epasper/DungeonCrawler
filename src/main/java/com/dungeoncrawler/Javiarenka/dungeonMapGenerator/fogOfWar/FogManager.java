@@ -1,9 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar;
 
-import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.PartyAvatar;
-import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Stage;
-import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.Tile;
-import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.TileNavigator;
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,6 +9,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 //TODO: tworzenie fog of war w htmlu poprzez nowe Divy mocno spowalnia html. Spróbować zarządzać opacity istniejących divów poprzez dodawanie/usuwanie im dodatkowej klasy.
@@ -57,17 +55,25 @@ public class FogManager
 
     private double getDistanceToParty(Tile tile)
     {
-        int horizontalDistance = Math.abs(party.getX() - tile.getX());
-        int verticalDistance = Math.abs(party.getY() - tile.getY());
-
-        double distance = Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
-        return distance;
+        return tileNav.getDistanceBetweenTiles(party.getOccupiedTile(), tile);
     }
 
     public void updateVisibility()
     {
+//        List<Tile> previouslyVisibleTiles = new ArrayList<>(visibleTiles);
+//        visibleTiles = evaluatePartyVisibilityCircle();
+//
+//        previouslyVisibleTiles = previouslyVisibleTiles.stream().filter(tile -> visibleTiles.indexOf(tile) == -1).collect(Collectors.toList());
+//        previouslyVisibleTiles.forEach(tile -> tile.setVisibility(0));
+//
+//        visibleTiles.addAll(previouslyVisibleTiles);
+
         List<Tile> previouslyVisibleTiles = new ArrayList<>(visibleTiles);
-        visibleTiles = evaluatePartyVisibilityCircle();
+        visibleTiles.clear();
+        visibleTiles.addAll(evaluatePartyVisibilityCircle());
+//        visibleTiles.addAll(evaluatePartyVisibilityCone());
+
+        visibleTiles = visibleTiles.stream().distinct().collect(Collectors.toList());
 
         previouslyVisibleTiles = previouslyVisibleTiles.stream().filter(tile -> visibleTiles.indexOf(tile) == -1).collect(Collectors.toList());
         previouslyVisibleTiles.forEach(tile -> tile.setVisibility(0));
@@ -93,7 +99,7 @@ public class FogManager
 
         reachedTiles.forEach(tile -> {
             double distance = getDistanceToParty(tile);
-            if (distance <= FogSettings.FULL_VISIBILITY_RADIUS)
+            if (distance <= FogSettings.FULL_VISIBILITY_RADIUS + 0.35)
             {
                 tile.setVisibility(1);
             }
@@ -107,6 +113,21 @@ public class FogManager
                 //System.out.println("Visibility of tile " + tile.getX() + "/" + tile.getY() + " is: " + (a * distance + b));
             }
         });
+
+        return reachedTiles.stream().filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
+    }
+
+    public List<Tile> evaluatePartyVisibilityCone()
+    {
+        if (Objects.isNull(party.getDirection()))
+        {
+            List<Tile> outputList = new ArrayList<>();
+            outputList.add(party.getOccupiedTile());
+            return outputList;
+        }
+
+        List<Tile> reachedTiles = tileNav.getConeOfTiles(party.getOccupiedTile(), party.getDirection(), 8, 2, 1);
+        reachedTiles.forEach(tile -> tile.setVisibility(1));
 
         return reachedTiles.stream().filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
     }

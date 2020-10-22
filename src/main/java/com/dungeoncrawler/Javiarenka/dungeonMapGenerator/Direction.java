@@ -25,4 +25,41 @@ public enum Direction
             return VALUES[index + 1];
         }
     }
+
+    public static Direction opositeDir(Direction dir)
+    {
+        switch (dir)
+        {
+            case RIGHT:
+                return LEFT;
+            case DOWN:
+                return UP;
+            case LEFT:
+                return RIGHT;
+            case UP:
+                return DOWN;
+        }
+        return dir;
+    }
+
+    public static Direction getLeftPerpendicularDir(Direction dir)
+    {
+        switch (dir)
+        {
+            case RIGHT:
+                return UP;
+            case DOWN:
+                return RIGHT;
+            case LEFT:
+                return DOWN;
+            case UP:
+                return LEFT;
+        }
+        return dir;
+    }
+
+    public static Direction getRightPerpendicularDir(Direction dir)
+    {
+        return opositeDir(getLeftPerpendicularDir(dir));
+    }
 }

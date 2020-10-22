@@ -27,8 +27,8 @@
 }
 
 .OBSTRUCTION {
-    background-color: rgb(50, 50, 50);
-    /* background-color: var(--default-tile-color); */
+    /* background-color: rgb(50, 50, 50); */
+    background-color: var(--default-tile-color);
 }
 
 .DEBUG {
@@ -103,7 +103,8 @@
     /* border: 1px solid white; */
     /* display: none; */
     pointer-events: none;
-    background-color: #000;
+    /* background-color: var(--default-tile-color); */
+    background-color: rgb(30,30,30);
     opacity: 0.9;
     transition: opacity 0.5s;
 }

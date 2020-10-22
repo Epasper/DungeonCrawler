@@ -9,12 +9,12 @@ if (document.readyState == "loading") {
     ready()
 }
 
-function ready() {
+async function ready() {
     // getMapObject()
     adaptGrids()
     injectTileListeners()
     injectButtonsListeners()
-    draw()
+    await draw()
     updateButtons()
 }
 
