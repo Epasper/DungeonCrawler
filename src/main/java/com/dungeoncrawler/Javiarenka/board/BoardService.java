@@ -4,31 +4,134 @@ import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+@Service
 public class BoardService {
-    private List<Hero> heroes = new ArrayList<>();
+    private List<Hero> heroes;
     private List<Monster> monsters = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
+    private int boardWidth;
+    private int boardHeight;
+    private EncounterTile[][] tiles;
+    private Map<String, String> imageSources = new HashMap<>();
+    Random random = new Random();
+    private final String grassImageSource = "../images/encounterTiles/GrassTile1.png";
+    private final String stoneImageSource = "../images/encounterTiles/StoneFloor";
+    private final String rubbleImageSource = "../images/encounterTiles/rubble";
 
     public BoardService() {
+        heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
+        prepareTheBoard();
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
+        rollForInitialYCoordinates();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+    }
+
+    private void prepareTheBoard() {
+        //todo: replace the hardcoded values with values from the entered room upon entering
+        boardHeight = 8;
+        boardWidth = 16;
+        tiles = new EncounterTile[boardWidth][boardHeight];
+        rollForBoardTiles();
+    }
+
+    private void rollForInitialYCoordinates() {
+        List<Integer> YPositions = new ArrayList<>();
+        while (YPositions.size() < heroes.size()) {
+            int rollForInitialPosition = random.nextInt(boardHeight - 1) + 1;
+            int rollUpOrDown = Math.random() > 0.5 ? 1 : -1;
+            if (rollUpOrDown > 0 && rollForInitialPosition + heroes.size() > boardHeight) {
+                continue;
+            } else if (rollForInitialPosition - heroes.size() < 1) {
+                continue;
+            }
+            for (int i = 0; i < heroes.size(); i++) {
+                YPositions.add(rollForInitialPosition + rollUpOrDown);
+                rollForInitialPosition += rollUpOrDown;
+            }
+        }
+        System.out.println(heroes.size());
+        for (Hero hero : heroes) {
+            int randomListElement = random.nextInt(YPositions.size());
+            hero.setEncounterYPosition(YPositions.get(randomListElement));
+            YPositions.remove(randomListElement);
+            hero.setEncounterXPosition(1);
+            System.out.println(hero.getEncounterXPosition() + "-" + hero.getEncounterYPosition());
+        }
+    }
+
+    private void rollForBoardTiles() {
+        int typeOfTile;
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                EncounterTile currentTile = new EncounterTile();
+                typeOfTile = random.nextInt(100);
+                if (typeOfTile < 5) {
+                    currentTile.setTileType(EncounterTileType.GRASS);
+                    imageSources.put((i + 1) + "---" + (j + 1), grassImageSource);
+                } else if (typeOfTile < 15) {
+                    currentTile.setTileType(EncounterTileType.RUBBLE);
+                    int randomElement = random.nextInt(3) + 1;
+                    imageSources.put((i + 1) + "---" + (j + 1), rubbleImageSource + randomElement + ".png");
+                } else {
+                    currentTile.setTileType(EncounterTileType.STONE);
+                    int randomElement = random.nextInt(7) + 1;
+                    imageSources.put((i + 1) + "---" + (j + 1), stoneImageSource + randomElement + ".png");
+                }
+                tiles[i][j] = currentTile;
+            }
+        }
+    }
+
+    public Map<String, String> getImageSources() {
+        return imageSources;
+    }
+
+    public void setImageSources(Map<String, String> imageSources) {
+        this.imageSources = imageSources;
+    }
+
+    public EncounterTile[][] getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(EncounterTile[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public void setMessageOutput(List<String> messageOutput) {
+        this.messageOutput = messageOutput;
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public void setBoardWidth(int boardWidth) {
+        this.boardWidth = boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
+    }
+
+    public void setBoardHeight(int boardHeight) {
+        this.boardHeight = boardHeight;
     }
 
     public void clearSelectedHeroes() {

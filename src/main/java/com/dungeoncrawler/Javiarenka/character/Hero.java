@@ -2,7 +2,6 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
-import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,11 +19,48 @@ public class Hero extends Character {
     private String weaponName;
     private String armorName;
     private String className;
+    private int speed = 3;
     private int money;
     private List<Skill> skills;
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
+    //since thymeleaf looping works better when starting from 1, these two values should never be lower than 1:
+    private int encounterXPosition;
+    private int encounterYPosition;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getEncounterXPosition() {
+        return encounterXPosition;
+    }
+
+    public void setEncounterXPosition(int encounterXPosition) {
+        this.encounterXPosition = encounterXPosition;
+    }
+
+    public int getEncounterYPosition() {
+        return encounterYPosition;
+    }
+
+    public void setEncounterYPosition(int encounterYPosition) {
+        this.encounterYPosition = encounterYPosition;
+    }
 
     public String getSurname() {
         return surname;
