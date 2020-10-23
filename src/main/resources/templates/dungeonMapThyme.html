@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="../css/mapStyleToolbar.css">
     <!-- <link rel="stylesheet" th:href="@{../css/mapStyle.css}"> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script th:inline="javascript">
+        const mapHeightThyme = [[${height}]];
+        const mapWidthThyme = [[${width}]];
+    </script>
     <script src="../jsDungeonMap/dungeonMap.js" defer type="module"></script>
     <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
 </head>

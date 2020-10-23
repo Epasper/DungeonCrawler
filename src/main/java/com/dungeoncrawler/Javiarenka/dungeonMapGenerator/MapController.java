@@ -39,6 +39,8 @@ public class MapController
         int[] rowNumbers = IntStream.range(0, stage.getHeight()).toArray();
         model.addAttribute("colNumbers", colNumbers);
         model.addAttribute("rowNumbers", rowNumbers);
+        model.addAttribute("width", stage.getWidth());
+        model.addAttribute("height", stage.getHeight());
 
         return "dungeonMapThyme";
     }

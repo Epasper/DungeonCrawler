@@ -1,11 +1,13 @@
+import { getMappedElementById} from './dungeonMap.js'
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
 import { animateRoomChange } from './mapRender.js'
 
+const directionalButtons = Array.from(document.getElementsByClassName('move-button'));
 
 async function updateSpawnButton() {
-    let spawnButton = document.getElementById('spawn-party-btn');
-    if(document.getElementById('party')) {
+    let spawnButton = getMappedElementById('spawn-party-btn');
+    if(getMappedElementById('party')) {
         spawnButton.style.opacity = '0';
         spawnButton.style.pointerEvents = 'none';
     }
@@ -20,7 +22,7 @@ async function updateSpawnButton() {
     let isSpawnable = response.data;
 
     //let isSpawnable = data;
-    let isSelection = (document.getElementById('selection') != null)
+    let isSelection = (getMappedElementById('selection') != null)
     
     if (isSpawnable && isSelection) {
         spawnButton.disabled = false;
@@ -37,8 +39,8 @@ function isPartySelected() {
 }
 
 function updateMoveButton() {
-    let moveButton = document.getElementById('move-party-btn');
-    let moveButtonsContainer = document.getElementById('move-ctrl');
+    let moveButton = getMappedElementById('move-party-btn');
+    let moveButtonsContainer = getMappedElementById('move-ctrl');
 
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {
@@ -53,8 +55,6 @@ function updateMoveButton() {
 async function updateDirectionalButtons() {
     //TODO: buttony się nie updatują po otwarciu drzwi
     if (!isPartySelected()) return;
-
-    let directionalButtons = Array.from(document.getElementsByClassName('move-button'));
 
     const { data: movabilityData } = await axios.get(`http://localhost:8080/movability`);
     //console.log('movability: ', movabilityData);
@@ -71,7 +71,7 @@ async function updateDirectionalButtons() {
 }
 
 async function updateActionButton() {
-    let actionBtn = document.getElementById('action-btn');
+    let actionBtn = getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
     actionBtn.disabled = true;

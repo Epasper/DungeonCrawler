@@ -1,3 +1,4 @@
+import { getMappedElementById, idMap} from './dungeonMap.js'
 import { updateButtons } from './mapButtons.js'
 
 export let selectedGridTileDiv
@@ -16,10 +17,11 @@ export function makeSelection(targetTile, mapGrid) {
     const x = getX(targetTile) + 1
     const y = getY(targetTile) + 1
 
-    const selectionDivElement = document.createElement(`div`)
-    selectionDivElement.style.gridRow = (`${y}`)
-    selectionDivElement.style.gridColumn = (`${x}`)
-    selectionDivElement.id = 'selection'
+    const selectionDivElement = document.createElement(`div`);
+    selectionDivElement.style.gridRow = (`${y}`);
+    selectionDivElement.style.gridColumn = (`${x}`);
+    selectionDivElement.id = 'selection';
+    idMap.set(selectionDivElement.id, selectionDivElement);
 
     console.log(getX(targetTile), `---`, getY(targetTile))
     mapGrid.appendChild(selectionDivElement)
@@ -67,11 +69,12 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
 
     updateButtons();
     selectedGridTileDiv = null;
+    idMap.delete(clickedSelectionDiv.id);
     clickedSelectionDiv.remove();
 }
 
 export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
 
     // return document.getElementById(`${x}-${y}`);
-    return document.getElementById(`${x}${distinguisherSign}${y}`);
+    return getMappedElementById(`${x}${distinguisherSign}${y}`);
 }

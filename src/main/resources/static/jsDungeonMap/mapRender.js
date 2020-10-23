@@ -1,3 +1,4 @@
+import { getMappedElementById, idMap} from './dungeonMap.js'
 import { addParty, party } from './partyManager.js'
 import { getDivFromBackendTile, getX, getY } from './mapSelection.js'
 
@@ -25,17 +26,19 @@ async function drawParty() {
 
     //if (dir) party.direction = directions[dir];
 
-    let partyTile = document.getElementById(`party`);
-    let partyImg = document.getElementById('party-img');
+    let partyTile = getMappedElementById(`party`);
+    let partyImg = getMappedElementById('party-img');
     if (!partyTile) {
         console.log('Creating Party div')
         partyTile = document.createElement(`div`)
         partyTile.id = `party`;
+        idMap.set(partyTile.id, partyTile);
         // const grid = document.getElementById('grid');
         // grid.appendChild(partyTile);
 
         partyImg = document.createElement('img');
         partyImg.id = 'party-img';
+        idMap.set(partyImg.id, partyImg);
         partyImg.src = '../images/dungeonMap/arrow.svg';
         partyImg.style.height = ('60%');
         partyImg.style.width = ('60%');
@@ -99,7 +102,7 @@ async function drawParty() {
         }
     }
 
-    const grid = document.getElementById('grid');
+    const grid = getMappedElementById('grid');
     grid.appendChild(partyTile);
 
     if (!party) addParty(partyTile);
@@ -134,19 +137,15 @@ async function drawFogOfWar() {
     });
 
     
+    //TODO: uncomment below to avoid bugs with drawing fog of war, when events are triggered too quickly (but slows down site)
+    // let visibleTiles = Array.from(document.getElementsByClassName('visible'));
+    // visibleTiles.forEach(fDiv => {
 
-    console.log('HIDDEN COUNTER: ', hiddenCounter);
-
-    let visibleTiles = Array.from(document.getElementsByClassName('visible'));
-    visibleTiles.forEach(fDiv => {
-
-        if (!visibleFogDivs.some(div => div === fDiv)) {
-            fDiv.style.opacity = '';
-            fogDiv.classList.remove('visible');
-        }
-    })
-
-
+    //     if (!visibleFogDivs.some(div => div === fDiv)) {
+    //         fDiv.style.opacity = '';
+    //         fogDiv.classList.remove('visible');
+    //     }
+    // })
 }
 
 export async function animateRoomChange(changedTilesData) {

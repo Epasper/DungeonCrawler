@@ -1,4 +1,4 @@
-import { update } from "./dungeonMap.js";
+import { update, getMappedElementById } from "./dungeonMap.js";
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
 
@@ -9,16 +9,6 @@ export const directions = {
     DOWN: 'DOWN',
     NONE: 'NONE'
 }
-
-// let partyAvatar = {
-//     x: undefined,
-//     y: undefined,
-//     dir: directions.NONE
-// }
-
-
-
-
 
 //let heroes = [];
 export let party;

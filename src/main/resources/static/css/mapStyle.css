@@ -183,6 +183,10 @@
     box-shadow: 0 0 5px 0px #000;
 }
 
+/* #cross-highlight-row, #cross-highlight-col {
+    transition: 1s;
+} */
+
 .cross-highlight {
     /* pointer-events: none; */
     z-index: 1;
@@ -195,6 +199,9 @@
 
 .legend-highlight {
     background-color: var(--highlight-color);
+    color: rgb(220,220,220);
+    font-weight: bold;
+    font-size: 1.5vh;
     /* background-color: mix(var(--highlight-color), var(--default-tile-color)); */
 }
 
