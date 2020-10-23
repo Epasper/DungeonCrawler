@@ -10,6 +10,15 @@ const emptySlot = {
     imageLink: "../images/null"
 }
 
+function initialize(){
+    currentHeroBackpack.armsSlot = currentHeroBackpack.armsSlot || emptySlot;
+    currentHeroBackpack.chestSlot = currentHeroBackpack.chestSlot || emptySlot;
+    currentHeroBackpack.feetSlot = currentHeroBackpack.feetSlot || emptySlot;
+    currentHeroBackpack.headSlot = currentHeroBackpack.headSlot || emptySlot;
+    currentHeroBackpack.leftHandSlot = currentHeroBackpack.leftHandSlot || emptySlot;
+    currentHeroBackpack.rightHandSlot = currentHeroBackpack.rightHandSlot || emptySlot;
+}
+
 function saveAndExit() {
     let request = new XMLHttpRequest();
     const url = `http://localhost:8080/editEquipment`
@@ -69,6 +78,8 @@ function drop(event) {
 }
 
 function isDropValid(currentId) {
+    console.log(currentId)
+    console.log(currentlySelectedEquipment)
     let draggedToElement = document.getElementById(currentId);
     if (currentId.includes('baggage')) {
         const baggageNumber = currentId.substring(8);

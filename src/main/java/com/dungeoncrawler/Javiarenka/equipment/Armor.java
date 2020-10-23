@@ -8,15 +8,6 @@ public class Armor extends Equipment {
     private int damageReduction;
     private int chanceToHitReduction;
     private int additionalHp;
-    private EquipmentSlots occupyingSlot;
-
-    public EquipmentSlots getOccupyingSlot() {
-        return occupyingSlot;
-    }
-
-    public void setOccupyingSlot(EquipmentSlots occupyingSlot) {
-        this.occupyingSlot = occupyingSlot;
-    }
 
     public int getDamageReduction() {
         return damageReduction;
@@ -46,7 +37,6 @@ public class Armor extends Equipment {
         super(name, classRestriction, weight, price);
         this.damageReduction = damageReduction;
         this.chanceToHitReduction = chanceToHitReduction;
-        this.occupyingSlot = EquipmentSlots.CHEST;
     }
 
     public Armor(String name, List<HeroClass> classRestriction, double weight, double price, int damageReduction, int chanceToHitReduction, int additionalHp, EquipmentSlots occupyingSlot) {
