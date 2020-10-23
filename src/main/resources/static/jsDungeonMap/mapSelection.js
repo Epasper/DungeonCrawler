@@ -1,5 +1,6 @@
 import { getMappedElementById, idMap} from './dungeonMap.js'
 import { updateButtons } from './mapButtons.js'
+import { tileMouseEntered } from './mapEvents.js'
 
 export let selectedGridTileDiv
 
@@ -28,17 +29,10 @@ export function makeSelection(targetTile, mapGrid) {
 
     selectionDivElement.addEventListener('click', clickedOnSelectionDiv);
     selectionDivElement.addEventListener('mouseenter', mouseEnteredSelectionDiv);
-    selectionDivElement.addEventListener('mouseleave', mouseLeftSelectionDiv);
 }
 
 function mouseEnteredSelectionDiv() {
-    var ev = new Event('mouseenter')
-    selectedGridTileDiv.dispatchEvent(ev)
-}
-
-function mouseLeftSelectionDiv() {
-    var ev = new Event('mouseleave')
-    selectedGridTileDiv.dispatchEvent(ev)
+    tileMouseEntered({target: selectedGridTileDiv})
 }
 
 export function getX(tile, separator = '-') {

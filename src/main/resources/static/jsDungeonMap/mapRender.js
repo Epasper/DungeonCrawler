@@ -23,6 +23,7 @@ async function drawParty() {
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
     console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
     //debugger;
+    
 
     //if (dir) party.direction = directions[dir];
 
@@ -46,66 +47,73 @@ async function drawParty() {
     }
 
     //TODO: sprawdzić czy zmieniła się pozycja - jeśli nie - to nic nie robić dalej
+    // można też wywoływanie drawFogOfWar() dorzucić tutaj - jeśli pozycja party się nie zmieni, to i fog się nie musi rysować na nowo
+    // ale uwaga z drzwiami. Prawdopodobnie nie może się zmienić ani drużyna, ani pola wokół niej
 
     partyTile.style.gridRow = `${yCoord + 1}`;
     partyTile.style.gridColumn = `${xCoord + 1}`;
 
+    const standingTileDiv = getDivFromBackendTile(backendParty.occupiedTile);
+    
     // const grid = document.getElementById('grid');
     // grid.appendChild(partyTile);
 
-    if (partyImg) {
-        let standardAnimationDuration = 0.1;
-        const longerAnimationMultiplier = 2.5;
-
-        switch (dir) {
-            case 'UP':
-                partyImg.style.opacity = ('0.4');
-                if (prevFacingDirection == 'RIGHT') {
-                    partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, right-to-up`
-                    break;
-                } else if (prevFacingDirection == 'DOWN') {
-                    standardAnimationDuration *= longerAnimationMultiplier;
-                }
-                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up`
-                break;
-            case 'LEFT':
-                partyImg.style.opacity = ('0.4');
-                if (prevFacingDirection == 'RIGHT') {
-                    standardAnimationDuration *= longerAnimationMultiplier;
-                }
-                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, left`
-                break;
-            case 'RIGHT':
-                partyImg.style.opacity = ('0.4');
-                if (prevFacingDirection == 'UP') {
-                    partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up-to-right`
-                    break;
-                } else if (prevFacingDirection == 'LEFT') {
-                    standardAnimationDuration *= longerAnimationMultiplier;
-                }
-                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, right`
-                break;
-            case 'DOWN':
-                partyImg.style.opacity = ('0.4');
-                if (prevFacingDirection == 'UP') {
-                    standardAnimationDuration *= longerAnimationMultiplier;
-                }
-                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, down`
-                break;
-            default:
-                partyImg.style.opacity = ('0');
-                partyImg.style.transition = 'all 0.5s'
-        }
-        partyImg.style.animationDuration = `0s, ${standardAnimationDuration}s`
-        if (dir) {
-            prevFacingDirection = dir;
-        }
-    }
+    if (partyImg) animatePartyRotation(partyImg, dir);
 
     const grid = getMappedElementById('grid');
     grid.appendChild(partyTile);
 
-    if (!party) addParty(partyTile);
+    if (!party) addParty(partyTile, standingTileDiv);
+    if (standingTileDiv) party.standingTileDiv = standingTileDiv;
+}
+
+function animatePartyRotation(partyImg, dir){
+    let standardAnimationDuration = 0.1;
+    const longerAnimationMultiplier = 2.5;
+
+    switch (dir) {
+        case 'UP':
+            partyImg.style.opacity = ('0.4');
+            if (prevFacingDirection == 'RIGHT') {
+                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, right-to-up`
+                break;
+            } else if (prevFacingDirection == 'DOWN') {
+                standardAnimationDuration *= longerAnimationMultiplier;
+            }
+            partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up`
+            break;
+        case 'LEFT':
+            partyImg.style.opacity = ('0.4');
+            if (prevFacingDirection == 'RIGHT') {
+                standardAnimationDuration *= longerAnimationMultiplier;
+            }
+            partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, left`
+            break;
+        case 'RIGHT':
+            partyImg.style.opacity = ('0.4');
+            if (prevFacingDirection == 'UP') {
+                partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, up-to-right`
+                break;
+            } else if (prevFacingDirection == 'LEFT') {
+                standardAnimationDuration *= longerAnimationMultiplier;
+            }
+            partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, right`
+            break;
+        case 'DOWN':
+            partyImg.style.opacity = ('0.4');
+            if (prevFacingDirection == 'UP') {
+                standardAnimationDuration *= longerAnimationMultiplier;
+            }
+            partyImg.style.animationName = `${prevFacingDirection.toLowerCase()}, down`
+            break;
+        default:
+            partyImg.style.opacity = ('0');
+            partyImg.style.transition = 'all 0.5s'
+    }
+    partyImg.style.animationDuration = `0s, ${standardAnimationDuration}s`
+    if (dir) {
+        prevFacingDirection = dir;
+    }
 }
 
 async function drawFogOfWar() {

@@ -75,6 +75,7 @@ async function updateActionButton() {
     if (!isPartySelected()) return;
 
     actionBtn.disabled = true;
+    actionBtn.setAttribute('data-action-type', "action");
 
     //debugger;
     if (party.direction == directions.NONE) return;
@@ -90,6 +91,8 @@ async function updateActionButton() {
 
     if (pointedTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
+        actionBtn.setAttribute('data-action-type', "door");
+
         let doorOperator = new DoorOperator(pointedDiv);
         console.log('current door status: ', doorOperator.current.state);
         doorOperator.open();
@@ -103,9 +106,7 @@ async function updateActionButton() {
 
         //console.log('changedTilesData: ' ,changedTilesData)
         if (changedTilesData) animateRoomChange(changedTilesData);
-        
     }
-
 }
 
 export async function updateButtons() {
@@ -143,14 +144,15 @@ class DoorOperator {
 }
 
 class Door {
-    constructor(state) {
+    constructor(state, action = 'action') {
         this.state = state;
+        this.action = action;
     }
 }
 
 class DoorOpened extends Door {
     constructor() {
-        super('OPENED');
+        super('OPENED', 'close');
     }
 
     open(div) {

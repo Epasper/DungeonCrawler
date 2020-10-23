@@ -1,4 +1,5 @@
 import { update, getMappedElementById } from "./dungeonMap.js";
+import { tileMouseEntered } from './mapEvents.js'
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
 
@@ -13,14 +14,23 @@ export const directions = {
 //let heroes = [];
 export let party;
 
-export function addParty(partyTile) {
+export function addParty(partyTile, standingTile) {
     party = {
         partyTileDiv: partyTile,
+        standingTileDiv: standingTile,
         direction: directions.NONE,
         isSelected: false
     }
     partyTile.addEventListener('click', partyClick);
+    partyTile.addEventListener('mouseenter', mouseEnteredPartyDiv);
+
 }
+
+function mouseEnteredPartyDiv() {
+    tileMouseEntered({target: party.standingTileDiv})
+}
+
+
 
 async function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyTileDiv. 
     //{} oznacza że go destrukturyzujemy i pobieramy jego pole targetm a następnie przypisujemy je do zmiennej heroElement

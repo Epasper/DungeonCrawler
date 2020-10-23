@@ -194,7 +194,7 @@ async function tileClicked({ target: clickedTileDiv }) {
     await update();
 }
 
-function tileMouseEntered({ target: hoveredTileDiv }) {
+export function tileMouseEntered({ target: hoveredTileDiv }) {
     hideCrossHighlightElements();
     showCrossHighlightElements(hoveredTileDiv);
 }
@@ -235,5 +235,4 @@ function hideCrossHighlightElements() {
 
     highlightedColumnLegendTile?.classList.remove('legend-highlight');
     highlightedRowLegendTile?.classList.remove('legend-highlight');
-
 }
