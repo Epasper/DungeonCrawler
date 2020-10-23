@@ -93,6 +93,8 @@ async function teleportPartyBackend() {
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     //console.log(clickedMoveButton);
+    console.log('   ')
+    console.log('INSIDE click EVENT function')
     let [dir] = clickedMoveButton.id.split('-').slice(-1)
     dir = dir.toUpperCase();
     //console.log(direction);
@@ -106,10 +108,11 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     // updateButtons();
 
     partyMoveCounter++;
-    console.log('Party moved BEFORE ---', partyMoveCounter, '--- times.')
+    // console.log('Party moved BEFORE ---', partyMoveCounter, '--- times.')
     await update();
-    console.log('Party moved AFTER ---', partyMoveCounter, '--- times.')
-
+    // console.log('Party moved AFTER ---', partyMoveCounter, '--- times.')
+    console.log('AT THE END of click EVENT function')
+    console.log('   ')
 }
 
 async function keyPressedMove({ keyCode }) {
@@ -140,9 +143,19 @@ async function keyPressedMove({ keyCode }) {
     
     document.removeEventListener('keydown', keyPressedMove)
 
-    console.log(`*** DISPATCH CLICK ***`)
     //TODO: spróbować tu wsadzić jakiegoś ifa, sprawdzającego czy już pętla się skończyła
-    dirBtn.dispatchEvent(new Event('click'));
+    
+    
+    console.log(`*** DISPATCHING CLICK ***`)
+    //await dirBtn.dispatchEvent(new Event('click'));
+    await movePartyOneStepBackend({target: dirBtn})
+    console.log(`*** DISPATCHED CLICK ***`)
+
+
+
+    
+
+    
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);
