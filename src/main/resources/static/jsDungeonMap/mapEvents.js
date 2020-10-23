@@ -194,19 +194,24 @@ async function tileClicked({ target: clickedTileDiv }) {
     await update();
 }
 
-export function tileMouseEntered({ target: hoveredTileDiv }) {
+export function tileMouseEntered({ target: hoveredTileDiv }, colorIdentifier = 'default') {
     hideCrossHighlightElements();
-    showCrossHighlightElements(hoveredTileDiv);
+    showCrossHighlightElements(hoveredTileDiv, colorIdentifier);
 }
 
 function tileMouseLeft({ target: exitedTileDiv }) {
     hideCrossHighlightElements();
 }
 
-function showCrossHighlightElements(centerDivElement) {
+function showCrossHighlightElements(centerDivElement, colorIdentifier) {
+    //debugger;
+    let root = document.documentElement;
+    let cssColor = window.getComputedStyle(root).getPropertyValue(`--highlight-color-${colorIdentifier}`);
+    //console.log(cssColor);
+    root.style.setProperty('--highlight-color', cssColor);
+
     let rowElement = getMappedElementById('cross-highlight-row');
     let colElement = getMappedElementById('cross-highlight-col');
-
 
     rowElement.classList.add('cross-highlight');
     colElement.classList.add('cross-highlight');

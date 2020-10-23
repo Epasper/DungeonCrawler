@@ -27,7 +27,7 @@ export function addParty(partyTile, standingTile) {
 }
 
 function mouseEnteredPartyDiv() {
-    tileMouseEntered({target: party.standingTileDiv})
+    tileMouseEntered({target: party.standingTileDiv}, 'party')
 }
 
 

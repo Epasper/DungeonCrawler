@@ -9,6 +9,8 @@
     --toolbar-padding: 1vh;
     --toolbar-space: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
     --highlight-color: rgb(100, 160, 100, 0.2);
+    --highlight-color-default: rgb(100, 160, 100, 0.2);
+    --highlight-color-party: rgba(89, 145, 209, 0.2);
     --default-tile-color: rgb(70, 70, 70);
 }
 
@@ -196,6 +198,10 @@
     height: 100%;
     width: 100%;
 }
+
+/* .cross-highlight.party {
+    background-color: var(--highlight-color-party);
+} */
 
 .legend-highlight {
     background-color: var(--highlight-color);
