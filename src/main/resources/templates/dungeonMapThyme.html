@@ -21,17 +21,20 @@
     <div id="container-grid">
         <div class="blank"></div>
         <div class="coordinate-legend" id="coord-top">
-            <div class = "blank" th:style="'grid-area: 1 / 1 / 2 / ' + ${colNumbers[colNumbers.length - 1] + 2}"></div>
+            <div class="blank" th:style="'grid-area: 1 / 1 / 2 / ' + ${colNumbers[colNumbers.length - 1] + 2}"></div>
             <th:block th:each="colNo: ${colNumbers}">
-                <div th:id="'col-' + ${colNo}" th:class="'tile-legend'" th:style="'grid-area: 1 / ' + ${colNo + 1} + ' / 2 / ' + ${colNo + 2}">
+                <div th:id="'col-' + ${colNo}" th:class="'tile-legend'"
+                    th:style="'grid-area: 1 / ' + ${colNo + 1} + ' / 2 / ' + ${colNo + 2}">
                     <p th:text="${colNo}"></p>
                 </div>
             </th:block>
         </div>
         <div class="coordinate-legend" id="coord-side">
-            <div class = "blank" th:style="'grid-area: 1 / 1 / ' + ${rowNumbers[rowNumbers.length - 1] + 2} + ' / 2'"></div>
+            <div class="blank" th:style="'grid-area: 1 / 1 / ' + ${rowNumbers[rowNumbers.length - 1] + 2} + ' / 2'">
+            </div>
             <th:block th:each="rowNo: ${rowNumbers}">
-                <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'" th:style="'grid-area: ' + ${rowNo + 1} + ' / 1 / ' + ${rowNo + 2} + ' / 2'">
+                <div th:id="'row-' + ${rowNo}" th:class="'tile-legend'"
+                    th:style="'grid-area: ' + ${rowNo + 1} + ' / 1 / ' + ${rowNo + 2} + ' / 2'">
                     <p th:text="${rowNo}"></p>
                 </div>
             </th:block>
@@ -52,29 +55,41 @@
     </div>
 
     <div class="toolbar">
-        <div id="move-ctrl" class="move-container move-container-hover">
+        <div id="move-menu" class="move-container move-container-hover">
             <div id="move-margin"></div>
             <div id="move-grid">
                 <div id="move-up" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
-                <div id="move-left" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
-                <div id="move-right" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
-                <div id="move-down" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
+                <div id="move-left" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg">
+                </div>
+                <div id="move-right" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg">
+                </div>
+                <div id="move-down" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg">
+                </div>
                 <button id="move-party-btn" class="button" disabled>Move Party</button>
             </div>
             <button id="spawn-party-btn" class="button" disabled>Spawn Party</button>
         </div>
-        <button id="action-btn" class="button" data-action-type="action" disabled>Action</button>
-        <div id = "misc-container">
+
+        <div id="action-menu">
+            <div id="actions-container">
+                <button id="action-btn-1" class="button" data-action-type="action-1" disabled>Action 1</button>
+                <div class="separator-v"></div>
+                <button id="action-btn-2" class="button" data-action-type="action-2" disabled>Action 2</button>
+            </div>
+            <button id="action-btn" class="button" data-action-type="action" disabled>Actions</button>
+        </div>
+
+        <div id="misc-menu">
             <!-- <div class="separator"></div> -->
             <button id="save-btn" class="button button-stacked">Save</button>
-            <div class="separator"></div>
+            <div class="separator-h"></div>
             <button id="load-btn" class="button button-stacked">Load</button>
         </div>
-        
+
 
     </div>
 
-    
+
 
 </body>
 

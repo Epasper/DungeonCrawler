@@ -40,7 +40,7 @@ function isPartySelected() {
 
 function updateMoveButton() {
     let moveButton = getMappedElementById('move-party-btn');
-    let moveButtonsContainer = getMappedElementById('move-ctrl');
+    let moveButtonsContainer = getMappedElementById('move-menu');
 
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {
@@ -70,12 +70,24 @@ async function updateDirectionalButtons() {
     });
 }
 
+function activateActionMenu()
+{
+    getMappedElementById('action-menu').classList.add('active');
+}
+
+function deactivateActionMenu()
+{
+    getMappedElementById('action-menu').classList.remove('active');
+}
+
 async function updateActionButton() {
     let actionBtn = getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
     actionBtn.disabled = true;
-    actionBtn.setAttribute('data-action-type', "action");
+    actionBtn.dataset.actionType = 'action';
+    actionBtn.textContent = "Actions";
+    deactivateActionMenu();
 
     //debugger;
     if (party.direction == directions.NONE) return;
@@ -91,7 +103,10 @@ async function updateActionButton() {
 
     if (pointedTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
-        actionBtn.setAttribute('data-action-type', "door");
+        actionBtn.dataset.actionType = 'door';
+        actionBtn.textContent = "Door"
+        activateActionMenu();
+        
 
         let doorOperator = new DoorOperator(pointedDiv);
         console.log('current door status: ', doorOperator.current.state);
@@ -172,7 +187,7 @@ class DoorOpened extends Door {
 
 class DoorClosed extends Door {
     constructor() {
-        super('CLOSED');
+        super('CLOSED', 'open');
     }
 
     open(div) {
@@ -195,7 +210,7 @@ class DoorClosed extends Door {
 
 class DoorLocked extends Door {
     constructor() {
-        super('LOCKED');
+        super('LOCKED', 'unlock');
     }
 
     open(div) {

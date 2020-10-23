@@ -93,8 +93,8 @@ async function teleportPartyBackend() {
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     //console.log(clickedMoveButton);
-    console.log('   ')
-    console.log('INSIDE click EVENT function')
+    // console.log('   ')
+    // console.log('INSIDE click EVENT function')
     let [dir] = clickedMoveButton.id.split('-').slice(-1)
     dir = dir.toUpperCase();
     //console.log(direction);
@@ -111,8 +111,8 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     // console.log('Party moved BEFORE ---', partyMoveCounter, '--- times.')
     await update();
     // console.log('Party moved AFTER ---', partyMoveCounter, '--- times.')
-    console.log('AT THE END of click EVENT function')
-    console.log('   ')
+    // console.log('AT THE END of click EVENT function')
+    // console.log('   ')
 }
 
 async function keyPressedMove({ keyCode }) {
@@ -146,10 +146,10 @@ async function keyPressedMove({ keyCode }) {
     //TODO: spróbować tu wsadzić jakiegoś ifa, sprawdzającego czy już pętla się skończyła
     
     
-    console.log(`*** DISPATCHING CLICK ***`)
+    // console.log(`*** DISPATCHING CLICK ***`)
     //await dirBtn.dispatchEvent(new Event('click'));
     await movePartyOneStepBackend({target: dirBtn})
-    console.log(`*** DISPATCHED CLICK ***`)
+    // console.log(`*** DISPATCHED CLICK ***`)
 
 
 
@@ -185,7 +185,7 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     const { data: clickedTileBackend3 } = await axios
         .get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`)
-    console.log(clickedTileBackend3);
+    // console.log(clickedTileBackend3);
 
     makeSelection(clickedTileDiv, mapGrid)
 
