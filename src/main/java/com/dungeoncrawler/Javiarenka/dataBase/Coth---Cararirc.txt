@@ -295,9 +295,9 @@
   "maxHp": 80,
   "isAlive": true,
   "allCharacterStatuses": [],
-  "maxPhysicalShield": 0,
-  "maxMagicShield": 0,
-  "physicalShield": 0,
-  "magicShield": 0,
+  "maxPhysicalShield": 20,
+  "maxMagicShield": 40,
+  "physicalShield": 20,
+  "magicShield": 40,
   "speed": 3
 }
