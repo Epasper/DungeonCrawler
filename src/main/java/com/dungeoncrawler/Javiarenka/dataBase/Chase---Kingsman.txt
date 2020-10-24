@@ -31,7 +31,6 @@
   "weaponName": "Staff of Fire",
   "armorName": "Cloth Armor",
   "className": "Wizard",
-  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -283,11 +282,17 @@
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": true,
-  "encounterXPosition": 0,
-  "encounterYPosition": 0,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1,
   "isSelected": false,
   "name": "Chase",
   "hp": 50,
+  "maxHp": 50,
   "isAlive": true,
-  "allCharacterStatuses": []
+  "allCharacterStatuses": [],
+  "maxPhysicalShield": 0,
+  "maxMagicShield": 0,
+  "physicalShield": 0,
+  "magicShield": 0,
+  "speed": 3
 }
