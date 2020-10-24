@@ -1,16 +1,14 @@
 let globalSelectedHero
 
-//toRemove
-const maxHealth = 200;
-let currentHp = 200;
-
 function initialize() {
     document.onload = heroes.forEach(element => {
         const id = 'hero:' + element.encounterXPosition + '---' + element.encounterYPosition;
         const image = '../images/' + element.heroClass + '.png';
         let heroDiv = document.getElementById(id);
         let heroSideDiv = document.getElementById(element.name + '|||' + element.surname);
+        let heroHPBarText = document.getElementById(element.name + '|||' + element.surname + '|||text');
         heroSideDiv.src = image;
+        heroHPBarText.innerHTML = element.hp + `/` + element.totalHp;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
         heroDiv.onclick = () => getMovableTiles(element);
@@ -65,20 +63,27 @@ function moveTheHero(currentId) {
 }
 
 function testAddHp(heroNameAndSurname) {
-    changeHitPoints(currentHp + 5, heroNameAndSurname)
+    changeHitPoints(5, heroNameAndSurname)
 }
 
 function testRemoveHp(heroNameAndSurname) {
-    changeHitPoints(currentHp - 5, heroNameAndSurname)
+    changeHitPoints(-5, heroNameAndSurname)
 }
 
-function changeHitPoints(currentHealth, heroNameAndSurname) {
-    currentHp = currentHealth;
-    let barPercent = currentHealth * (100 / maxHealth);
+function changeHitPoints(numberToChange, heroNameAndSurname) {
+    const name = heroNameAndSurname.substring(0, heroNameAndSurname.indexOf('|||'))
+    const surname = heroNameAndSurname.substring(heroNameAndSurname.length, heroNameAndSurname.indexOf('|||') + 3)
+    let hero = heroes
+        .filter(e => e.name === name)
+        .find(f => f.surname === surname)
+    hero.hp += numberToChange;
+    let barPercent = hero.hp * (100 / hero.totalHp);
     let greenBar = document.getElementById(heroNameAndSurname + '|||green');
     let blueBar = document.getElementById(heroNameAndSurname + '|||blue');
     let redBar = document.getElementById(heroNameAndSurname + '|||red');
+    let textBar = document.getElementById(heroNameAndSurname + '|||text');
     greenBar.style.width = barPercent + '%'
     redBar.style.width = barPercent + '%'
     blueBar.style.width = barPercent + '%'
+    textBar.innerHTML = hero.hp + `/` + hero.totalHp
 }

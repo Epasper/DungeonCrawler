@@ -19,11 +19,12 @@
 
 
 
+
     </script>
     <script src="encounterBoard.js"></script>
 </head>
 <body>
-<div class="wrapper">
+<div class="grid-container">
     <div class="hero-portraits">
         <th:block th:each="hero : ${heroes}">
             <div th:with="currentHero=${hero.getName()} + '|||' + ${hero.getSurname()}">
@@ -39,7 +40,8 @@
                              class="health-bar-blue"></div>
                         <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||green'"
                              class="health-bar"></div>
-                        <div class="health-bar-text"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||text'"
+                             class="health-bar-text"></div>
                     </div>
                 </div>
             </div>
@@ -74,6 +76,7 @@
 </div>
 <script>
     initialize();
+
 
 
 
