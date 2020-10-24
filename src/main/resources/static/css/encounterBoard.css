@@ -71,6 +71,12 @@ img {
 }
 
 .health-bar {
+    position: relative;
+    box-shadow: 
+      inset 0 10px 0 rgba(255,255,255,0.2),
+      inset 0 2px 2px rgba(0,0,0,0.125);
+    cursor: pointer;
+    margin: 0 0px;
     background-color: #007f00;
     width: inherit;
     /* max-width: 100%; */
@@ -86,6 +92,7 @@ img {
     height: 20px;
     background-color: #cc0000;
     transition: all .7s linear;
+    transition-delay: 0.2s;
 }
 
 .health-bar-blue {
@@ -99,6 +106,7 @@ img {
 }
 
 .health-bar-text {
+    font-family: 'Balsamiq Sans';
     position: relative;
     bottom: 60px;
 }
@@ -112,6 +120,12 @@ img {
 }
 
 .physical-bar {
+    position: relative;
+    box-shadow: 
+      inset 0 10px 0 rgba(255,255,255,0.2),
+      inset 0 2px 2px rgba(0,0,0,0.125);
+    cursor: pointer;
+    margin: 0 0px;
     background-color: slategrey;
     width: inherit;
     /* max-width: 100%; */
@@ -122,6 +136,7 @@ img {
 }
 
 .physical-bar-text {
+    font-family: 'Balsamiq Sans';
     position: relative;
     bottom: 60px;
 }
@@ -135,6 +150,12 @@ img {
 }
 
 .magic-bar {
+    position: relative;
+    box-shadow: 
+      inset 0 10px 0 rgba(255,255,255,0.2),
+      inset 0 2px 2px rgba(0,0,0,0.125);
+    cursor: pointer;
+    margin: 0 0px;
     background-color: steelblue;
     width: inherit;
     /* max-width: 100%; */
@@ -145,6 +166,7 @@ img {
 }
 
 .magic-bar-text {
+    font-family: 'Balsamiq Sans';
     position: relative;
     bottom: 60px;
 }
