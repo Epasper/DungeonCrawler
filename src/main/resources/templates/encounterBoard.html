@@ -12,14 +12,6 @@
         let heroes = [[${heroes}]];
         let tiles = [[${tiles}]];
         document.documentElement.style.setProperty("--height", height);
-
-
-
-
-
-
-
-
     </script>
     <script src="encounterBoard.js"></script>
 </head>
@@ -34,14 +26,38 @@
                     <div class="health-box">
                         <button th:onclick="'javascript:testRemoveHp(\'' + ${currentHero} + '\')'"> Hit</button>
                         <button th:onclick="'javascript:testAddHp(\'' + ${currentHero} + '\')'"> Heal</button>
-                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||red'"
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||hp-red'"
                              class="health-bar-red"></div>
-                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||blue'"
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||hp-blue'"
                              class="health-bar-blue"></div>
-                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||green'"
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||hp-green'"
                              class="health-bar"></div>
-                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||text'"
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||hp-text'"
                              class="health-bar-text"></div>
+                    </div>
+                    <div class="magic-shield-box">
+                        <button th:onclick="'javascript:testRemoveMagicShield(\'' + ${currentHero} + '\')'"> Hit</button>
+                        <button th:onclick="'javascript:testAddMagicShield(\'' + ${currentHero} + '\')'"> Heal</button>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||mshield-red'"
+                             class="health-bar-red"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||mshield-blue'"
+                             class="health-bar-blue"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||mshield-green'"
+                             class="magic-bar"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||mshield-text'"
+                             class="magic-bar-text"></div>
+                    </div>
+                    <div class="physical-shield-box">
+                        <button th:onclick="'javascript:testRemovePhysicalShield(\'' + ${currentHero} + '\')'"> Hit</button>
+                        <button th:onclick="'javascript:testAddPhysicalShield(\'' + ${currentHero} + '\')'"> Heal</button>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-red'"
+                             class="health-bar-red"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-blue'"
+                             class="health-bar-blue"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-green'"
+                             class="physical-bar"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-text'"
+                             class="physical-bar-text"></div>
                     </div>
                 </div>
             </div>
@@ -76,14 +92,6 @@
 </div>
 <script>
     initialize();
-
-
-
-
-
-
-
-
 </script>
 </body>
 </html>

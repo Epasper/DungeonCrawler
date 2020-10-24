@@ -189,31 +189,55 @@ public class Hero extends Character {
                 '}';
     }
 
-    public void setHpByHeroClass() {
+    public void setDefensesByHeroClass() {
         switch (heroClass) {
             case WARRIOR:
                 setMaxHp(100);
                 setHp(100);
+                setMaxMagicShield(20);
+                setMagicShield(20);
+                setMaxPhysicalShield(40);
+                setPhysicalShield(40);
                 break;
             case ROGUE:
                 setMaxHp(60);
                 setHp(60);
+                setMaxMagicShield(30);
+                setMagicShield(30);
+                setMaxPhysicalShield(30);
+                setPhysicalShield(30);
                 break;
             case ARCHER:
                 setMaxHp(70);
                 setHp(70);
+                setMaxMagicShield(25);
+                setMagicShield(25);
+                setMaxPhysicalShield(45);
+                setPhysicalShield(45);
                 break;
             case KNIGHT:
                 setMaxHp(120);
                 setHp(120);
+                setMaxMagicShield(10);
+                setMagicShield(10);
+                setMaxPhysicalShield(50);
+                setPhysicalShield(50);
                 break;
             case HEALER:
                 setMaxHp(80);
                 setHp(80);
+                setMaxMagicShield(40);
+                setMagicShield(40);
+                setMaxPhysicalShield(20);
+                setPhysicalShield(20);
                 break;
             case WIZARD:
                 setMaxHp(50);
                 setHp(50);
+                setMaxMagicShield(50);
+                setMagicShield(50);
+                setMaxPhysicalShield(10);
+                setPhysicalShield(10);
                 break;
         }
     }
@@ -221,7 +245,7 @@ public class Hero extends Character {
     public void saveThisHero() {
         setEncounterXPosition(1);
         setEncounterYPosition(1);
-        setHpByHeroClass();
+        setDefensesByHeroClass();
         setSkillsByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
