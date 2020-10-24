@@ -64,7 +64,7 @@ img {
 
 .health-box {
     background-color: #ccc;
-    height: 30px;
+    height: 40px;
     width: 160px;
     margin: 0 auto;
     border: solid 1px #aaa;
@@ -99,6 +99,52 @@ img {
 }
 
 .health-bar-text {
+    position: relative;
+    bottom: 60px;
+}
+
+.physical-shield-box {
+    background-color: #ccc;
+    height: 40px;
+    width: 160px;
+    margin: 0 auto;
+    border: solid 1px #aaa;
+}
+
+.physical-bar {
+    background-color: slategrey;
+    width: inherit;
+    /* max-width: 100%; */
+    height: 20px;
+    position: relative;
+    bottom: 40px;
+    transition: all .5s linear;
+}
+
+.physical-bar-text {
+    position: relative;
+    bottom: 60px;
+}
+
+.magic-shield-box {
+    background-color: #ccc;
+    height: 40px;
+    width: 160px;
+    margin: 0 auto;
+    border: solid 1px #aaa;
+}
+
+.magic-bar {
+    background-color: steelblue;
+    width: inherit;
+    /* max-width: 100%; */
+    height: 20px;
+    position: relative;
+    bottom: 40px;
+    transition: all .5s linear;
+}
+
+.magic-bar-text {
     position: relative;
     bottom: 60px;
 }
