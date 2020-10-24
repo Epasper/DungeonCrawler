@@ -34,20 +34,20 @@ public class BoardService {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
         prepareTheBoard();
-        clearSelectedHeroes();
-        heroes = partySelectorService.loadSelectedHeroes();
-        rollForInitialYCoordinates();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
     }
 
-    private void prepareTheBoard() {
+    public void prepareTheBoard() {
         //todo: replace the hardcoded values with values from the entered room upon entering
         boardHeight = 8;
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
+        clearSelectedHeroes();
+        heroes = partySelectorService.loadSelectedHeroes();
+        rollForInitialYCoordinates();
     }
 
     private void rollForInitialYCoordinates() {

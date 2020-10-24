@@ -25,6 +25,7 @@ public class BoardController {
 
     @GetMapping("/encounterBoard")
     public String encounter(Model model) {
+        service.prepareTheBoard();
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());

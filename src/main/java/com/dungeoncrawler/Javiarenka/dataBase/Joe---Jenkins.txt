@@ -286,7 +286,7 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": true,
+  "isSelectedForParty": false,
   "encounterXPosition": 1,
   "encounterYPosition": 1,
   "isSelected": false,
