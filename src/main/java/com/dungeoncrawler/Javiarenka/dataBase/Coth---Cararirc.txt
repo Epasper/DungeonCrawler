@@ -5,7 +5,6 @@
     "damageReduction": 4,
     "chanceToHitReduction": 10,
     "additionalHp": 0,
-    "occupyingSlot": "CHEST",
     "name": "Cloth Armor",
     "weight": 5.0,
     "price": 10.0,
@@ -14,12 +13,12 @@
       "ROGUE",
       "HEALER"
     ],
-    "imageLink": "../images/Cloth Armor"
+    "imageLink": "../images/Cloth Armor",
+    "occupyingSlot": "CHEST"
   },
   "equippedWeapon": {
     "damageType": "DMG_BLUDGEONING",
     "damageDealt": 5,
-    "occupyingSlot": "RIGHT_HAND",
     "name": "Club",
     "weight": 7.0,
     "price": 8.0,
@@ -28,12 +27,12 @@
       "WARRIOR",
       "HEALER"
     ],
-    "imageLink": "../images/Club"
+    "imageLink": "../images/Club",
+    "occupyingSlot": "RIGHT_HAND"
   },
   "weaponName": "Club",
   "armorName": "Cloth Armor",
   "className": "Healer",
-  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -77,7 +76,6 @@
     "rightHandSlot": {
       "damageType": "DMG_BLUDGEONING",
       "damageDealt": 5,
-      "occupyingSlot": "RIGHT_HAND",
       "name": "Club",
       "weight": 7.0,
       "price": 8.0,
@@ -86,13 +84,13 @@
         "WARRIOR",
         "HEALER"
       ],
-      "imageLink": "../images/Club"
+      "imageLink": "../images/Club",
+      "occupyingSlot": "RIGHT_HAND"
     },
     "chestSlot": {
       "damageReduction": 4,
       "chanceToHitReduction": 10,
       "additionalHp": 0,
-      "occupyingSlot": "CHEST",
       "name": "Cloth Armor",
       "weight": 5.0,
       "price": 10.0,
@@ -101,7 +99,8 @@
         "ROGUE",
         "HEALER"
       ],
-      "imageLink": "../images/Cloth Armor"
+      "imageLink": "../images/Cloth Armor",
+      "occupyingSlot": "CHEST"
     },
     "baggage": {
       "0": {
@@ -287,12 +286,18 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": false,
-  "encounterXPosition": 0,
-  "encounterYPosition": 0,
+  "isSelectedForParty": true,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1,
   "isSelected": false,
   "name": "Coth",
-  "hp": 50,
+  "hp": 80,
+  "maxHp": 80,
   "isAlive": true,
-  "allCharacterStatuses": []
+  "allCharacterStatuses": [],
+  "maxPhysicalShield": 0,
+  "maxMagicShield": 0,
+  "physicalShield": 0,
+  "magicShield": 0,
+  "speed": 3
 }

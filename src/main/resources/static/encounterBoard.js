@@ -8,7 +8,7 @@ function initialize() {
         let heroSideDiv = document.getElementById(element.name + '|||' + element.surname);
         let heroHPBarText = document.getElementById(element.name + '|||' + element.surname + '|||text');
         heroSideDiv.src = image;
-        heroHPBarText.innerHTML = element.hp + `/` + element.totalHp;
+        heroHPBarText.innerHTML = element.hp + `/` + element.maxHp;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
         heroDiv.onclick = () => getMovableTiles(element);
@@ -77,7 +77,7 @@ function changeHitPoints(numberToChange, heroNameAndSurname) {
         .filter(e => e.name === name)
         .find(f => f.surname === surname)
     hero.hp += numberToChange;
-    let barPercent = hero.hp * (100 / hero.totalHp);
+    let barPercent = hero.hp * (100 / hero.maxHp);
     let greenBar = document.getElementById(heroNameAndSurname + '|||green');
     let blueBar = document.getElementById(heroNameAndSurname + '|||blue');
     let redBar = document.getElementById(heroNameAndSurname + '|||red');
@@ -85,5 +85,5 @@ function changeHitPoints(numberToChange, heroNameAndSurname) {
     greenBar.style.width = barPercent + '%'
     redBar.style.width = barPercent + '%'
     blueBar.style.width = barPercent + '%'
-    textBar.innerHTML = hero.hp + `/` + hero.totalHp
+    textBar.innerHTML = hero.hp + `/` + hero.maxHp
 }

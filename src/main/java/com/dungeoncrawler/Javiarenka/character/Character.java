@@ -7,9 +7,62 @@ public abstract class Character {
 
     private String name;
     private int hp;
+    private int maxHp;
     private boolean isAlive;
     private List<CharacterStatus> allCharacterStatuses;
+    private int maxPhysicalShield;
+    private int maxMagicShield;
+    private int physicalShield;
+    private int magicShield;
+    private int speed = 3;
 
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public int getMaxPhysicalShield() {
+        return maxPhysicalShield;
+    }
+
+    public void setMaxPhysicalShield(int maxPhysicalShield) {
+        this.maxPhysicalShield = maxPhysicalShield;
+    }
+
+    public int getMaxMagicShield() {
+        return maxMagicShield;
+    }
+
+    public void setMaxMagicShield(int maxMagicShield) {
+        this.maxMagicShield = maxMagicShield;
+    }
+
+    public int getPhysicalShield() {
+        return physicalShield;
+    }
+
+    public void setPhysicalShield(int physicalShield) {
+        this.physicalShield = physicalShield;
+    }
+
+    public int getMagicShield() {
+        return magicShield;
+    }
+
+    public void setMagicShield(int magicShield) {
+        this.magicShield = magicShield;
+    }
 
     public Character() {
         this.isAlive = true;
