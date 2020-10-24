@@ -13,28 +13,73 @@
         let tiles = [[${tiles}]];
         document.documentElement.style.setProperty("--height", height);
 
+
+
+
+
+
+
     </script>
     <script src="encounterBoard.js"></script>
 </head>
 <body>
 <div class="wrapper">
-    <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
-        <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
-            <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
-                <div th:with="currentId=${i}+'---'+${j}">
-                    <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
-                        <div th:id="container+${currentId}" th:onclick="'javascript:moveTheHero(\'' + ${currentId} + '\');'">
-                        </div>
-                        <img class="hero-images" th:id="${currentHeroId}" />
-                        <img class="background-images" th:id="${currentId}" th:src="${imageUrl}"/>
+    <div class="hero-portraits">
+        <th:block th:each="hero : ${heroes}">
+            <div th:with="currentHero=${hero.getName()} + '|||' + ${hero.getSurname()}">
+                <img th:id="${currentHero}"/>
+                <div class="area">
+                    <div class="total"></div>
+                    <div class="health-box">
+                        <button th:onclick="'javascript:testRemoveHp(\'' + ${currentHero} + '\')'"> Hit</button>
+                        <button th:onclick="'javascript:testAddHp(\'' + ${currentHero} + '\')'"> Heal</button>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||red'"
+                             class="health-bar-red"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||blue'"
+                             class="health-bar-blue"></div>
+                        <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||green'"
+                             class="health-bar"></div>
+                        <div class="health-bar-text"></div>
                     </div>
                 </div>
             </div>
         </th:block>
-    </th:block>
+    </div>
+    <div class="monster-portraits">
+
+    </div>
+    <div class="initiative-bar">
+
+    </div>
+    <div class="skill-bar">
+
+    </div>
+    <div class="board">
+        <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
+            <th:block th:each="j: ${#numbers.sequence(1, boardHeight)}">
+                <div th:with="currentHeroId='hero:'+${i}+'---'+${j}">
+                    <div th:with="currentId=${i}+'---'+${j}">
+                        <div class="inner-container" th:with="imageUrl=(${tileImages.get(currentId)})">
+                            <div th:id="container+${currentId}"
+                                 th:onclick="'javascript:moveTheHero(\'' + ${currentId} + '\');'">
+                            </div>
+                            <img class="hero-images" th:id="${currentHeroId}"/>
+                            <img class="background-images" th:id="${currentId}" th:src="${imageUrl}"/>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </th:block>
+    </div>
 </div>
 <script>
     initialize();
+
+
+
+
+
+
 
 </script>
 </body>

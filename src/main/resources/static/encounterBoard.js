@@ -1,11 +1,16 @@
 let globalSelectedHero
 
+//toRemove
+const maxHealth = 200;
+let currentHp = 200;
+
 function initialize() {
     document.onload = heroes.forEach(element => {
         const id = 'hero:' + element.encounterXPosition + '---' + element.encounterYPosition;
         const image = '../images/' + element.heroClass + '.png';
-        console.log(id + "|||" + image);
         let heroDiv = document.getElementById(id);
+        let heroSideDiv = document.getElementById(element.name + '|||' + element.surname);
+        heroSideDiv.src = image;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
         heroDiv.onclick = () => getMovableTiles(element);
@@ -57,4 +62,23 @@ function moveTheHero(currentId) {
     currentDiv.style.zIndex = "3";
     clearTheBoardOfWalkEffects()
     initialize();
+}
+
+function testAddHp(heroNameAndSurname) {
+    changeHitPoints(currentHp + 5, heroNameAndSurname)
+}
+
+function testRemoveHp(heroNameAndSurname) {
+    changeHitPoints(currentHp - 5, heroNameAndSurname)
+}
+
+function changeHitPoints(currentHealth, heroNameAndSurname) {
+    currentHp = currentHealth;
+    let barPercent = currentHealth * (100 / maxHealth);
+    let greenBar = document.getElementById(heroNameAndSurname + '|||green');
+    let blueBar = document.getElementById(heroNameAndSurname + '|||blue');
+    let redBar = document.getElementById(heroNameAndSurname + '|||red');
+    greenBar.style.width = barPercent + '%'
+    redBar.style.width = barPercent + '%'
+    blueBar.style.width = barPercent + '%'
 }
