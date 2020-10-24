@@ -1,12 +1,12 @@
 package com.dungeoncrawler.Javiarenka.character;
 
 public enum HeroClass {
-    ARCHER("ARCHER"),
-    ROGUE("ROGUE"),
-    WARRIOR("WARRIOR"),
-    WIZARD("WIZARD"),
-    HEALER("HEALER"),
-    KNIGHT("KNIGHT");
+    ARCHER("Archer"),
+    ROGUE("Rogue"),
+    WARRIOR("Warrior"),
+    WIZARD("Wizard"),
+    HEALER("Healer"),
+    KNIGHT("Knight");
 
     private final String heroClassString;
 
