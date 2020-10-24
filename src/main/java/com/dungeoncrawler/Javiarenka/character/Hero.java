@@ -19,7 +19,6 @@ public class Hero extends Character {
     private String weaponName;
     private String armorName;
     private String className;
-    private int speed = 3;
     private int money;
     private List<Skill> skills;
     private Backpack backpack = new Backpack();
@@ -36,14 +35,6 @@ public class Hero extends Character {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 
     public int getEncounterXPosition() {
@@ -159,11 +150,6 @@ public class Hero extends Character {
         addStartingBackpackItems();
     }
 
-    public Hero(String name, int hp) {
-        super(name, hp);
-        addStartingBackpackItems();
-    }
-
     public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<Skill> skills) {
         this();
         super.setName(name);
@@ -206,33 +192,41 @@ public class Hero extends Character {
     public void setHpByHeroClass() {
         switch (heroClass) {
             case WARRIOR:
+                setMaxHp(100);
                 setHp(100);
                 break;
             case ROGUE:
+                setMaxHp(60);
                 setHp(60);
                 break;
             case ARCHER:
+                setMaxHp(70);
                 setHp(70);
                 break;
             case KNIGHT:
+                setMaxHp(120);
                 setHp(120);
+                break;
             case HEALER:
+                setMaxHp(80);
                 setHp(80);
+                break;
             case WIZARD:
+                setMaxHp(50);
                 setHp(50);
+                break;
         }
     }
 
-    public int getTotalHp() {
-        return getHp() + equippedArmor.getAdditionalHp();
-    }
-
     public void saveThisHero() {
+        setEncounterXPosition(1);
+        setEncounterYPosition(1);
         setHpByHeroClass();
         setSkillsByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
+        System.out.println(this);
         try {
             Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
             gson.toJson(this, writer);
