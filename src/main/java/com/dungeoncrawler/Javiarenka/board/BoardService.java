@@ -75,16 +75,19 @@ public class BoardService {
         for (Hero hero : heroes) {
             int initRoll = random.nextInt(maxInitiative);
             hero.setInitiative(initRoll);
+            hero.setActive(false);
             tempCharList.add(hero);
         }
         for (Monster monster : monsters) {
             int initRoll = random.nextInt(maxInitiative);
             monster.setInitiative(initRoll);
+            monster.setActive(false);
             tempCharList.add(monster);
         }
         initiativeOrder = tempCharList.stream()
                 .sorted(Comparator.comparing(Creature::getInitiative))
                 .collect(Collectors.toList());
+        initiativeOrder.get(0).setActive(true);
         for (Creature c : initiativeOrder) {
             System.out.println(c.getInitiative() + ": " + c.toString());
         }
