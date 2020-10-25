@@ -11,7 +11,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hero extends Character {
+public class Hero extends Creature {
     private String surname;
     private HeroClass heroClass;
     private Armor equippedArmor;
@@ -262,7 +262,7 @@ public class Hero extends Character {
     }
 
     @Override
-    public String attack(Character monster) {
+    public String attack(Creature monster) {
         String message;
         String hit = "hit ";
         String damageDealt;

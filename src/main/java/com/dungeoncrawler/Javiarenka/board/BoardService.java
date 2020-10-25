@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.board;
 
+import com.dungeoncrawler.Javiarenka.character.Creature;
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
@@ -12,17 +13,20 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
     private List<Hero> heroes;
     private List<Monster> monsters = new ArrayList<>();
+    private List<Creature> initiativeOrder = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
     private int boardWidth;
     private int boardHeight;
+    private static final int maxInitiative = 200;
     private EncounterTile[][] tiles;
     private Map<String, String> imageSources = new HashMap<>();
     Random random = new Random();
@@ -33,10 +37,10 @@ public class BoardService {
     public BoardService() {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
-        prepareTheBoard();
         monsters.add(new Monster("Arrgard", 80, "Orc", 9));
         monsters.add(new Monster("Grinch", 30, "Goblin", 4));
         monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
+        prepareTheBoard();
     }
 
     public void prepareTheBoard() {
@@ -48,6 +52,27 @@ public class BoardService {
         clearSelectedHeroes();
         heroes = partySelectorService.loadSelectedHeroes();
         rollForInitialYCoordinates();
+        rollForInitiative();
+    }
+
+    private void rollForInitiative() {
+        List<Creature> tempCharList = new ArrayList<>();
+        for (Hero hero : heroes) {
+            int initRoll = random.nextInt(maxInitiative);
+            hero.setInitiative(initRoll);
+            tempCharList.add(hero);
+        }
+        for (Monster monster : monsters) {
+            int initRoll = random.nextInt(maxInitiative);
+            monster.setInitiative(initRoll);
+            tempCharList.add(monster);
+        }
+        initiativeOrder = tempCharList.stream()
+                .sorted(Comparator.comparing(Creature::getInitiative))
+                .collect(Collectors.toList());
+        for (Creature c : initiativeOrder) {
+            System.out.println(c.getInitiative() + ": " + c.toString());
+        }
     }
 
     private void rollForInitialYCoordinates() {
@@ -96,6 +121,14 @@ public class BoardService {
                 tiles[i][j] = currentTile;
             }
         }
+    }
+
+    public List<Creature> getInitiativeOrder() {
+        return initiativeOrder;
+    }
+
+    public void setInitiativeOrder(List<Creature> initiativeOrder) {
+        this.initiativeOrder = initiativeOrder;
     }
 
     public Map<String, String> getImageSources() {
