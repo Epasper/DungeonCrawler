@@ -62,7 +62,9 @@ img {
     text-align: center;
 }
 
-.health-box {
+.health-box,
+.physical-shield-box,
+.magic-shield-box {
     background-color: #ccc;
     height: 40px;
     width: 160px;
@@ -72,16 +74,15 @@ img {
 
 .health-bar {
     position: relative;
-    box-shadow: 
-      inset 0 10px 0 rgba(255,255,255,0.2),
-      inset 0 2px 2px rgba(0,0,0,0.125);
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
     cursor: pointer;
-    margin: 0 0px;
+    margin: 0;
     background-color: #007f00;
     width: inherit;
     /* max-width: 100%; */
     height: 20px;
-    position: relative;
     bottom: 40px;
     transition: all .5s linear;
 }
@@ -111,19 +112,11 @@ img {
     bottom: 60px;
 }
 
-.physical-shield-box {
-    background-color: #ccc;
-    height: 40px;
-    width: 160px;
-    margin: 0 auto;
-    border: solid 1px #aaa;
-}
-
 .physical-bar {
     position: relative;
-    box-shadow: 
-      inset 0 10px 0 rgba(255,255,255,0.2),
-      inset 0 2px 2px rgba(0,0,0,0.125);
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
     cursor: pointer;
     margin: 0 0px;
     background-color: slategrey;
@@ -135,25 +128,18 @@ img {
     transition: all .5s linear;
 }
 
-.physical-bar-text {
+.physical-bar-text,
+.magic-bar-text {
     font-family: 'Balsamiq Sans';
     position: relative;
     bottom: 60px;
 }
 
-.magic-shield-box {
-    background-color: #ccc;
-    height: 40px;
-    width: 160px;
-    margin: 0 auto;
-    border: solid 1px #aaa;
-}
-
 .magic-bar {
     position: relative;
-    box-shadow: 
-      inset 0 10px 0 rgba(255,255,255,0.2),
-      inset 0 2px 2px rgba(0,0,0,0.125);
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
     cursor: pointer;
     margin: 0 0px;
     background-color: steelblue;
@@ -163,12 +149,6 @@ img {
     position: relative;
     bottom: 40px;
     transition: all .5s linear;
-}
-
-.magic-bar-text {
-    font-family: 'Balsamiq Sans';
-    position: relative;
-    bottom: 60px;
 }
 
 .total,
