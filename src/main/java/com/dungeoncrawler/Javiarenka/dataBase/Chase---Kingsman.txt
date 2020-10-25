@@ -5,7 +5,6 @@
     "damageReduction": 4,
     "chanceToHitReduction": 10,
     "additionalHp": 0,
-    "occupyingSlot": "CHEST",
     "name": "Cloth Armor",
     "weight": 5.0,
     "price": 10.0,
@@ -14,24 +13,24 @@
       "ROGUE",
       "HEALER"
     ],
-    "imageLink": "../images/Cloth Armor"
+    "imageLink": "../images/Cloth Armor",
+    "occupyingSlot": "CHEST"
   },
   "equippedWeapon": {
     "damageType": "DMG_FIRE",
     "damageDealt": 5,
-    "occupyingSlot": "RIGHT_HAND",
     "name": "Staff of Fire",
     "weight": 8.0,
     "price": 20.0,
     "classRestrictions": [
       "WIZARD"
     ],
-    "imageLink": "../images/Staff of Fire"
+    "imageLink": "../images/Staff of Fire",
+    "occupyingSlot": "RIGHT_HAND"
   },
   "weaponName": "Staff of Fire",
   "armorName": "Cloth Armor",
   "className": "Wizard",
-  "speed": 3,
   "money": 0,
   "skills": [
     {
@@ -73,22 +72,20 @@
   ],
   "backpack": {
     "rightHandSlot": {
-      "damageType": "DMG_FIRE",
-      "damageDealt": 5,
-      "occupyingSlot": "RIGHT_HAND",
+      "damageDealt": 0,
       "name": "Staff of Fire",
       "weight": 8.0,
       "price": 20.0,
       "classRestrictions": [
         "WIZARD"
       ],
-      "imageLink": "../images/Staff of Fire"
+      "imageLink": "../images/Staff of Fire",
+      "occupyingSlot": "RIGHT_HAND"
     },
     "chestSlot": {
-      "damageReduction": 4,
-      "chanceToHitReduction": 10,
+      "damageReduction": 0,
+      "chanceToHitReduction": 0,
       "additionalHp": 0,
-      "occupyingSlot": "CHEST",
       "name": "Cloth Armor",
       "weight": 5.0,
       "price": 10.0,
@@ -97,7 +94,8 @@
         "ROGUE",
         "HEALER"
       ],
-      "imageLink": "../images/Cloth Armor"
+      "imageLink": "../images/Cloth Armor",
+      "occupyingSlot": "CHEST"
     },
     "baggage": {
       "0": {
@@ -284,11 +282,17 @@
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": true,
-  "encounterXPosition": 0,
-  "encounterYPosition": 0,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1,
   "isSelected": false,
   "name": "Chase",
   "hp": 50,
+  "maxHp": 50,
   "isAlive": true,
-  "allCharacterStatuses": []
+  "allCharacterStatuses": [],
+  "maxPhysicalShield": 10,
+  "maxMagicShield": 50,
+  "physicalShield": 10,
+  "magicShield": 50,
+  "speed": 3
 }

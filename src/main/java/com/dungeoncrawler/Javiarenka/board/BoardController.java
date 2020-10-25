@@ -25,6 +25,7 @@ public class BoardController {
 
     @GetMapping("/encounterBoard")
     public String encounter(Model model) {
+        service.prepareTheBoard();
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());
@@ -32,6 +33,7 @@ public class BoardController {
         model.addAttribute("boardHeight", service.getBoardHeight());
         model.addAttribute("tiles", service.getTiles());
         model.addAttribute("tileImages", service.getImageSources());
+        model.addAttribute("initiativeOrder", service.getInitiativeOrder());
         return "encounterBoard";
     }
 

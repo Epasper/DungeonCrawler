@@ -5,7 +5,6 @@ import com.dungeoncrawler.Javiarenka.character.HeroClass;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.character.NoMoreMoneyException;
 import com.dungeoncrawler.Javiarenka.equipment.DamageType;
-import com.dungeoncrawler.Javiarenka.equipment.EquipmentSlots;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

@@ -44,15 +44,146 @@ img {
     z-index: 2;
 }
 
-.wrapper {
+.board {
     display: grid;
     grid-template-rows: repeat(var(--height), 100px);
     grid-auto-flow: column;
     grid-auto-columns: 100px;
 }
 
-.wrapper>div {
+.board>div {
     border-radius: 5px;
     background-color: #c0c0c0;
     color: #b6b6b6;
+}
+
+.area {
+    padding: 10px;
+    text-align: center;
+}
+
+.health-box,
+.physical-shield-box,
+.magic-shield-box {
+    background-color: #ccc;
+    height: 40px;
+    width: 160px;
+    margin: 0 auto;
+    border: solid 1px #aaa;
+}
+
+.health-bar {
+    position: relative;
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+    margin: 0;
+    background-color: #007f00;
+    width: inherit;
+    /* max-width: 100%; */
+    height: 20px;
+    bottom: 40px;
+    transition: all .5s linear;
+}
+
+.health-bar-red {
+    width: 100%;
+    /* max-width: 100%; */
+    height: 20px;
+    background-color: #cc0000;
+    transition: all .7s linear;
+    transition-delay: 0.2s;
+}
+
+.health-bar-blue {
+    width: 100%;
+    /* max-width: 100%; */
+    height: 20px;
+    background-color: #3bd3df;
+    bottom: 20px;
+    position: relative;
+    transition: all .3s linear;
+}
+
+.health-bar-text {
+    font-family: 'Balsamiq Sans';
+    position: relative;
+    bottom: 60px;
+}
+
+.physical-bar {
+    position: relative;
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+    margin: 0 0px;
+    background-color: slategrey;
+    width: inherit;
+    /* max-width: 100%; */
+    height: 20px;
+    position: relative;
+    bottom: 40px;
+    transition: all .5s linear;
+}
+
+.physical-bar-text,
+.magic-bar-text {
+    font-family: 'Balsamiq Sans';
+    position: relative;
+    bottom: 60px;
+}
+
+.magic-bar {
+    position: relative;
+    box-shadow:
+        inset 0 10px 0 rgba(255, 255, 255, 0.2),
+        inset 0 2px 2px rgba(0, 0, 0, 0.125);
+    cursor: pointer;
+    margin: 0 0px;
+    background-color: steelblue;
+    width: inherit;
+    /* max-width: 100%; */
+    height: 20px;
+    position: relative;
+    bottom: 40px;
+    transition: all .5s linear;
+}
+
+.total,
+.message-box {
+    font-size: 16px;
+    margin: 5px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 0.5fr 3fr 0.5fr;
+    grid-template-rows: 0.5fr 3fr 0.5fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "initiative-bar initiative-bar initiative-bar"
+        "hero-portraits board monster-portraits"
+        "hero-portraits skill-bar monster-portraits";
+}
+
+.initiative-bar {
+    grid-area: initiative-bar;
+}
+
+.monster-portraits {
+    grid-area: monster-portraits;
+}
+
+.hero-portraits {
+    grid-area: hero-portraits;
+}
+
+.board {
+    grid-area: board;
+}
+
+.skill-bar {
+    grid-area: skill-bar;
 }
