@@ -16,6 +16,15 @@ public abstract class Creature {
     private int magicShield;
     private int speed = 3;
     private int initiative;
+    private String imageLink;
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
 
     public int getInitiative() {
         return initiative;
@@ -78,7 +87,7 @@ public abstract class Creature {
         this.allCharacterStatuses = new ArrayList<>();
     }
 
-    public Creature(String name, int hp) {
+    public Creature(int hp) {
         this();
         this.name = name;
         this.hp = hp;
