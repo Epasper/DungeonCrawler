@@ -38,11 +38,14 @@ public class BoardService {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
         Monster testMon1 = new Monster(80, "Goblin", 9);
-        Monster testMon2 = new Monster(30, "Rat", 4);
-        Monster testMon3 = new Monster(200, "Skeleton", 15);
+        Monster testMon2 = new Monster(30, "Animal", 4);
+        Monster testMon3 = new Monster(200, "Undead", 15);
         testMon1.setImageLink("../images/monsters/monster_goblin.jpg");
+        testMon1.setName("Goblin Warrior");
         testMon2.setImageLink("../images/monsters/monster_ratling.jpg");
+        testMon1.setName("Rat");
         testMon3.setImageLink("../images/monsters/monster_skeleton.jpg");
+        testMon1.setName("Skeleton Warrior");
         monsters.addAll(List.of(testMon1, testMon2, testMon3));
         prepareTheBoard();
     }
