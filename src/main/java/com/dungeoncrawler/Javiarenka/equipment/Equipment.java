@@ -10,6 +10,8 @@ public class Equipment {
     private double price;
     private List<HeroClass> classRestrictions;
     private String imageLink;
+    private EquipmentSlots occupyingSlot;
+
 
     public Equipment(String name, List<HeroClass> classRestriction, double weight, double price) {
         this.name = name;
@@ -24,6 +26,14 @@ public class Equipment {
         this.weight = weight;
         this.price = price;
         this.imageLink = constructImageLink();
+    }
+
+    public EquipmentSlots getOccupyingSlot() {
+        return occupyingSlot;
+    }
+
+    public void setOccupyingSlot(EquipmentSlots occupyingSlot) {
+        this.occupyingSlot = occupyingSlot;
     }
 
     public Equipment() {

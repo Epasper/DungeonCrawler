@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.board;
 
+import com.dungeoncrawler.Javiarenka.character.Creature;
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
@@ -12,17 +13,20 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
     private List<Hero> heroes;
     private List<Monster> monsters = new ArrayList<>();
+    private List<Creature> initiativeOrder = new ArrayList<>();
     private Monster selectedMonster;
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
     private int boardWidth;
     private int boardHeight;
+    private static final int maxInitiative = 200;
     private EncounterTile[][] tiles;
     private Map<String, String> imageSources = new HashMap<>();
     Random random = new Random();
@@ -33,21 +37,57 @@ public class BoardService {
     public BoardService() {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
+        Monster testMon1 = new Monster(80, "Goblin", 9);
+        Monster testMon2 = new Monster(30, "Animal", 4);
+        Monster testMon3 = new Monster(200, "Undead", 15);
+        testMon1.setImageLink("../images/monsters/monster_goblinscout.png");
+        testMon1.setName("Goblin Warrior");
+        testMon2.setImageLink("../images/monsters/monster_ratling.png");
+        testMon2.setName("Rat");
+        testMon3.setImageLink("../images/monsters/monster_skeleton.png");
+        testMon3.setName("Skeleton Warrior");
+        monsters.addAll(List.of(testMon1, testMon2, testMon3));
         prepareTheBoard();
-        clearSelectedHeroes();
-        heroes = partySelectorService.loadSelectedHeroes();
-        rollForInitialYCoordinates();
-        monsters.add(new Monster("Arrgard", 80, "Orc", 9));
-        monsters.add(new Monster("Grinch", 30, "Goblin", 4));
-        monsters.add(new Monster("Ragnar", 200, "Dragon", 15));
     }
 
-    private void prepareTheBoard() {
+    public void prepareTheBoard() {
         //todo: replace the hardcoded values with values from the entered room upon entering
         boardHeight = 8;
         boardWidth = 16;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
+        clearSelectedHeroes();
+        heroes = partySelectorService.loadSelectedHeroes();
+        rollForInitialYCoordinates();
+        rollForInitiative();
+        setHeroImages();
+    }
+
+    //todo: change the images from class based to those customized in character creation (after such customization is possible)
+    private void setHeroImages() {
+        for (Hero hero : heroes) {
+            hero.setImageLink("../images/" + hero.getClassName() + ".png");
+        }
+    }
+
+    private void rollForInitiative() {
+        List<Creature> tempCharList = new ArrayList<>();
+        for (Hero hero : heroes) {
+            int initRoll = random.nextInt(maxInitiative);
+            hero.setInitiative(initRoll);
+            tempCharList.add(hero);
+        }
+        for (Monster monster : monsters) {
+            int initRoll = random.nextInt(maxInitiative);
+            monster.setInitiative(initRoll);
+            tempCharList.add(monster);
+        }
+        initiativeOrder = tempCharList.stream()
+                .sorted(Comparator.comparing(Creature::getInitiative))
+                .collect(Collectors.toList());
+        for (Creature c : initiativeOrder) {
+            System.out.println(c.getInitiative() + ": " + c.toString());
+        }
     }
 
     private void rollForInitialYCoordinates() {
@@ -96,6 +136,14 @@ public class BoardService {
                 tiles[i][j] = currentTile;
             }
         }
+    }
+
+    public List<Creature> getInitiativeOrder() {
+        return initiativeOrder;
+    }
+
+    public void setInitiativeOrder(List<Creature> initiativeOrder) {
+        this.initiativeOrder = initiativeOrder;
     }
 
     public Map<String, String> getImageSources() {

@@ -2,7 +2,7 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import java.util.Random;
 
-public class Monster extends Character {
+public class Monster extends Creature {
 
     private String race;
     private int damageStrength;
@@ -10,8 +10,8 @@ public class Monster extends Character {
     public Monster() {
     }
 
-    public Monster(String name, int hp, String race, int damageStrength) {
-        super(name, hp);
+    public Monster(int hp, String race, int damageStrength) {
+        super(hp);
         this.race = race;
         this.damageStrength = damageStrength;
     }
@@ -33,7 +33,7 @@ public class Monster extends Character {
     }
 
     @Override
-    public String attack(Character hero) {
+    public String attack(Creature hero) {
         String message;
         Hero attackedHero = (Hero) hero;
         int dealtDamage = (damageStrength - attackedHero.getEquippedArmor().getDamageReduction());
@@ -59,5 +59,14 @@ public class Monster extends Character {
                 return String.format("%s is to weak to attack Hero %s!", getName(), attackedHero.getName());
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Monster{" +
+                "name='" + super.getName() + '\'' +
+                "race='" + race + '\'' +
+                ", damageStrength=" + damageStrength +
+                '}';
     }
 }
