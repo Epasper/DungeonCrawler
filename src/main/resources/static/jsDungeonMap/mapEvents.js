@@ -1,9 +1,9 @@
 import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
-import { updateButtons } from './mapButtons.js'
+import { actionAByContext, actionBByContext } from './mapButtons.js'
 import { draw } from './mapRender.js'
 import { party, directions } from './partyManager.js'
-import { finished, getMappedElementById, update } from './dungeonMap.js'
+import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
 
 const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
@@ -25,7 +25,11 @@ export function injectButtonsListeners() {
     spawnBtn.addEventListener('click', spawnPartyBackend);
 
     let actionBtn = getMappedElementById('action-btn');
+    let actionBtn1 = getMappedElementById('action-btn-1');
+    let actionBtn2 = getMappedElementById('action-btn-2');
     actionBtn.addEventListener('click', makeAction);
+    actionBtn1.addEventListener('click', actionAByContext);
+    actionBtn2.addEventListener('click', actionBByContext);
 
     let moveBtn = getMappedElementById('move-party-btn');
     moveBtn.addEventListener('click', teleportPartyBackend);
@@ -64,6 +68,14 @@ function makeAction() {
     console.log('DOOOOOOOOOOOOOOOOOOOOOR');
 }
 
+function makeActionA() {
+
+}
+
+function makeActionB() {
+
+}
+
 async function spawnPartyBackend() {
     let coordX = getX(selectedGridTileDiv)
     let coordY = getY(selectedGridTileDiv)
@@ -76,7 +88,7 @@ async function spawnPartyBackend() {
     // await draw();
     // updateButtons();
 
-    await update();
+    await updateMap();
 }
 
 async function teleportPartyBackend() {
@@ -88,7 +100,7 @@ async function teleportPartyBackend() {
 
     // await draw();
     // updateButtons();
-    await update();
+    await updateMap();
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
@@ -109,7 +121,7 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 
     partyMoveCounter++;
     // console.log('Party moved BEFORE ---', partyMoveCounter, '--- times.')
-    await update();
+    await updateMap();
     // console.log('Party moved AFTER ---', partyMoveCounter, '--- times.')
     // console.log('AT THE END of click EVENT function')
     // console.log('   ')
@@ -191,7 +203,7 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     // await draw()
     // updateButtons()
-    await update();
+    await updateMap();
 }
 
 export function tileMouseEntered({ target: hoveredTileDiv }, colorIdentifier = 'default') {

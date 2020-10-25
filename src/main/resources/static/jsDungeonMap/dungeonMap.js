@@ -19,12 +19,12 @@ async function ready() {
     adaptGrids()
     injectTileListeners()
     injectButtonsListeners()
-    await update();
+    await updateMap();
     // await draw()
     // updateButtons()
 }
 
-export async function update() {
+export async function updateMap() {
     console.log(`================= UPDATE ==============`)
     await draw();
     await updateButtons();

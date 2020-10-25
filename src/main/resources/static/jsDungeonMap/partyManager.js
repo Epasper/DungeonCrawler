@@ -1,4 +1,4 @@
-import { update, getMappedElementById } from "./dungeonMap.js";
+import { updateMap, getMappedElementById } from "./dungeonMap.js";
 import { tileMouseEntered } from './mapEvents.js'
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
@@ -47,7 +47,7 @@ async function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obi
         console.log(`Party was selected`);
     }
     
-    await update();
+    await updateMap();
 
     // updateButtons();
     // await draw();

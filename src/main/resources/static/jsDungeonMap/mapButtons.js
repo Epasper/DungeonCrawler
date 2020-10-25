@@ -1,13 +1,170 @@
-import { getMappedElementById} from './dungeonMap.js'
+import { getMappedElementById, updateMap } from './dungeonMap.js'
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
 import { animateRoomChange } from './mapRender.js'
 
+class ActionsManager {
+    constructor() {
+        this.actionA = () => { };
+        this.actionB = () => { };
+    }
+
+    performActionA() {
+        this.actionA();
+    }
+
+    performActionB() {
+        this.actionB();
+    }
+}
+
+class DoorOperator {
+
+    constructor(pointedTile) {
+        if (!pointedTile) return;
+        console.log('constructing door operator on: ', pointedTile);
+        this.pointedTile = pointedTile;
+        this.div = getDivFromBackendTile(pointedTile);
+        this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
+        const [type] = pointedTile.type.split('_').splice(-1);
+        const index = this.states.findIndex(door => door.state == type)
+        this.current = this.states[index];
+    }
+
+    update(pointedTile) {
+        console.log('updating door operator for: ', pointedTile);
+        this.pointedTile = pointedTile;
+        this.div = getDivFromBackendTile(pointedTile);
+        this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
+        const [type] = pointedTile.type.split('_').splice(-1);
+        const index = this.states.findIndex(door => door.state == type)
+        this.current = this.states[index];
+    }
+
+    actionA() {
+        console.log('ACTION A from DoorOperator');
+        console.log(this);
+        console.log(this.current);
+        this.changeState(this.current.actionA(this.div));
+    }
+
+    actionB() {
+        console.log('ACTION B from DoorOperator');
+        console.log(this);
+        console.log(this.current);
+        this.changeState(this.current.actionB(this.div));
+    }
+
+    changeState(targetState) {
+        const index = this.states.findIndex(door => door.state == targetState);
+        this.current = this.states[index];
+    }
+
+    giveButtonAnAction(btnElement, actionLetter) {
+        btnElement.textContent = this.current[`action${actionLetter}Prompt`];
+        btnElement.disabled = this.current[`action${actionLetter}isDisabled`];
+        // var funct = this[`action${actionLetter}`];
+        // console.log('function: ', funct);
+        // btnElement.addEventListener('click', funct);
+        // btnElement.addEventListener('click', this.actionA);
+    }
+}
+
+class Action {
+
+}
+
+class Door {
+    constructor(state, actionA, actionB) {
+        this.state = state;
+        this.actionAPrompt = actionA;
+        this.actionBPrompt = actionB;
+    }
+}
+
+class DoorOpened extends Door {
+    constructor() {
+        super('OPENED', 'Open', 'Close');
+        this.actionAisDisabled = true;
+        this.actionBisDisabled = false;
+    }
+
+
+    actionA(div) {
+        console.log('door already opened');
+        return this.state;
+    }
+
+    actionB(div) {
+        console.log('closing the door');
+        const newState = 'CLOSED';
+        div.classList.remove(`DOOR_${this.state}`)
+        div.classList.add(`DOOR_${newState}`)
+        return newState;
+    }
+
+}
+
+class DoorClosed extends Door {
+    constructor() {
+        super('CLOSED', 'Open', 'Close');
+        this.actionAisDisabled = false;
+        this.actionBisDisabled = true;
+    }
+
+    async actionA(div) {
+        console.log('opening the door');
+        const newState = 'OPENED';
+        div.classList.remove(`DOOR_${this.state}`)
+        div.classList.add(`DOOR_${newState}`)
+
+        await openDoorBackend(newState)
+
+        return newState;
+    }
+
+    actionB(div) {
+        console.log('locking the door');
+        const newState = 'LOCKED';
+        div.classList.remove(`DOOR_${this.state}`)
+        div.classList.add(`DOOR_${newState}`)
+        return newState;
+    }
+
+}
+
+class DoorLocked extends Door {
+    constructor() {
+        super('LOCKED', 'Unlock', 'Bash');
+        this.actionAisDisabled = false;
+        this.actionBisDisabled = false;
+    }
+
+    async actionA(div) {
+        console.log('unlocking the door');
+        const newState = 'CLOSED';
+        div.classList.remove(`DOOR_${this.state}`)
+        div.classList.add(`DOOR_${newState}`)
+
+        await openDoorBackend(newState)
+
+        return newState;
+    }
+
+    actionB(div) {
+        console.log('bashing the door');
+        return this.state;
+    }
+}
+
 const directionalButtons = Array.from(document.getElementsByClassName('move-button'));
+let actionsManager = new ActionsManager();
+let doorOperator = new DoorOperator();
+
 
 async function updateSpawnButton() {
     let spawnButton = getMappedElementById('spawn-party-btn');
-    if(getMappedElementById('party')) {
+    if (getMappedElementById('party')) {
         spawnButton.style.opacity = '0';
         spawnButton.style.pointerEvents = 'none';
     }
@@ -23,7 +180,7 @@ async function updateSpawnButton() {
 
     //let isSpawnable = data;
     let isSelection = (getMappedElementById('selection') != null)
-    
+
     if (isSpawnable && isSelection) {
         spawnButton.disabled = false;
     } else {
@@ -70,14 +227,25 @@ async function updateDirectionalButtons() {
     });
 }
 
-function activateActionMenu()
-{
+function activateActionMenu() {
     getMappedElementById('action-menu').classList.add('active');
 }
 
-function deactivateActionMenu()
-{
+function deactivateActionMenu() {
     getMappedElementById('action-menu').classList.remove('active');
+    let btn1 = getMappedElementById('action-btn-1');
+    let btn2 = getMappedElementById('action-btn-2');
+
+    btn1.disabled = true;
+    btn2.disabled = true;
+}
+
+async function openDoorBackend(newDoorState) {
+    const pointedTile = doorOperator.pointedTile;
+    const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
+    &newType=DOOR_${newDoorState}`);
+    const changedTilesData = roomData[1];
+    if (changedTilesData) animateRoomChange(changedTilesData);
 }
 
 async function updateActionButton() {
@@ -98,7 +266,7 @@ async function updateActionButton() {
     let pointedDiv = getDivFromBackendTile(pointedTile);
     //console.log('pointedDiv: ', pointedDiv);
 
-    pointedDiv = { div: pointedDiv, type: pointedTile.type };
+    //pointedDiv = { div: pointedDiv, type: pointedTile.type };
     //console.log('pointedDiv: ', pointedDiv);
 
     if (pointedTile.type.includes('DOOR')) {
@@ -106,22 +274,49 @@ async function updateActionButton() {
         actionBtn.dataset.actionType = 'door';
         actionBtn.textContent = "Door"
         activateActionMenu();
-        
-
-        let doorOperator = new DoorOperator(pointedDiv);
-        console.log('current door status: ', doorOperator.current.state);
-        doorOperator.open();
-        console.log('current door status: ', doorOperator.current.state);
-        console.log('pointed tile_22222222222222: ', pointedTile);
-        console.log(pointedTile.x);
-        console.log(pointedTile.y);
-        const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
-            &newType=DOOR_${doorOperator.current.state}`);
-        const changedTilesData = roomData[1];
-
-        //console.log('changedTilesData: ' ,changedTilesData)
-        if (changedTilesData) animateRoomChange(changedTilesData);
+        provideDoorActions(pointedTile);
     }
+}
+
+export async function actionAByContext() {
+    // doorOperator.actionA();
+    actionsManager.performActionA();
+    await updateMap();
+}
+
+export async function actionBByContext() {
+    // doorOperator.actionB();
+    actionsManager.performActionB();
+    await updateMap();
+}
+
+async function provideDoorActions(pointedTile) {
+    // let doorOperator = new DoorOperator(pointedDiv);
+    doorOperator.update(pointedTile);
+
+    let action1Btn = getMappedElementById('action-btn-1');
+    let action2Btn = getMappedElementById('action-btn-2');
+
+    doorOperator.giveButtonAnAction(action1Btn, 'A');
+    doorOperator.giveButtonAnAction(action2Btn, 'B');
+
+    actionsManager.actionA = () => { doorOperator.actionA(); };
+    actionsManager.actionB = () => { doorOperator.actionB(); };
+
+    //console.log('current door status: ', doorOperator.current.state);
+
+    //doorOperator.actionA();
+
+    //console.log('current door status: ', doorOperator.current.state);
+    //console.log('pointed tile_22222222222222: ', pointedTile);
+    //console.log(pointedTile.x);
+    //console.log(pointedTile.y);
+
+
+    // const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
+    //     &newType=DOOR_${doorOperator.current.state}`);
+    // const changedTilesData = roomData[1];
+    // if (changedTilesData) animateRoomChange(changedTilesData);
 }
 
 export async function updateButtons() {
@@ -131,98 +326,4 @@ export async function updateButtons() {
     updateMoveButton();
     updateDirectionalButtons();
     updateActionButton();
-}
-
-class DoorOperator {
-
-    constructor(pointedTile) {
-        console.log('constructing on: ', pointedTile);
-        this.div = pointedTile.div;
-        this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
-        const [type] = pointedTile.type.split('_').splice(-1);
-        const index = this.states.findIndex(door => door.state == type)
-        this.current = this.states[index];
-    }
-
-    open() {
-        this.changeState(this.current.open(this.div));
-    }
-
-    close() {
-        this.changeState(this.current.close(this.div));
-    }
-
-    changeState(targetState) {
-        const index = this.states.findIndex(door => door.state == targetState);
-        this.current = this.states[index];
-    }
-}
-
-class Door {
-    constructor(state, action = 'action') {
-        this.state = state;
-        this.action = action;
-    }
-}
-
-class DoorOpened extends Door {
-    constructor() {
-        super('OPENED', 'close');
-    }
-
-    open(div) {
-        console.log('door already opened');
-        return this.state;
-    }
-
-    close(div) {
-        console.log('closing the door');
-        const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-        return newState;
-    }
-
-}
-
-class DoorClosed extends Door {
-    constructor() {
-        super('CLOSED', 'open');
-    }
-
-    open(div) {
-        console.log('opening the door');
-        const newState = 'OPENED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-        return newState;
-    }
-
-    close(div) {
-        console.log('locking the door');
-        const newState = 'LOCKED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-        return newState;
-    }
-
-}
-
-class DoorLocked extends Door {
-    constructor() {
-        super('LOCKED', 'unlock');
-    }
-
-    open(div) {
-        console.log('unlocking the door');
-        const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-        return newState;
-    }
-
-    close(div) {
-        console.log('door are already locked');
-        return this.state;
-    }
 }
