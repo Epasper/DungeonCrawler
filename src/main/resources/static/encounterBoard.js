@@ -15,6 +15,8 @@ function initialize() {
         heroPhysicalBarText.innerHTML = element.physicalShield + `/` + element.maxPhysicalShield;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
+        element.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
+        element.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
         heroDiv.onclick = () => getMovableTiles(element);
     });
 }
@@ -62,6 +64,19 @@ function moveTheHero(currentId) {
     let currentDiv = document.getElementById(heroId);
     currentDiv.src = image;
     currentDiv.style.zIndex = "3";
+    globalSelectedHero.active = false;
+    initiativeOrder.push(initiativeOrder.shift());
+    initiativeOrder[0].active = true;
+    let oldInitiativeDiv = document.getElementById('init|||' + globalSelectedHero.initiative);
+    oldInitiativeDiv.classList.remove("initiative-bar-active");
+    console.log('init|||' + globalSelectedHero.initiative)
+    let newInitiativeDiv = document.getElementById('init|||' + initiativeOrder[0].initiative);
+    newInitiativeDiv.classList.add("initiative-bar-active");
+    console.log('init|||' + initiativeOrder[0].initiative)
+    let hero = heroes
+        .filter(e => e.name === initiativeOrder[0].name)
+        .find(f => f.surname === initiativeOrder[0].surname);
+    hero && (hero.active = true);
     clearTheBoardOfWalkEffects()
     initialize();
 }
