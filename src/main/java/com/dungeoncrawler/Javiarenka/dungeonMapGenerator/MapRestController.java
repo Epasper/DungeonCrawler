@@ -3,8 +3,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class MapRestController
@@ -95,9 +94,11 @@ public class MapRestController
         return tn.getNextTile(service.getPartyManager().getParty().getOccupiedTile(), dir);
     }
 
-    @GetMapping("/openDoor")
+    @GetMapping("/activateDoor")
     public Object[] updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType newType)
     {
+        //TODO: zadbać o sytuację, w której zamykane są drzwi, ale stoimy wewnątrz pokoju.
+
         Object[] outputArray = new Object[2];
         Tile targetTile = service.getStage().getTile(coordX, coordY);
         boolean willRoomChangeState = ((newType.isClosedDoor() && !targetTile.getType().isClosedDoor()) || (!newType.isClosedDoor() && targetTile.getType().isClosedDoor()));
@@ -113,7 +114,11 @@ public class MapRestController
             else
             {
                 room.lockRoomTiles();
-                outputArray[1] = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
+                Map<Integer, Set<Tile>> tmpCascade = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
+                Map<Integer, Set<Tile>> reversedKeyesOrder = new TreeMap<>();
+
+                tmpCascade.keySet().forEach(key -> reversedKeyesOrder.put(tmpCascade.size() - 1 - key, tmpCascade.get(key)));
+                outputArray[1] = reversedKeyesOrder;
             }
         }
         targetTile.setType(newType);

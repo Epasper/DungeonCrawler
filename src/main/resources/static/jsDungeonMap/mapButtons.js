@@ -95,11 +95,14 @@ class DoorOpened extends Door {
         return this.state;
     }
 
-    actionB(div) {
+    async actionB(div) {
         console.log('closing the door');
         const newState = 'CLOSED';
         div.classList.remove(`DOOR_${this.state}`)
         div.classList.add(`DOOR_${newState}`)
+
+        await activateDoorBackend(newState)
+
         return newState;
     }
 
@@ -118,7 +121,7 @@ class DoorClosed extends Door {
         div.classList.remove(`DOOR_${this.state}`)
         div.classList.add(`DOOR_${newState}`)
 
-        await openDoorBackend(newState)
+        await activateDoorBackend(newState)
 
         return newState;
     }
@@ -146,7 +149,7 @@ class DoorLocked extends Door {
         div.classList.remove(`DOOR_${this.state}`)
         div.classList.add(`DOOR_${newState}`)
 
-        await openDoorBackend(newState)
+        await activateDoorBackend(newState)
 
         return newState;
     }
@@ -240,12 +243,13 @@ function deactivateActionMenu() {
     btn2.disabled = true;
 }
 
-async function openDoorBackend(newDoorState) {
+async function activateDoorBackend(newDoorState, descendingOrder = false) {
     const pointedTile = doorOperator.pointedTile;
-    const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
+    const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
     &newType=DOOR_${newDoorState}`);
+    debugger;
     const changedTilesData = roomData[1];
-    if (changedTilesData) animateRoomChange(changedTilesData);
+    if (changedTilesData) animateRoomChange(changedTilesData, descendingOrder);
 }
 
 async function updateActionButton() {
@@ -313,7 +317,7 @@ async function provideDoorActions(pointedTile) {
     //console.log(pointedTile.y);
 
 
-    // const { data: roomData } = await axios.get(`http://localhost:8080/openDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
+    // const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
     //     &newType=DOOR_${doorOperator.current.state}`);
     // const changedTilesData = roomData[1];
     // if (changedTilesData) animateRoomChange(changedTilesData);

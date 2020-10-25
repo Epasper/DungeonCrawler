@@ -585,7 +585,7 @@ public class TileNavigator
 
     public Map<Integer, Set<Tile>> getTouchingTilesCascade(Tile sourceTile, TileType targetType)
     {
-        Map<Integer, Set<Tile>> outputMap = new HashMap<>();
+        Map<Integer, Set<Tile>> outputMap = new TreeMap<>();
         int cascadeCounter = 0;
         Set<Tile> currentCascade;
         Set<Tile> nextCascade = new HashSet<>();

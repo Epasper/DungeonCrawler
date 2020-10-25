@@ -156,7 +156,7 @@ async function drawFogOfWar() {
     // })
 }
 
-export async function animateRoomChange(changedTilesData) {
+export async function animateRoomChange(changedTilesData, descendingOrder = false) {
     const keys = Object.keys(changedTilesData);
     console.log('keys: ', keys);
     const { type: newType } = changedTilesData[0][0];
@@ -183,33 +183,15 @@ export async function animateRoomChange(changedTilesData) {
     console.log(cascades)
 
     for (let i = 0; i < cascades.size; i++) {
-        console.log(cascades.get(`${i}`));
+        let counter = i;
+        if (descendingOrder) counter = cascades.size - 1 - i;
+
+        console.log(cascades.get(`${counter}`));
         setTimeout(function () {
-            cascades.get(`${i}`).forEach(div => {
+            cascades.get(`${counter}`).forEach(div => {
                 div.classList.remove(currentType);
                 div.classList.add(newType);
             })
         }, (i + 1) * 100)
     }
-
-
-
-
-    // setInterval(function () {
-    //     cascades.get(0).forEach(div => {
-    //         div.classList.remove(currentType);
-    //         div.classList.add(newType);
-    //     })
-    //     cascades.delete(0);
-    //     if (cascades.size == 0) clearInterval(this);
-    // }, 1000)
-
-    setTimeout(function () {
-
-    }, 1000)
-    // changedTilesData.forEach(cascade => {
-    //     cascade.forEach(backendTile => {
-    //         console.log(backendTile);
-    //     });
-    // });
 }
