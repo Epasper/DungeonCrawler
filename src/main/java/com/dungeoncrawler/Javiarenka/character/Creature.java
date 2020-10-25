@@ -3,7 +3,7 @@ package com.dungeoncrawler.Javiarenka.character;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Character {
+public abstract class Creature {
 
     private String name;
     private int hp;
@@ -15,6 +15,15 @@ public abstract class Character {
     private int physicalShield;
     private int magicShield;
     private int speed = 3;
+    private int initiative;
+
+    public int getInitiative() {
+        return initiative;
+    }
+
+    public void setInitiative(int initiative) {
+        this.initiative = initiative;
+    }
 
     public int getMaxHp() {
         return maxHp;
@@ -64,12 +73,12 @@ public abstract class Character {
         this.magicShield = magicShield;
     }
 
-    public Character() {
+    public Creature() {
         this.isAlive = true;
         this.allCharacterStatuses = new ArrayList<>();
     }
 
-    public Character(String name, int hp) {
+    public Creature(String name, int hp) {
         this();
         this.name = name;
         this.hp = hp;
@@ -91,7 +100,7 @@ public abstract class Character {
         this.hp = hp;
     }
 
-    public abstract String attack(Character character);
+    public abstract String attack(Creature character);
 
     public boolean isAlive() {
         return isAlive;
@@ -113,5 +122,22 @@ public abstract class Character {
         List<CharacterStatus> statusList = getAllCharacterStatuses();
         return statusList.stream()
                 .anyMatch((CharacterStatus status) -> status.equalsCharacterStatus(statusName));
+    }
+
+    @Override
+    public String toString() {
+        return "Creature{" +
+                "name='" + name + '\'' +
+                ", hp=" + hp +
+                ", maxHp=" + maxHp +
+                ", isAlive=" + isAlive +
+                ", allCharacterStatuses=" + allCharacterStatuses +
+                ", maxPhysicalShield=" + maxPhysicalShield +
+                ", maxMagicShield=" + maxMagicShield +
+                ", physicalShield=" + physicalShield +
+                ", magicShield=" + magicShield +
+                ", speed=" + speed +
+                ", initiative=" + initiative +
+                '}';
     }
 }

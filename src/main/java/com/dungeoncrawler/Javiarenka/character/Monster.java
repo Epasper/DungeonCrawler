@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class Monster extends Character {
+public class Monster extends Creature {
 
     private String race;
     private int damageStrength;
@@ -47,7 +47,7 @@ public class Monster extends Character {
     }
 
     @Override
-    public String attack(Character hero) {
+    public String attack(Creature hero) {
         String message;
         Hero attackedHero = (Hero) hero;
         int dealtDamage = (damageStrength - attackedHero.getEquippedArmor().getDamageReduction());
@@ -94,5 +94,14 @@ public class Monster extends Character {
 
     public void afterDeath(Hero hero) {
         hero.addMundaneItemToBackpack(Objects.requireNonNull(afterDeathItem()));
+    }
+
+    @Override
+    public String toString() {
+        return "Monster{" +
+                "name='" + super.getName() + '\'' +
+                "race='" + race + '\'' +
+                ", damageStrength=" + damageStrength +
+                '}';
     }
 }
