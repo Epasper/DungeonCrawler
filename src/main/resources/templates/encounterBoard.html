@@ -73,7 +73,7 @@
     </div>
     <div class="initiative-bar">
         <th:block th:each="character : ${initiativeOrder}">
-            <div th:text="${character.initiative} + ': ' + ${character.name}"></div>
+            <img th:src="${character.imageLink}"/>
         </th:block>
     </div>
     <div class="skill-bar">

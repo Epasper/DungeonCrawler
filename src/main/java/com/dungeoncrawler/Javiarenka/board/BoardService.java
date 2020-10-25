@@ -40,11 +40,11 @@ public class BoardService {
         Monster testMon1 = new Monster(80, "Goblin", 9);
         Monster testMon2 = new Monster(30, "Animal", 4);
         Monster testMon3 = new Monster(200, "Undead", 15);
-        testMon1.setImageLink("../images/monsters/monster_goblin.jpg");
+        testMon1.setImageLink("../images/monsters/monster_goblinscout.png");
         testMon1.setName("Goblin Warrior");
-        testMon2.setImageLink("../images/monsters/monster_ratling.jpg");
+        testMon2.setImageLink("../images/monsters/monster_ratling.png");
         testMon2.setName("Rat");
-        testMon3.setImageLink("../images/monsters/monster_skeleton.jpg");
+        testMon3.setImageLink("../images/monsters/monster_skeleton.png");
         testMon3.setName("Skeleton Warrior");
         monsters.addAll(List.of(testMon1, testMon2, testMon3));
         prepareTheBoard();
@@ -60,6 +60,14 @@ public class BoardService {
         heroes = partySelectorService.loadSelectedHeroes();
         rollForInitialYCoordinates();
         rollForInitiative();
+        setHeroImages();
+    }
+
+    //todo: change the images from class based to those customized in character creation (after such customization is possible)
+    private void setHeroImages() {
+        for (Hero hero : heroes) {
+            hero.setImageLink("../images/" + hero.getClassName() + ".png");
+        }
     }
 
     private void rollForInitiative() {
