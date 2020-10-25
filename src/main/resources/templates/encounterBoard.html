@@ -12,6 +12,8 @@
         let heroes = [[${heroes}]];
         let tiles = [[${tiles}]];
         document.documentElement.style.setProperty("--height", height);
+
+
     </script>
     <script src="encounterBoard.js"></script>
 </head>
@@ -36,7 +38,8 @@
                              class="health-bar-text"></div>
                     </div>
                     <div class="magic-shield-box">
-                        <button th:onclick="'javascript:testRemoveMagicShield(\'' + ${currentHero} + '\')'"> Hit</button>
+                        <button th:onclick="'javascript:testRemoveMagicShield(\'' + ${currentHero} + '\')'"> Hit
+                        </button>
                         <button th:onclick="'javascript:testAddMagicShield(\'' + ${currentHero} + '\')'"> Heal</button>
                         <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||mshield-red'"
                              class="health-bar-red"></div>
@@ -48,8 +51,10 @@
                              class="magic-bar-text"></div>
                     </div>
                     <div class="physical-shield-box">
-                        <button th:onclick="'javascript:testRemovePhysicalShield(\'' + ${currentHero} + '\')'"> Hit</button>
-                        <button th:onclick="'javascript:testAddPhysicalShield(\'' + ${currentHero} + '\')'"> Heal</button>
+                        <button th:onclick="'javascript:testRemovePhysicalShield(\'' + ${currentHero} + '\')'"> Hit
+                        </button>
+                        <button th:onclick="'javascript:testAddPhysicalShield(\'' + ${currentHero} + '\')'"> Heal
+                        </button>
                         <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-red'"
                              class="health-bar-red"></div>
                         <div th:id="${hero.getName()} + '|||' + ${hero.getSurname()} + '|||pshield-blue'"
@@ -68,7 +73,7 @@
     </div>
     <div class="initiative-bar">
         <th:block th:each="character : ${initiativeOrder}">
-    <div></div>
+            <div th:text="${character.initiative} + ': ' + ${character.name}"></div>
         </th:block>
     </div>
     <div class="skill-bar">
@@ -94,6 +99,8 @@
 </div>
 <script>
     initialize();
+
+
 </script>
 </body>
 </html>

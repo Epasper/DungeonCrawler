@@ -43,9 +43,9 @@ public class BoardService {
         testMon1.setImageLink("../images/monsters/monster_goblin.jpg");
         testMon1.setName("Goblin Warrior");
         testMon2.setImageLink("../images/monsters/monster_ratling.jpg");
-        testMon1.setName("Rat");
+        testMon2.setName("Rat");
         testMon3.setImageLink("../images/monsters/monster_skeleton.jpg");
-        testMon1.setName("Skeleton Warrior");
+        testMon3.setName("Skeleton Warrior");
         monsters.addAll(List.of(testMon1, testMon2, testMon3));
         prepareTheBoard();
     }
