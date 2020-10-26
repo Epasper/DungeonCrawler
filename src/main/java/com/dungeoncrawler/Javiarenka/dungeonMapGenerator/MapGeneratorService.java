@@ -90,12 +90,8 @@ public class MapGeneratorService
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
         rb.lockSomeDoor();
-        rb.closeRooms();
-
-//        TileNavigator tn = new TileNavigator(stage);
-//        tn.getConeOfTiles(stage.getTile(14,27), Direction.UP, 8, 2, 1).forEach(tile -> tile.setType(TileType.DEBUG));
-//        tn.getConeOfTiles(stage.getTile(14,27), Direction.UP, 5, 1, 0).forEach(tile -> tile.setType(TileType.CUTOFF));
-
+        rb.hideRooms();
+//        rb.closeRooms();
 
         setPartyManager(new PartyManager(stage));
         setFogManager(new FogManager(stage));

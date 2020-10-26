@@ -6,6 +6,7 @@ public enum TileType
 {
     WALL("#"),
     ROOM("_", true),
+    ROOM_HIDDEN("@"),
     ROOM_LOCKED("="),
     ROOM_SCANNED("-", true),
     CORRIDOR(" ", true),
@@ -22,7 +23,7 @@ public enum TileType
     OBSTRUCTION("%"),
     CUTOFF("|"),
     EXCLUDED("/"),
-    ERROR("@");
+    ERROR("E");
 
     String strVal;
     private boolean isWalkable = false;

@@ -981,55 +981,6 @@ public class RoomBuilder
         } while (potentialClusteredCorridors.size() > 0);
     }
 
-    public void removeCorridorClusters_backup()
-    {
-        List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
-        List<Tile> clusteredCorridors = allCorridors.stream()
-                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 3)
-                .collect(Collectors.toList());
-
-        clusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
-        //MapGeneratorService.buildDebugSite(stage);
-        //MapGeneratorService.buildDebugSite(stage);
-
-        clusteredCorridors.stream() //wyrzucamy wszystkie skupiska mniejsze niż 4
-                .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() < 4)
-                .forEach(tile -> tile.setType(TileType.CORRIDOR));
-
-        clusteredCorridors.clear();
-        clusteredCorridors.addAll(new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION))));
-        //MapGeneratorService.buildDebugSite(stage);
-        //MapGeneratorService.buildDebugSite(stage);
-
-        clusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
-        List<Tile> removableTiles = new ArrayList<>();
-
-        for (Tile tile : clusteredCorridors)
-        {
-            tile.setType(TileType.OBSTRUCTION);
-            if (tileNav.getUnreachableCorridorTiles().length == 0 && allRoomsAreReachable())
-            {
-                removableTiles.add(tile);
-            }
-            tile.setType(TileType.CORRIDOR);
-        }
-
-
-        if (removableTiles.size() >= 1)
-        {
-            do
-            {
-                removableTiles.get(0).setType(TileType.OBSTRUCTION);
-                //TODO: tu jest chyba bug - nie powinno być !allRoomsAreReachable() ?
-                if (tileNav.getUnreachableCorridorTiles().length > 0 && allRoomsAreReachable())
-                {
-                    removableTiles.get(0).setType(TileType.CORRIDOR);
-                }
-                removableTiles.remove(0);
-            } while (removableTiles.size() > 0);
-        }
-    }
-
     private <E> List toList(E[] inputArray)
     {
         return new ArrayList(Arrays.asList(inputArray));
@@ -1060,5 +1011,10 @@ public class RoomBuilder
     public void closeRooms()
     {
         stage.getRooms().forEach(Room::lockRoomTiles);
+    }
+
+    public void hideRooms()
+    {
+        stage.getRooms().forEach(Room::hideRoom);
     }
 }

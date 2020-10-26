@@ -25,6 +25,7 @@
 }
 
 .WALL,
+.ROOM_HIDDEN,
 .blank,
 .tile-legend {
     background-color: var(--default-tile-color);
