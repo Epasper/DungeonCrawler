@@ -12,7 +12,8 @@
     --highlight-color-default: rgb(100, 160, 100, 0.2);
     --highlight-color-party: rgba(89, 145, 209, 0.2);
     --default-tile-color: rgb(70, 70, 70);
-    --visibility-frame-duration: 100ms;
+    --visibility-frame-duration: 50ms;
+    --fog-color: rgb(35,35,35);
 }
 
 .CORRIDOR {
@@ -107,9 +108,21 @@
     /* display: none; */
     pointer-events: none;
     /* background-color: var(--default-tile-color); */
-    background-color: rgb(30, 30, 30);
-    opacity: 0.99;
+    background-color: var(--fog-color);
+    opacity: 1;
     transition: opacity 1s;
+}
+
+/* .fog-tile.fog-CORRIDOR {
+    background-color: rgb(60,60,60);
+} */
+
+.fog-tile.seen:not(.visible) {
+    opacity: 0.85;
+}
+
+.tile.visible {
+    filter: brightness(1.1);
 }
 
 #container-grid {
@@ -234,11 +247,17 @@
     align-items: center;
     border: 2px solid skyblue;
     background-color: steelblue;
-    transition: 0.25s;
+    transition: transform 0.25s;
     /* pointer-events: none;  */
 }
 
+#party:active {
+    box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.5);
+    background-color: skyblue;
+}
+
 #party:hover {
+    cursor: pointer;
     border: 2px rgb(255, 255, 255) solid;
     box-shadow: 0 0 5px 0px #000;
     transform: scale(1.2);

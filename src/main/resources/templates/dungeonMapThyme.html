@@ -11,6 +11,7 @@
     <script th:inline="javascript">
         const mapHeightThyme = [[${height}]];
         const mapWidthThyme = [[${width}]];
+        const partyVisibilityRadius = [[${radius}]];
     </script>
     <script src="../jsDungeonMap/dungeonMap.js" defer type="module"></script>
     <!-- defer ładuje skrypt dopiero po załadowaniu strony, module umożliwia import/export w JSie-->
@@ -45,7 +46,7 @@
                     th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
                 </div>
                 <!-- th:text="'(' + ${tile.x} + '-' + ${tile.y} + ')'" -->
-                <div th:id="${tile.x} + 'x' + ${tile.y}" th:class="'fog-tile'"
+                <div th:id="${tile.x} + 'x' + ${tile.y}" th:class="'fog-tile ' + 'fog-'+${tile.type} "
                     th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
                 </div>
             </th:block>

@@ -138,7 +138,7 @@ class DoorClosed extends Door {
 
 class DoorLocked extends Door {
     constructor() {
-        super('LOCKED', 'Unlock', 'Bash');
+        super('LOCKED', 'Unlock', 'Lockpick');
         this.actionAisDisabled = false;
         this.actionBisDisabled = false;
     }

@@ -1,4 +1,4 @@
-import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.js'
+import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
 import { actionAByContext, actionBByContext } from './mapButtons.js'
 import { draw } from './mapRender.js'
@@ -88,6 +88,10 @@ async function spawnPartyBackend() {
     // await draw();
     // updateButtons();
 
+    const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
+    corridorFogDivs.forEach(div => div.style.backgroundColor = '');
+
+    await deleteSelection();
     await updateMap();
 }
 
@@ -100,6 +104,7 @@ async function teleportPartyBackend() {
 
     // await draw();
     // updateButtons();
+    await deleteSelection();
     await updateMap();
 }
 
@@ -155,19 +160,7 @@ async function keyPressedMove({ keyCode }) {
     
     document.removeEventListener('keydown', keyPressedMove)
 
-    //TODO: spróbować tu wsadzić jakiegoś ifa, sprawdzającego czy już pętla się skończyła
-    
-    
-    // console.log(`*** DISPATCHING CLICK ***`)
-    //await dirBtn.dispatchEvent(new Event('click'));
     await movePartyOneStepBackend({target: dirBtn})
-    // console.log(`*** DISPATCHED CLICK ***`)
-
-
-
-    
-
-    
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);

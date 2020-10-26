@@ -61,10 +61,18 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     const message = `Tile: ${tileId} (${tileType}) has been de-selected!`;
     await axios.get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`);
 
-    updateButtons();
+    await updateButtons();
+    await deleteSelection(clickedSelectionDiv);
+
+    // selectedGridTileDiv = null;
+    // idMap.delete(clickedSelectionDiv.id);
+    // clickedSelectionDiv.remove();
+}
+
+export async function deleteSelection(selectionDiv = getMappedElementById('selection')) {
     selectedGridTileDiv = null;
-    idMap.delete(clickedSelectionDiv.id);
-    clickedSelectionDiv.remove();
+    idMap.delete(selectionDiv.id);
+    selectionDiv.remove();
 }
 
 export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {

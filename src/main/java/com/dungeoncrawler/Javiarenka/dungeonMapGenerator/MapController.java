@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +42,7 @@ public class MapController
         model.addAttribute("rowNumbers", rowNumbers);
         model.addAttribute("width", stage.getWidth());
         model.addAttribute("height", stage.getHeight());
+        model.addAttribute("radius", FogSettings.FULL_VISIBILITY_RADIUS + 1);
 
         return "dungeonMapThyme";
     }

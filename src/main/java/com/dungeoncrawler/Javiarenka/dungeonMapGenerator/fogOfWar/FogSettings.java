@@ -11,6 +11,7 @@ public class FogSettings
     public static final double RAYTRACE_BENT_FADE_MULTIPLIER = 2.5;
     public static final double RAYTRACE_FADE = 10;
     public static final double INITIAL_ADDITIONAL_RAYTRACE_INTENSITY = 50;
+    public static final double MIN_VISIBILITY_IF_SEEN = 0.2;
 
 
 

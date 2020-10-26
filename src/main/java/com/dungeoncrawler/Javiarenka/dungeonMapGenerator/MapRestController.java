@@ -150,6 +150,7 @@ public class MapRestController
         outputMap.put("currentlyVisibleTiles", service.getFogManager().currentlyVisibleTiles);
         outputMap.put("tilesSortedByDistance", tilesWithDistancesSorted.keySet());
         outputMap.put("distancesSorted", tilesWithDistancesSorted.values());
+        outputMap.put("newlySeenTiles", service.getFogManager().getNewlySeenTiles());
 
 //        outputArr[2] = tilesWithDistances.keySet();
 //        outputArr[3] = tilesWithDistances.values();

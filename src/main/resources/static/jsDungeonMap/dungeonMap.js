@@ -15,13 +15,18 @@ if (document.readyState == "loading") {
 async function ready() {
     // getMapObject()
     mapUniqueIDsWithTheirElements();
-
     adaptGrids()
     injectTileListeners()
     injectButtonsListeners()
+    makeCorridorsTemoraryVisible()
     await updateMap();
     // await draw()
     // updateButtons()
+}
+
+function makeCorridorsTemoraryVisible() {
+    const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
+    corridorFogDivs.forEach(div => div.style.backgroundColor = 'rgb(50,50,100');
 }
 
 export async function updateMap() {

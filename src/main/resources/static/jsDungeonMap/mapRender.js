@@ -203,9 +203,14 @@ async function drawFogOfWar() {
 
     const previouslyShownTiles = response.data['previouslyVisibleTiles'];
     const newlyShownTiles = response.data['currentlyVisibleTiles'];
-
     const visibleTilesSortedByDistance = response.data['tilesSortedByDistance'];
     const distancesSorted = response.data['distancesSorted'];
+    const newlySeenTiles = response.data['newlySeenTiles'];
+
+    newlySeenTiles.forEach(tile => {
+        let fogDiv = getDivFromBackendTile(tile, 'x');
+        fogDiv.classList.add('seen');
+    })
 
     //const tilesWithDistances = new Map();
 
@@ -216,9 +221,11 @@ async function drawFogOfWar() {
     const frameDuration = parseInt(window.getComputedStyle(root).getPropertyValue(`--visibility-frame-duration`));
     debugger;
 
+    
     visibleTilesSortedByDistance.forEach(tile => {
         let fogDiv = getDivFromBackendTile(tile, 'x');
-        let distance = distancesSorted[i] - 1;
+        let distance = distancesSorted[i] - partyVisibilityRadius;
+        distance = distance < 0 ? 0 : distance;
         let distFunction = distance * 1;
         fogDiv.style.transitionDelay = `${distFunction * frameDuration}ms`
         i++;
@@ -226,13 +233,19 @@ async function drawFogOfWar() {
 
     previouslyShownTiles.forEach(tile => {
         let fogDiv = getDivFromBackendTile(tile, 'x');
+        let mapDiv = getDivFromBackendTile(tile);
         fogDiv.style.transitionDelay = '';
         fogDiv.style.opacity = '';
+        fogDiv.classList.remove('visible');
+        mapDiv.classList.remove('visible');
     })
 
     newlyShownTiles.forEach(tile => {
         let fogDiv = getDivFromBackendTile(tile, 'x');
+        let mapDiv = getDivFromBackendTile(tile);
         fogDiv.style.opacity = 1 - tile.visibility;
+        fogDiv.classList.add('visible');
+        mapDiv.classList.add('visible');
     })
 
 }

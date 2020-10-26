@@ -6,6 +6,7 @@ public class Tile
     private int y;
     private double visibility = 0;
     private boolean occupied = false;
+    private boolean alreadySeen = false;
     private TileType type;
     //private HashMap<String,mapGenerator.Tile> surroundingTiles;
 
@@ -54,6 +55,16 @@ public class Tile
     public void setOccupied(boolean occupied)
     {
         this.occupied = occupied;
+    }
+
+    public boolean wasAlreadySeen()
+    {
+        return alreadySeen;
+    }
+
+    public void setAlreadySeen()
+    {
+        this.alreadySeen = true;
     }
 
     public String getIdString()

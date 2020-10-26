@@ -30,11 +30,8 @@ public class FogManager
     public List<Tile> currentlyVisibleTiles = new ArrayList<>();
     public Map<Tile, Double> currentlyVisibleTilesByDistance = new LinkedHashMap<>();
 
-    private List<Tile> tilesToShowInstant = new ArrayList<>();
-    private List<Tile> tilesToHideInstant = new ArrayList<>();
-    private Map<Double, Tile> tilesToShowAnimated = new LinkedHashMap<>();
-    private Map<Double, Tile> tilesToHideAnimated = new LinkedHashMap<>();
-
+    private Set<Tile> alreadySeenTiles = new HashSet<>();
+    private Set<Tile> newlySeenTiles = new HashSet<>();
 
 
     public FogManager(Stage stage)
@@ -52,6 +49,11 @@ public class FogManager
     {
         this.party = party;
         updateVisibility();
+    }
+
+    public Set<Tile> getNewlySeenTiles()
+    {
+        return newlySeenTiles;
     }
 
     //==============================================================================================
@@ -74,10 +76,17 @@ public class FogManager
         evaluatePartyVisibilityCircle();
         currentlyVisibleTiles.addAll(circleLitTiles);
 
+        sendRays();
+        currentlyVisibleTiles.addAll(raytracedTiles);
+
         Set<Tile> newlyShownTiles = new HashSet<>(currentlyVisibleTiles);
         sortByDistanceToParty(newlyShownTiles).forEach(tile -> currentlyVisibleTilesByDistance.put(tile, getDistanceToParty(tile)));
-        System.out.println("currently vis: " + currentlyVisibleTiles.size());
-        System.out.println("currently vis with distance: " + currentlyVisibleTilesByDistance.size());
+
+        newlySeenTiles = currentlyVisibleTiles.stream()
+                .filter(tile -> !alreadySeenTiles.contains(tile))
+                .collect(Collectors.toSet());
+        newlySeenTiles.forEach(Tile::setAlreadySeen);
+        alreadySeenTiles.addAll(newlySeenTiles);
     }
 
     public void updateVisibility2()
@@ -281,14 +290,28 @@ public class FogManager
         {
             if (newVisibility > litTile.getVisibility())
             {
-                litTile.setVisibility(newVisibility);
+                if (alreadySeenTiles.contains(litTile))
+                {
+                    litTile.setVisibility(Math.max(newVisibility, FogSettings.MIN_VISIBILITY_IF_SEEN));
+                }
+                else
+                {
+                    litTile.setVisibility(newVisibility);
+                }
                 return true;
             }
             return false;
         }
         else
         {
-            litTile.setVisibility(newVisibility);
+            if (alreadySeenTiles.contains(litTile))
+            {
+                litTile.setVisibility(Math.max(newVisibility, FogSettings.MIN_VISIBILITY_IF_SEEN));
+            }
+            else
+            {
+                litTile.setVisibility(newVisibility);
+            }
             return true;
         }
     }
