@@ -1,4 +1,4 @@
-import { getMappedElementById, idMap} from './dungeonMap.js'
+import { getMappedElementById, idMap } from './dungeonMap.js'
 import { addParty, party } from './partyManager.js'
 import { getDivFromBackendTile, getX, getY } from './mapSelection.js'
 
@@ -23,7 +23,7 @@ async function drawParty() {
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
     console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
     //debugger;
-    
+
 
     //if (dir) party.direction = directions[dir];
 
@@ -54,7 +54,7 @@ async function drawParty() {
     partyTile.style.gridColumn = `${xCoord + 1}`;
 
     const standingTileDiv = getDivFromBackendTile(backendParty.occupiedTile);
-    
+
     // const grid = document.getElementById('grid');
     // grid.appendChild(partyTile);
 
@@ -67,7 +67,7 @@ async function drawParty() {
     if (standingTileDiv) party.standingTileDiv = standingTileDiv;
 }
 
-function animatePartyRotation(partyImg, dir){
+function animatePartyRotation(partyImg, dir) {
     let standardAnimationDuration = 0.1;
     const longerAnimationMultiplier = 2.5;
 
@@ -116,17 +116,50 @@ function animatePartyRotation(partyImg, dir){
     }
 }
 
-async function drawFogOfWar() {
+function animateFogChange() {
+
+}
+
+async function drawFogOfWarbackup() {
+
+    if (!party) return;
 
     console.log(`---DRAWING FOG START---`)
     const response = await axios.get(`http://localhost:8080/getVisibilityData`);
     console.log(`---DRAWING FOG after await---`)
-    const visibilityData = response.data;
+
+    const newlyShownTiles = response.data[1];
+    const newlyHiddenTiles = response.data[2];
+    const raytracedTiles = response.data[3];
+
+
+
+    const visibilityData = response.data[0];
     let fogDiv;
     let visibleFogDivs = [];
     let hiddenCounter = 0;
     let shownCounter = 0;
     //console.log(visibilityData)
+
+    console.log('newly show tiles: ', newlyShownTiles)
+    let distances = Object.keys(newlyShownTiles);
+    distances.forEach(distance => {
+        let fogDiv = getDivFromBackendTile(newlyShownTiles[distance], 'x');
+        console.log('figDiv: ', fogDiv);
+        //fogDiv.style.transitionDelay = (`${distance / 10}s`)
+    })
+
+    // newlyShownTiles.forEach(tile => {
+    //     fogDiv = getDivFromBackendTile(tile, 'x');
+    //     fogDiv.style.opacity = 1 - tile.visibility;
+    //     fogDiv.classList.add('visible');
+    // })
+
+    // newlyHiddenTiles.forEach(tile => {
+    //     fogDiv = getDivFromBackendTile(tile, 'x');
+    //     fogDiv.style.opacity = '';
+    //     fogDiv.classList.remove('visible');
+    // })
 
     visibilityData.forEach(tile => {
         //console.log(tile);
@@ -144,7 +177,11 @@ async function drawFogOfWar() {
         }
     });
 
-    
+    raytracedTiles.forEach(tile => {
+        getDivFromBackendTile(tile, 'x').style.backgroundColor = 'red';
+        getDivFromBackendTile(tile, 'x').style.opacity = '0.8';
+    })
+
     //TODO: uncomment below to avoid bugs with drawing fog of war, when events are triggered too quickly (but slows down site)
     // let visibleTiles = Array.from(document.getElementsByClassName('visible'));
     // visibleTiles.forEach(fDiv => {
@@ -154,6 +191,50 @@ async function drawFogOfWar() {
     //         fogDiv.classList.remove('visible');
     //     }
     // })
+}
+
+async function drawFogOfWar() {
+
+    if (!party) return;
+
+    console.log(`---DRAWING FOG START---`)
+    const response = await axios.get(`http://localhost:8080/getVisibilityData`, { responseType: 'json' });
+    console.log(`---DRAWING FOG after await---`)
+
+    const previouslyShownTiles = response.data['previouslyVisibleTiles'];
+    const newlyShownTiles = response.data['currentlyVisibleTiles'];
+
+    const visibleTilesSortedByDistance = response.data['tilesSortedByDistance'];
+    const distancesSorted = response.data['distancesSorted'];
+
+    //const tilesWithDistances = new Map();
+
+    console.log('newly shown tiles: ', newlyShownTiles);
+
+    let i = 0;
+    let root = document.documentElement;
+    const frameDuration = parseInt(window.getComputedStyle(root).getPropertyValue(`--visibility-frame-duration`));
+    debugger;
+
+    visibleTilesSortedByDistance.forEach(tile => {
+        let fogDiv = getDivFromBackendTile(tile, 'x');
+        let distance = distancesSorted[i] - 1;
+        let distFunction = distance * 1;
+        fogDiv.style.transitionDelay = `${distFunction * frameDuration}ms`
+        i++;
+    })
+
+    previouslyShownTiles.forEach(tile => {
+        let fogDiv = getDivFromBackendTile(tile, 'x');
+        fogDiv.style.transitionDelay = '';
+        fogDiv.style.opacity = '';
+    })
+
+    newlyShownTiles.forEach(tile => {
+        let fogDiv = getDivFromBackendTile(tile, 'x');
+        fogDiv.style.opacity = 1 - tile.visibility;
+    })
+
 }
 
 export async function animateRoomChange(changedTilesData, descendingOrder = false) {

@@ -18,7 +18,9 @@ public class TileNavigator
         int verticalDistance = Math.abs(baseTile.getY() - distantTile.getY());
 
         double distance = Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance);
-        return distance;
+        double distanceRounded = Math.round(distance * 100) / 100.0;
+        //return distance;
+        return distanceRounded;
     }
 
     public Tile getNextTile(Tile tile, Direction dir)
@@ -201,7 +203,7 @@ public class TileNavigator
         {
             List<Tile> currentLevelTiles = new ArrayList<>();
             Tile midTile = getNextTile(sourceTile, dir, level);
-            if(level > 0 && midTile.equals(sourceTile)) break;  //kiedy stożek wychodzi poza planszę
+            if (level > 0 && midTile.equals(sourceTile)) break;  //kiedy stożek wychodzi poza planszę
 
             int halfConeWidth = (int) (level * coneWideningRatio + initialWideningValue) + 1;
             halfConeWidth = Math.min(halfConeWidth, range + 1);

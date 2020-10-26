@@ -61,18 +61,23 @@ public class Tile
         return (x + "-" + y);
     }
 
-    @Override
-    public String toString()
+//    @Override
+//    public String toString()
+//    {
+//        return (this.type.strVal);
+//    }
+
+    public String getStringVal()
     {
         return (this.type.strVal);
     }
 
     public void printInfo()
     {
-        System.out.println("(" + x + "," + y + "): " + toString()) ;
+        System.out.println("(" + x + "," + y + "): " + getStringVal()) ;
     }
 
-    public String toString(boolean complex)
+    public String getStringVal(boolean complex)
     {
         return (x + this.type.strVal + y + " ");
     }
@@ -96,5 +101,10 @@ public class Tile
     public boolean isWalkable()
     {
         return type.isWalkable() && !isOccupied();
+    }
+
+    public void makeNotVisible()
+    {
+        this.visibility = 0;
     }
 }

@@ -127,10 +127,34 @@ public class MapRestController
         return outputArray;
     }
 
+//    @GetMapping("/getVisibilityData")
+//    public List<Tile> getVisibleTiles()
+//    {
+//        return service.getFogManager().getAllTilesThatChangedVisibility();
+//    }
+
     @GetMapping("/getVisibilityData")
-    public List<Tile> getVisibleTiles()
+    public Map<String, Object> getVisibleTiles()
     {
-        return service.getFogManager().getTilesThatChangedVisibility();
+
+        Map<String, Object> outputMap = new TreeMap<>();
+
+//        outputArr[0] = service.getFogManager().getAllTilesThatChangedVisibility();
+//        outputArr[1] = service.getFogManager().getNewlyShownTilesToAnimate();
+//        outputArr[2] = service.getFogManager().getNewlyHiddenTilesToAnimate();
+//        outputArr[3] = service.getFogManager().raytracedTiles;
+
+        Map<Tile, Double> tilesWithDistancesSorted = service.getFogManager().currentlyVisibleTilesByDistance;
+
+        outputMap.put("previouslyVisibleTiles", service.getFogManager().previouslyVisibleTiles);
+        outputMap.put("currentlyVisibleTiles", service.getFogManager().currentlyVisibleTiles);
+        outputMap.put("tilesSortedByDistance", tilesWithDistancesSorted.keySet());
+        outputMap.put("distancesSorted", tilesWithDistancesSorted.values());
+
+//        outputArr[2] = tilesWithDistances.keySet();
+//        outputArr[3] = tilesWithDistances.values();
+
+        return outputMap;
     }
 
     @GetMapping("saveMap")

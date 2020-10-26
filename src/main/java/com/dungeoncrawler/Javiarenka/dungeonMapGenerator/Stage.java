@@ -233,7 +233,7 @@ public class Stage
 
         for (int i = 0; i < width; i++)
         {
-            sb.append(row[i].toString());
+            sb.append(row[i].getStringVal());
         }
         return sb.toString();
     }
@@ -245,7 +245,7 @@ public class Stage
 
         for (int i = 0; i < height; i++)
         {
-            sb.append(column[i].toString()).append("\n");
+            sb.append(column[i].getStringVal()).append("\n");
         }
         return sb.toString();
     }
