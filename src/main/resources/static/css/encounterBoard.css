@@ -9,11 +9,36 @@ img {
 }
 
 body {
-    background-image: url("../images/encounterBackground.png");
+    background-image: url("../images/encounterBackground.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 0.5fr 3fr 0.5fr;
+    grid-template-rows: 0.5fr 3fr 0.5fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "initiative-bar initiative-bar initiative-bar"
+        "hero-portraits board monster-portraits"
+        "hero-portraits skill-bar monster-portraits";
+}
+
+.monster-portraits {
+    grid-area: monster-portraits;
+}
+
+.hero-portraits {
+    grid-area: hero-portraits;
+}
+
+.board {
+    grid-area: board;
+}
+
+
 
 .inner-container {
     position: relative;
@@ -164,7 +189,7 @@ body {
     margin: 5px;
 }
 
-.grid-container {
+/* .grid-container {
     display: grid;
     grid-template-columns: 0.5fr 3fr 0.5fr;
     grid-template-rows: 0.5fr 3fr 0.5fr;
@@ -173,7 +198,7 @@ body {
         "initiative-bar initiative-bar initiative-bar"
         "hero-portraits board monster-portraits"
         "hero-portraits skill-bar monster-portraits";
-}
+} */
 
 .initiative-bar {
     grid-area: initiative-bar;
@@ -183,7 +208,7 @@ body {
     z-index: 10;
 }
 
-.monster-portraits {
+/* .monster-portraits {
     grid-area: monster-portraits;
 }
 
@@ -195,9 +220,10 @@ body {
     grid-area: board;
 }
 
-.skill-bar {
+.skill-bar-container {
     grid-area: skill-bar;
-}
+} */
+
 
 .initiative-bar-box {
     background-color: white;
@@ -210,23 +236,53 @@ body {
     transition: 0.2s;
 }
 
-.initiative-bar-box:hover{
+.initiative-bar-box:hover {
     height: 150px;
 }
 
-.initiative-bar-active{
+.initiative-bar-active {
     background-color: lightgreen;
 }
 
-.inactive-creature{
+.inactive-creature {
     filter: grayscale(100%);
 }
 
 .active-creature {
     animation: active 0.8s alternate infinite ease-in;
-  }
-  
-  @keyframes active {
-    0%   {transform: scale(.9);}
-    100% {transform: scale(1.1);}
-  }
+}
+
+.skill-bar-container {
+    grid-area: skill-bar;
+    position: relative;
+}
+
+.skill-bar {
+    grid-area: skill-bar;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* bottom: -12%; */
+}
+
+.single-skill {
+    display: inline;
+    z-index: 10;
+    /* bottom: -12%; */
+}
+
+.skill-bar img {
+    width: 130px;
+    height: auto;
+    z-index: 10;
+}
+
+@keyframes active {
+    0% {
+        transform: scale(.9);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
+}
