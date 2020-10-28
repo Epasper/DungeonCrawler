@@ -257,10 +257,31 @@ public class Stage
 
     public Room getRoomByDoor(Tile givenDoorTile)
     {
+        if (!givenDoorTile.getType().isDoor()) return null;
+
         return rooms.stream()
                 .filter(room -> room.getDoor().equals(givenDoorTile))
                 .collect(Collectors.toList())
                 .get(0);
+    }
+
+    public Room getRoomByTile(Tile givenRoomTile)
+    {
+        if (!givenRoomTile.getType().isRoom() && !givenRoomTile.getType().isDoor()) return null;
+
+        Room outputRoom = null;
+
+        for (Room room : rooms)
+        {
+            List<Tile> innerRoomTiles = room.getRoomInnerTiles();
+            innerRoomTiles.add(room.getDoor());
+            if (innerRoomTiles.contains(givenRoomTile))
+            {
+                outputRoom = room;
+                break;
+            }
+        }
+        return outputRoom;
     }
 
     public void printRow(int rowNumber)

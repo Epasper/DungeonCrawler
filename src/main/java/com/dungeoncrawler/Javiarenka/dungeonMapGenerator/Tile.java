@@ -8,10 +8,6 @@ public class Tile
     private boolean occupied = false;
     private boolean alreadySeen = false;
     private TileType type;
-    //private HashMap<String,mapGenerator.Tile> surroundingTiles;
-
-    //TODO: dodać pole 'visited' które będzie true, jeśli dane pole było w zasięgu widoczności
-    // chodzi o to, żeby po obuszczeniu danego miejsca, nie znikało ono całkowicie w fog-of-war
 
     Tile()
     {
@@ -85,7 +81,7 @@ public class Tile
 
     public void printInfo()
     {
-        System.out.println("(" + x + "," + y + "): " + getStringVal()) ;
+        System.out.println("(" + x + "," + y + "): " + getStringVal());
     }
 
     public String getStringVal(boolean complex)
@@ -105,8 +101,19 @@ public class Tile
 
     public void setVisibility(double visibility)
     {
-//        this.visibility = visibility;
         this.visibility = Math.min(1, visibility);
+    }
+
+    public void setVisibility(double visibility, boolean onlyIfBigger)
+    {
+        if (onlyIfBigger)
+        {
+            if (visibility > this.visibility) setVisibility(visibility);
+        }
+        else
+        {
+            setVisibility(visibility);
+        }
     }
 
     public boolean isWalkable()

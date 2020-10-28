@@ -15,7 +15,6 @@ export function injectTileListeners() {
     for (var tile of tiles) {
         tile.addEventListener('click', tileClicked);
         tile.addEventListener('mouseenter', tileMouseEntered);
-        //tile.addEventListener('mouseleave', tileMouseLeft);
     }
     mapGrid.addEventListener('mouseleave', tileMouseLeft);
 }
@@ -43,7 +42,6 @@ export function injectButtonsListeners() {
         mvBtn.addEventListener('click', movePartyOneStepBackend);
     });
     document.addEventListener('keydown', keyPressedMove);
-    // document.addEventListener('keyup', keyPressedMove);
 
     let saveBtn = getMappedElementById('save-btn')
     saveBtn.addEventListener('click', requestMapSave)
@@ -57,7 +55,6 @@ async function requestMapSave() {
 }
 
 async function requestMapLoad() {
-    //await axios.get(`http://localhost:8080/loadMap`)
     window.location.replace(`http://localhost:8080/loadMap`)
 }
 
@@ -68,25 +65,13 @@ function makeAction() {
     console.log('DOOOOOOOOOOOOOOOOOOOOOR');
 }
 
-function makeActionA() {
-
-}
-
-function makeActionB() {
-
-}
-
 async function spawnPartyBackend() {
     let coordX = getX(selectedGridTileDiv)
     let coordY = getY(selectedGridTileDiv)
 
-    //Axios method:
     const response = await axios.get(`http://localhost:8080/spawnParty?coordX=${coordX}&coordY=${coordY}`);
     const backendParty = response.data;
     console.log('spawn: ', backendParty)
-
-    // await draw();
-    // updateButtons();
 
     const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
     corridorFogDivs.forEach(div => div.style.backgroundColor = '');
@@ -102,34 +87,20 @@ async function teleportPartyBackend() {
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
-    // await draw();
-    // updateButtons();
     await deleteSelection();
     await updateMap();
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
-    //console.log(clickedMoveButton);
-    // console.log('   ')
-    // console.log('INSIDE click EVENT function')
     let [dir] = clickedMoveButton.id.split('-').slice(-1)
     dir = dir.toUpperCase();
-    //console.log(direction);
-    //debugger;
-    //party.direction = directions[dir]
+
     await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
 
     party.direction = directions[dir];
-
-    // await draw();
-    // updateButtons();
-
     partyMoveCounter++;
-    // console.log('Party moved BEFORE ---', partyMoveCounter, '--- times.')
+
     await updateMap();
-    // console.log('Party moved AFTER ---', partyMoveCounter, '--- times.')
-    // console.log('AT THE END of click EVENT function')
-    // console.log('   ')
 }
 
 async function keyPressedMove({ keyCode }) {
@@ -164,7 +135,6 @@ async function keyPressedMove({ keyCode }) {
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);
-    //console.log(btnClasses);
     let tempActiveEmulationClassName = ''
     if (btnClasses.some(className => { return className.includes('blocked') })) {
         tempActiveEmulationClassName = 'move-button-blocked-active';
@@ -190,12 +160,9 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     const { data: clickedTileBackend3 } = await axios
         .get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`)
-    // console.log(clickedTileBackend3);
 
     makeSelection(clickedTileDiv, mapGrid)
 
-    // await draw()
-    // updateButtons()
     await updateMap();
 }
 
@@ -209,10 +176,9 @@ function tileMouseLeft({ target: exitedTileDiv }) {
 }
 
 function showCrossHighlightElements(centerDivElement, colorIdentifier) {
-    //debugger;
     let root = document.documentElement;
     let cssColor = window.getComputedStyle(root).getPropertyValue(`--highlight-color-${colorIdentifier}`);
-    //console.log(cssColor);
+
     root.style.setProperty('--highlight-color', cssColor);
 
     let rowElement = getMappedElementById('cross-highlight-row');

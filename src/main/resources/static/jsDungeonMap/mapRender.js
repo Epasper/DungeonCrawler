@@ -197,6 +197,9 @@ async function drawFogOfWar() {
 
     if (!party) return;
 
+    console.log('=============================== DRAWING FOG ====================================');
+    debugger;
+
     console.log(`---DRAWING FOG START---`)
     const response = await axios.get(`http://localhost:8080/getVisibilityData`, { responseType: 'json' });
     console.log(`---DRAWING FOG after await---`)
@@ -219,8 +222,6 @@ async function drawFogOfWar() {
     let i = 0;
     let root = document.documentElement;
     const frameDuration = parseInt(window.getComputedStyle(root).getPropertyValue(`--visibility-frame-duration`));
-    debugger;
-
     
     visibleTilesSortedByDistance.forEach(tile => {
         let fogDiv = getDivFromBackendTile(tile, 'x');
@@ -248,11 +249,12 @@ async function drawFogOfWar() {
         mapDiv.classList.add('visible');
     })
 
+    console.log('=============================== STOP DRAWING FOG ====================================');
 }
 
 export async function animateRoomChange(changedTilesData, descendingOrder = false) {
     const keys = Object.keys(changedTilesData);
-    console.log('keys: ', keys);
+    //console.log('keys: ', keys);
     const { type: newType } = changedTilesData[0][0];
     const currentType = (newType == 'ROOM') ? 'ROOM_LOCKED' : 'ROOM';
     let roomDiv;
@@ -262,10 +264,9 @@ export async function animateRoomChange(changedTilesData, descendingOrder = fals
         let cascade = changedTilesData[key];
         let divs = [];
         cascade.forEach(backendTile => {
-            console.log(backendTile);
+            //console.log(backendTile);
             roomDiv = getDivFromBackendTile(backendTile);
-            console.log(roomDiv);
-
+            //console.log(roomDiv);
             divs.push(roomDiv);
             ////roomDiv.classList.remove(currentType);
             ////roomDiv.classList.add(newType);
@@ -274,13 +275,13 @@ export async function animateRoomChange(changedTilesData, descendingOrder = fals
 
     });
 
-    console.log(cascades)
+    //console.log(cascades)
 
     for (let i = 0; i < cascades.size; i++) {
         let counter = i;
         if (descendingOrder) counter = cascades.size - 1 - i;
 
-        console.log(cascades.get(`${counter}`));
+        //console.log(cascades.get(`${counter}`));
         setTimeout(function () {
             cascades.get(`${counter}`).forEach(div => {
                 div.classList.remove(currentType);

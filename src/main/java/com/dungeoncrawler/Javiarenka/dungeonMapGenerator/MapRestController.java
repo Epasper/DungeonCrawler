@@ -49,7 +49,7 @@ public class MapRestController
     {
         PartyManager pm = service.getPartyManager();
         pm.teleportParty(coordX, coordY);
-        service.getFogManager().updateVisibility();
+        //////service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/stepParty")
@@ -64,7 +64,7 @@ public class MapRestController
         {
             System.out.println("Party turned: " + dir);
         }
-        service.getFogManager().updateVisibility();
+        //////service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/getParty")
@@ -132,6 +132,8 @@ public class MapRestController
     {
         Map<String, Object> outputMap = new TreeMap<>();
         Map<Tile, Double> tilesWithDistancesSorted = service.getFogManager().currentlyVisibleTilesByDistance;
+
+        service.getFogManager().updateVisibility();
 
         outputMap.put("previouslyVisibleTiles", service.getFogManager().previouslyVisibleTiles);
         outputMap.put("currentlyVisibleTiles", service.getFogManager().currentlyVisibleTiles);

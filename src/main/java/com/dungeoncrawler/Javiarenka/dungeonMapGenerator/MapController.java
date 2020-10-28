@@ -17,7 +17,6 @@ public class MapController
 {
 
     //TODO: w prawym dolnym rogu przycisk "Menu" z wysuwanym menu -> savegame / loadgame / etc.
-    // spawn party przesunąć w miejsce Move Party i niech znika po zespawnowaniu
 
     //TODO: zamiast tworzyć Divy selekcji i Party Javascriptem - niech będą od początku w htmlu, a JS niech zarządza tylko ich wyświetlaniem
 

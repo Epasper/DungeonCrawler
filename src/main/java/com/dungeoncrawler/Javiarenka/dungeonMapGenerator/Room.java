@@ -113,6 +113,13 @@ public class Room extends Stage
                 .collect(Collectors.toList());
     }
 
+    public List<Tile> getWallTiles()
+    {
+        List<Tile> wallTiles = new ArrayList<>();
+        Arrays.stream(walls).forEach(wall -> wallTiles.addAll(Arrays.asList(wall.getWallTiles())));
+        return wallTiles.stream().distinct().collect(Collectors.toList());
+    }
+
     public void hideRoom()
     {
         getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM_HIDDEN));

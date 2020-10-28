@@ -5,16 +5,16 @@ import { animateRoomChange } from './mapRender.js'
 
 class ActionsManager {
     constructor() {
-        this.actionA = () => { };
-        this.actionB = () => { };
+        this.actionA = async () => { };
+        this.actionB = async () => { };
     }
 
-    performActionA() {
-        this.actionA();
+    async performActionA() {
+        await this.actionA();
     }
 
-    performActionB() {
-        this.actionB();
+    async performActionB() {
+        await this.actionB();
     }
 }
 
@@ -41,18 +41,18 @@ class DoorOperator {
         this.current = this.states[index];
     }
 
-    actionA() {
+    async actionA() {
         console.log('ACTION A from DoorOperator');
         console.log(this);
         console.log(this.current);
-        this.changeState(this.current.actionA(this.div));
+        this.changeState(await this.current.actionA(this.div));
     }
 
-    actionB() {
+    async actionB() {
         console.log('ACTION B from DoorOperator');
         console.log(this);
         console.log(this.current);
-        this.changeState(this.current.actionB(this.div));
+        this.changeState(await this.current.actionB(this.div));
     }
 
     changeState(targetState) {
@@ -63,10 +63,6 @@ class DoorOperator {
     giveButtonAnAction(btnElement, actionLetter) {
         btnElement.textContent = this.current[`action${actionLetter}Prompt`];
         btnElement.disabled = this.current[`action${actionLetter}isDisabled`];
-        // var funct = this[`action${actionLetter}`];
-        // console.log('function: ', funct);
-        // btnElement.addEventListener('click', funct);
-        // btnElement.addEventListener('click', this.actionA);
     }
 }
 
@@ -89,8 +85,7 @@ class DoorOpened extends Door {
         this.actionBisDisabled = false;
     }
 
-
-    actionA(div) {
+    async actionA(div) {
         console.log('door already opened');
         return this.state;
     }
@@ -102,10 +97,8 @@ class DoorOpened extends Door {
         div.classList.add(`DOOR_${newState}`)
 
         await activateDoorBackend(newState)
-
         return newState;
     }
-
 }
 
 class DoorClosed extends Door {
@@ -122,11 +115,10 @@ class DoorClosed extends Door {
         div.classList.add(`DOOR_${newState}`)
 
         await activateDoorBackend(newState)
-
         return newState;
     }
 
-    actionB(div) {
+    async actionB(div) {
         console.log('locking the door');
         const newState = 'LOCKED';
         div.classList.remove(`DOOR_${this.state}`)
@@ -150,11 +142,10 @@ class DoorLocked extends Door {
         div.classList.add(`DOOR_${newState}`)
 
         await activateDoorBackend(newState)
-
         return newState;
     }
 
-    actionB(div) {
+    async actionB(div) {
         console.log('bashing the door');
         return this.state;
     }
@@ -244,12 +235,15 @@ function deactivateActionMenu() {
 }
 
 async function activateDoorBackend(newDoorState, descendingOrder = false) {
+    console.log('======================= ACTIVATE DOOR BACKEND ==========================');
+    //debugger;
+
     const pointedTile = doorOperator.pointedTile;
     const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
     &newType=DOOR_${newDoorState}`);
-    debugger;
     const changedTilesData = roomData[1];
-    if (changedTilesData) animateRoomChange(changedTilesData, descendingOrder);
+    if (changedTilesData) await animateRoomChange(changedTilesData, descendingOrder);
+    console.log('======================= STOP DOOR BACKEND ==========================');
 }
 
 async function updateActionButton() {
@@ -284,13 +278,13 @@ async function updateActionButton() {
 
 export async function actionAByContext() {
     // doorOperator.actionA();
-    actionsManager.performActionA();
+    await actionsManager.performActionA();
     await updateMap();
 }
 
 export async function actionBByContext() {
     // doorOperator.actionB();
-    actionsManager.performActionB();
+    await actionsManager.performActionB();
     await updateMap();
 }
 
@@ -304,23 +298,8 @@ async function provideDoorActions(pointedTile) {
     doorOperator.giveButtonAnAction(action1Btn, 'A');
     doorOperator.giveButtonAnAction(action2Btn, 'B');
 
-    actionsManager.actionA = () => { doorOperator.actionA(); };
-    actionsManager.actionB = () => { doorOperator.actionB(); };
-
-    //console.log('current door status: ', doorOperator.current.state);
-
-    //doorOperator.actionA();
-
-    //console.log('current door status: ', doorOperator.current.state);
-    //console.log('pointed tile_22222222222222: ', pointedTile);
-    //console.log(pointedTile.x);
-    //console.log(pointedTile.y);
-
-
-    // const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
-    //     &newType=DOOR_${doorOperator.current.state}`);
-    // const changedTilesData = roomData[1];
-    // if (changedTilesData) animateRoomChange(changedTilesData);
+    actionsManager.actionA = async () => { await doorOperator.actionA(); };
+    actionsManager.actionB = async () => { await doorOperator.actionB(); };
 }
 
 export async function updateButtons() {

@@ -20,10 +20,7 @@ public class FogManager
     private transient PartyAvatar party;
     public Set<Tile> raytracedTiles = new HashSet<>();
     private Set<Tile> circleLitTiles = new HashSet<>();
-    private List<Tile> allTilesThatChangedVisibility = new ArrayList<>();
-    private List<Tile> tilesThatChangedVisibilityNonAnimated = new ArrayList<>();
-    private Map<Double, Tile> newlyShownTilesToAnimate = new LinkedHashMap<>();
-    private Map<Double, Tile> newlyHiddenTilesToAnimate = new LinkedHashMap<>();
+    private Set<Tile> roomLitTiles = new HashSet<>();
 
     //TODO: później poustawiać na private i dodać gettery
     public List<Tile> previouslyVisibleTiles = new ArrayList<>();
@@ -48,7 +45,7 @@ public class FogManager
     public void setParty(PartyAvatar party)
     {
         this.party = party;
-        updateVisibility();
+        //////updateVisibility();
     }
 
     public Set<Tile> getNewlySeenTiles()
@@ -79,6 +76,9 @@ public class FogManager
         sendRays();
         currentlyVisibleTiles.addAll(raytracedTiles);
 
+        evaluateRoomVisibility();
+        currentlyVisibleTiles.addAll(roomLitTiles);
+
         Set<Tile> newlyShownTiles = new HashSet<>(currentlyVisibleTiles);
         sortByDistanceToParty(newlyShownTiles).forEach(tile -> currentlyVisibleTilesByDistance.put(tile, getDistanceToParty(tile)));
 
@@ -87,56 +87,6 @@ public class FogManager
                 .collect(Collectors.toSet());
         newlySeenTiles.forEach(Tile::setAlreadySeen);
         alreadySeenTiles.addAll(newlySeenTiles);
-    }
-
-    public void updateVisibility2()
-    {
-        //TODO: filtrować i odrzucać pola, których visibility się wcale nie zmieniło.
-
-        List<Tile> previouslyInfluencedTiles = new ArrayList<>(allTilesThatChangedVisibility);
-        List<Tile> previouslyVisibleTiles = allTilesThatChangedVisibility.stream().filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
-//        List<Tile> previouslyVisibleTiles = new ArrayList<>(tilesThatChangedVisibility);
-        allTilesThatChangedVisibility.clear();
-        tilesThatChangedVisibilityNonAnimated.clear();
-
-//        System.out.println("prev Infl: " + previouslyInfluencedTiles.size());
-
-        evaluatePartyVisibilityCircle();
-        allTilesThatChangedVisibility.addAll(circleLitTiles);
-        tilesThatChangedVisibilityNonAnimated.addAll(circleLitTiles);
-//        System.out.println("circle: " + circleLitTiles.size());
-
-        sendRays();
-        System.out.println("raytraced tiles: " + raytracedTiles.size());
-        allTilesThatChangedVisibility.addAll(raytracedTiles);
-//        System.out.println("raytrace: " + raytracedTiles.size() );
-        allTilesThatChangedVisibility = allTilesThatChangedVisibility.stream().distinct().collect(Collectors.toList());
-
-        Set<Tile> newlyShownTiles = raytracedTiles.stream().filter(tile -> previouslyVisibleTiles.indexOf(tile) == -1).collect(Collectors.toSet());
-//        System.out.println("newly shown: " + newlyShownTiles.size() );
-
-        Set<Tile> newlyHiddenTiles = previouslyVisibleTiles.stream().filter(tile -> allTilesThatChangedVisibility.indexOf(tile) == -1).collect(Collectors.toSet()); //wyfiltruj te Tile, których nie ma w aktualnie widocznych
-//        newlyHiddenTiles = newlyHiddenTiles.stream().filter(tile -> tile.getVisibility() <= 0).collect(Collectors.toSet());
-
-        newlyHiddenTiles.forEach(tile -> tile.setVisibility(0));
-
-        //Set<Tile> newlyHiddenTiles = new HashSet<>(newlyHiddenTiles);
-//        System.out.println("newly hidden: " + newlyHiddenTiles.size() );
-
-        allTilesThatChangedVisibility.addAll(newlyHiddenTiles);
-//        System.out.println("newly hidden amount: " + newlyHiddenTiles.size());
-
-        newlyShownTilesToAnimate.clear();
-        newlyHiddenTilesToAnimate.clear();
-
-        sortByDistanceToParty(newlyShownTiles).forEach(tile -> newlyShownTilesToAnimate.put(getDistanceToParty(tile), tile));
-        sortByDistanceToParty(newlyHiddenTiles).forEach(tile -> newlyHiddenTilesToAnimate.put(getDistanceToParty(tile), tile));
-
-//        sortByDistanceToParty(newlyHiddenTiles).forEach(tile -> {
-//            System.out.println("Newly hidden tile: " + tile.getX() + "/" + tile.getY());
-//        });
-
-        //////newlyHiddenTilesWithDistance.forEach((tile, distance) -> System.out.println("Newly hidden tile: " + tile.getX() + "/" + tile.getY() + ". Distance: " + distance));
     }
 
     public List<Tile> sortByDistanceToParty(Set<Tile> entrySet)
@@ -150,6 +100,24 @@ public class FogManager
         });
 
         return outputList;
+    }
+
+    private void evaluateRoomVisibility()
+    {
+        Tile partyPointedTile = tileNav.getNextTile(party.getOccupiedTile(), party.getDirection());
+        boolean isLookingAtTheRoom = partyPointedTile.getType().isRoom() || partyPointedTile.getType().isOpenedDoor();
+
+        roomLitTiles.clear();
+        if (!isLookingAtTheRoom) return;
+
+        Room visibleRoom = stage.getRoomByTile(partyPointedTile);
+        List<Tile> roomInnerTiles = visibleRoom.getRoomInnerTiles();
+        List<Tile> roomWallTiles = visibleRoom.getWallTiles();
+        roomInnerTiles.forEach(tile -> tile.setVisibility(1,true));
+        roomWallTiles.forEach(tile -> tile.setVisibility(0.5, true));
+
+        roomLitTiles.addAll(roomInnerTiles);
+        roomLitTiles.addAll(roomWallTiles);
     }
 
     public void evaluatePartyVisibilityCircle()
@@ -201,21 +169,6 @@ public class FogManager
         reachedTiles.forEach(tile -> tile.setVisibility(1));
 
         return reachedTiles.stream().filter(tile -> tile.getVisibility() > 0).collect(Collectors.toList());
-    }
-
-    public List<Tile> getAllTilesThatChangedVisibility()
-    {
-        return allTilesThatChangedVisibility;
-    }
-
-    public Map<Double, Tile> getNewlyShownTilesToAnimate()
-    {
-        return newlyShownTilesToAnimate;
-    }
-
-    public Map<Double, Tile> getNewlyHiddenTilesToAnimate()
-    {
-        return newlyHiddenTilesToAnimate;
     }
 
     public void saveThisFogManager()
