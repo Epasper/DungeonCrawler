@@ -73,6 +73,9 @@ public class MapGeneratorService
         rb.lockSomeDoor();
         buildDebugSite(stage);
         stage.saveToTxt();
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public Stage generateMap(int width, int height) throws IOException

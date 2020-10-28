@@ -74,6 +74,22 @@ public class TileNavigator
         return nextTile;
     }
 
+    public Tile getNextTile(Tile tile, Direction[] directions, int[] numberOfSteps)
+    {
+        Tile nextTile = tile;
+        int dirNumber = 0;
+
+        for (Direction dir : directions)
+        {
+            for (int i = 0; i < numberOfSteps[dirNumber]; i++)
+            {
+                nextTile = getNextTile(nextTile, dir);
+            }
+            dirNumber++;
+        }
+        return nextTile;
+    }
+
     public Tile[] getNeighboringTiles(Tile middleTile)
     {
         Tile[] outputArray = new Tile[Direction.SIZE];

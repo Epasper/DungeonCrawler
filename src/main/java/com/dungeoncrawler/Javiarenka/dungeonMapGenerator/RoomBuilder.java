@@ -23,6 +23,11 @@ public class RoomBuilder
         seeds[1] = stage.getTile(stage.getWidth() - 3, 2); //LD
         seeds[2] = stage.getTile(2, stage.getHeight() - 3); //RU
         seeds[3] = stage.getTile(stage.getWidth() - 3, stage.getHeight() - 3); //LU
+
+//        seeds[0] = randomizeSeed(seeds[0], BuildDirection.RD);
+//        seeds[1] = randomizeSeed(seeds[1], BuildDirection.LD);
+//        seeds[2] = randomizeSeed(seeds[2], BuildDirection.RU);
+//        seeds[3] = randomizeSeed(seeds[3], BuildDirection.LU);
     }
 
     private Tile getSeedByDirection(BuildDirection buildDirection)
@@ -496,77 +501,62 @@ public class RoomBuilder
         }
     }
 
-    public Tile randomizeSeed(BuildDirection buildDir, int randomReach)
+    public Tile getNextAvailableSeedTile(BuildDirection buildDir) //throws IOException
     {
-        Tile outputSeed;
-        outputSeed = getNextAvailableSeedTile(buildDir);
-        int randomNumberVertical = getRandomNumberInRange(0, randomReach);
-        int randomNumberHorizontal = getRandomNumberInRange(0, randomReach);
+        Tile outputSeed = getSeedByDirection(buildDir);
+        boolean areEmptyTilesLeft = stage.getTilesOfType(TileType.EMPTY).length > 0;
 
-        if (randomNumberHorizontal == 0 && randomNumberVertical == 0)
+        while (outputSeed.getType() != TileType.EMPTY && areEmptyTilesLeft)
         {
-            return outputSeed;
+            outputSeed = tileNav.getNextTileLooped(outputSeed, buildDir);
+            if (outputSeed.getType() == TileType.EMPTY)
+            {
+                Tile randomizeSeed = randomizeSeed(outputSeed, buildDir);
+                if (randomizeSeed.getType() == TileType.EMPTY) outputSeed = randomizeSeed;
+            }
+            setSeedByDirection(outputSeed, buildDir);
         }
+        //System.out.println("Seed tile: " + outputSeed.getX() + "/" + outputSeed.getY() + ", for directions: " + buildDir.name());
+        return outputSeed;
+    }
 
+    private Tile randomizeSeed(Tile seedTile, BuildDirection buildDir)
+    {
+        int xRandomisation = getRandomNumberInRange(0, StageSettings.MIN_ROOM_WIDTH - 2);
+        int yRandomisation = getRandomNumberInRange(0, StageSettings.MIN_ROOM_HEIGHT - 2);
+
+        Tile outputTile = seedTile;
+        Direction firstDir = Direction.RIGHT;
+        Direction secondDir = Direction.DOWN;
 
         switch (buildDir)
         {
             case RD:
-                //outputSeed = stage.getTile()
+                firstDir = Direction.RIGHT;
+                secondDir = Direction.DOWN;
+                break;
+            case LD:
+                firstDir = Direction.LEFT;
+                secondDir = Direction.DOWN;
+                break;
+            case RU:
+                firstDir = Direction.RIGHT;
+                secondDir = Direction.UP;
+                break;
+            case LU:
+                firstDir = Direction.LEFT;
+                secondDir = Direction.UP;
                 break;
         }
 
-        return outputSeed;
+        outputTile = tileNav.getNextTile(seedTile, new Direction[]{firstDir, secondDir}, new int[]{xRandomisation, yRandomisation});
+        return outputTile;
     }
 
-    public Tile getNextAvailableSeedTile(BuildDirection buildDir) //throws IOException
-    {
-        int checkedTilesCounter = 0;
-
-        Tile outputSeed;
-        outputSeed = getSeedByDirection(buildDir);
-
-        //mapGenerator.Tile outputSeed = currentSeed;
-
-        while (outputSeed.getType() != TileType.EMPTY && checkedTilesCounter <= stage.getHeight() * stage.getWidth())
-        {
-            switch (buildDir)
-            {
-                case RD:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RD);
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.RD);
-                    break;
-
-                case LD:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LD);
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.LD);
-                    break;
-
-                case RU:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RU);//
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.RU);
-                    break;
-
-                case LU:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LU);//
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.LU);
-                    break;
-            }
-            checkedTilesCounter++;
-        }
-
-        //mapGenerator.Tile outputSeed = currentSeed;
-        return outputSeed;
-    }
 
     public boolean insertRandomRoom() //throws IOException
     {
         BuildDirection randomBuildDir = BuildDirection.getRandomBuildDirection();
-
         return insertRandomRoom(getNextAvailableSeedTile(randomBuildDir), randomBuildDir);
     }
 
@@ -713,7 +703,7 @@ public class RoomBuilder
                 corridorTilesToObstruct.remove(randomCorridorTile);
 //                MapGeneratorService.buildDebugSite(stage);
 //                MapGeneratorService.buildDebugSite(stage);
-                System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
+                //System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
             }
             else
             {
@@ -734,7 +724,7 @@ public class RoomBuilder
 //                    MapGeneratorService.buildDebugSite(stage);
 //                    MapGeneratorService.buildDebugSite(stage);
                     createdObstructionsNumber = createdObstructionsNumber + unreachableCorridorTiles.length;
-                    System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
+                    //System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
                 }
                 else
                 {
