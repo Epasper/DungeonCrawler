@@ -286,7 +286,7 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": false,
+  "isSelectedForParty": true,
   "encounterXPosition": 1,
   "encounterYPosition": 1,
   "isSelected": false,
@@ -299,5 +299,6 @@
   "maxMagicShield": 25,
   "physicalShield": 45,
   "magicShield": 25,
-  "speed": 3
+  "speed": 3,
+  "initiative": 0
 }
