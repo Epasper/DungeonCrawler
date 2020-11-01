@@ -250,12 +250,9 @@ public class Hero extends Character {
         String damageDealt;
         if (equippedWeapon != null) {
             damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
-        } else {
-            damageDealt = " and dealt 1 damage.";
-        }
-        if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
+            damageDealt = " and dealt 1 damage.";
             monster.setHp(monster.getHp() - unarmedAttackDamage);
         }
         if (monster.getHp() < 1) {
@@ -282,5 +279,15 @@ public class Hero extends Character {
                 .filter(skill -> skill.getClassRestrictions().contains(getHeroClass()))
                 .collect(Collectors.toList());
         setSkills(skillsFiltered);
+    }
+
+    public void addMundaneItemToBackpack(MundaneItem mundaneItem) {
+        try {
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem(mundaneItem.getName(), mundaneItem.getWeight(),
+                    mundaneItem.getPrice(), mundaneItem.getMaxStackSize(), mundaneItem.isQuestItem(), mundaneItem.getSelectPossibility(),
+                    mundaneItem.getNumberOfItems(), mundaneItem.getItemType()));
+        } catch (InventorySlotsFullException e) {
+            e.printStackTrace();
+        }
     }
 }
