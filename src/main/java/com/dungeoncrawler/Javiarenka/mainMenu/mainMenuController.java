@@ -16,11 +16,6 @@ public class mainMenuController {
         return "newGame";
     }
 
-    @GetMapping("/loadGame")
-    public String getLoadGame() {
-        return "loadGame";
-    }
-
     @GetMapping("/aboutProject")
     public String getAboutProject() {
         return "aboutProject";

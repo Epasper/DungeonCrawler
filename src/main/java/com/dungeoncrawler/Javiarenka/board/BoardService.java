@@ -3,6 +3,7 @@ package com.dungeoncrawler.Javiarenka.board;
 import com.dungeoncrawler.Javiarenka.character.Creature;
 import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
+import com.dungeoncrawler.Javiarenka.load.LoadGameService;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class BoardService {
     private Hero selectedHero;
     private List<String> messageOutput = new ArrayList<>();
     private PartySelectorService partySelectorService = new PartySelectorService();
+    private LoadGameService loadGameService = new LoadGameService();
     private int boardWidth;
     private int boardHeight;
     private static final int maxInitiative = 200;
@@ -57,7 +59,8 @@ public class BoardService {
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
         clearSelectedHeroes();
-        heroes = partySelectorService.loadSelectedHeroes();
+        heroes = loadGameService.load();
+        //TODO ma pobierać z Save game
         rollForInitialYCoordinates();
         rollForInitiative();
         setHeroImages();
@@ -189,35 +192,6 @@ public class BoardService {
         heroes.clear();
     }
 
-    public List<String> getAllHeroNamesAndSurnames() {
-        File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/");
-        File[] listOfFiles = folder.listFiles();
-        List<String> allHeroNamesAndSurnames = new ArrayList<>();
-
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().contains("---")) {
-                    allHeroNamesAndSurnames.add(file.getName());
-                }
-            }
-        }
-        return allHeroNamesAndSurnames;
-    }
-
-    public void loadAllHeroes() {
-        heroes.clear();
-        Gson gson = new Gson();
-        for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
-            try {
-                Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
-                Hero hero = gson.fromJson(reader, Hero.class);
-                heroes.add(hero);
-                reader.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
 
     public PartySelectorService getPartySelectorService() {
         return partySelectorService;
