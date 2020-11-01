@@ -17,6 +17,15 @@ public abstract class Creature {
     private int speed = 3;
     private int initiative;
     private String imageLink;
+    private boolean isActive = false;
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     public String getImageLink() {
         return imageLink;
@@ -89,7 +98,6 @@ public abstract class Creature {
 
     public Creature(int hp) {
         this();
-        this.name = name;
         this.hp = hp;
     }
 

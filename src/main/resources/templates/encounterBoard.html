@@ -11,7 +11,9 @@
         const width = [[${boardWidth}]];
         let heroes = [[${heroes}]];
         let tiles = [[${tiles}]];
+        let initiativeOrder = [[${initiativeOrder}]]
         document.documentElement.style.setProperty("--height", height);
+
 
 
     </script>
@@ -73,11 +75,11 @@
     </div>
     <div class="initiative-bar">
         <th:block th:each="character : ${initiativeOrder}">
-            <img th:src="${character.imageLink}"/>
+            <div th:id="'init|||'+${character.initiative}" class="initiative-bar-box"
+                 th:classappend="${character.active} ? initiative-bar-active : initiative-bar-box">
+                <img th:src="${character.imageLink}"/>
+            </div>
         </th:block>
-    </div>
-    <div class="skill-bar">
-
     </div>
     <div class="board">
         <th:block th:each="i: ${#numbers.sequence(1, boardWidth)}">
@@ -96,9 +98,29 @@
             </th:block>
         </th:block>
     </div>
+    <div class="skill-bar-container">
+        <div class="skill-bar">
+            <div class="single-skill">
+                <img src="../images/skillCards/skillCardBlank.png"/>
+            </div>
+            <div class="single-skill">
+                <img src="../images/skillCards/skillCardBlank.png"/>
+            </div>
+            <div class="single-skill">
+                <img src="../images/skillCards/skillCardBlank.png"/>
+            </div>
+            <div class="single-skill">
+                <img src="../images/skillCards/skillCardBlank.png"/>
+            </div>
+            <div class="single-skill">
+                <img src="../images/skillCards/skillCardBlank.png"/>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     initialize();
+
 
 
 </script>
