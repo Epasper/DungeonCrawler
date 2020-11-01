@@ -75,7 +75,7 @@ public class Monster extends Character {
         }
     }
 
-    public MundaneItem afterDeathItem() {
+    private MundaneItem afterDeathItem() {
         Random random = new Random();
         int randomNumber = random.nextInt(100);
         List<MundaneItem> availableItems = new ArrayList<>();
