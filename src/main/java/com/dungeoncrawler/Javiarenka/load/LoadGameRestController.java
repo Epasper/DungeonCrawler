@@ -1,2 +1,4 @@
-package com.dungeoncrawler.Javiarenka.load;public class LoadGameRestController {
+package com.dungeoncrawler.Javiarenka.load;
+
+public class LoadGameRestController {
 }

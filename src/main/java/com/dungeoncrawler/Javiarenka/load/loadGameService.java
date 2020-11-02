@@ -61,7 +61,8 @@ public class LoadGameService {
             if (listOfFiles != null) {
                 for (File file : listOfFiles) {
                     if (file.isFile()) {
-                        allSaves.add(file.getName());
+                        String toAdd = file.getName().substring(0,file.getName().indexOf('.'));
+                        allSaves.add(toAdd);
                     }
                 }
             }
