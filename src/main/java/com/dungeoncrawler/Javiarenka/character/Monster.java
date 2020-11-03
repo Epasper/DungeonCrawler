@@ -1,11 +1,17 @@
 package com.dungeoncrawler.Javiarenka.character;
 
+import com.dungeoncrawler.Javiarenka.equipment.MundaneItem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Monster extends Creature {
 
     private String race;
     private int damageStrength;
+    private List<MundaneItem> afterDeathItems;
 
     public Monster() {
     }
@@ -30,6 +36,14 @@ public class Monster extends Creature {
 
     public void setDamageStrength(int damageStrength) {
         this.damageStrength = damageStrength;
+    }
+
+    public List<MundaneItem> getAfterDeathItems() {
+        return afterDeathItems;
+    }
+
+    public void setAfterDeathItems(List<MundaneItem> afterDeathItems) {
+        this.afterDeathItems = afterDeathItems;
     }
 
     @Override
@@ -59,6 +73,27 @@ public class Monster extends Creature {
                 return String.format("%s is to weak to attack Hero %s!", getName(), attackedHero.getName());
             }
         }
+    }
+
+    public MundaneItem afterDeathItem() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(100);
+        List<MundaneItem> availableItems = new ArrayList<>();
+        System.out.println(randomNumber);
+
+        if(getHp() < 1) {
+            for(MundaneItem item : afterDeathItems) {
+                if(randomNumber <= item.getSelectPossibility()) {
+                    availableItems.add(item);
+                }
+            }
+            return availableItems.get(random.nextInt(availableItems.size()));
+        }
+            return null;
+    }
+
+    public void afterDeath(Hero hero) {
+        hero.addMundaneItemToBackpack(Objects.requireNonNull(afterDeathItem()));
     }
 
     @Override

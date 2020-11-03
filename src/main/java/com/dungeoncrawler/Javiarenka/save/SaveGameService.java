@@ -40,16 +40,6 @@ public class SaveGameService {
     private int getNextFreeSaveNumber() {
         File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/saves");
         File[] listOfFiles = folder.listFiles();
-        List<String> allHeroNamesAndSurnames = new ArrayList<>();
-
-        if (listOfFiles != null) {
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.getName().contains("---")) {
-                    allHeroNamesAndSurnames.add(file.getName());
-                }
-            }
-        }
-        assert listOfFiles != null;
         return listOfFiles.length + 1;
     }
 }

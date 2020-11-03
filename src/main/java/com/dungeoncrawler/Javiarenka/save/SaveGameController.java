@@ -25,6 +25,6 @@ public class SaveGameController {
     public String postSaveGame() {
         System.out.println("You are in post method :)");
         saveGameService.save();
-        return "attackSuccess";
+        return "saveGameSuccess";
     }
 }
