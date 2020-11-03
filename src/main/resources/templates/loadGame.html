@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Load Game</title>
     <script th:src="@{loadGame.js}"></script>
+    <link rel="stylesheet" href="../css/loadGameStyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
 </head>
 <body>
-    <button class="btn-loadGame" th:each="save: ${allSaves}" th:text="${save}" th:onclick="'javascript:loadGame(\'' + ${save} + '\');'"></button>
-    
+    <a class="btn-loadGame" th:each="save: ${allSaves}" th:text="${save}" th:onclick="'javascript:loadGame(\'' + ${save} + '\');'"></button>
 </body>
 </html>
