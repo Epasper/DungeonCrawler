@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Load Game</title>
+    <script th:src="@{loadGame.js}"></script>
 </head>
 <body>
-    <button class="btn-loadGame" th:each="save: ${allSaves}" th:text="${save}"></button>
+    <button class="btn-loadGame" th:each="save: ${allSaves}" th:text="${save}" th:onclick="'javascript:loadGame(\'' + ${save} + '\');'"></button>
     
 </body>
 </html>

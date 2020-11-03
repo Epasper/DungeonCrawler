@@ -300,5 +300,6 @@
   "physicalShield": 45,
   "magicShield": 25,
   "speed": 3,
-  "initiative": 0
+  "initiative": 0,
+  "isActive": false
 }
