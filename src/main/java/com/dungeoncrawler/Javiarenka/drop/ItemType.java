@@ -1,9 +1,10 @@
 package com.dungeoncrawler.Javiarenka.drop;
 
 public enum ItemType {
-    GEMS("GEMS"),
-    COINS("COINS"),
-    GOLD("GOLD");
+    GEMS("Gems"),
+    COINS("Coins"),
+    GOLD("Gold"),
+    DAMAGED_EQUIPMENT("Damaged equipment");
 
     private String itemTypeString;
 
