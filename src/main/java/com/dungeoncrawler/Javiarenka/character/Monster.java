@@ -1,26 +1,32 @@
 package com.dungeoncrawler.Javiarenka.character;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Random;
 
 public class Monster extends Creature {
 
-    private String race;
+    private MonsterRace race;
     private int damageStrength;
 
     public Monster() {
     }
 
-    public Monster(int hp, String race, int damageStrength) {
+    public Monster(int hp, MonsterRace race, int damageStrength) {
         super(hp);
         this.race = race;
         this.damageStrength = damageStrength;
     }
 
-    public String getRace() {
+    public MonsterRace getRace() {
         return race;
     }
 
-    public void setRace(String race) {
+    public void setRace(MonsterRace race) {
         this.race = race;
     }
 
@@ -30,6 +36,21 @@ public class Monster extends Creature {
 
     public void setDamageStrength(int damageStrength) {
         this.damageStrength = damageStrength;
+    }
+
+    public void saveThisMonster() {
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        System.out.println(this);
+        try {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/monsters/" + getRace().getMonsterRaceName() + "---" + getName() + ".txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -65,7 +86,7 @@ public class Monster extends Creature {
     public String toString() {
         return "Monster{" +
                 "name='" + super.getName() + '\'' +
-                "race='" + race + '\'' +
+                "race='" + race.name() + '\'' +
                 ", damageStrength=" + damageStrength +
                 '}';
     }

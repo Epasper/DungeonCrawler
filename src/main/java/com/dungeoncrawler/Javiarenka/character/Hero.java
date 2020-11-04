@@ -252,7 +252,7 @@ public class Hero extends Creature {
                 .create();
         System.out.println(this);
         try {
-            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/heroes/" + getName() + "---" + getSurname() + ".txt");
             gson.toJson(this, writer);
             writer.flush();
             writer.close();

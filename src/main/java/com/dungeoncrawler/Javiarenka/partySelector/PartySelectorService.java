@@ -51,7 +51,7 @@ public class PartySelectorService {
     public Hero loadAHeroByNameAndSurname(String nameAndSurname) {
         Hero hero = new Hero();
         try {
-            String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname;
+            String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/heroes/" + nameAndSurname;
             fileLocation = fileLocation.endsWith(".txt") ? fileLocation : fileLocation + ".txt";
             Gson gson = new Gson();
             Reader reader = Files.newBufferedReader(Paths.get(fileLocation));
@@ -73,7 +73,7 @@ public class PartySelectorService {
     }
 
     private List<String> getAllHeroNamesAndSurnames() {
-        File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/");
+        File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/heroes/");
         File[] listOfFiles = folder.listFiles();
         List<String> allHeroNamesAndSurnames = new ArrayList<>();
 
