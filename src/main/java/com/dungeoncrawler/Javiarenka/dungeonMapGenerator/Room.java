@@ -1,6 +1,7 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Room extends Stage
 {
@@ -23,7 +24,7 @@ public class Room extends Stage
         yPos = seedTile.getY();
     }
 
-    Room(Tile[][] roomTiles)
+    Room(Tile[][] roomTiles, TileType targetType)
     {
         super(roomTiles);
 
@@ -32,7 +33,7 @@ public class Room extends Stage
 
         for (int i = 0; i < getWidth(); i++)
         {
-            setTileTypes(roomTiles[i], TileType.ROOM);
+            setTileTypes(roomTiles[i], targetType);
         }
 
         createPeripheralWall();
@@ -58,7 +59,6 @@ public class Room extends Stage
                     break;
             }
         }
-
     }
 
     public int getxPos()
@@ -93,11 +93,35 @@ public class Room extends Stage
 
     public void lockRoomTiles()
     {
-        Arrays.stream(getTilesOfType(TileType.ROOM)).forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
+//        Arrays.stream(getTilesOfType(TileType.ROOM)).forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
+        getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
     }
 
     public void unlockRoomTiles()
     {
-        Arrays.stream(getTilesOfType(TileType.ROOM_LOCKED)).forEach(tile -> tile.setType(TileType.ROOM));
+//        Arrays.stream(getTilesOfType(TileType.ROOM_LOCKED)).forEach(tile -> tile.setType(TileType.ROOM));
+        getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM));
+    }
+
+    public List<Tile> getRoomInnerTiles()
+    {
+        Set<Tile> wallTiles = new HashSet<>();
+        Arrays.stream(walls).forEach(wall -> wallTiles.addAll(Arrays.asList(wall.getWallTiles())));
+
+        return new ArrayList<>(Arrays.asList(getTilesAsOneDimensionalArray())).stream()
+                .filter(tile -> !wallTiles.contains(tile))
+                .collect(Collectors.toList());
+    }
+
+    public List<Tile> getWallTiles()
+    {
+        List<Tile> wallTiles = new ArrayList<>();
+        Arrays.stream(walls).forEach(wall -> wallTiles.addAll(Arrays.asList(wall.getWallTiles())));
+        return wallTiles.stream().distinct().collect(Collectors.toList());
+    }
+
+    public void hideRoom()
+    {
+        getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM_HIDDEN));
     }
 }

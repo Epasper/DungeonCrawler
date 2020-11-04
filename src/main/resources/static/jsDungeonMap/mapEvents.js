@@ -1,44 +1,61 @@
-import { makeSelection, getX, getY, selectedGridTileDiv } from './mapSelection.js'
+import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
-import { updateButtons } from './mapButtons.js'
+import { actionAByContext, actionBByContext } from './mapButtons.js'
 import { draw } from './mapRender.js'
 import { party, directions } from './partyManager.js'
+import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
 
-const mapGrid = document.getElementById(`grid`)
+const mapGrid = document.getElementById(`grid`);
+let highlightedColumnLegendTile;
+let highlightedRowLegendTile;
+let partyMoveCounter = 0;
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
     for (var tile of tiles) {
         tile.addEventListener('click', tileClicked);
-    }
-    for (var tile of tiles) {
         tile.addEventListener('mouseenter', tileMouseEntered);
     }
-    for (var tile of tiles) {
-        tile.addEventListener('mouseleave', tileMouseLeft);
-    }
+    mapGrid.addEventListener('mouseleave', tileMouseLeft);
 }
 
 export function injectButtonsListeners() {
-    let spawnBtn = document.getElementById('spawn-party-btn');
+    let spawnBtn = getMappedElementById('spawn-party-btn');
     spawnBtn.addEventListener('click', spawnPartyBackend);
 
-    let actionBtn = document.getElementById('action-btn');
+    let actionBtn = getMappedElementById('action-btn');
+    let actionBtn1 = getMappedElementById('action-btn-1');
+    let actionBtn2 = getMappedElementById('action-btn-2');
     actionBtn.addEventListener('click', makeAction);
+    actionBtn1.addEventListener('click', actionAByContext);
+    actionBtn2.addEventListener('click', actionBByContext);
 
-    let moveBtn = document.getElementById('move-party-btn');
+    let moveBtn = getMappedElementById('move-party-btn');
     moveBtn.addEventListener('click', teleportPartyBackend);
 
-    let moveUpBtn = document.getElementById('move-up');
-    let moveDownBtn = document.getElementById('move-down');
-    let moveLeftBtn = document.getElementById('move-left');
-    let moveRightBtn = document.getElementById('move-right');
+    let moveUpBtn = getMappedElementById('move-up');
+    let moveDownBtn = getMappedElementById('move-down');
+    let moveLeftBtn = getMappedElementById('move-left');
+    let moveRightBtn = getMappedElementById('move-right');
     let moveButtons = [moveUpBtn, moveDownBtn, moveLeftBtn, moveRightBtn]
     moveButtons.forEach(mvBtn => {
         mvBtn.addEventListener('click', movePartyOneStepBackend);
     });
-
     document.addEventListener('keydown', keyPressedMove);
+
+    let saveBtn = getMappedElementById('save-btn')
+    saveBtn.addEventListener('click', requestMapSave)
+
+    let loadBtn = getMappedElementById('load-btn')
+    loadBtn.addEventListener('click', requestMapLoad)
+}
+
+async function requestMapSave() {
+    await axios.get(`http://localhost:8080/saveMap`)
+}
+
+async function requestMapLoad() {
+    window.location.replace(`http://localhost:8080/loadMap`)
 }
 
 function makeAction() {
@@ -52,13 +69,15 @@ async function spawnPartyBackend() {
     let coordX = getX(selectedGridTileDiv)
     let coordY = getY(selectedGridTileDiv)
 
-    //Axios method:
     const response = await axios.get(`http://localhost:8080/spawnParty?coordX=${coordX}&coordY=${coordY}`);
     const backendParty = response.data;
     console.log('spawn: ', backendParty)
 
-    draw();
-    updateButtons();
+    const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
+    corridorFogDivs.forEach(div => div.style.backgroundColor = '');
+
+    await deleteSelection();
+    await updateMap();
 }
 
 async function teleportPartyBackend() {
@@ -68,55 +87,54 @@ async function teleportPartyBackend() {
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
-    updateButtons();
-    draw();
+    await deleteSelection();
+    await updateMap();
 }
 
 async function movePartyOneStepBackend({ target: clickedMoveButton }) {
-    //console.log(clickedMoveButton);
     let [dir] = clickedMoveButton.id.split('-').slice(-1)
     dir = dir.toUpperCase();
-    //console.log(direction);
-    //debugger;
-    //party.direction = directions[dir]
+
     await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
 
     party.direction = directions[dir];
+    partyMoveCounter++;
 
-    updateButtons();
-    draw();
+    await updateMap();
 }
 
 async function keyPressedMove({ keyCode }) {
-    const moveBtn = document.getElementById('move-party-btn');
+    const moveBtn = getMappedElementById('move-party-btn');
     if (moveBtn.disabled) return;
     let dirBtn;
 
     switch (keyCode) {
         case 37:    //LEFT
-            dirBtn = document.getElementById('move-left');
-            console.log('key left');
+            dirBtn = getMappedElementById('move-left');
+            console.log('---KEY LOGGED: left---');
             break;
         case 38:    //UP
-            dirBtn = document.getElementById('move-up');
-            console.log('key up');
+            dirBtn = getMappedElementById('move-up');
+            console.log('---KEY LOGGED: up---');
             break;
         case 39:    //RIGHT
-            dirBtn = document.getElementById('move-right');
-            console.log('key right');
+            dirBtn = getMappedElementById('move-right');
+            console.log('---KEY LOGGED: right---');
             break;
         case 40:    //DOWN
-            dirBtn = document.getElementById('move-down');
-            console.log('key down');
+            dirBtn = getMappedElementById('move-down');
+            console.log('---KEY LOGGED: down---');
             break;
         default:
             return;
     }
-    dirBtn.dispatchEvent(new Event('click'));
+    
+    document.removeEventListener('keydown', keyPressedMove)
+
+    await movePartyOneStepBackend({target: dirBtn})
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);
-    console.log(btnClasses);
     let tempActiveEmulationClassName = ''
     if (btnClasses.some(className => { return className.includes('blocked') })) {
         tempActiveEmulationClassName = 'move-button-blocked-active';
@@ -128,6 +146,8 @@ async function keyPressedMove({ keyCode }) {
     setTimeout(function () {
         dirBtn.classList.remove(tempActiveEmulationClassName);
     }, 100)
+
+    document.addEventListener('keydown', keyPressedMove);
 }
 
 async function tileClicked({ target: clickedTileDiv }) {
@@ -140,110 +160,55 @@ async function tileClicked({ target: clickedTileDiv }) {
 
     const { data: clickedTileBackend3 } = await axios
         .get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`)
-    console.log(clickedTileBackend3);
 
     makeSelection(clickedTileDiv, mapGrid)
 
-    updateButtons()
-    draw()
+    await updateMap();
 }
 
-function tileMouseEntered({ target: hoveredTileDiv }) {
-    var tileId = ``
-    tileId = hoveredTileDiv.id
-
-    var x = tileId.split(`-`)[0]
-    var y = tileId.split(`-`)[1]
-
-    var row = getRowOfElements(y)
-    var col = getColOfElements(x)
-
-    row[0].style.color = (`rgb(220,220,220)`)
-    col[0].style.color = (`rgb(220,220,220)`)
-    row[0].style.fontWeight = (`bold`)
-    col[0].style.fontWeight = (`bold`)
-    row[0].style.fontSize = (`1.5vh`)
-    col[0].style.fontSize = (`1.5vh`)
-
-    row.forEach(element => {
-        brightness(element, 10)
-    });
-
-    col.forEach(element => {
-        brightness(element, 10)
-    });
-
-    //console.log('on!', x, `/`, y)
+export function tileMouseEntered({ target: hoveredTileDiv }, colorIdentifier = 'default') {
+    hideCrossHighlightElements();
+    showCrossHighlightElements(hoveredTileDiv, colorIdentifier);
 }
 
 function tileMouseLeft({ target: exitedTileDiv }) {
-    var tileId = ``
-    tileId = exitedTileDiv.id
-
-    var x = tileId.split(`-`)[0]
-    var y = tileId.split(`-`)[1]
-
-    var row = getRowOfElements(y)
-    var col = getColOfElements(x)
-
-    row[0].style.color = (``)
-    col[0].style.color = (``)
-    row[0].style.fontWeight = (``)
-    col[0].style.fontWeight = (``)
-    row[0].style.fontSize = (``)
-    col[0].style.fontSize = (``)
-
-    row.forEach(element => {
-        resetColor(element)
-    });
-
-    col.forEach(element => {
-        resetColor(element)
-    });
+    hideCrossHighlightElements();
 }
 
-function getRowOfElements(rowNumber) {
-    var row = [document.getElementById(`row-${rowNumber}`)]
-    for (var i = 0; i < mapWidth; i++) {
-        var tile = document.getElementById(`${i}-${rowNumber}`)
-        row.push(tile)
-    }
-    return row
+function showCrossHighlightElements(centerDivElement, colorIdentifier) {
+    let root = document.documentElement;
+    let cssColor = window.getComputedStyle(root).getPropertyValue(`--highlight-color-${colorIdentifier}`);
+
+    root.style.setProperty('--highlight-color', cssColor);
+
+    let rowElement = getMappedElementById('cross-highlight-row');
+    let colElement = getMappedElementById('cross-highlight-col');
+
+    rowElement.classList.add('cross-highlight');
+    colElement.classList.add('cross-highlight');
+
+    const currentRow = getY(centerDivElement);
+    const currentCol = getX(centerDivElement);
+
+    rowElement.style.gridArea = `${currentRow + 1} / 1 / ${currentRow + 2} / ${mapWidth + 1}`;
+    colElement.style.gridArea = `1 / ${currentCol + 1} / ${mapHeight + 1} / ${currentCol + 2}`;
+
+    let columnLegendTile = getMappedElementById(`col-${currentCol}`);
+    let rowLegendTile = getMappedElementById(`row-${currentRow}`);
+
+    columnLegendTile.classList.add('legend-highlight');
+    highlightedColumnLegendTile = columnLegendTile;
+    rowLegendTile.classList.add('legend-highlight');
+    highlightedRowLegendTile = rowLegendTile;
 }
 
-function getColOfElements(colNumber) {
-    var col = [document.getElementById(`col-${colNumber}`)]
-    for (var i = 0; i < mapHeight; i++) {
-        var tile = document.getElementById(`${colNumber}-${i}`)
-        col.push(tile)
-    }
-    return col
-}
+function hideCrossHighlightElements() {
+    let rowElement = getMappedElementById('cross-highlight-row');
+    let colElement = getMappedElementById('cross-highlight-col');
 
-function brightness(tile, value) {
-    var currentColor = window.getComputedStyle(tile).backgroundColor
-    var style = tile.style
+    rowElement.classList.remove('cross-highlight');
+    colElement.classList.remove('cross-highlight');
 
-    var r = 0
-    var g = 0
-    var b = 0
-
-    r = currentColor.split(`(`)[1].split(`)`)[0].split(',')[0] * 1
-    g = currentColor.split(`(`)[1].split(`)`)[0].split(',')[1] * 1
-    b = currentColor.split(`(`)[1].split(`)`)[0].split(',')[2] * 1
-
-    r += value
-    g += value + 10
-    b += value
-
-    //style.transition = `0s`;
-    style.backgroundColor = `rgb(${r},${g},${b})`;
-}
-
-function resetColor(tile) {
-    tile.style.backgroundColor = ``
-    // setTimeout(function () {
-    //     tile.style.transition = ``;
-    // }, 2000)
-    
+    highlightedColumnLegendTile?.classList.remove('legend-highlight');
+    highlightedRowLegendTile?.classList.remove('legend-highlight');
 }
