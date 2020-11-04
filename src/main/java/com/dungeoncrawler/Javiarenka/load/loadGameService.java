@@ -1,7 +1,6 @@
 package com.dungeoncrawler.Javiarenka.load;
 
 import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -16,10 +15,6 @@ import java.util.List;
 @Service
 public class LoadGameService {
 
-    public static void main(String[] args) {
-        LoadGameService l = new LoadGameService();
-        l.load("1");
-    }
 
     public void load(String numberToLoad) {
         Gson gson = new GsonBuilder()
