@@ -191,7 +191,7 @@ function isPartySelected() {
 
 function updateMoveButton() {
     let moveButton = getMappedElementById('move-party-btn');
-    let moveButtonsContainer = getMappedElementById('move-menu');
+    let moveButtonsContainer = getMappedElementById('move-group');
 
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {
@@ -204,7 +204,6 @@ function updateMoveButton() {
 }
 
 async function updateDirectionalButtons() {
-    //TODO: buttony się nie updatują po otwarciu drzwi
     if (!isPartySelected()) return;
 
     const { data: movabilityData } = await axios.get(`http://localhost:8080/movability`);
@@ -222,11 +221,11 @@ async function updateDirectionalButtons() {
 }
 
 function activateActionMenu() {
-    getMappedElementById('action-menu').classList.add('active');
+    getMappedElementById('action-group').classList.add('active');
 }
 
 function deactivateActionMenu() {
-    getMappedElementById('action-menu').classList.remove('active');
+    getMappedElementById('action-group').classList.remove('active');
     let btn1 = getMappedElementById('action-btn-1');
     let btn2 = getMappedElementById('action-btn-2');
 

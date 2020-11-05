@@ -18,7 +18,6 @@
 </head>
 
 <body>
-
     <div id="container-grid">
         <div class="blank"></div>
         <div class="coordinate-legend" id="coord-top">
@@ -56,7 +55,7 @@
     </div>
 
     <div class="toolbar">
-        <div id="move-menu" class="move-container move-container-hover">
+        <div id="move-group" class="toolbar-group move-container move-container-hover">
             <div id="move-margin"></div>
             <div id="move-grid">
                 <div id="move-up" class="move-button"><img class="move-img" src="../images/dungeonMap/arrow.svg"></div>
@@ -71,7 +70,7 @@
             <button id="spawn-party-btn" class="button" disabled>Spawn Party</button>
         </div>
 
-        <div id="action-menu">
+        <div id="action-group" class="toolbar-group">
             <div id="action-margin"></div>
             <div id="actions-container">
                 <button id="action-btn-1" class="button" data-action-type="action-1" disabled>Action 1</button>
@@ -81,17 +80,21 @@
             <button id="action-btn" class="button" data-action-type="action" disabled>Actions</button>
         </div>
 
+        
+        <div id="menu-group" class="toolbar-group">
+            <button id="menu-btn" class="button">Menu</button>
+        </div>
+
+    </div>
+
+    <div id="menu">
         <div id="misc-menu">
             <!-- <div class="separator"></div> -->
             <button id="save-btn" class="button button-stacked">Save</button>
             <div class="separator-h"></div>
             <button id="load-btn" class="button button-stacked">Load</button>
         </div>
-
-
     </div>
-
-
 
 </body>
 

@@ -4,9 +4,6 @@ import { tileMouseEntered } from './mapEvents.js'
 
 export let selectedGridTileDiv
 
-//TODO: zmienić sposób kolorowania pól dla krzyża/celownika - aktualnie pokoje mają tranzycję 2s na zmianę koloru
-// co powoduje nieładny efekt poświaty
-
 export function makeSelection(targetTile, mapGrid) {
     let existingSelection = document.getElementById(`selection`)
     if (existingSelection) {

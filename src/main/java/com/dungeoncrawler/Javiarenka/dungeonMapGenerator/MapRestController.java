@@ -98,7 +98,6 @@ public class MapRestController
     @GetMapping("/activateDoor")
     public Object[] updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType newType)
     {
-        //TODO: zadbać o sytuację, w której zamykane są drzwi, ale stoimy wewnątrz pokoju.
 
         Object[] outputArray = new Object[2];
         Tile targetTile = service.getStage().getTile(coordX, coordY);
