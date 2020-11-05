@@ -30,11 +30,11 @@ public class FogManager
     private Set<Tile> alreadySeenTiles = new HashSet<>();
     private Set<Tile> newlySeenTiles = new HashSet<>();
 
-
     public FogManager(Stage stage)
     {
         this.stage = stage;
         this.tileNav = new TileNavigator(stage);
+        this.alreadySeenTiles.addAll(stage.getSeenTiles());
     }
 
     public PartyAvatar getParty()
@@ -51,6 +51,11 @@ public class FogManager
     public Set<Tile> getNewlySeenTiles()
     {
         return newlySeenTiles;
+    }
+
+    public Set<Tile> getAlreadySeenTiles()
+    {
+        return alreadySeenTiles;
     }
 
     //==============================================================================================

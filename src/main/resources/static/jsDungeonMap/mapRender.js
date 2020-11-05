@@ -193,6 +193,17 @@ async function drawFogOfWarbackup() {
     // })
 }
 
+export async function loadVisitedFog() {
+    const response = await axios.get(`http://localhost:8080/getSeenTiles`);
+    //console.log("resp: ", response);
+    const visitedTiles = response.data;
+
+    visitedTiles.forEach(tile => {
+        let fogDiv = getDivFromBackendTile(tile, 'x');
+        fogDiv.classList.add('seen');
+    })
+}
+
 async function drawFogOfWar() {
 
     if (!party) return;

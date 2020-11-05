@@ -78,6 +78,7 @@ public class MapRestController
     {
         Tile clickedTile = service.getStage().getTile(coordX, coordY);
         if (!message.equals("")) System.out.println(message);
+        System.out.println(clickedTile.getInfoString());
         return clickedTile;
     }
 
@@ -142,6 +143,12 @@ public class MapRestController
         outputMap.put("newlySeenTiles", service.getFogManager().getNewlySeenTiles());
 
         return outputMap;
+    }
+
+    @GetMapping("/getSeenTiles")
+    public Set<Tile> getSeenTiles()
+    {
+        return service.getFogManager().getAlreadySeenTiles();
     }
 
     @GetMapping("saveMap")

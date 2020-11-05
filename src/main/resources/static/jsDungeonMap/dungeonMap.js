@@ -1,7 +1,8 @@
 import { updateButtons } from './mapButtons.js'
 import { injectTileListeners, injectButtonsListeners } from './mapEvents.js'
-import { draw } from './mapRender.js'
+import { draw, loadVisitedFog } from './mapRender.js'
 import { adaptGrids } from './mapStyling.js'
+import { party } from './partyManager.js'
 
 export let finished = true;
 export let idMap = new Map();
@@ -15,16 +16,18 @@ if (document.readyState == "loading") {
 async function ready() {
     // getMapObject()
     mapUniqueIDsWithTheirElements();
-    adaptGrids()
-    injectTileListeners()
-    injectButtonsListeners()
-    makeCorridorsTemoraryVisible()
+    adaptGrids();
+    injectTileListeners();
+    injectButtonsListeners();
     await updateMap();
+    makeCorridorsTemoraryVisible();
+    await loadVisitedFog();
     // await draw()
     // updateButtons()
 }
 
 function makeCorridorsTemoraryVisible() {
+    if (party) return;
     const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
     corridorFogDivs.forEach(div => div.style.backgroundColor = 'rgb(50,50,100');
 }

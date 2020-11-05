@@ -125,4 +125,12 @@ public class Tile
     {
         this.visibility = 0;
     }
+
+    public String getInfoString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("visibility: ").append(this.visibility).append("\n");
+        sb.append("already seen: ").append(this.alreadySeen).append("\n");
+        return sb.toString();
+    }
 }

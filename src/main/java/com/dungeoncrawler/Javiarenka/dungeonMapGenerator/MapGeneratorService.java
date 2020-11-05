@@ -310,10 +310,7 @@ public class MapGeneratorService
         }
 
         this.stage = loadedStage;
-        //stage.getRooms().clear();
-        stage.linkRoomTilesReferencesToStageTiles();
-//        RoomBuilder rb = new RoomBuilder(stage);
-//        rb.scanTilesForRooms();
+        stage.linkTiles();
 
         this.partyManager = referencedPartyManager;
         this.fogManager = referencedFogManager;

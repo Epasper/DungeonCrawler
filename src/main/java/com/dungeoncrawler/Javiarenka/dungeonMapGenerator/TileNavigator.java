@@ -663,4 +663,20 @@ public class TileNavigator
         outputSet.forEach(tile -> tile.setType(targetType));
         return outputSet;
     }
+
+    static public int containsTileByCoordinates(List<Tile> tilesList, Tile tile)
+    {
+        for (int i = 0; i < tilesList.size(); i++)
+        {
+            Tile currentTile = tilesList.get(i);
+            if (currentTile.getX() == tile.getX() && currentTile.getY() == tile.getY()) return i;
+        }
+        return -1;
+    }
+
+    public void linkTileToStage(Tile tile, Stage stage)
+    {
+        Tile stageTile = stage.getTile(tile.getX(), tile.getY());
+        tile = stageTile;
+    }
 }
