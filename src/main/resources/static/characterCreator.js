@@ -26,13 +26,26 @@ function selectHeroClass(heroClass) {
 }
 
 function changeAttributePoints(attributeName) {
+    const backupCurrentAttributePoints = allAttributes[attributeName];
     let attrDiv = document.getElementById('attribute:' + attributeName);
     let allPointsDiv = document.getElementById('number-of-points');
+    console.log(allAttributes);
+    console.log(availableAttributePoints);
     allAttributes[attributeName] = attrDiv.valueAsNumber;
     availableAttributePoints = 22 - Object.values(allAttributes).reduce((prev, curr) => {
         return prev + curr - 2;
     })
+    console.log(availableAttributePoints);
+    if (availableAttributePoints < 0) {
+        availableAttributePoints = 0;
+        attrDiv.value = backupCurrentAttributePoints;
+        allAttributes[attributeName] = backupCurrentAttributePoints;
+    }
     allPointsDiv.innerHTML = availableAttributePoints;
+}
+
+function validatePoints(attributeName) {
+    return availableAttributePoints > 0 && allAttributes[attributeName] > 1 && allAttributes[attributeName] < 12;
 }
 
 function sendAjaxArmorRequest(heroClass) {

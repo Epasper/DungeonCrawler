@@ -48,7 +48,7 @@
             <div class="attribute-container">
                 <div class="attribute" th:each="attribute: ${allAttributes}" th:value="${attribute}">
                     <p class="attribute-text" th:text="${attribute}"></p>
-                    <input class="attribute-input-field" type="number" th:id="'attribute:'+${attribute}"
+                    <input class="attribute-input-field" type="number" min="2" max="12" th:id="'attribute:'+${attribute}"
                            th:onchange="'javascript:changeAttributePoints(\'' + ${attribute} + '\')'">
                 </div>
             </div>
