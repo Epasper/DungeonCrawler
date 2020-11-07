@@ -41,7 +41,7 @@ build/
 !/src/main/**/dataBase/Coth---Cararirc.txt
 
 ### Saved Games ###
-!src/main/java/com/dungeoncrawler/Javiarenka/dataBase/currentGame.txt
+!/src/main/java/com/dungeoncrawler/Javiarenka/dataBase/currentGame.txt
 
 ### Dungeon Map Generator ###
 **/dungeonMapGenerator/txt/
