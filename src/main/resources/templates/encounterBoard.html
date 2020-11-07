@@ -23,6 +23,7 @@
             <div th:with="currentHero=${hero.getName()} + '|||' + ${hero.getSurname()}">
                 <img th:id="${currentHero}"/>
                 <div class="area">
+                    <a th:href="'/editEquipment?heroNameAndSurname='+${hero.getName()} + '---' + ${hero.getSurname()}" class="equipment">EQUIPMENT</a>
                     <div class="total"></div>
                     <div class="health-box">
                         <button th:onclick="'javascript:testRemoveHp(\'' + ${currentHero} + '\')'"> Hit</button>

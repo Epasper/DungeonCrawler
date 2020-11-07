@@ -26,6 +26,7 @@ function saveAndExit() {
     request.setRequestHeader('Content-Type', 'application/json');
     const backpackJSON = JSON.stringify(currentHeroBackpack);
     request.send(backpackJSON);
+    window.location.replace(`http://localhost:8080/encounterBoard`);
 }
 
 function allowDrop(event) {

@@ -26,6 +26,7 @@ public class BoardService {
     private EncounterTile[][] tiles;
     private Map<String, String> imageSources = new HashMap<>();
     Random random = new Random();
+    public static boolean isAlreadyLoaded = false;
     private final String grassImageSource = "../images/encounterTiles/GrassTile1.png";
     private final String stoneImageSource = "../images/encounterTiles/StoneFloor";
     private final String rubbleImageSource = "../images/encounterTiles/rubble";
@@ -43,7 +44,7 @@ public class BoardService {
         testMon3.setImageLink("../images/monsters/monster_skeleton.png");
         testMon3.setName("Skeleton Warrior");
         monsters.addAll(List.of(testMon1, testMon2, testMon3));
-        prepareTheBoard();
+        if (!isAlreadyLoaded) prepareTheBoard();
     }
 
     public void prepareTheBoard() {

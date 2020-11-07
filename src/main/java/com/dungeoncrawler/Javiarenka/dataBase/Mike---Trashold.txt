@@ -116,16 +116,16 @@
         "imageLink": "../images/Pretty Stone"
       },
       "2": {
-        "name": "Broken Branch",
-        "weight": 0.05,
-        "price": 2.0,
-        "imageLink": "../images/Broken Branch"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "3": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0,
-        "imageLink": "../images/Coal Ore Chunk"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "4": {
         "name": "NO EQUIPMENT",
@@ -164,16 +164,16 @@
         "imageLink": "../images/null"
       },
       "10": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Broken Branch",
+        "weight": 0.05,
+        "price": 2.0,
+        "imageLink": "../images/Broken Branch"
       },
       "11": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Coal Ore Chunk",
+        "weight": 0.2,
+        "price": 12.0,
+        "imageLink": "../images/Coal Ore Chunk"
       },
       "12": {
         "name": "NO EQUIPMENT",

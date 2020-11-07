@@ -15,8 +15,8 @@ public class BoardController {
     //todo: this functionality will be deprecated and replaced in future release
     @GetMapping("/fightBoard")
     public String fightGet(Model model) {
-        service.clearSelectedHeroes();
-        service.setHeroes(service.getPartySelectorService().loadSelectedHeroes());
+//        service.clearSelectedHeroes();
+//        service.setHeroes(service.getPartySelectorService().loadSelectedHeroes());
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());
@@ -25,7 +25,8 @@ public class BoardController {
 
     @GetMapping("/encounterBoard")
     public String encounter(Model model) {
-        service.prepareTheBoard();
+        if (!BoardService.isAlreadyLoaded)service.prepareTheBoard();
+        BoardService.isAlreadyLoaded = true;
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
         model.addAttribute("consoleText", service.getMessageOutput());
