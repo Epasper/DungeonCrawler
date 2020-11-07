@@ -143,12 +143,19 @@ function saveCharacter() {
         const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
         const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
         const heroClass = globalHeroClass;
+        console.log(allAttributes);
         const hero = {
             name: name,
             surname: surname,
             weaponName: weaponName,
             armorName: armorName,
-            className: heroClass
+            className: heroClass,
+            strength: allAttributes.Strength,
+            dexterity: allAttributes.Dexterity,
+            stamina: allAttributes.Stamina,
+            intelligence: allAttributes.Intelligence,
+            willpower: allAttributes.Willpower,
+            resilience: allAttributes.Resilience,
         }
         const heroJSON = JSON.stringify(hero);
         request.send(heroJSON);

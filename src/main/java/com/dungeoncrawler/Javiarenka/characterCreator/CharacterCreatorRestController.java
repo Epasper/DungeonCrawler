@@ -17,7 +17,7 @@ public class CharacterCreatorRestController {
 
     @GetMapping("/charClassToArmor/{className}")
     public Set<String> getAvailableArmors(@PathVariable String className) {
-        return service.getCharacterClassToAvailableArmor().get(className.toUpperCase());
+        return service.getCharacterClassToAvailableArmor().get(className);
     }
 
     @GetMapping("/charClassToArmor")
@@ -27,7 +27,7 @@ public class CharacterCreatorRestController {
 
     @GetMapping("/charClassToWeapon/{className}")
     public Set<String> getAvailableWeapons(@PathVariable String className) {
-        return service.getCharacterClassToAvailableWeapon().get(className.toUpperCase());
+        return service.getCharacterClassToAvailableWeapon().get(className);
     }
 
     @GetMapping("/charClassToWeapon")
