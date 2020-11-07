@@ -19,7 +19,6 @@ public class Hero extends Creature {
     private String weaponName;
     private String armorName;
     private String className;
-    private int money;
     private List<Skill> skills;
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
@@ -109,13 +108,6 @@ public class Hero extends Creature {
         this.className = className;
     }
 
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
 
     public List<Skill> getSkills() {
         return skills;
@@ -159,7 +151,6 @@ public class Hero extends Creature {
         this.equippedWeapon = equippedWeapon;
         this.backpack.setRightHandSlot(equippedWeapon);
         this.backpack.setChestSlot(equippedArmor);
-        this.money = money;
         this.skills = skills;
     }
 
@@ -183,7 +174,6 @@ public class Hero extends Creature {
                 ", equippedWeapon=" + equippedWeapon +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money +
                 ", skills=" + skills +
                 ", backpack=" + backpack +
                 '}';
@@ -280,16 +270,6 @@ public class Hero extends Creature {
         return message;
     }
 
-    public void addMoney(int amount) {
-        this.money = this.money + amount;
-    }
-
-    public void removeMoney(int amount) throws NoMoreMoneyException {
-        if (amount > this.money) {
-            throw new NoMoreMoneyException();
-        }
-        this.money = this.money - amount;
-    }
 
     public void setSkillsByHeroClass() {
         List<Skill> defaultSkills = SkillResources.defaultSkills();
