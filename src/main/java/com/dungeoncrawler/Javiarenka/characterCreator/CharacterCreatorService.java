@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import org.springframework.stereotype.Service;
 import java.util.*;

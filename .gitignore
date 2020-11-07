@@ -40,6 +40,9 @@ build/
 !/src/main/**/dataBase/Mike---Trashold.txt
 !/src/main/**/dataBase/Coth---Cararirc.txt
 
+### Current Game ###
+!/src/main/**/dataBase/currentGame.txt
+
 ### Dungeon Map Generator ###
 **/dungeonMapGenerator/txt/
 **/dungeonMapGenerator/webStuff/

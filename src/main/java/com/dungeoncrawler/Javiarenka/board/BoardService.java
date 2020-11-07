@@ -1,8 +1,8 @@
 package com.dungeoncrawler.Javiarenka.board;
 
-import com.dungeoncrawler.Javiarenka.character.Creature;
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.Monster;
+import com.dungeoncrawler.Javiarenka.creature.Creature;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Monster;
 import com.dungeoncrawler.Javiarenka.load.LoadGameService;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import org.springframework.stereotype.Service;

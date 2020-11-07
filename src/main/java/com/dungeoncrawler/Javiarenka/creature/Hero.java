@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
@@ -28,6 +28,12 @@ public class Hero extends Creature {
     private int encounterXPosition;
     private int encounterYPosition;
     private boolean isSelected;
+    private int strength;
+    private int dexterity;
+    private int stamina;
+    private int intelligence;
+    private int willpower;
+    private int resilience;
 
     public boolean isSelected() {
         return isSelected;
@@ -143,6 +149,54 @@ public class Hero extends Creature {
 
     public void setSelectedForParty(boolean selectedForParty) {
         isSelectedForParty = selectedForParty;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public void setDexterity(int dexterity) {
+        this.dexterity = dexterity;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public int getWillpower() {
+        return willpower;
+    }
+
+    public void setWillpower(int willpower) {
+        this.willpower = willpower;
+    }
+
+    public int getResilience() {
+        return resilience;
+    }
+
+    public void setResilience(int resilience) {
+        this.resilience = resilience;
     }
 
     public Hero() {

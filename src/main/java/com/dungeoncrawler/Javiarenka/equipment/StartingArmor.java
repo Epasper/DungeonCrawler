@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.equipment;
 
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 
 import java.util.Arrays;
 import java.util.List;

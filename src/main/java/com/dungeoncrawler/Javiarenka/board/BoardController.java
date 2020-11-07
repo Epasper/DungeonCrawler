@@ -1,7 +1,7 @@
 package com.dungeoncrawler.Javiarenka.board;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.Monster;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Monster;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

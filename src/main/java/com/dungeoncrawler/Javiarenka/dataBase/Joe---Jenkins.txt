@@ -294,7 +294,7 @@
   "hp": 70,
   "maxHp": 70,
   "isAlive": true,
-  "allCharacterStatuses": [],
+  "allCreatureStatuses": [],
   "maxPhysicalShield": 45,
   "maxMagicShield": 25,
   "physicalShield": 45,

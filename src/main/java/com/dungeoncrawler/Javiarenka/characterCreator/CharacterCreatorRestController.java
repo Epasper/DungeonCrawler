@@ -1,7 +1,7 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;

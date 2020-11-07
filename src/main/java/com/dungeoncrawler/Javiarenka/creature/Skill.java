@@ -1,7 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
-
-import lombok.Getter;
-import lombok.Setter;
+package com.dungeoncrawler.Javiarenka.creature;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class Skill {
     private int coolDown;
     private int manaCost;
     private int staminaCost;
-    private List<CharacterStatus> appliesStatuses;
+    private List<CreatureStatus> appliesStatuses;
     private int appliedStatusDuration;
     private List<HeroClass> classRestrictions;
     /* @Getter @Setter
@@ -93,11 +90,11 @@ public class Skill {
         this.staminaCost = staminaCost;
     }
 
-    public List<CharacterStatus> getAppliesStatuses() {
+    public List<CreatureStatus> getAppliesStatuses() {
         return appliesStatuses;
     }
 
-    public void setAppliesStatuses(List<CharacterStatus> appliesStatuses) {
+    public void setAppliesStatuses(List<CreatureStatus> appliesStatuses) {
         this.appliesStatuses = appliesStatuses;
     }
 
@@ -118,7 +115,7 @@ public class Skill {
     }
 
     public Skill(String name, int additionalDamage, int additionalHp, boolean isMagicSkill, boolean isPhysicalSkill,
-                 SkillTarget target, int coolDown, int manaCost, int staminaCost, List<CharacterStatus> appliesStatuses,
+                 SkillTarget target, int coolDown, int manaCost, int staminaCost, List<CreatureStatus> appliesStatuses,
                  int appliedStatusDuration) {
         this.name = name;
         this.additionalDamage = additionalDamage;
@@ -134,7 +131,7 @@ public class Skill {
     }
 
     public Skill(String name, int additionalDamage, int additionalHp, boolean isMagicSkill, boolean isPhysicalSkill,
-                 SkillTarget target, int coolDown, int manaCost, int staminaCost, List<CharacterStatus> appliesStatuses,
+                 SkillTarget target, int coolDown, int manaCost, int staminaCost, List<CreatureStatus> appliesStatuses,
                  int appliedStatusDuration, List<HeroClass> classRestrictions) {
         this(name, additionalDamage, additionalHp, isMagicSkill, isPhysicalSkill, target, coolDown, manaCost,
                 staminaCost, appliesStatuses, appliedStatusDuration);

@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 public enum SkillTarget {
     ALLY("Ally"),
@@ -28,9 +28,8 @@ public enum SkillTarget {
     }
 
     public static SkillTarget geSkillTargetByName(String name) {
-        name = name.toUpperCase();
         for (SkillTarget v : values()) {
-            if (v.SkillTargetString.equals(name)) {
+            if (v.SkillTargetString.equalsIgnoreCase(name)) {
                 return v;
             }
         }
