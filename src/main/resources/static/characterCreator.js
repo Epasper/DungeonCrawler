@@ -2,7 +2,19 @@ let globalHeroClass = '';
 let isWeaponSelected = false;
 let isArmorSelected = false;
 let isHeroClassSelected = false;
+let areAllAttributePointsSpent = false;
 let errorMessages = [];
+let availableAttributePoints;
+let allAttributeNames = [];
+let allAttributes = {};
+
+function initialize() {
+    allAttributeNames.forEach(e => {
+        let attrDiv = document.getElementById('attribute:' + e);
+        attrDiv.value = 2;
+        allAttributes[e] = 2;
+    })
+}
 
 function selectHeroClass(heroClass) {
     sendAjaxArmorRequest(heroClass);
@@ -11,6 +23,16 @@ function selectHeroClass(heroClass) {
     isHeroClassSelected = true;
     isArmorSelected = false;
     isWeaponSelected = false;
+}
+
+function changeAttributePoints(attributeName) {
+    let attrDiv = document.getElementById('attribute:' + attributeName);
+    let allPointsDiv = document.getElementById('number-of-points');
+    allAttributes[attributeName] = attrDiv.valueAsNumber;
+    availableAttributePoints = 22 - Object.values(allAttributes).reduce((prev, curr) => {
+        return prev + curr - 2;
+    })
+    allPointsDiv.innerHTML = availableAttributePoints;
 }
 
 function sendAjaxArmorRequest(heroClass) {

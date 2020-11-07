@@ -5,72 +5,90 @@
     <meta charset="UTF-8">
     <title>Character Creator</title>
     <meta name="keywords" content="character, creator, game, dungeon">
-    <meta name="description" content="Character creator w DUngeon Crawler Game">
+    <meta name="description" content="Character creator w Dungeon Crawler Game">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/characterCreatorStyle.css">
     <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap" rel="stylesheet">
-    <script th:src="@{characterCreator.js}"></script>
+    <script src="characterCreator.js"></script>
     <script th:src="@{nameGenerator.js}"></script>
+    <script th:inline="javascript">
+        availableAttributePoints = [[${startingAttributePoints}]];
+        allAttributeNames = [[${allAttributes}]];
+    </script>
 </head>
 
 <body>
 
-    <div class="container" th:action="@{/characterCreator}" th:object="${hero}" method="post">
-        <div class="content">
-            <h1 class="createHeroTitle">Create your Hero!</h1>
-            <div class="name">
-                <input id="heroName" type="text" placeholder="Name" th:field="*{name}">
-                <button th:onclick="'javascript:addNameToField(\'' + heroName + '\');'">Generate Name</button>
-                <input id="heroSurname" type="text" placeholder="Surname" th:field="*{surname}">
-                <button th:onclick="'javascript:addNameToField(\'' + heroSurname + '\');'">Generate Surname</button>
-            </div>
-            <div class="classContent">
-                <h2>Class</h2>
-                <div class="box">
-                    <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
-                        th:value="${heroClass}" th:field="*{heroClass}" th:id="selectClass+${heroClass}"
-                        th:onclick="'javascript:selectHeroClass(\'' + ${class} + '\');'">
-                        <img th:attr="src=@{'../images/' + ${class} + '.png'},title=${class},alt=${class}" />
-                        <p th:text="${class}"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="attributes">
-
-            </div>
-
-            <div class="weaponContent">
-                <h2>Weapon</h2>
-                <div class="box">
-                    <div class="weaponImg selection selection-primary" th:id="selectWeapon+${weapon.getName()}"
-                        th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
-                        th:onclick="'javascript:selectWeapon(\'' + ${weapon.getName()} + '\');'">
-                        <img
-                            th:attr="src=@{'../images/' + ${weapon.getName()} + '.png'},title=${weapon.getName()},alt=${weapon.getName()}" />
-                        <p th:text="${weapon.getName()}"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="armorContent">
-                <h2>Armor</h2>
-                <div class="box">
-                    <div class="armorImg selection selection-primary" th:id="selectArmor+${armor.getName()}"
-                        th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}"
-                        th:onclick="'javascript:selectArmor(\'' + ${armor.getName()} + '\');'">
-                        <img
-                            th:attr="src=@{'../images/' + ${armor.getName()} + '.png'},title=${armor.getName()},alt=${armor.getName()}" />
-                        <p th:text="${armor.getName()}"></p>
-
-                    </div>
-                </div>
-            </div>
-            <button th:onclick="'javascript:saveCharacter();'" class="selection selection-primary">Save
-                Character</button>
-<a href="mainMenu" class="selection selection-primary">Back to Menu</a>
+<div class="container" th:action="@{/characterCreator}" th:object="${hero}" method="post">
+    <div class="content">
+        <h1 class="createHeroTitle">Create your Hero!</h1>
+        <div class="name">
+            <input id="heroName" type="text" placeholder="Name" th:field="*{name}">
+            <button th:onclick="'javascript:addNameToField(\'' + heroName + '\');'">Generate Name</button>
+            <input id="heroSurname" type="text" placeholder="Surname" th:field="*{surname}">
+            <button th:onclick="'javascript:addNameToField(\'' + heroSurname + '\');'">Generate Surname</button>
         </div>
+        <div class="classContent">
+            <h2>Class</h2>
+            <div class="box">
+                <div class="classImg selection selection-primary" th:each="class: ${heroClasses}"
+                     th:value="${heroClass}" th:field="*{heroClass}" th:id="selectClass+${heroClass}"
+                     th:onclick="'javascript:selectHeroClass(\'' + ${class} + '\');'">
+                    <img th:attr="src=@{'../images/' + ${class} + '.png'},title=${class},alt=${class}"/>
+                    <p th:text="${class}"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="attributes">
+            <div class="available-points">
+                <p>Number of Available Points:</p>
+                <p id="number-of-points">20</p>
+            </div>
+            <div class="attribute-container">
+                <div class="attribute" th:each="attribute: ${allAttributes}" th:value="${attribute}">
+                    <p class="attribute-text" th:text="${attribute}"></p>
+                    <input class="attribute-input-field" type="number" th:id="'attribute:'+${attribute}"
+                           th:onchange="'javascript:changeAttributePoints(\'' + ${attribute} + '\')'">
+                </div>
+            </div>
+        </div>
+
+        <div class="weaponContent">
+            <h2>Weapon</h2>
+            <div class="box">
+                <div class="weaponImg selection selection-primary" th:id="selectWeapon+${weapon.getName()}"
+                     th:each="weapon: ${allStartingWeapons}" th:value="${heroClass}" th:field="*{heroClass}"
+                     th:onclick="'javascript:selectWeapon(\'' + ${weapon.getName()} + '\');'">
+                    <img
+                            th:attr="src=@{'../images/' + ${weapon.getName()} + '.png'},title=${weapon.getName()},alt=${weapon.getName()}"/>
+                    <p th:text="${weapon.getName()}"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="armorContent">
+            <h2>Armor</h2>
+            <div class="box">
+                <div class="armorImg selection selection-primary" th:id="selectArmor+${armor.getName()}"
+                     th:each="armor: ${allStartingArmors}" th:value="${heroClass}" th:field="*{heroClass}"
+                     th:onclick="'javascript:selectArmor(\'' + ${armor.getName()} + '\');'">
+                    <img
+                            th:attr="src=@{'../images/' + ${armor.getName()} + '.png'},title=${armor.getName()},alt=${armor.getName()}"/>
+                    <p th:text="${armor.getName()}"></p>
+
+                </div>
+            </div>
+        </div>
+        <button th:onclick="'javascript:saveCharacter();'" class="selection selection-primary">Save
+            Character
+        </button>
+        <a href="mainMenu" class="selection selection-primary">Back to Menu</a>
     </div>
+</div>
+<script>
+    initialize();
+</script>
 
 </body>
 

@@ -1,9 +1,11 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
+import com.dungeoncrawler.Javiarenka.creature.Attribute;
 import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CharacterCreatorService {
@@ -12,8 +14,9 @@ public class CharacterCreatorService {
     private final List<Armor> startingArmors = new ArrayList<>();
     private final Map<String, Set<String>> characterClassToAvailableArmor = new HashMap<>();
     private final Map<String, Set<String>> characterClassToAvailableWeapon = new HashMap<>();
-    private final List<HeroClass> availableClasses = Arrays.asList(HeroClass.values());
-    private final List<String> availableClassesStringified = new ArrayList<>();
+    private final List<String> availableClassesStrings = Arrays.stream(HeroClass.values()).map(HeroClass::toString).collect(Collectors.toList());
+    private final List<String> allAttributesStrings = Arrays.stream(Attribute.values()).map(Attribute::toString).collect(Collectors.toList());
+    private final int startingAttributePoints = 20;
 
     public CharacterCreatorService() {
         verifyAndAddStartingEquipment(HeroClass.ARCHER, StartingArmor.RUSTED_CHAIN_ARMOR, StartingArmor.LEATHER_ARMOR);
@@ -28,13 +31,12 @@ public class CharacterCreatorService {
         verifyAndAddStartingEquipment(HeroClass.WARRIOR, StartingWeapon.DAGGER, StartingWeapon.CLUB, StartingWeapon.SHORT_BOW, StartingWeapon.SHORT_SWORD);
         verifyAndAddStartingEquipment(HeroClass.KNIGHT, StartingWeapon.CLUB);
         verifyAndAddStartingEquipment(HeroClass.HEALER, StartingWeapon.CLUB);
-        for (HeroClass hc : availableClasses) {
-            String classString = hc.toString();
-            classString = classString.substring(0, 1).toUpperCase() + classString.substring(1).toLowerCase();
-            availableClassesStringified.add(classString);
-        }
         startingWeapons.addAll(StartingWeapon.ALL_STARTING_WEAPON);
         startingArmors.addAll(StartingArmor.ALL_STARTING_ARMOR);
+    }
+
+    public int getStartingAttributePoints() {
+        return startingAttributePoints;
     }
 
     private void verifyAndAddStartingEquipment(HeroClass heroClass, Equipment... equipment) {
@@ -73,11 +75,11 @@ public class CharacterCreatorService {
         return startingArmors;
     }
 
-    public List<HeroClass> getAvailableClasses() {
-        return availableClasses;
+    public List<String> getAvailableClassesStrings() {
+        return availableClassesStrings;
     }
 
-    public List<String> getAvailableClassesStringified() {
-        return availableClassesStringified;
+    public List<String> getAllAttributesStrings() {
+        return allAttributesStrings;
     }
 }

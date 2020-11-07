@@ -13,10 +13,12 @@ public class CharacterCreatorController {
 
     @GetMapping("/characterCreator")
     public String characterCreatorGet(Model model) {
-        model.addAttribute("heroClasses", service.getAvailableClassesStringified());
+        model.addAttribute("heroClasses", service.getAvailableClassesStrings());
         model.addAttribute("hero", new Hero());
         model.addAttribute("allStartingArmors", service.getStartingArmors());
         model.addAttribute("allStartingWeapons", service.getStartingWeapons());
+        model.addAttribute("allAttributes",service.getAllAttributesStrings());
+        model.addAttribute("startingAttributePoints",service.getStartingAttributePoints());
         return "characterCreator";
     }
 

@@ -1,12 +1,12 @@
 package com.dungeoncrawler.Javiarenka.creature;
 
 public enum Attribute {
-    ARCHER("Archer"),
-    ROGUE("Rogue"),
-    WARRIOR("Warrior"),
-    WIZARD("Wizard"),
-    HEALER("Healer"),
-    KNIGHT("Knight");
+    STRENGTH("Strength"),
+    DEXTERITY("Dexterity"),
+    STAMINA("Stamina"),
+    INTELLIGENCE("Intelligence"),
+    WILLPOWER("Willpower"),
+    RESILIENCE("Resilience");
 
     private final String attributeString;
 

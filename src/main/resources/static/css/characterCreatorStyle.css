@@ -61,6 +61,24 @@ Zrobić scrollbar dla firefox */
     margin: 0.5rem;
 }
 
+.available-points {
+    margin: 10px;
+}
+
+.attribute-container {
+    font-size: 1.5em;
+    margin: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+.attribute-input-field {
+    width: 50px;
+    text-align: center;
+}
+
 .weaponImg img,
 .armorImg img {
     border-radius: 20% 50%;
