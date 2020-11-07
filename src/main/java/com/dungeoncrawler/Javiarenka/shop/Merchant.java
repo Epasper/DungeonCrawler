@@ -5,7 +5,7 @@ import com.dungeoncrawler.Javiarenka.equipment.Backpack;
 public class Merchant {
     private String name;
     private int money;
-    private Backpack backpack = new Backpack();
+    private Backpack backpack;
     private String imageLink;
 
     public String getName() {
