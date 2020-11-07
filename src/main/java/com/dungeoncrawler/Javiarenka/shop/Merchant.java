@@ -47,6 +47,9 @@ public class Merchant {
         this.imageLink = imageLink;
     }
 
+    public Merchant() {
+    }
+
     @Override
     public String toString() {
         return "Merchant{" +
