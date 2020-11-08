@@ -103,7 +103,7 @@ We are still working on it. There may be some (many) bugs that are needed to be 
 * Item Crafting oraz crafting materials
 * Drop table and drop event
 * World map
-* Attributes and uniqe skillCards for every class
+* Attributes and uniqe skills for every class
 * ...and many more!
 
 
