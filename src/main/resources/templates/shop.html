@@ -1,26 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
     <link rel="stylesheet" href="../css/shop.css">
 </head>
+
 <body>
+
     <div class="container">
+        <div class="trading__container">
+            <div class="trading__person hero">
+                <!-- <img th:src="${hero.getImageLink()}" alt="" class="trading__person--image hero"> -->
+                <img src="../images/Rogue.png" alt="" class="trading__person--image hero">
+                <div class="trading__person--text hero">
+                    <p class="trading__person--text-name hero" th:text="${hero.name}"></p>
+                    <p class="trading__person--text-money hero" th:text="${party.getMoney()}"></p>
+                </div>
+                <div class="trading__backpack hero">
+                    <div></div>
+                </div>
+            </div>
+            <div class="trading__person merchant">
+                <img th:attr="src=${merchant.getImageLink()}" alt="" class="trading__person--image merchant">
+                <div class="trading__person--text merchant">
+                    <p class="trading__person--text-name merchant" th:text="${merchant.getName()}"></p>
+                    <p class="trading__person--text-money merchant" th:text="${merchant.getMoney()}"></p>
+                </div>
+                <div class="trading__backpack merchant">
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="merchant" class="back">Back</a>
+    </div>
+    <!-- <div class="container">
         <div class="hero__container">
             <p th:text="${party.getMoney()}">Party gold:</p>
-            <p th:text="${party.getHeroes()}"></p>
-            <p th:text="${hero}"></p>
-        </div>
-        <div class="merchant__image">
-            <img src="../images/merchant/seller1.png" alt="merchant wizard">
+            <div th:each="hero : ${party.getHeroes()}">
+                <p th:text="${hero.name}"></p>
+            </div>
+            <p th:text="${hero.name}"></p>
         </div>
         <div class="merchant__container">
             <p th:text="${merchant.getMoney()}"></p>
             <p th:text="${merchant.getName()}"></p>
         </div>
-    </div>
-    
+    </div> -->
+
 </body>
+
 </html>

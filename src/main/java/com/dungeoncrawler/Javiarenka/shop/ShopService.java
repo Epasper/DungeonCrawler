@@ -18,7 +18,7 @@ public class ShopService {
         merchant.setName("Bob the Merchant");
         merchant.setMoney(1000);
         merchant.setBackpack(new Backpack());
-        merchant.setImageLink(null); //todo replace with image
+        merchant.setImageLink("../images/merchant/merchant.png"); //todo replace with image
         party.setHeroes(loadGameService.load());
         party.setMoney(500);
         currentlyTradingHero = party.getHeroes().get(0);
