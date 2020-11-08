@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
+    <link rel="stylesheet" href="../css/shop.css">
 </head>
 <body>
-    <p th:text="${party.getMoney()}">Party gold:</p>
-    <p th:text="${party.getHeroes()}"></p>
-    <p th:text="${merchant.getMoney()}"></p>
-    <p th:text="${merchant.getName()}"></p>
-    <p th:text="${hero}"></p>
+    <div class="container">
+        <div class="hero__container">
+            <p th:text="${party.getMoney()}">Party gold:</p>
+            <p th:text="${party.getHeroes()}"></p>
+            <p th:text="${hero}"></p>
+        </div>
+        <div class="merchant__image">
+            <img src="../images/merchant/seller1.png" alt="merchant wizard">
+        </div>
+        <div class="merchant__container">
+            <p th:text="${merchant.getMoney()}"></p>
+            <p th:text="${merchant.getName()}"></p>
+        </div>
+    </div>
+    
 </body>
 </html>

@@ -16,4 +16,9 @@ public class ShopController {
         model.addAttribute("party", service.getParty());
         return "shop";
     }
+
+    @GetMapping("/merchant")
+    public String getMerchant() {
+        return "merchant";
+    }
 }
