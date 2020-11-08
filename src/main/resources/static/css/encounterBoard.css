@@ -268,16 +268,26 @@ body {
     /* bottom: -12%; */
 }
 
+.skill-bar img {
+    width: 130px;
+    height: auto;
+}
+
 .single-skill {
     display: inline;
     z-index: 10;
     /* bottom: -12%; */
 }
 
-.skill-bar img {
-    width: 130px;
-    height: auto;
+.skill-card {
+    position: relative;
     z-index: 10;
+}
+
+.skill-image {
+    position: absolute;
+    transform: translateX(-100%) scale(0.9);
+    z-index: 8;
 }
 
 @keyframes active {

@@ -13,8 +13,7 @@
       "ROGUE",
       "WARRIOR"
     ],
-    "imageLink": "../images/Leather Armor",
-    "occupyingSlot": "CHEST"
+    "imageLink": "../images/Leather Armor"
   },
   "equippedWeapon": {
     "damageType": "DMG_PIERCING",
@@ -27,49 +26,60 @@
       "WARRIOR",
       "ARCHER"
     ],
-    "imageLink": "../images/Short Bow",
-    "occupyingSlot": "RIGHT_HAND"
+    "imageLink": "../images/Short Bow"
   },
   "weaponName": "Short Bow",
   "armorName": "Leather Armor",
   "className": "Archer",
   "money": 0,
-  "skills": [
+  "skillCards": [
     {
-      "name": "Shoots and becomes invisible",
-      "additionalDamage": 18,
-      "additionalHp": 0,
-      "isMagicSkill": true,
-      "isPhysicalSkill": false,
-      "target": "SELF_AND_ENEMY",
-      "coolDown": 2,
-      "manaCost": 22,
-      "staminaCost": 14,
-      "appliesStatuses": [
-        "INVISIBLE"
-      ],
-      "appliedStatusDuration": 3,
-      "classRestrictions": [
-        "ARCHER"
-      ]
-    },
-    {
-      "name": "Shoots and burns",
-      "additionalDamage": 8,
-      "additionalHp": 0,
+      "name": "Shoot and Disappear",
+      "flatAdditionalDamage": 18,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
-      "target": "ALL_ENEMIES",
-      "coolDown": 2,
-      "manaCost": 4,
-      "staminaCost": 15,
-      "appliesStatuses": [
-        "BURNED"
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "SELF",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "INVISIBLE",
+          "skillTarget": "SELF",
+          "duration": 3
+        }
       ],
-      "appliedStatusDuration": 3,
       "classRestrictions": [
         "ARCHER"
-      ]
+      ],
+      "imageSource": "../images/skillCards/43.png"
+    },
+    {
+      "name": "Shoot and Set on Fire",
+      "flatAdditionalDamage": 8,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
+      "isMagicSkill": true,
+      "isPhysicalSkill": false,
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "BURNED",
+          "skillTarget": "ENEMY",
+          "duration": 3
+        }
+      ],
+      "classRestrictions": [
+        "ARCHER"
+      ],
+      "imageSource": "../images/skillCards/3.png"
     }
   ],
   "backpack": {
@@ -84,8 +94,7 @@
         "WARRIOR",
         "ARCHER"
       ],
-      "imageLink": "../images/Short Bow",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Short Bow"
     },
     "chestSlot": {
       "damageReduction": 10,
@@ -99,33 +108,32 @@
         "ROGUE",
         "WARRIOR"
       ],
-      "imageLink": "../images/Leather Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Leather Armor"
     },
     "baggage": {
       "0": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Chipped Claw",
+        "weight": 0.02,
+        "price": 2.0,
+        "imageLink": "../images/Chipped Claw"
       },
       "1": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Pretty Stone",
+        "weight": 0.06,
+        "price": 1.0,
+        "imageLink": "../images/Pretty Stone"
       },
       "2": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Broken Branch",
+        "weight": 0.05,
+        "price": 2.0,
+        "imageLink": "../images/Broken Branch"
       },
       "3": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Coal Ore Chunk",
+        "weight": 0.2,
+        "price": 12.0,
+        "imageLink": "../images/Coal Ore Chunk"
       },
       "4": {
         "name": "NO EQUIPMENT",
@@ -152,16 +160,16 @@
         "imageLink": "../images/null"
       },
       "8": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0,
-        "imageLink": "../images/Coal Ore Chunk"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "9": {
-        "name": "Pretty Stone",
-        "weight": 0.06,
-        "price": 1.0,
-        "imageLink": "../images/Pretty Stone"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "10": {
         "name": "NO EQUIPMENT",
@@ -212,16 +220,16 @@
         "imageLink": "../images/null"
       },
       "18": {
-        "name": "Chipped Claw",
-        "weight": 0.02,
-        "price": 2.0,
-        "imageLink": "../images/Chipped Claw"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "19": {
-        "name": "Broken Branch",
-        "weight": 0.05,
-        "price": 2.0,
-        "imageLink": "../images/Broken Branch"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "20": {
         "name": "NO EQUIPMENT",

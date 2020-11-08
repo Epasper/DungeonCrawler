@@ -21,6 +21,41 @@ function initialize() {
     });
 }
 
+function getSurnameFromId(id) {
+    return id.substring(id.length, id.indexOf('|||') + 3);
+}
+
+function getNameFromId(id) {
+    return id.substring(0, id.indexOf('|||'));
+}
+
+function selectCharacter(Id) {
+    console.log(Id);
+    const surname = getSurnameFromId(Id);
+    const name = getNameFromId(Id);
+    const hero = heroes
+        .filter(e => e.name === name)
+        .find(f => f.surname === surname);
+    let heroSkillsDiv = document.getElementById('current-hero-skills');
+    while (heroSkillsDiv.firstChild) {
+        heroSkillsDiv.removeChild(heroSkillsDiv.lastChild);
+    }
+    hero.skillCards.forEach(e => {
+        let imgDiv = document.createElement("img");
+        let skillImgDiv = document.createElement("img");
+        imgDiv.src = '../images/skillCards/skillCardBlank.png';
+        skillImgDiv.src = e.imageSource;
+        imgDiv.classList.add('skill-card');
+        skillImgDiv.classList.add('skill-image');
+        let singleSkillDiv = document.createElement("div");
+        singleSkillDiv.className = 'single-skill';
+        // singleSkillDiv.textContent = e.name;
+        singleSkillDiv.appendChild(imgDiv);
+        singleSkillDiv.appendChild(skillImgDiv);
+        heroSkillsDiv.appendChild(singleSkillDiv);
+    });
+}
+
 function getMovableTiles(curentlyClickedHero) {
     globalSelectedHero = curentlyClickedHero;
     clearTheBoardOfWalkEffects();
@@ -106,8 +141,8 @@ function testRemovePhysicalShield(heroNameAndSurname) {
 }
 
 function changeHitPoints(numberToChange, heroNameAndSurname, defense) {
-    const name = heroNameAndSurname.substring(0, heroNameAndSurname.indexOf('|||'))
-    const surname = heroNameAndSurname.substring(heroNameAndSurname.length, heroNameAndSurname.indexOf('|||') + 3)
+    const name = getNameFromId(heroNameAndSurname);
+    const surname = getSurnameFromId(heroNameAndSurname);
     let hero = heroes
         .filter(e => e.name === name)
         .find(f => f.surname === surname)

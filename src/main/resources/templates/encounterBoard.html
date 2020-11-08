@@ -21,7 +21,7 @@
     <div class="hero-portraits">
         <th:block th:each="hero : ${heroes}">
             <div th:with="currentHero=${hero.getName()} + '|||' + ${hero.getSurname()}">
-                <img th:id="${currentHero}"/>
+                <img th:onclick="'javascript:selectCharacter(\'' + ${currentHero} + '\')'" th:id="${currentHero}"/>
                 <a th:href="'/editEquipment?heroNameAndSurname='+${hero.getName()} + '---' + ${hero.getSurname()}"
                    class="equipment">
                     <img src="../images/equipment.png">
@@ -100,22 +100,7 @@
         </th:block>
     </div>
     <div class="skill-bar-container">
-        <div class="skill-bar">
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
+        <div id="current-hero-skills" class="skill-bar">
         </div>
     </div>
 </div>

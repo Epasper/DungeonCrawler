@@ -13,8 +13,7 @@
       "ROGUE",
       "HEALER"
     ],
-    "imageLink": "../images/Cloth Armor",
-    "occupyingSlot": "CHEST"
+    "imageLink": "../images/Cloth Armor"
   },
   "equippedWeapon": {
     "damageType": "DMG_FIRE",
@@ -25,66 +24,77 @@
     "classRestrictions": [
       "WIZARD"
     ],
-    "imageLink": "../images/Staff of Fire",
-    "occupyingSlot": "RIGHT_HAND"
+    "imageLink": "../images/Staff of Fire"
   },
   "weaponName": "Staff of Fire",
   "armorName": "Cloth Armor",
   "className": "Wizard",
   "money": 0,
-  "skills": [
+  "skillCards": [
     {
-      "name": "Hits and burns",
-      "additionalDamage": 10,
-      "additionalHp": 0,
+      "name": "Hits and Sets on Fire",
+      "flatAdditionalDamage": 10,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
       "isMagicSkill": true,
       "isPhysicalSkill": false,
-      "target": "ENEMY",
-      "coolDown": 3,
-      "manaCost": 15,
-      "staminaCost": 5,
-      "appliesStatuses": [
-        "BURNED"
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "BURNED",
+          "skillTarget": "ENEMY",
+          "duration": 3
+        }
       ],
-      "appliedStatusDuration": 2,
       "classRestrictions": [
         "WIZARD"
-      ]
+      ],
+      "imageSource": "../images/skillCards/6.png"
     },
     {
-      "name": "Hit and speeds up",
-      "additionalDamage": 2,
-      "additionalHp": 0,
-      "isMagicSkill": false,
-      "isPhysicalSkill": true,
-      "target": "SELF_AND_ENEMY",
-      "coolDown": 4,
-      "manaCost": 5,
-      "staminaCost": 12,
-      "appliesStatuses": [
-        "HASTED"
+      "name": "Hits and Speeds Up",
+      "flatAdditionalDamage": 2,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
+      "isMagicSkill": true,
+      "isPhysicalSkill": false,
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "HASTED",
+          "skillTarget": "SELF",
+          "duration": 3
+        }
       ],
-      "appliedStatusDuration": 2,
       "classRestrictions": [
         "WIZARD"
-      ]
+      ],
+      "imageSource": "../images/skillCards/37.png"
     }
   ],
   "backpack": {
     "rightHandSlot": {
-      "damageDealt": 0,
+      "damageType": "DMG_FIRE",
+      "damageDealt": 5,
       "name": "Staff of Fire",
       "weight": 8.0,
       "price": 20.0,
       "classRestrictions": [
         "WIZARD"
       ],
-      "imageLink": "../images/Staff of Fire",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Staff of Fire"
     },
     "chestSlot": {
-      "damageReduction": 0,
-      "chanceToHitReduction": 0,
+      "damageReduction": 4,
+      "chanceToHitReduction": 10,
       "additionalHp": 0,
       "name": "Cloth Armor",
       "weight": 5.0,
@@ -94,33 +104,32 @@
         "ROGUE",
         "HEALER"
       ],
-      "imageLink": "../images/Cloth Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Cloth Armor"
     },
     "baggage": {
       "0": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Chipped Claw",
+        "weight": 0.02,
+        "price": 2.0,
+        "imageLink": "../images/Chipped Claw"
       },
       "1": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Pretty Stone",
+        "weight": 0.06,
+        "price": 1.0,
+        "imageLink": "../images/Pretty Stone"
       },
       "2": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Broken Branch",
+        "weight": 0.05,
+        "price": 2.0,
+        "imageLink": "../images/Broken Branch"
       },
       "3": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Coal Ore Chunk",
+        "weight": 0.2,
+        "price": 12.0,
+        "imageLink": "../images/Coal Ore Chunk"
       },
       "4": {
         "name": "NO EQUIPMENT",
@@ -219,28 +228,28 @@
         "imageLink": "../images/null"
       },
       "20": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0,
-        "imageLink": "../images/Coal Ore Chunk"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "21": {
-        "name": "Broken Branch",
-        "weight": 0.05,
-        "price": 2.0,
-        "imageLink": "../images/Broken Branch"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "22": {
-        "name": "Pretty Stone",
-        "weight": 0.06,
-        "price": 1.0,
-        "imageLink": "../images/Pretty Stone"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "23": {
-        "name": "Chipped Claw",
-        "weight": 0.02,
-        "price": 2.0,
-        "imageLink": "../images/Chipped Claw"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "24": {
         "name": "NO EQUIPMENT",
@@ -288,8 +297,8 @@
   "strength": 4,
   "dexterity": 4,
   "stamina": 4,
-  "intelligence": 10,
-  "willpower": 6,
+  "intelligence": 12,
+  "willpower": 4,
   "resilience": 4,
   "name": "Chase",
   "hp": 50,

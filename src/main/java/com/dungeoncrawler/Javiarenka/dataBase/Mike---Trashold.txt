@@ -13,8 +13,7 @@
       "WARRIOR",
       "ARCHER"
     ],
-    "imageLink": "../images/Rusted Chain Armor",
-    "occupyingSlot": "CHEST"
+    "imageLink": "../images/Rusted Chain Armor"
   },
   "equippedWeapon": {
     "damageType": "DMG_BLUDGEONING",
@@ -27,49 +26,60 @@
       "WARRIOR",
       "HEALER"
     ],
-    "imageLink": "../images/Club",
-    "occupyingSlot": "RIGHT_HAND"
+    "imageLink": "../images/Club"
   },
   "weaponName": "Club",
   "armorName": "Rusted Chain Armor",
   "className": "Knight",
   "money": 0,
-  "skills": [
+  "skillCards": [
     {
-      "name": "Hits and weakens",
-      "additionalDamage": 15,
-      "additionalHp": 0,
-      "isMagicSkill": true,
-      "isPhysicalSkill": false,
-      "target": "ENEMY",
-      "coolDown": 2,
-      "manaCost": 15,
-      "staminaCost": 5,
-      "appliesStatuses": [
-        "WEAKENED"
+      "name": "Hits Enemy and Weakens It",
+      "flatAdditionalDamage": 15,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
+      "isMagicSkill": false,
+      "isPhysicalSkill": true,
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "WEAKENED",
+          "skillTarget": "ENEMY",
+          "duration": 3
+        }
       ],
-      "appliedStatusDuration": 2,
       "classRestrictions": [
         "KNIGHT"
-      ]
+      ],
+      "imageSource": "../images/skillCards/12.png"
     },
     {
       "name": "Hits and slows down all enemies",
-      "additionalDamage": 25,
-      "additionalHp": 0,
+      "flatAdditionalDamage": 5,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
-      "target": "ALL_ENEMIES",
-      "coolDown": 5,
-      "manaCost": 5,
-      "staminaCost": 25,
-      "appliesStatuses": [
-        "SLOWED"
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "SLOWED",
+          "skillTarget": "ALL_ENEMIES",
+          "duration": 3
+        }
       ],
-      "appliedStatusDuration": 2,
       "classRestrictions": [
         "KNIGHT"
-      ]
+      ],
+      "imageSource": "../images/skillCards/40.png"
     }
   ],
   "backpack": {
@@ -84,8 +94,7 @@
         "WARRIOR",
         "HEALER"
       ],
-      "imageLink": "../images/Club",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Club"
     },
     "chestSlot": {
       "damageReduction": 15,
@@ -99,8 +108,7 @@
         "WARRIOR",
         "ARCHER"
       ],
-      "imageLink": "../images/Rusted Chain Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Rusted Chain Armor"
     },
     "baggage": {
       "0": {
@@ -116,16 +124,16 @@
         "imageLink": "../images/Pretty Stone"
       },
       "2": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Broken Branch",
+        "weight": 0.05,
+        "price": 2.0,
+        "imageLink": "../images/Broken Branch"
       },
       "3": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Coal Ore Chunk",
+        "weight": 0.2,
+        "price": 12.0,
+        "imageLink": "../images/Coal Ore Chunk"
       },
       "4": {
         "name": "NO EQUIPMENT",
@@ -164,16 +172,16 @@
         "imageLink": "../images/null"
       },
       "10": {
-        "name": "Broken Branch",
-        "weight": 0.05,
-        "price": 2.0,
-        "imageLink": "../images/Broken Branch"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "11": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0,
-        "imageLink": "../images/Coal Ore Chunk"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "12": {
         "name": "NO EQUIPMENT",
@@ -286,16 +294,16 @@
     }
   },
   "unarmedAttackDamage": 1,
-  "isSelectedForParty": true,
+  "isSelectedForParty": false,
   "encounterXPosition": 1,
   "encounterYPosition": 1,
   "isSelected": false,
-  "strength": 4,
+  "strength": 6,
   "dexterity": 4,
-  "stamina": 8,
+  "stamina": 10,
   "intelligence": 4,
   "willpower": 4,
-  "resilience": 8,
+  "resilience": 4,
   "name": "Mike",
   "hp": 120,
   "maxHp": 120,
