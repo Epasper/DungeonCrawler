@@ -19,6 +19,13 @@ export function injectTileListeners() {
     mapGrid.addEventListener('mouseleave', tileMouseLeft);
 }
 
+function injectMenuListeners() {
+    const menuBtn = getMappedElementById('menu-btn');
+    menuBtn.addEventListener('mouseenter', menuButtonEntered);
+    menuBtn.addEventListener('mouseleave', menuButtonExited);
+    menuBtn.addEventListener('click', menuClicked);
+}
+
 export function injectButtonsListeners() {
     let spawnBtn = getMappedElementById('spawn-party-btn');
     spawnBtn.addEventListener('click', spawnPartyBackend);
@@ -48,6 +55,8 @@ export function injectButtonsListeners() {
 
     let loadBtn = getMappedElementById('load-btn')
     loadBtn.addEventListener('click', requestMapLoad)
+
+    injectMenuListeners();
 }
 
 async function requestMapSave() {
@@ -148,6 +157,35 @@ async function keyPressedMove({ keyCode }) {
     }, 100)
 
     document.addEventListener('keydown', keyPressedMove);
+}
+
+function menuButtonEntered() {
+    const menu = getMappedElementById('menu');
+
+    if (menu.classList.length == 0) return;
+
+    menu.classList.remove('hidden');
+    menu.classList.add('partial');
+}
+
+function menuButtonExited() {
+    const menu = getMappedElementById('menu');
+
+    if (menu.classList.length == 0) return;
+
+    menu.classList.remove('partial');
+    menu.classList.add('hidden');
+}
+
+function menuClicked() {
+    const menu = getMappedElementById('menu');
+
+    if (menu.classList.length == 0) {
+        menu.classList.add('partial');
+    } else {
+        menu.classList.remove('hidden');
+        menu.classList.remove('partial');
+    }
 }
 
 async function tileClicked({ target: clickedTileDiv }) {
