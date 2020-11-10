@@ -66,21 +66,22 @@ class DoorOperator {
     }
 }
 
-class Action {
+// class Action {
 
-}
+// }
 
 class Door {
-    constructor(state, actionA, actionB) {
+    constructor(state, actionA, actionB, actionButtonPrompt) {
         this.state = state;
         this.actionAPrompt = actionA;
         this.actionBPrompt = actionB;
+        this.actionButtonPrompt = actionButtonPrompt
     }
 }
 
 class DoorOpened extends Door {
     constructor() {
-        super('OPENED', 'Open', 'Close');
+        super('OPENED', 'Open', 'Close', 'Opened door');
         this.actionAisDisabled = true;
         this.actionBisDisabled = false;
     }
@@ -103,7 +104,7 @@ class DoorOpened extends Door {
 
 class DoorClosed extends Door {
     constructor() {
-        super('CLOSED', 'Open', 'Close');
+        super('CLOSED', 'Open', 'Close', 'Closed door');
         this.actionAisDisabled = false;
         this.actionBisDisabled = true;
     }
@@ -130,7 +131,7 @@ class DoorClosed extends Door {
 
 class DoorLocked extends Door {
     constructor() {
-        super('LOCKED', 'Unlock', 'Lockpick');
+        super('LOCKED', 'Unlock', 'Lockpick', 'Locked door');
         this.actionAisDisabled = false;
         this.actionBisDisabled = false;
     }
@@ -249,30 +250,22 @@ async function updateActionButton() {
     let actionBtn = getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
-    actionBtn.disabled = true;
-    actionBtn.dataset.actionType = 'action';
-    actionBtn.textContent = "Actions";
-    deactivateActionMenu();
-
     //debugger;
     if (party.direction == directions.NONE) return;
 
     const { data: pointedTile } = await axios.get(`http://localhost:8080/getPointedTile?dir=${party.direction}`);
-    //console.log('pointed tile: ', pointedTile);
-
-    let pointedDiv = getDivFromBackendTile(pointedTile);
-    //console.log('pointedDiv: ', pointedDiv);
-
-    //pointedDiv = { div: pointedDiv, type: pointedTile.type };
-    //console.log('pointedDiv: ', pointedDiv);
 
     if (pointedTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
-        actionBtn.dataset.actionType = 'door';
-        actionBtn.textContent = "Door"
         activateActionMenu();
         provideDoorActions(pointedTile);
+        return;
     }
+
+    actionBtn.disabled = true;
+    actionBtn.dataset.actionType = 'action';
+    actionBtn.textContent = "Actions";
+    deactivateActionMenu();
 }
 
 export async function actionAByContext() {
@@ -299,6 +292,9 @@ async function provideDoorActions(pointedTile) {
 
     actionsManager.actionA = async () => { await doorOperator.actionA(); };
     actionsManager.actionB = async () => { await doorOperator.actionB(); };
+
+    const actionBtn = getMappedElementById('action-btn');
+    actionBtn.textContent = doorOperator.current.actionButtonPrompt;
 }
 
 export async function updateButtons() {
