@@ -516,7 +516,7 @@ public class RoomBuilder
 //            setSeedByDirection(outputSeed, buildDir);
         }
         //System.out.println("Seed tile: " + outputSeed.getX() + "/" + outputSeed.getY() + ", for directions: " + buildDir.name());
-        outputSeed.setType(TileType.DEBUG);
+        //outputSeed.setType(TileType.DEBUG);
         MapGeneratorService.buildDebugSite(stage);
         return outputSeed;
     }
