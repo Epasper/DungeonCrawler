@@ -8,7 +8,7 @@ import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
 const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
-let partyMoveCounter = 0;
+let currentMenu = null;
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
@@ -24,6 +24,32 @@ function injectMenuListeners() {
     menuBtn.addEventListener('mouseenter', menuButtonEntered);
     menuBtn.addEventListener('mouseleave', menuButtonExited);
     menuBtn.addEventListener('click', menuClicked);
+
+    injectSaveMenuListeners();
+    injectLoadMenuListeners();
+}
+
+function injectSaveMenuListeners() {
+    const saveBtn = getMappedElementById('save-btn');
+    saveBtn.addEventListener('click', saveClicked);
+
+    const backBtn = getMappedElementById('save-back-btn');
+    backBtn.addEventListener('click', backClicked)
+}
+
+function injectLoadMenuListeners() {
+    const loadBtn = getMappedElementById('load-btn');
+    loadBtn.addEventListener('click', loadClicked);
+
+    const backBtn = getMappedElementById('load-back-btn');
+    backBtn.addEventListener('click', backClicked)
+}
+
+function backClicked() {
+    // const saveMenu = getMappedElementById('save-menu');
+    // saveMenu.classList.add('hidden');
+    hideMenu(currentMenu);
+    showMenu(getMappedElementById('main-menu'));
 }
 
 export function injectButtonsListeners() {
@@ -50,11 +76,11 @@ export function injectButtonsListeners() {
     });
     document.addEventListener('keydown', keyPressedMove);
 
-    let saveBtn = getMappedElementById('save-btn')
-    saveBtn.addEventListener('click', requestMapSave)
+    let qSaveBtn = getMappedElementById('q-save-btn')
+    qSaveBtn.addEventListener('click', requestMapSave)
 
-    let loadBtn = getMappedElementById('load-btn')
-    loadBtn.addEventListener('click', requestMapLoad)
+    let qLoadBtn = getMappedElementById('q-load-btn')
+    qLoadBtn.addEventListener('click', requestMapLoad)
 
     injectMenuListeners();
 }
@@ -160,32 +186,72 @@ async function keyPressedMove({ keyCode }) {
 }
 
 function menuButtonEntered() {
-    const menu = getMappedElementById('menu');
+    if (currentMenu) return;
 
-    if (menu.classList.length == 0) return;
+    const menu = getMappedElementById('main-menu');
+
+    if (menu.classList.length == 1) return;
 
     menu.classList.remove('hidden');
     menu.classList.add('partial');
 }
 
 function menuButtonExited() {
-    const menu = getMappedElementById('menu');
+    const menu = getMappedElementById('main-menu');
 
-    if (menu.classList.length == 0) return;
+    if (menu.classList.length == 1) return;
 
     menu.classList.remove('partial');
     menu.classList.add('hidden');
 }
 
-function menuClicked() {
-    const menu = getMappedElementById('menu');
+function showMenu(menu) {
+    menu.classList.remove('hidden');
+    menu.classList.remove('partial');
+}
 
-    if (menu.classList.length == 0) {
-        menu.classList.add('partial');
+function hideMenu(menu) {
+    menu.classList.add('hidden');
+}
+
+function menuClicked() {
+    const mainMenu = getMappedElementById('main-menu');
+
+    //hideMenu(saveMenu);
+    if (currentMenu) {
+        mainMenu.classList.add('partial');
+        hideMenu(currentMenu);
+        currentMenu = null;
     } else {
-        menu.classList.remove('hidden');
-        menu.classList.remove('partial');
+        currentMenu = mainMenu;
+        showMenu(mainMenu);
     }
+
+    // if (mainMenu.classList.length == 1) {
+    //     currentMenu = null;
+    //     mainMenu.classList.add('partial');
+    // } else {
+    //     currentMenu = mainMenu;
+    //     showMenu(mainMenu);
+    // }
+}
+
+function saveClicked() {
+    const mainMenu = getMappedElementById('main-menu');
+    const saveMenu = getMappedElementById('save-menu');
+
+    currentMenu = saveMenu;
+    hideMenu(mainMenu);
+    showMenu(saveMenu);
+}
+
+function loadClicked() {
+    const mainMenu = getMappedElementById('main-menu');
+    const loadMenu = getMappedElementById('load-menu');
+
+    currentMenu = loadMenu;
+    hideMenu(mainMenu);
+    showMenu(loadMenu);
 }
 
 async function tileClicked({ target: clickedTileDiv }) {

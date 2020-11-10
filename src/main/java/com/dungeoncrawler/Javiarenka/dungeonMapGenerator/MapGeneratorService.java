@@ -88,6 +88,7 @@ public class MapGeneratorService
         stage.createPeripheralWall();
         rb.fillStageWithRooms();
         stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+        MapGeneratorService.buildDebugSite(stage);
         rb.removeCorridorClusters();
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();

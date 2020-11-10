@@ -506,14 +506,18 @@ public class RoomBuilder
         while (outputSeed.getType() != TileType.EMPTY && areEmptyTilesLeft)
         {
             outputSeed = tileNav.getNextTileLooped(outputSeed, buildDir);
-            if (outputSeed.getType() == TileType.EMPTY)
-            {
-                Tile randomizeSeed = randomizeSeed(outputSeed, buildDir);
-                if (randomizeSeed.getType() == TileType.EMPTY) outputSeed = randomizeSeed;
-            }
-            setSeedByDirection(outputSeed, buildDir);
+            //TODO: poniżej bug - można usunąć/wykomentować całego ifa, to bug zniknie. Bug jest powodowany faktem, że randomizer seedów może wybrać takiego seeda
+            // że zostanie stwożony pokój niepołączony z głównym korytarzem - taki "zawieszony w przestrzeni"
+//            if (outputSeed.getType() == TileType.EMPTY)
+//            {
+//                Tile randomizeSeed = randomizeSeed(outputSeed, buildDir);
+//                if (randomizeSeed.getType() == TileType.EMPTY) outputSeed = randomizeSeed;
+//            }
+//            setSeedByDirection(outputSeed, buildDir);
         }
         //System.out.println("Seed tile: " + outputSeed.getX() + "/" + outputSeed.getY() + ", for directions: " + buildDir.name());
+        outputSeed.setType(TileType.DEBUG);
+        MapGeneratorService.buildDebugSite(stage);
         return outputSeed;
     }
 
