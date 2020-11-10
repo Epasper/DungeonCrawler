@@ -267,17 +267,22 @@ public class MapGeneratorService
         return sb.toString();
     }
 
-    public void save()
+    public void save(int saveSlotNumber)
     {
-        stage.saveThisStage();
-        partyManager.saveThisPartyManager();
-        fogManager.saveThisFogManager();
+        stage.saveThisStage(saveSlotNumber);
+        partyManager.saveThisPartyManager(saveSlotNumber);
+        //fogManager.saveThisFogManager();
     }
 
-    public void load()
+    public void load(int loadSlotNumber)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String fileName = "stage.txt";
+//        String stageSaveName = "stage.txt";
+        String stageSaveName = "save-" + Integer.toString(loadSlotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(loadSlotNumber) + "_party.txt";
+
+
+
         Gson gson = new Gson();
         Stage loadedStage = new Stage();
         PartyManager loadedPartyManager = new PartyManager();
@@ -286,13 +291,11 @@ public class MapGeneratorService
 
         try
         {
-            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            reader = Files.newBufferedReader(Paths.get(fileLocation + stageSaveName));
             loadedStage = gson.fromJson(reader, Stage.class);
             reader.close();
 
-            fileName = "partyManager.txt";
-
-            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            reader = Files.newBufferedReader(Paths.get(fileLocation + partySaveName));
             loadedPartyManager = gson.fromJson(reader, PartyManager.class);
             reader.close();
 

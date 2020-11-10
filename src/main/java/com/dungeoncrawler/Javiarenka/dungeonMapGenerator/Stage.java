@@ -504,12 +504,14 @@ public class Stage
         });
     }
 
-    public void saveThisStage()
+    public void saveThisStage(int saveSlotNumber)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String url = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String saveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
         try
         {
-            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "stage.txt");
+            Writer writer = new FileWriter(url + saveName);
             gson.toJson(this, writer);
             writer.flush();
             writer.close();

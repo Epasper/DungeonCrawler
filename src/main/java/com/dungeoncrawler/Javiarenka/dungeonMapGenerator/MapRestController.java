@@ -150,10 +150,15 @@ public class MapRestController
         return service.getFogManager().getAlreadySeenTiles();
     }
 
-    @GetMapping("saveMap")
-    public void saveMap()
-    {
-        service.save();
-    }
+//    @GetMapping("/quickSaveMap")
+//    public void quickSaveMap()
+//    {
+//        service.save(0);
+//    }
 
+    @GetMapping("/saveMap")
+    public void saveMap(@RequestParam int saveSlotNumber)
+    {
+        service.save(saveSlotNumber);
+    }
 }

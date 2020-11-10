@@ -25,29 +25,60 @@ function injectMenuListeners() {
     menuBtn.addEventListener('mouseleave', menuButtonExited);
     menuBtn.addEventListener('click', menuClicked);
 
+    let qSaveBtn = getMappedElementById('q-save-btn')
+    qSaveBtn.addEventListener('click', requestQuickSave)
+
+    let qLoadBtn = getMappedElementById('q-load-btn')
+    qLoadBtn.addEventListener('click', requestQuickLoad)
+
     injectSaveMenuListeners();
     injectLoadMenuListeners();
 }
 
 function injectSaveMenuListeners() {
     const saveBtn = getMappedElementById('save-btn');
-    saveBtn.addEventListener('click', saveClicked);
+    saveBtn.addEventListener('click', saveMenuClicked);
+
+    const save1Btn = getMappedElementById('save-1-btn');
+    save1Btn.addEventListener('click', saveButtonClicked);
+    const save2Btn = getMappedElementById('save-2-btn');
+    save2Btn.addEventListener('click', saveButtonClicked);
+    const save3Btn = getMappedElementById('save-3-btn');
+    save3Btn.addEventListener('click', saveButtonClicked);
 
     const backBtn = getMappedElementById('save-back-btn');
-    backBtn.addEventListener('click', backClicked)
+    backBtn.addEventListener('click', backButtonClicked)
 }
 
 function injectLoadMenuListeners() {
     const loadBtn = getMappedElementById('load-btn');
     loadBtn.addEventListener('click', loadClicked);
 
+    const load1Btn = getMappedElementById('load-1-btn');
+    load1Btn.addEventListener('click', loadButtonClicked);
+    const load2Btn = getMappedElementById('load-2-btn');
+    load2Btn.addEventListener('click', loadButtonClicked);
+    const load3Btn = getMappedElementById('load-3-btn');
+    load3Btn.addEventListener('click', loadButtonClicked);
+
     const backBtn = getMappedElementById('load-back-btn');
-    backBtn.addEventListener('click', backClicked)
+    backBtn.addEventListener('click', backButtonClicked)
 }
 
-function backClicked() {
-    // const saveMenu = getMappedElementById('save-menu');
-    // saveMenu.classList.add('hidden');
+async function saveButtonClicked({target: saveSlotBtn}) {
+    const saveSlotNumber = saveSlotBtn.dataset.slot;
+    console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
+    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
+}
+
+async function loadButtonClicked({target: loadSlotBtn}) {
+    const loadSlotNumber = loadSlotBtn.dataset.slot;
+    console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
+    // await axios.get(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`)
+}
+
+function backButtonClicked() {
     hideMenu(currentMenu);
     showMenu(getMappedElementById('main-menu'));
 }
@@ -76,21 +107,16 @@ export function injectButtonsListeners() {
     });
     document.addEventListener('keydown', keyPressedMove);
 
-    let qSaveBtn = getMappedElementById('q-save-btn')
-    qSaveBtn.addEventListener('click', requestMapSave)
-
-    let qLoadBtn = getMappedElementById('q-load-btn')
-    qLoadBtn.addEventListener('click', requestMapLoad)
-
     injectMenuListeners();
 }
 
-async function requestMapSave() {
-    await axios.get(`http://localhost:8080/saveMap`)
+async function requestQuickSave() {
+    //await axios.get(`http://localhost:8080/quickSaveMap`);
+    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
 }
 
-async function requestMapLoad() {
-    window.location.replace(`http://localhost:8080/loadMap`)
+async function requestQuickLoad() {
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${0}`)
 }
 
 function makeAction() {
@@ -235,7 +261,7 @@ function menuClicked() {
     // }
 }
 
-function saveClicked() {
+function saveMenuClicked() {
     const mainMenu = getMappedElementById('main-menu');
     const saveMenu = getMappedElementById('save-menu');
 

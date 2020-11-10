@@ -209,7 +209,7 @@ async function drawFogOfWar() {
     if (!party) return;
 
     console.log('=============================== DRAWING FOG ====================================');
-    debugger;
+    //debugger;
 
     console.log(`---DRAWING FOG START---`)
     const response = await axios.get(`http://localhost:8080/getVisibilityData`, { responseType: 'json' });

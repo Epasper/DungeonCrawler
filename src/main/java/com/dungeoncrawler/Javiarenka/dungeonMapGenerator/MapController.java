@@ -53,17 +53,9 @@ public class MapController
     }
 
     @GetMapping("/loadMap")
-    public RedirectView loadMap(Model model)
+    public RedirectView loadMap(@RequestParam int loadSlotNumber)
     {
-        service.load();
-//        Stage stage = service.getStage();
-//
-//        model.addAttribute("tiles", stage.getTilesAsOneDimensionalArray());
-//        int[] colNumbers = IntStream.range(0, stage.getWidth()).toArray();
-//        int[] rowNumbers = IntStream.range(0, stage.getHeight()).toArray();
-//        model.addAttribute("colNumbers", colNumbers);
-//        model.addAttribute("rowNumbers", rowNumbers);
-
+        service.load(loadSlotNumber);
         return new RedirectView("/dungeonMap");
     }
 }
