@@ -36,7 +36,33 @@
   "money": 0,
   "skillCards": [
     {
-      "name": "Heals All Allies",
+      "name": "Rally to the Aid",
+      "description": "Move and Heal All Allies Around the And of Movement",
+      "flatAdditionalDamage": 0,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 10,
+      "allDamageMultipliers": [],
+      "isMagicSkill": false,
+      "isPhysicalSkill": true,
+      "isSecondAttack": false,
+      "primaryTarget": "ALLIES_AROUND",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "classRestrictions": [
+        "HEALER",
+        "ROGUE",
+        "ARCHER",
+        "KNIGHT",
+        "WIZARD",
+        "WARRIOR"
+      ],
+      "imageSource": "../images/skillCards/41.png",
+      "movementSpeed": 4,
+      "attackRange": 0
+    },
+    {
+      "name": "Healing Shout",
+      "description": "Heals All Allies",
       "flatAdditionalDamage": 0,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 10,
@@ -44,16 +70,19 @@
       "isMagicSkill": true,
       "isPhysicalSkill": false,
       "isSecondAttack": false,
-      "primaryTarget": "ENEMY",
-      "secondaryTarget": "ALL_ALLIES",
+      "primaryTarget": "ALL_ALLIES",
+      "secondaryTarget": "ENEMY",
       "secondAttackTarget": "ENEMY",
       "classRestrictions": [
         "HEALER"
       ],
-      "imageSource": "../images/skillCards/24.png"
+      "imageSource": "../images/skillCards/24.png",
+      "movementSpeed": 0,
+      "attackRange": 0
     },
     {
-      "name": "Hits and Heals Self",
+      "name": "Rejuvenating Strike",
+      "description": "Hits and Heals Self",
       "flatAdditionalDamage": 5,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 15,
@@ -67,7 +96,9 @@
       "classRestrictions": [
         "HEALER"
       ],
-      "imageSource": "../images/skillCards/18.png"
+      "imageSource": "../images/skillCards/18.png",
+      "movementSpeed": 0,
+      "attackRange": 2
     }
   ],
   "backpack": {
@@ -120,10 +151,10 @@
         "imageLink": "../images/Broken Branch"
       },
       "3": {
-        "name": "Coal Ore Chunk",
-        "weight": 0.2,
-        "price": 12.0,
-        "imageLink": "../images/Coal Ore Chunk"
+        "name": "NO EQUIPMENT",
+        "weight": 0.0,
+        "price": 0.0,
+        "imageLink": "../images/null"
       },
       "4": {
         "name": "NO EQUIPMENT",
@@ -186,10 +217,10 @@
         "imageLink": "../images/null"
       },
       "14": {
-        "name": "NO EQUIPMENT",
-        "weight": 0.0,
-        "price": 0.0,
-        "imageLink": "../images/null"
+        "name": "Coal Ore Chunk",
+        "weight": 0.2,
+        "price": 12.0,
+        "imageLink": "../images/Coal Ore Chunk"
       },
       "15": {
         "name": "NO EQUIPMENT",

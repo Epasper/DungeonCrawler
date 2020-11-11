@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.creature;
 
+import com.dungeoncrawler.Javiarenka.creature.skill.SkillCard;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;

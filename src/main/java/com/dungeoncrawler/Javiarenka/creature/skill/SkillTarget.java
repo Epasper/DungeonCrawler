@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.creature;
+package com.dungeoncrawler.Javiarenka.creature.skill;
 
 public enum SkillTarget {
     ALLY("Ally"),
@@ -11,6 +11,9 @@ public enum SkillTarget {
     SELF_AND_ENEMY("Self and enemy"),
     SELF_AND_ALL_ALLIES("Self and all allies"),
     SELF_AND_ALL_ENEMIES("Self and all enemies"),
+    ALLIES_AROUND("All allies around"),
+    ENEMIES_AROUND("All Enemies Around"),
+    CREATURES_AROUND("All Creatures Around (Enemies and Allies)"),
     EVERYBODY("Everybody");
 
     private final String SkillTargetString;

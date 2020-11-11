@@ -1,5 +1,8 @@
-package com.dungeoncrawler.Javiarenka.creature;
+package com.dungeoncrawler.Javiarenka.creature.skill;
 
+import com.dungeoncrawler.Javiarenka.creature.Condition;
+import com.dungeoncrawler.Javiarenka.creature.DamageMultiplier;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -8,6 +11,8 @@ import java.util.List;
 public class SkillCard {
     @NotNull
     private String name = "";
+    @NotNull
+    private String description = "";
     private int flatAdditionalDamage = 0;
     private int secondaryAttackFlatAdditionalDamage = 0;
     private int healingAmount = 0;
@@ -22,8 +27,32 @@ public class SkillCard {
     private List<Condition> appliedConditions;
     private List<HeroClass> classRestrictions;
     private String imageSource = "";
-    /* @Getter @Setter
-    private HashSet<Character> selectedCharacters; TODO */
+    private int movementSpeed = 0;
+    private int attackRange = 0;
+
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+    public void setAttackRange(int attackRange) {
+        this.attackRange = attackRange;
+    }
+
+    public @NotNull String getDescription() {
+        return description;
+    }
+
+    public void setDescription(@NotNull String description) {
+        this.description = description;
+    }
+
+    public int getMovementSpeed() {
+        return movementSpeed;
+    }
+
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
+    }
 
     public String getImageSource() {
         return imageSource;
@@ -137,6 +166,10 @@ public class SkillCard {
         this.classRestrictions = classRestrictions;
     }
 
+    //==================================================================================================================
+    //END OF GETTERS AND SETTERS
+    //==================================================================================================================
+
     public SkillCard() {
     }
 
@@ -160,6 +193,10 @@ public class SkillCard {
         this.appliedConditions = appliedConditions;
         this.classRestrictions = classRestrictions;
     }
+
+    //==================================================================================================================
+    //END OF CONSTRUCTORS
+    //==================================================================================================================
 
     @Override
     public String toString() {

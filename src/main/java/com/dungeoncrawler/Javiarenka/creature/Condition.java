@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.creature;
 
-import java.util.List;
+import com.dungeoncrawler.Javiarenka.creature.skill.SkillTarget;
 
 public class Condition {
     CreatureStatus appliedStatuses;
