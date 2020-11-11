@@ -1,5 +1,8 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +21,12 @@ public class Stage
     private int height;
     private Tile[][] tiles;
     private List<Room> rooms = new ArrayList<>();
-    private PartyManager partyManager = new PartyManager(this);
+    //private PartyManager partyManager = new PartyManager(this);
+    //private FogManager fogManager = new FogManager(this);
 
-    Stage(){}
+    Stage()
+    {
+    }
 
     Stage(int stageWidth, int stageHeight)
     {
@@ -72,9 +78,7 @@ public class Stage
                 tiles[coordX][coordY] = new Tile(coordX, coordY);
                 tiles[coordX][coordY].setType(stp.getTileTypeValue(coordX, coordY));
             }
-
         }
-
     }
 
     public int getWidth()
@@ -92,10 +96,10 @@ public class Stage
         return tiles;
     }
 
-    public PartyManager getPartyManager()
-    {
-        return partyManager;
-    }
+//    public PartyManager getPartyManager()
+//    {
+//        return partyManager;
+//    }
 
     public void setWidth(int width)
     {
@@ -111,6 +115,16 @@ public class Stage
     {
         this.tiles = tiles;
     }
+
+//    public FogManager getFogManager()
+//    {
+//        return fogManager;
+//    }
+
+
+    //======================================================================================================
+    //======================================================================================================
+    //======================================================================================================
 
     public Tile[] getTilesAsOneDimensionalArray()
     {
@@ -143,6 +157,27 @@ public class Stage
                 }
             }
         }
+        return outputTiles.toArray(new Tile[outputTiles.size()]);
+    }
+
+    public Tile[] getTilesOfType(TileType[] searchedTypes)
+    {
+        List<Tile> outputTiles = new ArrayList<>();
+
+        for (TileType searchedType : searchedTypes)
+        {
+            for (Tile[] column : tiles)
+            {
+                for (Tile tile : column)
+                {
+                    if (tile.getType() == searchedType)
+                    {
+                        outputTiles.add(tile);
+                    }
+                }
+            }
+        }
+
         return outputTiles.toArray(new Tile[outputTiles.size()]);
     }
 
@@ -198,7 +233,7 @@ public class Stage
 
         for (int i = 0; i < width; i++)
         {
-            sb.append(row[i].toString());
+            sb.append(row[i].getStringVal());
         }
         return sb.toString();
     }
@@ -210,7 +245,7 @@ public class Stage
 
         for (int i = 0; i < height; i++)
         {
-            sb.append(column[i].toString()).append("\n");
+            sb.append(column[i].getStringVal()).append("\n");
         }
         return sb.toString();
     }
@@ -222,9 +257,31 @@ public class Stage
 
     public Room getRoomByDoor(Tile givenDoorTile)
     {
+        if (!givenDoorTile.getType().isDoor()) return null;
+
         return rooms.stream()
                 .filter(room -> room.getDoor().equals(givenDoorTile))
-                .collect(Collectors.toList()).get(0);
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    public Room getRoomByTile(Tile givenRoomTile)
+    {
+        if (!givenRoomTile.getType().isRoom() && !givenRoomTile.getType().isDoor()) return null;
+
+        Room outputRoom = null;
+
+        for (Room room : rooms)
+        {
+            List<Tile> innerRoomTiles = room.getRoomInnerTiles();
+            innerRoomTiles.add(room.getDoor());
+            if (innerRoomTiles.contains(givenRoomTile))
+            {
+                outputRoom = room;
+                break;
+            }
+        }
+        return outputRoom;
     }
 
     public void printRow(int rowNumber)
@@ -323,7 +380,6 @@ public class Stage
                 {
                     outputRange[col][row] = new Tile(col, row);
                 }
-
             }
         }
         return outputRange;
@@ -364,6 +420,26 @@ public class Stage
         return null;
     }
 
+    public Tile getFirstTileOfType(TileType[] types)
+    {
+
+        for (TileType type : types)
+        {
+            for (Tile[] column : tiles)
+            {
+                for (Tile tile : column)
+                {
+                    if (tile.getType() == type)
+                    {
+                        return tile;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     public Tile getRandomTileOfType(TileType type)
     {
         Tile[] tiles = getTilesOfType(type);
@@ -376,6 +452,31 @@ public class Stage
         else
         {
             return tiles[0];
+        }
+    }
+
+    public void linkRoomTilesReferencesToStageTiles()
+    {
+        RoomBuilder rb = new RoomBuilder(this);
+
+        rooms.forEach(room -> {
+            room.setTiles(rb.getTilesRectangle(this.getTile(room.getxPos(), room.getyPos()), room.getWidth(), room.getHeight(), BuildDirection.RD));
+            room.setDoor(this.getTile(room.getDoor().getX(), room.getDoor().getY()));
+        });
+    }
+
+    public void saveThisStage()
+    {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try
+        {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "stage.txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 }

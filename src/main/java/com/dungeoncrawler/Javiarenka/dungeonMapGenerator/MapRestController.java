@@ -3,7 +3,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class MapRestController
@@ -20,13 +20,14 @@ public class MapRestController
     @GetMapping("/checkSpawnability")
     public boolean isPartySpawnable(@RequestParam int coordX, @RequestParam int coordY)
     {
-        return service.getStage().getPartyManager().isPartySpawnable(coordX, coordY);
+        return service.getPartyManager().isPartySpawnable(coordX, coordY);
     }
 
     @GetMapping("/spawnParty")
     public PartyAvatar spawnParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        PartyAvatar party = service.getStage().getPartyManager().spawnParty(coordX, coordY);
+        PartyAvatar party = service.getPartyManager().spawnParty(coordX, coordY);
+        service.getFogManager().setParty(party);
         System.out.println("party spawned on tile: " + coordX + "/" + coordY);
         return party;
     }
@@ -46,15 +47,15 @@ public class MapRestController
     @GetMapping("/moveParty")
     public void moveParty(@RequestParam int coordX, @RequestParam int coordY)
     {
-        PartyManager pm = service.getStage().getPartyManager();
+        PartyManager pm = service.getPartyManager();
         pm.teleportParty(coordX, coordY);
+        //////service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/stepParty")
     public void stepParty(@RequestParam Direction dir)
     {
-        PartyManager pm = service.getStage().getPartyManager();
-
+        PartyManager pm = service.getPartyManager();
         if (pm.movePartyOneStep(dir))
         {
             System.out.println("Party moved: " + dir);
@@ -63,12 +64,13 @@ public class MapRestController
         {
             System.out.println("Party turned: " + dir);
         }
+        //////service.getFogManager().updateVisibility();
     }
 
     @GetMapping("/getParty")
     public PartyAvatar getParty()
     {
-        return service.getStage().getPartyManager().getParty();
+        return service.getPartyManager().getParty();
     }
 
     @GetMapping("/getClickedTile")
@@ -82,19 +84,21 @@ public class MapRestController
     @GetMapping("/movability")
     public Map<Direction, Boolean> checkMovability()
     {
-        return service.getStage().getPartyManager().evaluateMovability();
+        return service.getPartyManager().evaluateMovability();
     }
 
     @GetMapping("/getPointedTile")
     public Tile getPointedTile(@RequestParam Direction dir)
     {
         TileNavigator tn = new TileNavigator(service.getStage());
-        return tn.getNextTile(service.getStage().getPartyManager().getParty().occupiedTile, dir);
+        return tn.getNextTile(service.getPartyManager().getParty().getOccupiedTile(), dir);
     }
 
-    @GetMapping("/openDoor")
+    @GetMapping("/activateDoor")
     public Object[] updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType newType)
     {
+        //TODO: zadbać o sytuację, w której zamykane są drzwi, ale stoimy wewnątrz pokoju.
+
         Object[] outputArray = new Object[2];
         Tile targetTile = service.getStage().getTile(coordX, coordY);
         boolean willRoomChangeState = ((newType.isClosedDoor() && !targetTile.getType().isClosedDoor()) || (!newType.isClosedDoor() && targetTile.getType().isClosedDoor()));
@@ -110,17 +114,40 @@ public class MapRestController
             else
             {
                 room.lockRoomTiles();
-                outputArray[1] = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
+                Map<Integer, Set<Tile>> tmpCascade = tn.getTouchingTilesCascade(targetTile, TileType.ROOM_LOCKED);
+                Map<Integer, Set<Tile>> reversedKeyesOrder = new TreeMap<>();
+
+                tmpCascade.keySet().forEach(key -> reversedKeyesOrder.put(tmpCascade.size() - 1 - key, tmpCascade.get(key)));
+                outputArray[1] = reversedKeyesOrder;
             }
-
-
         }
-
         targetTile.setType(newType);
         outputArray[0] = targetTile;
 
         return outputArray;
     }
 
-    //TODO: get room tiles, gdzie zwraca tablicę pól pokoju od strony drzwi, tak żeby potem tę tablicę wykorzystać dla animacji
+    @GetMapping("/getVisibilityData")
+    public Map<String, Object> getVisibleTiles()
+    {
+        Map<String, Object> outputMap = new TreeMap<>();
+        Map<Tile, Double> tilesWithDistancesSorted = service.getFogManager().currentlyVisibleTilesByDistance;
+
+        service.getFogManager().updateVisibility();
+
+        outputMap.put("previouslyVisibleTiles", service.getFogManager().previouslyVisibleTiles);
+        outputMap.put("currentlyVisibleTiles", service.getFogManager().currentlyVisibleTiles);
+        outputMap.put("tilesSortedByDistance", tilesWithDistancesSorted.keySet());
+        outputMap.put("distancesSorted", tilesWithDistancesSorted.values());
+        outputMap.put("newlySeenTiles", service.getFogManager().getNewlySeenTiles());
+
+        return outputMap;
+    }
+
+    @GetMapping("saveMap")
+    public void saveMap()
+    {
+        service.save();
+    }
+
 }

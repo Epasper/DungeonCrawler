@@ -294,5 +294,7 @@
   "maxMagicShield": 50,
   "physicalShield": 10,
   "magicShield": 50,
-  "speed": 3
+  "speed": 3,
+  "initiative": 0,
+  "isActive": false
 }

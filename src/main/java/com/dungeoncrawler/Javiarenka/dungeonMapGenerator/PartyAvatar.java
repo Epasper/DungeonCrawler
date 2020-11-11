@@ -1,9 +1,11 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+//TODO: has a / is a ralationship -> poczytać
+
 public class PartyAvatar
 {
-    Tile occupiedTile;
-    Direction direction;
+    private Tile occupiedTile;
+    private Direction direction;
 
     public PartyAvatar(Tile occupiedTile)
     {
@@ -29,5 +31,20 @@ public class PartyAvatar
     {
         this.direction = direction;
     }
+
+    public int getX()
+    {
+        return occupiedTile.getX();
+    }
+
+    public int getY()
+    {
+        return occupiedTile.getY();
+    }
+
+    // ==========================================================
+    // ==========================================================
+    // ==========================================================
+
 
 }

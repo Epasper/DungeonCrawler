@@ -5,6 +5,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+//TODO - dodać randomizację budowania pokoi poprzez zmianę algorytmu wyszukiwania najbliższego seeda.
+// Zamiast najbliższego pola, niech losuje najbliższe pole, a potem lekko przesuwa je o pewien wektor.
+
 public class RoomBuilder
 {
     private Stage stage;
@@ -20,6 +23,11 @@ public class RoomBuilder
         seeds[1] = stage.getTile(stage.getWidth() - 3, 2); //LD
         seeds[2] = stage.getTile(2, stage.getHeight() - 3); //RU
         seeds[3] = stage.getTile(stage.getWidth() - 3, stage.getHeight() - 3); //LU
+
+//        seeds[0] = randomizeSeed(seeds[0], BuildDirection.RD);
+//        seeds[1] = randomizeSeed(seeds[1], BuildDirection.LD);
+//        seeds[2] = randomizeSeed(seeds[2], BuildDirection.RU);
+//        seeds[3] = randomizeSeed(seeds[3], BuildDirection.LU);
     }
 
     private Tile getSeedByDirection(BuildDirection buildDirection)
@@ -338,7 +346,7 @@ public class RoomBuilder
 
         System.out.println("Room size: " + setWidth.intValue() + "/" + setHeight.intValue());
 
-        Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection));
+        Room room = new Room(getTilesRectangle(seedTile, setWidth.intValue(), setHeight.intValue(), buildDirection), TileType.ROOM);
         System.out.println(room.asString());
 
         surroundWithCorridor(room);
@@ -378,11 +386,13 @@ public class RoomBuilder
     public void scanTilesForRooms()
     {
         Tile seedTile;
-        List<Tile> roomTilesList = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.ROOM)));
+        List<Tile> roomTilesList = new ArrayList<>(Arrays.asList(stage.getTilesOfType(new TileType[]{TileType.ROOM, TileType.ROOM_LOCKED})));
+        Map<Tile, TileType> tilesWithTypes = new HashMap<>();
 
         do
         {
-            Tile currentTile = stage.getFirstTileOfType(TileType.ROOM);
+            Tile currentTile = stage.getFirstTileOfType(new TileType[]{TileType.ROOM, TileType.ROOM_LOCKED});
+            TileType currentType = currentTile.getType();
             seedTile = stage.getTile(currentTile.getX() - 1, currentTile.getY() - 1);
 
             Set<Tile> innerRoomTilesSet = tileNav.getTouchingTilesOfSameType(currentTile);
@@ -390,13 +400,14 @@ public class RoomBuilder
             Tile[][] innerRoomArray = getRangeFromSet(innerRoomTilesSet);
             Tile[][] outerRoomArray = stage.getSurroundingTiles(innerRoomArray);
 
-            Room room = new Room(getTilesRectangle(seedTile, outerRoomArray.length, outerRoomArray[0].length, BuildDirection.RD));
+            Room room = new Room(getTilesRectangle(seedTile, outerRoomArray.length, outerRoomArray[0].length, BuildDirection.RD), currentType);
             stage.updateRoomsSet(room);
 
             for (Tile tile : innerRoomTilesSet)
             {
-                roomTilesList.remove(tile);
+                tilesWithTypes.put(tile, tile.getType());
                 tile.setType(TileType.ROOM_SCANNED);
+                roomTilesList.remove(tile);
             }
             try
             {
@@ -410,7 +421,7 @@ public class RoomBuilder
         Tile[] scannedTiles = stage.getTilesOfType(TileType.ROOM_SCANNED);
         for (Tile tile : scannedTiles)
         {
-            tile.setType(TileType.ROOM);
+            tile.setType(tilesWithTypes.get(tile));
         }
     }
 
@@ -490,77 +501,62 @@ public class RoomBuilder
         }
     }
 
-    public Tile randomizeSeed(BuildDirection buildDir, int randomReach)
+    public Tile getNextAvailableSeedTile(BuildDirection buildDir) //throws IOException
     {
-        Tile outputSeed;
-        outputSeed = getNextAvailableSeedTile(buildDir);
-        int randomNumberVertical = getRandomNumberInRange(0, randomReach);
-        int randomNumberHorizontal = getRandomNumberInRange(0, randomReach);
+        Tile outputSeed = getSeedByDirection(buildDir);
+        boolean areEmptyTilesLeft = stage.getTilesOfType(TileType.EMPTY).length > 0;
 
-        if (randomNumberHorizontal == 0 && randomNumberVertical == 0)
+        while (outputSeed.getType() != TileType.EMPTY && areEmptyTilesLeft)
         {
-            return outputSeed;
+            outputSeed = tileNav.getNextTileLooped(outputSeed, buildDir);
+            if (outputSeed.getType() == TileType.EMPTY)
+            {
+                Tile randomizeSeed = randomizeSeed(outputSeed, buildDir);
+                if (randomizeSeed.getType() == TileType.EMPTY) outputSeed = randomizeSeed;
+            }
+            setSeedByDirection(outputSeed, buildDir);
         }
+        //System.out.println("Seed tile: " + outputSeed.getX() + "/" + outputSeed.getY() + ", for directions: " + buildDir.name());
+        return outputSeed;
+    }
 
+    private Tile randomizeSeed(Tile seedTile, BuildDirection buildDir)
+    {
+        int xRandomisation = getRandomNumberInRange(0, StageSettings.MIN_ROOM_WIDTH - 2);
+        int yRandomisation = getRandomNumberInRange(0, StageSettings.MIN_ROOM_HEIGHT - 2);
+
+        Tile outputTile = seedTile;
+        Direction firstDir = Direction.RIGHT;
+        Direction secondDir = Direction.DOWN;
 
         switch (buildDir)
         {
             case RD:
-                //outputSeed = stage.getTile()
+                firstDir = Direction.RIGHT;
+                secondDir = Direction.DOWN;
+                break;
+            case LD:
+                firstDir = Direction.LEFT;
+                secondDir = Direction.DOWN;
+                break;
+            case RU:
+                firstDir = Direction.RIGHT;
+                secondDir = Direction.UP;
+                break;
+            case LU:
+                firstDir = Direction.LEFT;
+                secondDir = Direction.UP;
                 break;
         }
 
-        return outputSeed;
+        outputTile = tileNav.getNextTile(seedTile, new Direction[]{firstDir, secondDir}, new int[]{xRandomisation, yRandomisation});
+        return outputTile;
     }
 
-    public Tile getNextAvailableSeedTile(BuildDirection buildDir) //throws IOException
-    {
-        int checkedTilesCounter = 0;
-
-        Tile outputSeed;
-        outputSeed = getSeedByDirection(buildDir);
-
-        //mapGenerator.Tile outputSeed = currentSeed;
-
-        while (outputSeed.getType() != TileType.EMPTY && checkedTilesCounter <= stage.getHeight() * stage.getWidth())
-        {
-            switch (buildDir)
-            {
-                case RD:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RD);
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.RD);
-                    break;
-
-                case LD:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LD);
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.LD);
-                    break;
-
-                case RU:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.RU);//
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.RU);
-                    break;
-
-                case LU:
-                    outputSeed = tileNav.getNextTileLooped(outputSeed, BuildDirection.LU);//
-                    //outputSeed = getRandomEmptyTile();
-                    setSeedByDirection(outputSeed, BuildDirection.LU);
-                    break;
-            }
-            checkedTilesCounter++;
-        }
-
-        //mapGenerator.Tile outputSeed = currentSeed;
-        return outputSeed;
-    }
 
     public boolean insertRandomRoom() //throws IOException
     {
         BuildDirection randomBuildDir = BuildDirection.getRandomBuildDirection();
-
         return insertRandomRoom(getNextAvailableSeedTile(randomBuildDir), randomBuildDir);
     }
 
@@ -707,7 +703,7 @@ public class RoomBuilder
                 corridorTilesToObstruct.remove(randomCorridorTile);
 //                MapGeneratorService.buildDebugSite(stage);
 //                MapGeneratorService.buildDebugSite(stage);
-                System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
+                //System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
             }
             else
             {
@@ -728,7 +724,7 @@ public class RoomBuilder
 //                    MapGeneratorService.buildDebugSite(stage);
 //                    MapGeneratorService.buildDebugSite(stage);
                     createdObstructionsNumber = createdObstructionsNumber + unreachableCorridorTiles.length;
-                    System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
+                    //System.out.println("Obstructions created: " + createdObstructionsNumber + "/" + targetObstructionsCount);
                 }
                 else
                 {
@@ -892,56 +888,87 @@ public class RoomBuilder
         intersections.forEach(tile -> tile.setType(TileType.CORRIDOR));
     }
 
+    private void removeBranchingTilesFromClusters(List<Tile> potentiallyClusteredCorridors, TileType targetType)
+    {
+        List<Tile> tilesToRemove = new ArrayList<>();
+        potentiallyClusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+
+        do
+        {
+            tilesToRemove.clear();
+            tilesToRemove = potentiallyClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, TileType.INTERSECTION).size() <= 1)
+                    .collect(Collectors.toList());
+
+            tilesToRemove.forEach(tile -> tile.setType(TileType.CORRIDOR));
+            potentiallyClusteredCorridors.removeAll(tilesToRemove);
+
+        } while (tilesToRemove.size() > 0);
+
+        potentiallyClusteredCorridors.forEach(tile -> tile.setType(targetType));
+    }
+
     public void removeCorridorClusters()
     {
+        List<Tile> tempIntersect = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION)));
+        tempIntersect.forEach(tile -> tile.setType(TileType.CORRIDOR));
+
         List<Tile> allCorridors = new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.CORRIDOR)));
-        List<Tile> clusteredCorridors = allCorridors.stream()
-                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 3)
+        List<Tile> potentialClusteredCorridors = allCorridors.stream()
+                .filter(tile -> tileNav.numberOfSurroundingOfType(TileType.CORRIDOR, tile) >= 4)
                 .collect(Collectors.toList());
 
-        clusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
-        //MapGeneratorService.buildDebugSite(stage);
-        //MapGeneratorService.buildDebugSite(stage);
+        potentialClusteredCorridors.forEach(tile -> tile.setType(TileType.INTERSECTION));
+        removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        //powyższy kod sprawi, że w liście 'potentialClusteredCorridors' zostaną same Tile należące do prostokątnych clusterów
 
-        clusteredCorridors.stream() //wyrzucamy wszystkie skupiska mniejsze niż 4
-                .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() < 4)
-                .forEach(tile -> tile.setType(TileType.CORRIDOR));
-
-        clusteredCorridors.clear();
-        clusteredCorridors.addAll(new ArrayList<>(Arrays.asList(stage.getTilesOfType(TileType.INTERSECTION))));
-        //MapGeneratorService.buildDebugSite(stage);
-        //MapGeneratorService.buildDebugSite(stage);
-
-        clusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
-        List<Tile> removableTiles = new ArrayList<>();
-
-        for (Tile tile : clusteredCorridors)
+        //poniżej - usuwanie z clusterów pól, które są narożnikiem otoczonym przez mur
+        List<Tile> cornerTiles;
+        do
         {
-            tile.setType(TileType.OBSTRUCTION);
-            if (tileNav.getUnreachableCorridorTiles().length == 0 && allRoomsAreReachable())
+            cornerTiles = potentialClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, new TileType[]{TileType.WALL, TileType.OBSTRUCTION}).size() == 2)
+                    .collect(Collectors.toList());
+            if (cornerTiles.size() == 0) break;
+            Tile currentTile = cornerTiles.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            potentialClusteredCorridors.remove(currentTile);
+            cornerTiles.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        } while (cornerTiles.size() > 0);
+
+        //poniżej wyszukanie clusterów większych niż kwadrat 2x2, następnie zidentyfikowanie ich pól wewnętrznych:
+        List<Tile> bigClusters;
+        List<Tile> insideBigClusters;
+        do
+        {
+            bigClusters = potentialClusteredCorridors.stream()
+                    .filter(tile -> tileNav.getTouchingTilesOfType(tile, TileType.INTERSECTION).size() > 4)
+                    .collect(Collectors.toList());
+            insideBigClusters = bigClusters.stream()
+                    .filter(tile -> tileNav.getNeighboringTiles(tile, TileType.INTERSECTION).size() >= 3)
+                    .collect(Collectors.toList());
+            if (insideBigClusters.size() == 0) break;
+            Tile currentTile = insideBigClusters.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            potentialClusteredCorridors.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.INTERSECTION);
+        } while (insideBigClusters.size() > 0);
+
+        //Do tego miejsca powinny już zostać tylko sclusterowane czwórki 2x2, gdzie każde pole stanowi odnogę odrębnego korytarza
+        potentialClusteredCorridors.forEach(tile -> tile.setType(TileType.CORRIDOR));
+        do
+        {
+            if (potentialClusteredCorridors.size() == 0) break;
+            Tile currentTile = potentialClusteredCorridors.get(0);
+            currentTile.setType(TileType.OBSTRUCTION);
+            if (tileNav.getUnreachableCorridorTiles().length > 0 || !allRoomsAreReachable())
             {
-                removableTiles.add(tile);
+                currentTile.setType(TileType.CORRIDOR);
             }
-            tile.setType(TileType.CORRIDOR);
-        }
-
-
-        if (removableTiles.size() >= 1)
-        {
-//            removableTiles.forEach(tile -> tile.setType(TileType.BREADCRUMB));
-//            MapGeneratorService.buildDebugSite(stage);
-//            MapGeneratorService.buildDebugSite(stage);
-//            removableTiles.forEach(tile -> tile.setType(TileType.CORRIDOR));
-            do
-            {
-                removableTiles.get(0).setType(TileType.OBSTRUCTION);
-                if (tileNav.getUnreachableCorridorTiles().length > 0 && allRoomsAreReachable())
-                {
-                    removableTiles.get(0).setType(TileType.CORRIDOR);
-                }
-                removableTiles.remove(0);
-            } while (removableTiles.size() > 0);
-        }
+            potentialClusteredCorridors.remove(currentTile);
+            removeBranchingTilesFromClusters(potentialClusteredCorridors, TileType.CORRIDOR);
+        } while (potentialClusteredCorridors.size() > 0);
     }
 
     private <E> List toList(E[] inputArray)
@@ -974,5 +1001,10 @@ public class RoomBuilder
     public void closeRooms()
     {
         stage.getRooms().forEach(Room::lockRoomTiles);
+    }
+
+    public void hideRooms()
+    {
+        stage.getRooms().forEach(Room::hideRoom);
     }
 }

@@ -1,3 +1,5 @@
+import { updateMap, getMappedElementById } from "./dungeonMap.js";
+import { tileMouseEntered } from './mapEvents.js'
 import { updateButtons } from "./mapButtons.js";
 import { draw } from "./mapRender.js";
 
@@ -9,29 +11,28 @@ export const directions = {
     NONE: 'NONE'
 }
 
-// let partyAvatar = {
-//     x: undefined,
-//     y: undefined,
-//     dir: directions.NONE
-// }
-
-
-
-
-
 //let heroes = [];
 export let party;
 
-export function addParty(partyTile) {
+export function addParty(partyTile, standingTile) {
     party = {
         partyTileDiv: partyTile,
+        standingTileDiv: standingTile,
         direction: directions.NONE,
         isSelected: false
     }
     partyTile.addEventListener('click', partyClick);
+    partyTile.addEventListener('mouseenter', mouseEnteredPartyDiv);
+
 }
 
-function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyTileDiv. 
+function mouseEnteredPartyDiv() {
+    tileMouseEntered({target: party.standingTileDiv}, 'party')
+}
+
+
+
+async function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyTileDiv. 
     //{} oznacza że go destrukturyzujemy i pobieramy jego pole targetm a następnie przypisujemy je do zmiennej heroElement
 
     console.log(party.isSelected);
@@ -46,7 +47,8 @@ function partyClick({ target: partyTileDiv }) {     //Destrukturyzacja obiektu. 
         console.log(`Party was selected`);
     }
     
-    updateButtons();
-    draw();
+    await updateMap();
 
+    // updateButtons();
+    // await draw();
 }
