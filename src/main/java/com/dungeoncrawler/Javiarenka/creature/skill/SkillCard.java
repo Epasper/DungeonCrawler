@@ -17,6 +17,7 @@ public class SkillCard {
     private int secondaryAttackFlatAdditionalDamage = 0;
     private int healingAmount = 0;
     private List<DamageMultiplier> allDamageMultipliers = new ArrayList<>();
+    private List<DamageMultiplier> allHealingMultipliers = new ArrayList<>();
     private boolean isMagicSkill = false;
     private boolean isPhysicalSkill = false;
     private boolean isSecondAttack = false;
@@ -29,6 +30,14 @@ public class SkillCard {
     private String imageSource = "";
     private int movementSpeed = 0;
     private int attackRange = 0;
+
+    public List<DamageMultiplier> getAllHealingMultipliers() {
+        return allHealingMultipliers;
+    }
+
+    public void setAllHealingMultipliers(List<DamageMultiplier> allHealingMultipliers) {
+        this.allHealingMultipliers = allHealingMultipliers;
+    }
 
     public int getAttackRange() {
         return attackRange;

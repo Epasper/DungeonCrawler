@@ -4,6 +4,11 @@ public class DamageMultiplier {
     Attribute attribute;
     double multiplier;
 
+    public DamageMultiplier(Attribute attribute, double multiplier) {
+        this.attribute = attribute;
+        this.multiplier = multiplier;
+    }
+
     public Attribute getAttribute() {
         return attribute;
     }

@@ -23,9 +23,8 @@ public class SkillResources {
 
         SkillCard basicMovementSkill = new SkillCard();
         basicMovementSkill.setName("Rally to the Aid");
-        basicMovementSkill.setDescription("Move and Heal All Allies Around the And of Movement");
+        basicMovementSkill.setDescription("Move");
         basicMovementSkill.setMovementSpeed(4);
-        basicMovementSkill.setHealingAmount(10);
         basicMovementSkill.setPhysicalSkill(true);
         basicMovementSkill.setPrimaryTarget(SkillTarget.ALLIES_AROUND);
         basicMovementSkill.setClassRestrictions(List.of(HeroClass.HEALER, HeroClass.ROGUE, HeroClass.ARCHER, HeroClass.KNIGHT, HeroClass.WIZARD, HeroClass.WARRIOR));
@@ -36,6 +35,7 @@ public class SkillResources {
         healCard.setName("Healing Shout");
         healCard.setDescription("Heals All Allies");
         healCard.setHealingAmount(10);
+        healCard.setAllHealingMultipliers(List.of(new DamageMultiplier(Attribute.WILLPOWER,1.3d)));
         healCard.setMagicSkill(true);
         healCard.setPrimaryTarget(SkillTarget.ALL_ALLIES);
         healCard.setClassRestrictions(List.of(HeroClass.HEALER));
@@ -45,6 +45,8 @@ public class SkillResources {
         SkillCard hitsAndHeals = new SkillCard();
         hitsAndHeals.setName("Rejuvenating Strike");
         hitsAndHeals.setDescription("Hits and Heals Self");
+        hitsAndHeals.setAllHealingMultipliers(List.of(new DamageMultiplier(Attribute.RESILIENCE,1.3d)));
+        hitsAndHeals.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.STRENGTH,1.1d)));
         hitsAndHeals.setFlatAdditionalDamage(5);
         hitsAndHeals.setHealingAmount(15);
         hitsAndHeals.setPhysicalSkill(true);
@@ -56,7 +58,9 @@ public class SkillResources {
         allStartingSkillCards.add(hitsAndHeals);
 
         SkillCard hitsAndBurns = new SkillCard();
-        hitsAndBurns.setName("Hits and Sets on Fire");
+        hitsAndBurns.setName("Fire Bolt");
+        hitsAndBurns.setDescription("Hits and Sets on Fire");
+        hitsAndBurns.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.INTELLIGENCE,1.4d)));
         hitsAndBurns.setFlatAdditionalDamage(10);
         hitsAndBurns.setMagicSkill(true);
         hitsAndBurns.setAttackRange(8);
@@ -67,8 +71,10 @@ public class SkillResources {
         allStartingSkillCards.add(hitsAndBurns);
 
         SkillCard hitsAndHastens = new SkillCard();
-        hitsAndHastens.setName("Hits and Speeds Up");
+        hitsAndHastens.setName("Hasten");
+        hitsAndHastens.setDescription("Hits and Speeds Up");
         hitsAndHastens.setFlatAdditionalDamage(2);
+        hitsAndHastens.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.DEXTERITY,1.2d)));
         hitsAndHastens.setPhysicalSkill(true);
         hitsAndHastens.setAttackRange(4);
         hitsAndHastens.setPrimaryTarget(SkillTarget.ENEMY);
@@ -78,7 +84,10 @@ public class SkillResources {
         allStartingSkillCards.add(hitsAndHastens);
 
         SkillCard hitsBleedsAndHealsSelf = new SkillCard();
-        hitsBleedsAndHealsSelf.setName("Hits, Bleeds Enemy and Heals Itself");
+        hitsBleedsAndHealsSelf.setName("Deep Cut");
+        hitsBleedsAndHealsSelf.setDescription("Hits, Bleeds Enemy and Heals Itself");
+        hitsBleedsAndHealsSelf.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.INTELLIGENCE,1.2d)));
+        hitsBleedsAndHealsSelf.setAllHealingMultipliers(List.of(new DamageMultiplier(Attribute.RESILIENCE,1.2d)));
         hitsBleedsAndHealsSelf.setFlatAdditionalDamage(10);
         hitsBleedsAndHealsSelf.setHealingAmount(10);
         hitsBleedsAndHealsSelf.setAttackRange(1);
@@ -91,8 +100,10 @@ public class SkillResources {
         allStartingSkillCards.add(hitsBleedsAndHealsSelf);
 
         SkillCard hitsEnemyAndSelf = new SkillCard();
-        hitsEnemyAndSelf.setName("Hits Enemy and Self");
+        hitsEnemyAndSelf.setName("Reckless Strike");
+        hitsEnemyAndSelf.setDescription("Hits Enemy and Self");
         hitsEnemyAndSelf.setFlatAdditionalDamage(20);
+        hitsEnemyAndSelf.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.STRENGTH,1.4d)));
         hitsEnemyAndSelf.setAttackRange(1);
         hitsEnemyAndSelf.setSecondAttack(true);
         hitsEnemyAndSelf.setSecondAttackTarget(SkillTarget.SELF);
@@ -105,7 +116,9 @@ public class SkillResources {
         allStartingSkillCards.add(hitsEnemyAndSelf);
 
         SkillCard hitsAndWeakens = new SkillCard();
-        hitsAndWeakens.setName("Hits Enemy and Weakens It");
+        hitsAndWeakens.setName("Dizzying Strike");
+        hitsAndWeakens.setDescription("Hits Enemy and Weakens It");
+        hitsAndWeakens.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.STAMINA,1.2d)));
         hitsAndWeakens.setFlatAdditionalDamage(15);
         hitsAndWeakens.setAttackRange(1);
         hitsAndWeakens.setPhysicalSkill(true);
@@ -116,7 +129,9 @@ public class SkillResources {
         allStartingSkillCards.add(hitsAndWeakens);
 
         SkillCard hitsAndSlowsDownAll = new SkillCard();
-        hitsAndSlowsDownAll.setName("Hits and slows down all enemies");
+        hitsAndSlowsDownAll.setName("Terrorizing Shout");
+        hitsAndSlowsDownAll.setDescription("Hits and slows down all enemies");
+        hitsAndSlowsDownAll.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.RESILIENCE,1.1d)));
         hitsAndSlowsDownAll.setFlatAdditionalDamage(5);
         hitsAndSlowsDownAll.setAttackRange(1);
         hitsAndSlowsDownAll.setMagicSkill(true);
@@ -127,8 +142,10 @@ public class SkillResources {
         allStartingSkillCards.add(hitsAndSlowsDownAll);
 
         SkillCard blindTarget = new SkillCard();
-        blindTarget.setName("Hits and Blinds Target");
+        blindTarget.setName("Flashing Strike");
+        blindTarget.setDescription("Hits and Blinds Target");
         blindTarget.setFlatAdditionalDamage(21);
+        blindTarget.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.WILLPOWER,1.4d)));
         blindTarget.setMagicSkill(true);
         blindTarget.setAttackRange(2);
         blindTarget.setPrimaryTarget(SkillTarget.ENEMY);
@@ -138,8 +155,10 @@ public class SkillResources {
         allStartingSkillCards.add(blindTarget);
 
         SkillCard poisonTarget = new SkillCard();
-        poisonTarget.setName("Hits and Poisons Target");
+        poisonTarget.setName("Serpent Cut");
+        poisonTarget.setDescription("Hits and Poisons Target");
         poisonTarget.setFlatAdditionalDamage(21);
+        poisonTarget.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.DEXTERITY,1.3d)));
         poisonTarget.setPhysicalSkill(true);
         poisonTarget.setAttackRange(1);
         poisonTarget.setPrimaryTarget(SkillTarget.ENEMY);
@@ -149,7 +168,9 @@ public class SkillResources {
         allStartingSkillCards.add(poisonTarget);
 
         SkillCard shootAndDisappear = new SkillCard();
-        shootAndDisappear.setName("Shoot and Disappear");
+        shootAndDisappear.setName("Hunter's Step");
+        shootAndDisappear.setDescription("Shoot and Disappear");
+        shootAndDisappear.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.DEXTERITY,1.3d)));
         shootAndDisappear.setFlatAdditionalDamage(18);
         shootAndDisappear.setPhysicalSkill(true);
         shootAndDisappear.setAttackRange(10);
@@ -161,7 +182,9 @@ public class SkillResources {
         allStartingSkillCards.add(shootAndDisappear);
 
         SkillCard shootAndSetOnFire = new SkillCard();
+        shootAndSetOnFire.setName("Blazing Salvo");
         shootAndSetOnFire.setName("Shoot and Set on Fire");
+        shootAndSetOnFire.setAllDamageMultipliers(List.of(new DamageMultiplier(Attribute.INTELLIGENCE,1.3d)));
         shootAndSetOnFire.setAttackRange(10);
         shootAndSetOnFire.setFlatAdditionalDamage(8);
         shootAndSetOnFire.setMagicSkill(true);
