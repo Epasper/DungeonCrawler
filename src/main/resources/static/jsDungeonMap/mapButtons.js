@@ -66,10 +66,6 @@ class DoorOperator {
     }
 }
 
-// class Action {
-
-// }
-
 class Door {
     constructor(state, actionA, actionB, actionButtonPrompt) {
         this.state = state;
@@ -297,6 +293,23 @@ async function provideDoorActions(pointedTile) {
     actionBtn.textContent = doorOperator.current.actionButtonPrompt;
 }
 
+async function updateLoadButton(button) {
+    const slotNumber = button.dataset.slot;
+    const {data: slotExists} = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
+
+    button.disabled = !slotExists;
+}
+
+export async function updateLoadButtons() {
+    const loadButtons = Array.from(document.getElementsByClassName('load-slot'));
+
+    for (const loadButton of loadButtons) {
+        await updateLoadButton(loadButton);
+    }
+
+    await updateLoadButton(getMappedElementById('q-load-btn'));
+}
+
 export async function updateButtons() {
     //TODO: Axios umożliwia wysyłanie setu zapytań - można więc zamiast w każdej funkcji poniżej kilka razy odpytywać serwer (axios.all()),
     // to raz zrobić większe odpytanie, a potem wyniki odpytania powrzucać do funkcji updatujących guziki
@@ -305,3 +318,5 @@ export async function updateButtons() {
     updateDirectionalButtons();
     updateActionButton();
 }
+
+

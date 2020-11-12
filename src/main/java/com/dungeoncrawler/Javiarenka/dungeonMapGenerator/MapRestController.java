@@ -3,6 +3,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.*;
 
 @RestController
@@ -150,15 +151,22 @@ public class MapRestController
         return service.getFogManager().getAlreadySeenTiles();
     }
 
-//    @GetMapping("/quickSaveMap")
-//    public void quickSaveMap()
-//    {
-//        service.save(0);
-//    }
-
     @GetMapping("/saveMap")
     public void saveMap(@RequestParam int saveSlotNumber)
     {
         service.save(saveSlotNumber);
+    }
+
+    @GetMapping("/checkIfSaveExists")
+    public boolean checkIfSaveExists(@RequestParam int slotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(slotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(slotNumber) + "_party.txt";
+
+        File checkedSavedStage = new File(fileLocation + stageSaveName);
+        File checkedSavedParty = new File(fileLocation + partySaveName);
+
+        return (checkedSavedStage.exists() && checkedSavedParty.exists());
     }
 }

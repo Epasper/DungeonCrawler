@@ -277,11 +277,8 @@ public class MapGeneratorService
     public void load(int loadSlotNumber)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-//        String stageSaveName = "stage.txt";
         String stageSaveName = "save-" + Integer.toString(loadSlotNumber) + "_stage.txt";
         String partySaveName = "save-" + Integer.toString(loadSlotNumber) + "_party.txt";
-
-
 
         Gson gson = new Gson();
         Stage loadedStage = new Stage();
@@ -303,15 +300,6 @@ public class MapGeneratorService
         {
             e.printStackTrace();
         }
-
-//        PartyManager referencedPartyManager = new PartyManager(loadedStage);
-//        FogManager referencedFogManager = new FogManager(loadedStage);
-//
-//        if (!Objects.isNull(loadedPartyManager.getParty()))
-//        {
-//            referencedPartyManager.spawnParty(loadedPartyManager.getParty());
-//            referencedFogManager.setParty(referencedPartyManager.getParty());
-//        }
 
         this.stage = loadedStage;
         stage.linkTiles();

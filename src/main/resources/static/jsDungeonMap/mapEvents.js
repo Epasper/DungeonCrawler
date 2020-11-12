@@ -1,6 +1,6 @@
 import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
-import { actionAByContext, actionBByContext } from './mapButtons.js'
+import { actionAByContext, actionBByContext, updateLoadButtons } from './mapButtons.js'
 import { draw } from './mapRender.js'
 import { party, directions } from './partyManager.js'
 import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
@@ -39,6 +39,8 @@ function injectSaveMenuListeners() {
     const saveBtn = getMappedElementById('save-btn');
     saveBtn.addEventListener('click', saveMenuClicked);
 
+    const save0Btn = getMappedElementById('save-0-btn');
+    save0Btn.addEventListener('click', saveButtonClicked);
     const save1Btn = getMappedElementById('save-1-btn');
     save1Btn.addEventListener('click', saveButtonClicked);
     const save2Btn = getMappedElementById('save-2-btn');
@@ -54,6 +56,8 @@ function injectLoadMenuListeners() {
     const loadBtn = getMappedElementById('load-btn');
     loadBtn.addEventListener('click', loadClicked);
 
+    const load0Btn = getMappedElementById('load-0-btn');
+    load0Btn.addEventListener('click', loadButtonClicked);
     const load1Btn = getMappedElementById('load-1-btn');
     load1Btn.addEventListener('click', loadButtonClicked);
     const load2Btn = getMappedElementById('load-2-btn');
@@ -69,6 +73,8 @@ async function saveButtonClicked({target: saveSlotBtn}) {
     const saveSlotNumber = saveSlotBtn.dataset.slot;
     console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
     await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
+    
+    updateLoadButtons();
 }
 
 async function loadButtonClicked({target: loadSlotBtn}) {
@@ -111,12 +117,11 @@ export function injectButtonsListeners() {
 }
 
 async function requestQuickSave() {
-    //await axios.get(`http://localhost:8080/quickSaveMap`);
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
+    saveButtonClicked({target: getMappedElementById('save-0-btn')});
 }
 
 async function requestQuickLoad() {
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${0}`)
+    loadButtonClicked({target: getMappedElementById('load-0-btn')});
 }
 
 function makeAction() {

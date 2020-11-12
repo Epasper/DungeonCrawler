@@ -1,4 +1,4 @@
-import { updateButtons } from './mapButtons.js'
+import { updateButtons, updateLoadButtons } from './mapButtons.js'
 import { injectTileListeners, injectButtonsListeners } from './mapEvents.js'
 import { draw, loadVisitedFog } from './mapRender.js'
 import { adaptGrids } from './mapStyling.js'
@@ -19,6 +19,7 @@ async function ready() {
     adaptGrids();
     injectTileListeners();
     injectButtonsListeners();
+    updateLoadButtons();
     await updateMap();
     makeCorridorsTemoraryVisible();
     await loadVisitedFog();
