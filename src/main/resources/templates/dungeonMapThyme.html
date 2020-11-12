@@ -106,6 +106,8 @@
     <div id="save-menu" class="menu hidden">
         <div id="save-menu-flex" class="menu-flex">
             <!-- <div class="separator"></div> -->
+            <button id="save-delete-btn" class="button button-stacked button-delete" data-status="inactive">🗑️ Delete Save 🗑️</button>
+            <div class="separator-h"></div>
             <button id="save-0-btn" class="button button-stacked save-slot" data-slot="0">Quick Save</button>
             <div class="separator-h"></div>
             <button id="save-1-btn" class="button button-stacked save-slot" data-slot="1">Save 1</button>
@@ -119,8 +121,12 @@
     </div>
 
     <div id="load-menu" class="menu hidden">
+        <button id="load-floating-btn" class="button button-stacked button-floating hidden">Cancel</button>
+        
         <div id="load-menu-flex" class="menu-flex">
             <!-- <div class="separator"></div> -->
+            <button id="load-test-btn" class="button button-stacked">Test</button>
+            <div class="separator-h"></div>
             <button id="load-0-btn" class="button button-stacked load-slot" data-slot="0">Quick Load</button>
             <div class="separator-h"></div>
             <button id="load-1-btn" class="button button-stacked load-slot" data-slot="1">Load 1</button>

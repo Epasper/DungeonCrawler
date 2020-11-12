@@ -50,6 +50,46 @@ function injectSaveMenuListeners() {
 
     const backBtn = getMappedElementById('save-back-btn');
     backBtn.addEventListener('click', backButtonClicked)
+
+    const delBtn = getMappedElementById('save-delete-btn');
+    delBtn.addEventListener('click', prepareSaveDeletion);
+}
+
+function prepareSaveDeletion({target: deleteButton}) {
+    deleteButton.style.backgroundColor = 'red';
+    deleteButton.dataset.status = "active";
+
+    const saveSlotButtons = Array.from(document.getElementsByClassName('save-slot'));
+    saveSlotButtons.forEach(saveButton => {
+        const currentSlotNumber = saveButton.dataset.slot;
+        saveButton.removeEventListener('click', saveButtonClicked);
+        saveButton.addEventListener('click', saveButtonDelete);
+        saveButton.classList.add('button-delete');
+        saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
+    })
+
+    deleteButton.removeEventListener('click', prepareSaveDeletion);
+    deleteButton.addEventListener('click', exitSaveDeletion);
+}
+
+export function exitSaveDeletion() {
+    const deleteButton = getMappedElementById('save-delete-btn');
+    const delBtnStatus = deleteButton.dataset.status;
+    if (delBtnStatus != "active") return;
+
+    deleteButton.style.backgroundColor = '';
+    deleteButton.dataset.status = "inactive";
+    
+    const saveSlotButtons = Array.from(document.getElementsByClassName('save-slot'));
+    saveSlotButtons.forEach(saveButton => {
+        saveButton.removeEventListener('click', saveButtonDelete);
+        saveButton.addEventListener('click', saveButtonClicked);
+        saveButton.classList.remove('button-delete');
+        saveButton.disabled = false;
+    })
+
+    deleteButton.removeEventListener('click', exitSaveDeletion);
+    deleteButton.addEventListener('click', prepareSaveDeletion);
 }
 
 function injectLoadMenuListeners() {
@@ -67,6 +107,20 @@ function injectLoadMenuListeners() {
 
     const backBtn = getMappedElementById('load-back-btn');
     backBtn.addEventListener('click', backButtonClicked)
+
+    //const testBtn = getMappedElementById('load-test-btn');
+    //testBtn.addEventListener('click', moveFloatingButtonTo);
+}
+
+function moveFloatingButtonTo(targetButton) {
+    let floatingButton = getMappedElementById('load-floating-btn');
+    const topPosition = targetButton.offsetTop;
+
+    floatingButton.style.top = `${topPosition}px`;
+    setTimeout(function () {
+        floatingButton.classList.remove('hidden');
+    }, 500)
+    
 }
 
 async function saveButtonClicked({target: saveSlotBtn}) {
@@ -77,14 +131,47 @@ async function saveButtonClicked({target: saveSlotBtn}) {
     updateLoadButtons();
 }
 
-async function loadButtonClicked({target: loadSlotBtn}) {
+async function saveButtonDelete({target: saveSlotBtn}) {
+    const saveSlotNumber = saveSlotBtn.dataset.slot;
+    console.log('delete slot: ', saveSlotBtn);
+    await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
+    saveSlotBtn.disabled = true;
+
+    updateLoadButtons();
+
+}
+
+function hideFloatingButton() {
+    let floatingButton = getMappedElementById('load-floating-btn');
+    debugger;
+    //floatingButton.style.transition = '0s';
+    floatingButton.classList.add('hidden');
+    //floatingButton.style.transition = '';
+}
+
+function loadButtonClicked({target: loadSlotBtn}) {
+
+    hideFloatingButton();
+    moveFloatingButtonTo(loadSlotBtn);
+    loadSlotBtn.removeEventListener('click', loadButtonClicked);
+    loadSlotBtn.addEventListener('click', loadButtonConfirmed);
+
+
+    // const loadSlotNumber = loadSlotBtn.dataset.slot;
+    // console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
+
+    // window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`)
+}
+
+async function loadButtonConfirmed({target: loadSlotBtn}) {
     const loadSlotNumber = loadSlotBtn.dataset.slot;
     console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
-    // await axios.get(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
+    
     window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`)
 }
 
 function backButtonClicked() {
+    exitSaveDeletion();
     hideMenu(currentMenu);
     showMenu(getMappedElementById('main-menu'));
 }
@@ -249,6 +336,7 @@ function menuClicked() {
 
     //hideMenu(saveMenu);
     if (currentMenu) {
+        exitSaveDeletion();
         mainMenu.classList.add('partial');
         hideMenu(currentMenu);
         currentMenu = null;

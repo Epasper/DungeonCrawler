@@ -2,6 +2,7 @@ import { getMappedElementById, updateMap } from './dungeonMap.js'
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
 import { animateRoomChange } from './mapRender.js'
+import { exitSaveDeletion } from './mapEvents.js';
 
 class ActionsManager {
     constructor() {
@@ -298,16 +299,28 @@ async function updateLoadButton(button) {
     const {data: slotExists} = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
 
     button.disabled = !slotExists;
+    return button.disabled;
 }
 
 export async function updateLoadButtons() {
     const loadButtons = Array.from(document.getElementsByClassName('load-slot'));
+    let emptySlotsCounter = 0;
 
     for (const loadButton of loadButtons) {
-        await updateLoadButton(loadButton);
+        if (await updateLoadButton(loadButton)) emptySlotsCounter++;
     }
-
     await updateLoadButton(getMappedElementById('q-load-btn'));
+
+    console.log('empty slots: ', emptySlotsCounter, ' number of load buttons: ', loadButtons.length)
+
+    const deleteSaveButton = getMappedElementById('save-delete-btn');
+    if (emptySlotsCounter == loadButtons.length)
+    {
+        exitSaveDeletion();
+        deleteSaveButton.disabled = true;
+    } else {
+        deleteSaveButton.disabled = false;
+    }
 }
 
 export async function updateButtons() {

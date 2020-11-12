@@ -169,4 +169,18 @@ public class MapRestController
 
         return (checkedSavedStage.exists() && checkedSavedParty.exists());
     }
+
+    @GetMapping("/deleteSave")
+    public void deleteSave(@RequestParam int saveSlotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+
+        File savedStageToDelete = new File(fileLocation + stageSaveName);
+        File savedPartyToDelete = new File(fileLocation + partySaveName);
+
+        savedStageToDelete.delete();
+        savedPartyToDelete.delete();
+    }
 }
