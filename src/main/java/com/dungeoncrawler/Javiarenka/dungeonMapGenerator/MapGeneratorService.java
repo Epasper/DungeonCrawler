@@ -304,17 +304,26 @@ public class MapGeneratorService
             e.printStackTrace();
         }
 
-        PartyManager referencedPartyManager = new PartyManager(loadedStage);
-        FogManager referencedFogManager = new FogManager(loadedStage);
+//        PartyManager referencedPartyManager = new PartyManager(loadedStage);
+//        FogManager referencedFogManager = new FogManager(loadedStage);
+//
+//        if (!Objects.isNull(loadedPartyManager.getParty()))
+//        {
+//            referencedPartyManager.spawnParty(loadedPartyManager.getParty());
+//            referencedFogManager.setParty(referencedPartyManager.getParty());
+//        }
+
+        this.stage = loadedStage;
+        stage.linkTiles();
+
+        PartyManager referencedPartyManager = new PartyManager(stage);
+        FogManager referencedFogManager = new FogManager(stage);
 
         if (!Objects.isNull(loadedPartyManager.getParty()))
         {
             referencedPartyManager.spawnParty(loadedPartyManager.getParty());
             referencedFogManager.setParty(referencedPartyManager.getParty());
         }
-
-        this.stage = loadedStage;
-        stage.linkTiles();
 
         this.partyManager = referencedPartyManager;
         this.fogManager = referencedFogManager;

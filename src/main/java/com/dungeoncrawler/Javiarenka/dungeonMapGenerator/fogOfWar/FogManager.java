@@ -118,7 +118,7 @@ public class FogManager
         Room visibleRoom = stage.getRoomByTile(partyPointedTile);
         List<Tile> roomInnerTiles = visibleRoom.getRoomInnerTiles();
         List<Tile> roomWallTiles = visibleRoom.getWallTiles();
-        roomInnerTiles.forEach(tile -> tile.setVisibility(1,true));
+        roomInnerTiles.forEach(tile -> tile.setVisibility(1, true));
         roomWallTiles.forEach(tile -> tile.setVisibility(0.5, true));
 
         roomLitTiles.addAll(roomInnerTiles);

@@ -116,10 +116,6 @@ function animatePartyRotation(partyImg, dir) {
     }
 }
 
-function animateFogChange() {
-
-}
-
 async function drawFogOfWarbackup() {
 
     if (!party) return;
@@ -199,8 +195,8 @@ export async function loadVisitedFog() {
     const visitedTiles = response.data;
 
     visitedTiles.forEach(tile => {
-        let fogDiv = getDivFromBackendTile(tile, 'x');
-        fogDiv.classList.add('seen');
+        let tileDiv = getDivFromBackendTile(tile);
+        tileDiv.classList.add('seen');
     })
 }
 
@@ -221,11 +217,6 @@ async function drawFogOfWar() {
     const distancesSorted = response.data['distancesSorted'];
     const newlySeenTiles = response.data['newlySeenTiles'];
 
-    newlySeenTiles.forEach(tile => {
-        let fogDiv = getDivFromBackendTile(tile, 'x');
-        fogDiv.classList.add('seen');
-    })
-
     //const tilesWithDistances = new Map();
 
     console.log('newly shown tiles: ', newlyShownTiles);
@@ -235,29 +226,34 @@ async function drawFogOfWar() {
     const frameDuration = parseInt(window.getComputedStyle(root).getPropertyValue(`--visibility-frame-duration`));
     
     visibleTilesSortedByDistance.forEach(tile => {
-        let fogDiv = getDivFromBackendTile(tile, 'x');
+        let tileDiv = getDivFromBackendTile(tile);
         let distance = distancesSorted[i] - partyVisibilityRadius;
         distance = distance < 0 ? 0 : distance;
         let distFunction = distance * 1;
-        fogDiv.style.transitionDelay = `${distFunction * frameDuration}ms`
+        tileDiv.style.transitionDelay = `${distFunction * frameDuration}ms`
         i++;
     })
 
     previouslyShownTiles.forEach(tile => {
-        let fogDiv = getDivFromBackendTile(tile, 'x');
-        let mapDiv = getDivFromBackendTile(tile);
-        fogDiv.style.transitionDelay = '';
-        fogDiv.style.opacity = '';
-        fogDiv.classList.remove('visible');
-        mapDiv.classList.remove('visible');
+        ////let fogDiv = getDivFromBackendTile(tile, 'x');
+        let tileDiv = getDivFromBackendTile(tile);
+        tileDiv.style.transitionDelay = '';
+        tileDiv.style.opacity = '';
+        ////fogDiv.classList.remove('visible');
+        tileDiv.classList.remove('visible');
     })
 
     newlyShownTiles.forEach(tile => {
-        let fogDiv = getDivFromBackendTile(tile, 'x');
-        let mapDiv = getDivFromBackendTile(tile);
-        fogDiv.style.opacity = 1 - tile.visibility;
-        fogDiv.classList.add('visible');
-        mapDiv.classList.add('visible');
+        ////let fogDiv = getDivFromBackendTile(tile, 'x');
+        let tileDiv = getDivFromBackendTile(tile);
+        tileDiv.style.opacity = tile.visibility;
+        tileDiv.classList.add('visible');
+    })
+
+    newlySeenTiles.forEach(tile => {
+        //// let fogDiv = getDivFromBackendTile(tile, 'x');
+        let tileDiv = getDivFromBackendTile(tile);
+        tileDiv.classList.add('seen');
     })
 
     console.log('=============================== STOP DRAWING FOG ====================================');
@@ -279,8 +275,6 @@ export async function animateRoomChange(changedTilesData, descendingOrder = fals
             roomDiv = getDivFromBackendTile(backendTile);
             //console.log(roomDiv);
             divs.push(roomDiv);
-            ////roomDiv.classList.remove(currentType);
-            ////roomDiv.classList.add(newType);
         });
         cascades.set(key, divs);
 
