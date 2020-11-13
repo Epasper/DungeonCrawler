@@ -233,7 +233,6 @@ function deactivateActionMenu() {
 
 async function activateDoorBackend(newDoorState, descendingOrder = false) {
     console.log('======================= ACTIVATE DOOR BACKEND ==========================');
-    //debugger;
 
     const pointedTile = doorOperator.pointedTile;
     const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
@@ -247,7 +246,6 @@ async function updateActionButton() {
     let actionBtn = getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
-    //debugger;
     if (party.direction == directions.NONE) return;
 
     const { data: pointedTile } = await axios.get(`http://localhost:8080/getPointedTile?dir=${party.direction}`);
@@ -303,7 +301,7 @@ async function updateLoadButton(button) {
 }
 
 export async function updateLoadButtons() {
-    const loadButtons = Array.from(document.getElementsByClassName('load-slot'));
+    const loadButtons = Array.from(document.getElementsByClassName('button-load'));
     let emptySlotsCounter = 0;
 
     for (const loadButton of loadButtons) {

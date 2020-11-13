@@ -9,6 +9,11 @@ const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
 let currentMenu = null;
+let currentSlidingButton = null;
+// let currentButtonEventFunction = () => {};
+let currentButtonEventFunction = null;
+// let previousButtonEventFunction = () => {};
+let previousButtonEventFunction = null;
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
@@ -39,14 +44,10 @@ function injectSaveMenuListeners() {
     const saveBtn = getMappedElementById('save-btn');
     saveBtn.addEventListener('click', saveMenuClicked);
 
-    const save0Btn = getMappedElementById('save-0-btn');
-    save0Btn.addEventListener('click', saveButtonClicked);
-    const save1Btn = getMappedElementById('save-1-btn');
-    save1Btn.addEventListener('click', saveButtonClicked);
-    const save2Btn = getMappedElementById('save-2-btn');
-    save2Btn.addEventListener('click', saveButtonClicked);
-    const save3Btn = getMappedElementById('save-3-btn');
-    save3Btn.addEventListener('click', saveButtonClicked);
+    const saveButtons = Array.from(document.getElementsByClassName('button-save'));
+    saveButtons.forEach(loadBtn => {
+        loadBtn.addEventListener('click', saveButtonClicked);
+    })
 
     const backBtn = getMappedElementById('save-back-btn');
     backBtn.addEventListener('click', backButtonClicked)
@@ -59,7 +60,7 @@ function prepareSaveDeletion({target: deleteButton}) {
     deleteButton.style.backgroundColor = 'red';
     deleteButton.dataset.status = "active";
 
-    const saveSlotButtons = Array.from(document.getElementsByClassName('save-slot'));
+    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
         const currentSlotNumber = saveButton.dataset.slot;
         saveButton.removeEventListener('click', saveButtonClicked);
@@ -80,7 +81,7 @@ export function exitSaveDeletion() {
     deleteButton.style.backgroundColor = '';
     deleteButton.dataset.status = "inactive";
     
-    const saveSlotButtons = Array.from(document.getElementsByClassName('save-slot'));
+    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
         saveButton.removeEventListener('click', saveButtonDelete);
         saveButton.addEventListener('click', saveButtonClicked);
@@ -96,31 +97,53 @@ function injectLoadMenuListeners() {
     const loadBtn = getMappedElementById('load-btn');
     loadBtn.addEventListener('click', loadClicked);
 
-    const load0Btn = getMappedElementById('load-0-btn');
-    load0Btn.addEventListener('click', loadButtonClicked);
-    const load1Btn = getMappedElementById('load-1-btn');
-    load1Btn.addEventListener('click', loadButtonClicked);
-    const load2Btn = getMappedElementById('load-2-btn');
-    load2Btn.addEventListener('click', loadButtonClicked);
-    const load3Btn = getMappedElementById('load-3-btn');
-    load3Btn.addEventListener('click', loadButtonClicked);
+    const loadButtons = Array.from(document.getElementsByClassName('button-load'));
+    loadButtons.forEach(loadBtn => {
+        loadBtn.addEventListener('click', loadButtonClicked);
+    })
+
+    debugger;
+    const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-sliding'));
+    cancelLoadButtons.forEach(cancelLoadBtn => {
+        cancelLoadBtn.addEventListener('click', cancelButtonClicked);
+    })
 
     const backBtn = getMappedElementById('load-back-btn');
     backBtn.addEventListener('click', backButtonClicked)
-
-    //const testBtn = getMappedElementById('load-test-btn');
-    //testBtn.addEventListener('click', moveFloatingButtonTo);
 }
 
-function moveFloatingButtonTo(targetButton) {
-    let floatingButton = getMappedElementById('load-floating-btn');
-    const topPosition = targetButton.offsetTop;
+function cancelButtonClicked() {
+    declineSlidingButton();
+}
 
-    floatingButton.style.top = `${topPosition}px`;
-    setTimeout(function () {
-        floatingButton.classList.remove('hidden');
-    }, 500)
-    
+function showSlidingButton(targetButton) {
+    const slotNumber = targetButton.dataset.slot;
+    let slidingButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
+    targetButton.classList.add('button-confirmed');
+
+    currentSlidingButton = slidingButton;
+    slidingButton.classList.remove('hidden');
+}
+
+function declineSlidingButton() {
+    if (!currentSlidingButton) return;
+    let slidingButton = currentSlidingButton;
+    slidingButton.classList.add('hidden');
+
+    const cancelledBtnId = slidingButton.dataset.cancelling;
+    const cancelledButton = getMappedElementById(cancelledBtnId);
+    cancelledButton.classList.remove('button-confirmed');
+
+    //switchConfirmable(cancelledButton);
+
+    debugger;
+    if (currentButtonEventFunction) cancelledButton.removeEventListener('click', currentButtonEventFunction);
+    if (previousButtonEventFunction) cancelledButton.addEventListener('click', previousButtonEventFunction);
+
+    currentButtonEventFunction = null;
+    previousButtonEventFunction = null;
+
+    currentSlidingButton = null;
 }
 
 async function saveButtonClicked({target: saveSlotBtn}) {
@@ -138,40 +161,28 @@ async function saveButtonDelete({target: saveSlotBtn}) {
     saveSlotBtn.disabled = true;
 
     updateLoadButtons();
-
-}
-
-function hideFloatingButton() {
-    let floatingButton = getMappedElementById('load-floating-btn');
-    debugger;
-    //floatingButton.style.transition = '0s';
-    floatingButton.classList.add('hidden');
-    //floatingButton.style.transition = '';
 }
 
 function loadButtonClicked({target: loadSlotBtn}) {
 
-    hideFloatingButton();
-    moveFloatingButtonTo(loadSlotBtn);
+    declineSlidingButton();
+    showSlidingButton(loadSlotBtn);
+    previousButtonEventFunction = loadButtonClicked;
     loadSlotBtn.removeEventListener('click', loadButtonClicked);
+    currentButtonEventFunction = loadButtonConfirmed;
     loadSlotBtn.addEventListener('click', loadButtonConfirmed);
-
-
-    // const loadSlotNumber = loadSlotBtn.dataset.slot;
-    // console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
-
-    // window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`)
 }
 
 async function loadButtonConfirmed({target: loadSlotBtn}) {
     const loadSlotNumber = loadSlotBtn.dataset.slot;
     console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
     
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`)
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
 }
 
 function backButtonClicked() {
     exitSaveDeletion();
+    declineSlidingButton();
     hideMenu(currentMenu);
     showMenu(getMappedElementById('main-menu'));
 }
@@ -204,11 +215,14 @@ export function injectButtonsListeners() {
 }
 
 async function requestQuickSave() {
-    saveButtonClicked({target: getMappedElementById('save-0-btn')});
+    //saveButtonClicked({target: getMappedElementById('save-0-btn')});
+    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
+    updateLoadButtons();
 }
 
 async function requestQuickLoad() {
-    loadButtonClicked({target: getMappedElementById('load-0-btn')});
+    //loadButtonClicked({target: getMappedElementById('load-0-btn')});
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${0}`);
 }
 
 function makeAction() {
@@ -337,6 +351,7 @@ function menuClicked() {
     //hideMenu(saveMenu);
     if (currentMenu) {
         exitSaveDeletion();
+        declineSlidingButton();
         mainMenu.classList.add('partial');
         hideMenu(currentMenu);
         currentMenu = null;
@@ -344,14 +359,6 @@ function menuClicked() {
         currentMenu = mainMenu;
         showMenu(mainMenu);
     }
-
-    // if (mainMenu.classList.length == 1) {
-    //     currentMenu = null;
-    //     mainMenu.classList.add('partial');
-    // } else {
-    //     currentMenu = mainMenu;
-    //     showMenu(mainMenu);
-    // }
 }
 
 function saveMenuClicked() {

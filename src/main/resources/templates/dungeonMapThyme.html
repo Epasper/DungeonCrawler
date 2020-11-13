@@ -108,32 +108,54 @@
             <!-- <div class="separator"></div> -->
             <button id="save-delete-btn" class="button button-stacked button-delete" data-status="inactive">🗑️ Delete Save 🗑️</button>
             <div class="separator-h"></div>
-            <button id="save-0-btn" class="button button-stacked save-slot" data-slot="0">Quick Save</button>
+            <button id="save-0-btn" class="button button-stacked button-save" data-slot="0">Quick Save</button>
             <div class="separator-h"></div>
-            <button id="save-1-btn" class="button button-stacked save-slot" data-slot="1">Save 1</button>
+            <button id="save-1-btn" class="button button-stacked button-save" data-slot="1">Save 1</button>
             <div class="separator-h"></div>
-            <button id="save-2-btn" class="button button-stacked save-slot" data-slot="2">Save 2</button>
+            <button id="save-2-btn" class="button button-stacked button-save" data-slot="2">Save 2</button>
             <div class="separator-h"></div>
-            <button id="save-3-btn" class="button button-stacked save-slot" data-slot="3">Save 3</button>
+            <button id="save-3-btn" class="button button-stacked button-save" data-slot="3">Save 3</button>
             <div class="separator-h"></div>
             <button id="save-back-btn" class="button button-stacked">Back</button>
         </div>
     </div>
 
     <div id="load-menu" class="menu hidden">
-        <button id="load-floating-btn" class="button button-stacked button-floating hidden">Cancel</button>
+        <!-- <button id="load-0-cancel-btn" class="button button-stacked button-sliding hidden" data-slot="0">Cancel</button>
+        <button id="load-1-cancel-btn" class="button button-stacked button-sliding hidden" data-slot="1">Cancel</button>
+        <button id="load-2-cancel-btn" class="button button-stacked button-sliding hidden" data-slot="2">Cancel</button>
+        <button id="load-3-cancel-btn" class="button button-stacked button-sliding hidden" data-slot="3">Cancel</button> -->
         
         <div id="load-menu-flex" class="menu-flex">
             <!-- <div class="separator"></div> -->
-            <button id="load-test-btn" class="button button-stacked">Test</button>
+            <div id="load-9-slot" class="load-slot">
+                <button id="load-9-btn" class="button button-stacked button-load" data-slot="9">TEST</button>
+                <button id="load-9-cancel-btn" class="button button-stacked button-sliding hidden" data-cancelling="load-9-btn">❌</button>
+            </div>
             <div class="separator-h"></div>
-            <button id="load-0-btn" class="button button-stacked load-slot" data-slot="0">Quick Load</button>
+
+            <div id="load-0-slot" class="load-slot">
+                <button id="load-0-btn" class="button button-stacked button-load" data-slot="0">Quick Load</button>
+                <button id="load-0-cancel-btn" class="button button-stacked button-sliding hidden" data-cancelling="load-0-btn">❌</button>
+            </div>
             <div class="separator-h"></div>
-            <button id="load-1-btn" class="button button-stacked load-slot" data-slot="1">Load 1</button>
+
+            <div id="load-1-slot" class="load-slot">
+                <button id="load-1-btn" class="button button-stacked button-load" data-slot="1">Load 1</button>
+                <button id="load-1-cancel-btn" class="button button-stacked button-sliding hidden" data-cancelling="load-1-btn">❌</button>
+            </div>
             <div class="separator-h"></div>
-            <button id="load-2-btn" class="button button-stacked load-slot" data-slot="2">Load 2</button>
+
+            <div id="load-2-slot" class="load-slot">
+                <button id="load-2-btn" class="button button-stacked button-load" data-slot="2">Load 2</button>
+                <button id="load-2-cancel-btn" class="button button-stacked button-sliding hidden" data-cancelling="load-2-btn">❌</button>
+            </div>
             <div class="separator-h"></div>
-            <button id="load-3-btn" class="button button-stacked load-slot" data-slot="3">Load 3</button>
+
+            <div id="load-3-slot" class="load-slot">
+                <button id="load-3-btn" class="button button-stacked button-load" data-slot="3">Load 3</button>
+                <button id="load-3-cancel-btn" class="button button-stacked button-sliding hidden" data-cancelling="load-3-btn">❌</button>
+            </div>
             <div class="separator-h"></div>
             <button id="load-back-btn" class="button button-stacked">Back</button>
         </div>

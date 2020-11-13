@@ -67,18 +67,19 @@
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
-.button-floating {
+.button-sliding {
     position: absolute;
-    max-width: var(--toolbar-space);
+    /* max-width: var(--toolbar-space); */
+    /* max-width: calc(var(--toolbar-space)/3); */
+    width: calc(var(--toolbar-space)/3);
     left: var(--toolbar-padding);
-    bottom: var(--toolbar-padding);
+    /* bottom: var(--toolbar-padding); */
     transform: translateX(calc(-100% - 2px));
-    transition: transform 0.3s;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s;
     z-index: -1;
 }
 
-.button-floating.hidden {
-    transition: transform 0.3s;
+.button-sliding.hidden {
     transform: translateX(0);
 }
 
@@ -93,9 +94,46 @@
     box-shadow: 0 0 5px 0px skyblue;
 }
 
-.button.button-delete:enabled:hover {
+.button.button-delete:enabled:hover
+{
     border-color: red;
     box-shadow: 0 0 5px 0px red;
+}
+
+.button.button-sliding
+{
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s, width 0.3s;
+    white-space: nowrap;
+}
+
+.button.button-sliding:enabled:hover
+{
+    border-color: red;
+    box-shadow: 0 0 5px 0px red;
+    width: 60%;
+}
+
+.button.button-sliding:enabled:hover::after
+{
+    content: ' Cancel';
+    animation: fadein 0.5s;
+    animation-delay: 0.1s;
+    animation-fill-mode: backwards;
+}
+
+@keyframes fadein {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 100;
+    }
+}
+
+.button.button-confirmed:enabled:hover
+{
+    border-color: lightgreen;
+    box-shadow: 0 0 5px 0px lightgreen;
 }
 
 .button:enabled:active {
@@ -110,9 +148,8 @@
 }
 
 .button.button-stacked {
-    width: 100%;
+    /* width: 100%; */
     height: calc(var(--toolbar-space)/3);
-    /* flex-shrink: 0; */
 }
 
 .separator-h {
