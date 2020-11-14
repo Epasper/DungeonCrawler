@@ -116,14 +116,24 @@ function injectLoadMenuListeners() {
     backBtn.addEventListener('click', backButtonClicked)
 }
 
+function getChildNodeByIdPartialString(node, searchedString) {
+    if (!node.children) return null;
+
+    let children = Array.from(node.children);
+    return children.find(node => node.id.includes(searchedString));
+}
+
 function getTooltip() {
     if (!currentButtonAwaitingConfirmation) return null;
 
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
+    const currentSlotLabels = getChildNodeByIdPartialString(currentSlotDiv, 'labels')
 
-    let childNodes = Array.from(currentSlotDiv.childNodes);
-    childNodes = childNodes.filter(node => node.id); //odfiltruj te nody, które nie mają id.
-    return childNodes.find(node => node.id.includes('tooltip'));
+    debugger;
+    
+    // let children = Array.from(currentSlotDiv.children);
+    // return children.find(node => node.id.includes('tooltip'));
+    return getChildNodeByIdPartialString(currentSlotLabels, 'tooltip')
 }
 
 function showTooltip() {
