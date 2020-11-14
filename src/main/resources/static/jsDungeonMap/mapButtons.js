@@ -293,7 +293,15 @@ async function provideDoorActions(pointedTile) {
 }
 
 async function updateLoadButton(button) {
-    const slotNumber = button.dataset.slot;
+    let elementWithSlotInfo;
+    if (button.parentElement.dataset.slot)
+    {
+        elementWithSlotInfo = button.parentElement;
+    } else {
+        elementWithSlotInfo = button;
+    }
+
+    const slotNumber = elementWithSlotInfo.dataset.slot;
     const {data: slotExists} = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
 
     button.disabled = !slotExists;

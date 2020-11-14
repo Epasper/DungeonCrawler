@@ -9,7 +9,7 @@ const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
 let currentMenu = null;
-let currentSlotAwaitingConfirmation = null;
+let currentButtonAwaitingConfirmation = null;
 // let currentButtonEventFunction = () => {};
 // let currentButtonEventFunction = null;
 // let previousButtonEventFunction = () => {};
@@ -104,7 +104,7 @@ function injectLoadMenuListeners() {
 
     const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-cancel'));
     cancelLoadButtons.forEach(cancelLoadBtn => {
-        cancelLoadBtn.addEventListener('click', cancelButtonClicked);
+        cancelLoadBtn.addEventListener('click', declineConfirmation);
     })
 
     const confirmLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-confirm'));
@@ -116,39 +116,49 @@ function injectLoadMenuListeners() {
     backBtn.addEventListener('click', backButtonClicked)
 }
 
-function cancelButtonClicked() {
-    declineConfirmation();
+function getTooltip() {
+    if (!currentButtonAwaitingConfirmation) return null;
+
+    const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
+
+    let childNodes = Array.from(currentSlotDiv.childNodes);
+    childNodes = childNodes.filter(node => node.id); //odfiltruj te nody, które nie mają id.
+    return childNodes.find(node => node.id.includes('tooltip'));
+}
+
+function showTooltip() {
+    if (!currentButtonAwaitingConfirmation) return;
+    const tooltipDiv = getTooltip();
+
+    tooltipDiv.classList.remove('hidden');
+}
+
+function hideTooltip() {
+    if (!currentButtonAwaitingConfirmation) return;
+    const tooltipDiv = getTooltip();
+
+    tooltipDiv.classList.add('hidden');
 }
 
 function showConfirmationButtons(targetButton) {
-    currentSlotAwaitingConfirmation = targetButton.parentElement.dataset.slot;
+    // currentButtonAwaitingConfirmation = targetButton.parentElement.dataset.slot;
+    currentButtonAwaitingConfirmation = targetButton;
     targetButton.classList.add('button-await-confirmation');
-
-    // let slidingButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
-
-    // currentSlidingButton = slidingButton;
-    // slidingButton.classList.remove('hidden');
 }
 
 function declineConfirmation() {
-    if (!currentSlotAwaitingConfirmation) return;
-    let cancelButton = getMappedElementById(`load-${currentSlotAwaitingConfirmation}-cancel-btn`);
-    // cancelButton.classList.add('hidden');
+    if (!currentButtonAwaitingConfirmation) return;
+    const slotNumber = currentButtonAwaitingConfirmation.parentElement.dataset.slot;
+
+    let cancelButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
 
     const cancelledBtnId = cancelButton.dataset.cancelling;
     const cancelledButton = getMappedElementById(cancelledBtnId);
     cancelledButton.classList.remove('button-await-confirmation');
 
-    //switchConfirmable(cancelledButton);
+    hideTooltip();
 
-    // debugger;
-    // if (currentButtonEventFunction) cancelledButton.removeEventListener('click', currentButtonEventFunction);
-    // if (previousButtonEventFunction) cancelledButton.addEventListener('click', previousButtonEventFunction);
-
-    // currentButtonEventFunction = null;
-    // previousButtonEventFunction = null;
-
-    currentSlotAwaitingConfirmation = null;
+    currentButtonAwaitingConfirmation = null;
 }
 
 async function saveButtonClicked({target: saveSlotBtn}) {
@@ -169,14 +179,9 @@ async function saveButtonDelete({target: saveSlotBtn}) {
 }
 
 function loadButtonClicked({target: loadSlotBtn}) {
-
     declineConfirmation();
     showConfirmationButtons(loadSlotBtn);
-    // previousButtonEventFunction = loadButtonClicked;
-    // loadSlotBtn.removeEventListener('click', loadButtonClicked);
-    // currentButtonEventFunction = loadButtonConfirmed;
-    // loadSlotBtn.addEventListener('click', loadButtonConfirmed);
-
+    showTooltip();
 }
 
 async function loadButtonConfirmed({target: loadSlotBtn}) {
