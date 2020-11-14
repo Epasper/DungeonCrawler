@@ -73,25 +73,59 @@
     background-color: #bbb;
     /* border-color: -internal-light-dark(rgb(180, 21, 21), rgb(204, 17, 17)); */
 
-    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, width 0.3s;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s, opacity 0.3s, width 0.3s, height 0.3s;
 }
 
-.button-sliding {
+.button-cancel,
+.button-confirm
+{
     position: absolute;
-    width: var(--stacked-button-height);
-    /* left: var(--toolbar-padding); */
-    /* right: var(--toolbar-padding); */
-    right: 0;
-
-    /* transform: translateX(calc(-100% - 2px)); */
     transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s, width 0.3s;
     white-space: nowrap;
-    /* z-index: 2; */
 }
 
-/* .button-sliding.hidden {
+.tooltip
+{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: solid 2px yellow; */
+    transform: translateX(calc((100% + var(--toolbar-padding) * 1.5) * -1));
+    --this-height: calc(var(--stacked-button-height) + var(--toolbar-padding) * 2);
+    height: var(--this-height);
+    top: calc(var(--toolbar-padding) * -1);
+    color: #bbb;
+    padding: var(--toolbar-padding);
+
+    background-color: #333;
+    border-radius: calc(var(--toolbar-padding) * 1);
+    /* border-radius: calc(var(--this-height) / 2); */
+    box-shadow: inset 0 0 20px #000000;
+}
+
+.tooltip p
+{
+    word-wrap: none;
+    white-space: nowrap;
+}
+
+.tooltip.hidden
+{
     transform: translateX(0);
-} */
+    opacity: 0;
+}
+
+.button-cancel {
+    width: var(--stacked-button-height);
+    right: 0;
+}
+
+.button-confirm {
+    width: calc(100% - var(--stacked-button-height));
+    left: 0;
+    padding: 0;
+}
 
 .button:focus {
     outline: 0;
@@ -110,55 +144,60 @@
     box-shadow: 0 0 5px 0px red;
 }
 
-/* .info-sliding {
-    pointer-events: none;
-    position: absolute;
-    border: solid 1px yellow;
-    height: calc(var(--stacked-button-height) + var(--toolbar-padding) * 2);
-    width: calc(var(--toolbar-height) + var(--toolbar-padding));
-    transform: translateX(calc(-100% + var(--toolbar-padding)));
-    left: 0;
-    top: 0;
-
-    background-color: #333;
-    border-top-left-radius: calc(var(--toolbar-padding)*1);
-    border-bottom-left-radius: calc(var(--toolbar-padding)*1);
-    box-shadow: inset 0 0 20px #000000;
-
-    z-index: -1;
-} */
-
-.button.button-sliding:enabled:hover
+.button.button-cancel:enabled:hover
 {
     border-color: red;
     box-shadow: 0 0 5px 0px red;
-    width: 60%;
     width: calc(100% - var(--stacked-button-height));
-    /* z-index: 1; */
 }
 
-.button.button-sliding:enabled:hover + .button.button-confirmed:enabled {
+.button.button-cancel:enabled:hover + .button.button-confirm:enabled {
     width: var(--stacked-button-height);
 }
 
-.button.button-sliding:enabled::after
+.button.button-confirm:enabled::before
 {
-    content: '';
-    opacity: 0;
+    content: ' OK ';
+    opacity: 1;
     transition: 0.5s;
 }
 
-.button.button-sliding:enabled:hover::after
+.button.button-confirm:enabled::after {
+    opacity: 0;
+}
+
+.button.button-cancel:enabled:hover + .button.button-confirm:enabled::before
+{
+    content: ' OK ';
+    transition: font-size 0.3s;
+    font-size: 0px;
+    padding: 0;
+}
+
+.button.button-cancel:enabled::after
+{
+    content: ' Cancel ';
+    font-size: 0;
+    transition: 0.5s;
+}
+
+.button.button-cancel:enabled:hover::after
 {
     content: ' Cancel';
-    opacity: 1;
+    font-size: 1em;
 }
 
-.button.button-confirmed:enabled {
-    width: calc(100% - var(--stacked-button-height));
+.button.button-await-confirmation:enabled {
+    /* width: 75%; */
+    /* height: 75%; */
+    /* font-size: 0.75em; */
+    /* transform: translateX(-100%) translateY(0%); */
+    /* transform: translateX(-100%); */
+    pointer-events: none;
+    opacity: 0;
 }
 
-.button.button-confirmed:enabled:hover
+.button.button-confirm:enabled:hover
 {
     border-color: lightgreen;
     box-shadow: 0 0 5px 0px lightgreen;
@@ -167,27 +206,6 @@
 .button.button-load {
     position: absolute;
     /* z-index: 1; */
-}
-
-.button.button-load:enabled::before,
-.button.button-load:enabled::after
-{
-    /* content: ' ✔️ '; */
-    content: '';
-    opacity: 0;
-    transition: 0.3s;
-}
-
-.button.button-confirmed:enabled::after
-{
-    content: ' ✔️ ';
-    opacity: 1;
-}
-
-.button.button-confirmed:enabled:hover::after
-{
-    content: ' ✔️ ';
-    opacity: 1;
 }
 
 .button:enabled:active {

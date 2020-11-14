@@ -9,11 +9,11 @@ const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
 let currentMenu = null;
-let currentSlidingButton = null;
+let currentSlotAwaitingConfirmation = null;
 // let currentButtonEventFunction = () => {};
-let currentButtonEventFunction = null;
+// let currentButtonEventFunction = null;
 // let previousButtonEventFunction = () => {};
-let previousButtonEventFunction = null;
+// let previousButtonEventFunction = null;
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
@@ -102,10 +102,14 @@ function injectLoadMenuListeners() {
         loadBtn.addEventListener('click', loadButtonClicked);
     })
 
-    debugger;
-    const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-sliding'));
+    const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-cancel'));
     cancelLoadButtons.forEach(cancelLoadBtn => {
         cancelLoadBtn.addEventListener('click', cancelButtonClicked);
+    })
+
+    const confirmLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-confirm'));
+    confirmLoadButtons.forEach(confirmLoadBtn => {
+        confirmLoadBtn.addEventListener('click', loadButtonConfirmed);
     })
 
     const backBtn = getMappedElementById('load-back-btn');
@@ -113,37 +117,38 @@ function injectLoadMenuListeners() {
 }
 
 function cancelButtonClicked() {
-    declineSlidingButton();
+    declineConfirmation();
 }
 
-function showSlidingButton(targetButton) {
-    const slotNumber = targetButton.dataset.slot;
-    let slidingButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
-    targetButton.classList.add('button-confirmed');
+function showConfirmationButtons(targetButton) {
+    currentSlotAwaitingConfirmation = targetButton.parentElement.dataset.slot;
+    targetButton.classList.add('button-await-confirmation');
 
-    currentSlidingButton = slidingButton;
-    slidingButton.classList.remove('hidden');
+    // let slidingButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
+
+    // currentSlidingButton = slidingButton;
+    // slidingButton.classList.remove('hidden');
 }
 
-function declineSlidingButton() {
-    if (!currentSlidingButton) return;
-    let slidingButton = currentSlidingButton;
-    slidingButton.classList.add('hidden');
+function declineConfirmation() {
+    if (!currentSlotAwaitingConfirmation) return;
+    let cancelButton = getMappedElementById(`load-${currentSlotAwaitingConfirmation}-cancel-btn`);
+    // cancelButton.classList.add('hidden');
 
-    const cancelledBtnId = slidingButton.dataset.cancelling;
+    const cancelledBtnId = cancelButton.dataset.cancelling;
     const cancelledButton = getMappedElementById(cancelledBtnId);
-    cancelledButton.classList.remove('button-confirmed');
+    cancelledButton.classList.remove('button-await-confirmation');
 
     //switchConfirmable(cancelledButton);
 
-    debugger;
-    if (currentButtonEventFunction) cancelledButton.removeEventListener('click', currentButtonEventFunction);
-    if (previousButtonEventFunction) cancelledButton.addEventListener('click', previousButtonEventFunction);
+    // debugger;
+    // if (currentButtonEventFunction) cancelledButton.removeEventListener('click', currentButtonEventFunction);
+    // if (previousButtonEventFunction) cancelledButton.addEventListener('click', previousButtonEventFunction);
 
-    currentButtonEventFunction = null;
-    previousButtonEventFunction = null;
+    // currentButtonEventFunction = null;
+    // previousButtonEventFunction = null;
 
-    currentSlidingButton = null;
+    currentSlotAwaitingConfirmation = null;
 }
 
 async function saveButtonClicked({target: saveSlotBtn}) {
@@ -165,16 +170,17 @@ async function saveButtonDelete({target: saveSlotBtn}) {
 
 function loadButtonClicked({target: loadSlotBtn}) {
 
-    declineSlidingButton();
-    showSlidingButton(loadSlotBtn);
-    previousButtonEventFunction = loadButtonClicked;
-    loadSlotBtn.removeEventListener('click', loadButtonClicked);
-    currentButtonEventFunction = loadButtonConfirmed;
-    loadSlotBtn.addEventListener('click', loadButtonConfirmed);
+    declineConfirmation();
+    showConfirmationButtons(loadSlotBtn);
+    // previousButtonEventFunction = loadButtonClicked;
+    // loadSlotBtn.removeEventListener('click', loadButtonClicked);
+    // currentButtonEventFunction = loadButtonConfirmed;
+    // loadSlotBtn.addEventListener('click', loadButtonConfirmed);
+
 }
 
 async function loadButtonConfirmed({target: loadSlotBtn}) {
-    const loadSlotNumber = loadSlotBtn.dataset.slot;
+    const loadSlotNumber = loadSlotBtn.parentElement.dataset.slot;
     console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
     
     window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
@@ -182,7 +188,7 @@ async function loadButtonConfirmed({target: loadSlotBtn}) {
 
 function backButtonClicked() {
     exitSaveDeletion();
-    declineSlidingButton();
+    declineConfirmation();
     hideMenu(currentMenu);
     showMenu(getMappedElementById('main-menu'));
 }
@@ -351,7 +357,7 @@ function menuClicked() {
     //hideMenu(saveMenu);
     if (currentMenu) {
         exitSaveDeletion();
-        declineSlidingButton();
+        declineConfirmation();
         mainMenu.classList.add('partial');
         hideMenu(currentMenu);
         currentMenu = null;
