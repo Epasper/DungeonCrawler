@@ -30,11 +30,14 @@ function injectMenuListeners() {
     menuBtn.addEventListener('mouseleave', menuButtonExited);
     menuBtn.addEventListener('click', menuClicked);
 
-    let qSaveBtn = getMappedElementById('q-save-btn')
-    qSaveBtn.addEventListener('click', requestQuickSave)
+    let qSaveBtn = getMappedElementById('q-save-btn');
+    qSaveBtn.addEventListener('click', requestQuickSave);
 
-    let qLoadBtn = getMappedElementById('q-load-btn')
-    qLoadBtn.addEventListener('click', requestQuickLoad)
+    let qLoadBtn = getMappedElementById('q-load-btn');
+    qLoadBtn.addEventListener('click', requestQuickLoad);
+
+    let backBtn = getMappedElementById('back-btn');
+    backBtn.addEventListener('click', backButtonClicked)
 
     injectSaveMenuListeners();
     injectLoadMenuListeners();
@@ -46,7 +49,17 @@ function injectSaveMenuListeners() {
 
     const saveButtons = Array.from(document.getElementsByClassName('button-save'));
     saveButtons.forEach(loadBtn => {
-        loadBtn.addEventListener('click', saveButtonClicked);
+        loadBtn.addEventListener('click', confirmableButtonClicked);
+    })
+
+    const cancelSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-cancel'));
+    cancelSaveButtons.forEach(cancelSaveBtn => {
+        cancelSaveBtn.addEventListener('click', declineConfirmation);
+    })
+
+    const confirmSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-confirm'));
+    confirmSaveButtons.forEach(confirmSaveBtn => {
+        confirmSaveBtn.addEventListener('click', saveButtonConfirmed);
     })
 
     const backBtn = getMappedElementById('save-back-btn');
@@ -56,16 +69,41 @@ function injectSaveMenuListeners() {
     delBtn.addEventListener('click', prepareSaveDeletion);
 }
 
-function prepareSaveDeletion({target: deleteButton}) {
+function prepareSaveDeletion({ target: deleteButton }) {
     deleteButton.style.backgroundColor = 'red';
     deleteButton.dataset.status = "active";
 
+    //TODO: zamienić guzik OK, tak żeby mówił 'Delete' i miał emoji 'kosza', a guzik cancel mówił 'keep' i miał też jakąś odpowiednią emoji
+
+    debugger;
+    
+    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
+    saveSlotButtons.forEach(saveButton => {
+        const currentSlotDiv = saveButton.parentElement;
+        const currentSlotNumber = currentSlotDiv.dataset.slot;
+        saveButton.classList.add('button-delete');
+        const confirmButton = getChildNodeByIdPartialString(currentSlotDiv, 'confirm');
+        confirmButton.removeEventListener('click', saveButtonConfirmed);
+        confirmButton.addEventListener('click', saveButtonDelete);
+        // saveButton.removeEventListener('click', saveButtonClicked);
+        // saveButton.addEventListener('click', saveButtonDelete);
+        saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
+    })
+
+    deleteButton.removeEventListener('click', prepareSaveDeletion);
+    deleteButton.addEventListener('click', exitSaveDeletion);
+}
+function prepareSaveDeletion_backup({ target: deleteButton }) {
+    deleteButton.style.backgroundColor = 'red';
+    deleteButton.dataset.status = "active";
+
+    debugger;
     const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
         const currentSlotNumber = saveButton.dataset.slot;
+        saveButton.classList.add('button-delete');
         saveButton.removeEventListener('click', saveButtonClicked);
         saveButton.addEventListener('click', saveButtonDelete);
-        saveButton.classList.add('button-delete');
         saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
     })
 
@@ -80,11 +118,11 @@ export function exitSaveDeletion() {
 
     deleteButton.style.backgroundColor = '';
     deleteButton.dataset.status = "inactive";
-    
+
     const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
-        saveButton.removeEventListener('click', saveButtonDelete);
-        saveButton.addEventListener('click', saveButtonClicked);
+        // saveButton.removeEventListener('click', saveButtonDelete);
+        // saveButton.addEventListener('click', saveButtonClicked);
         saveButton.classList.remove('button-delete');
         saveButton.disabled = false;
     })
@@ -99,7 +137,8 @@ function injectLoadMenuListeners() {
 
     const loadButtons = Array.from(document.getElementsByClassName('button-load'));
     loadButtons.forEach(loadBtn => {
-        loadBtn.addEventListener('click', loadButtonClicked);
+        //loadBtn.addEventListener('click', loadButtonClicked);
+        loadBtn.addEventListener('click', confirmableButtonClicked);
     })
 
     const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-cancel'));
@@ -127,13 +166,9 @@ function getTooltip() {
     if (!currentButtonAwaitingConfirmation) return null;
 
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
-    const currentSlotLabels = getChildNodeByIdPartialString(currentSlotDiv, 'labels')
+    const currentSlotLabels = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
 
-    debugger;
-    
-    // let children = Array.from(currentSlotDiv.children);
-    // return children.find(node => node.id.includes('tooltip'));
-    return getChildNodeByIdPartialString(currentSlotLabels, 'tooltip')
+    return getChildNodeByIdPartialString(currentSlotLabels, 'tooltip');
 }
 
 function showTooltip() {
@@ -151,16 +186,15 @@ function hideTooltip() {
 }
 
 function showConfirmationButtons(targetButton) {
-    // currentButtonAwaitingConfirmation = targetButton.parentElement.dataset.slot;
     currentButtonAwaitingConfirmation = targetButton;
     targetButton.classList.add('button-await-confirmation');
 }
 
 function declineConfirmation() {
     if (!currentButtonAwaitingConfirmation) return;
-    const slotNumber = currentButtonAwaitingConfirmation.parentElement.dataset.slot;
-
-    let cancelButton = getMappedElementById(`load-${slotNumber}-cancel-btn`);
+    debugger;
+    const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
+    let cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
 
     const cancelledBtnId = cancelButton.dataset.cancelling;
     const cancelledButton = getMappedElementById(cancelledBtnId);
@@ -171,16 +205,25 @@ function declineConfirmation() {
     currentButtonAwaitingConfirmation = null;
 }
 
-async function saveButtonClicked({target: saveSlotBtn}) {
+async function saveButtonClicked({ target: saveSlotBtn }) {
     const saveSlotNumber = saveSlotBtn.dataset.slot;
     console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
     await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
-    
+
     updateLoadButtons();
 }
 
-async function saveButtonDelete({target: saveSlotBtn}) {
-    const saveSlotNumber = saveSlotBtn.dataset.slot;
+async function saveButtonConfirmed({ target: saveSlotBtn }) {
+    const saveSlotNumber = saveSlotBtn.parentElement.dataset.slot;
+    console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
+    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
+
+    updateLoadButtons();
+    declineConfirmation();
+}
+
+async function saveButtonDelete({ target: saveSlotBtn }) {
+    const saveSlotNumber = saveSlotBtn.parentElement.dataset.slot;
     console.log('delete slot: ', saveSlotBtn);
     await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
     saveSlotBtn.disabled = true;
@@ -188,24 +231,37 @@ async function saveButtonDelete({target: saveSlotBtn}) {
     updateLoadButtons();
 }
 
-function loadButtonClicked({target: loadSlotBtn}) {
+function confirmableButtonClicked({ target: clickedButton }) {
+    declineConfirmation();
+    showConfirmationButtons(clickedButton);
+    showTooltip();
+}
+
+function loadButtonClicked({ target: loadSlotBtn }) {
     declineConfirmation();
     showConfirmationButtons(loadSlotBtn);
     showTooltip();
 }
 
-async function loadButtonConfirmed({target: loadSlotBtn}) {
+async function loadButtonConfirmed({ target: loadSlotBtn }) {
     const loadSlotNumber = loadSlotBtn.parentElement.dataset.slot;
     console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
-    
+
     window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
 }
 
 function backButtonClicked() {
+    debugger;
+
     exitSaveDeletion();
     declineConfirmation();
     hideMenu(currentMenu);
-    showMenu(getMappedElementById('main-menu'));
+
+    if (currentMenu === getMappedElementById('main-menu')) {
+        currentMenu = null;
+    } else {
+        showMenu(getMappedElementById('main-menu'));
+    }
 }
 
 export function injectButtonsListeners() {
@@ -315,10 +371,10 @@ async function keyPressedMove({ keyCode }) {
         default:
             return;
     }
-    
+
     document.removeEventListener('keydown', keyPressedMove)
 
-    await movePartyOneStepBackend({target: dirBtn})
+    await movePartyOneStepBackend({ target: dirBtn })
 
     //Poniżej emulowane wciśnięcie przycisku myszą poprzez dodanie przyciskowi tymczasowej klasy '...-active', a potem wygaszenie jej
     let btnClasses = Array.from(dirBtn.classList);
@@ -358,8 +414,10 @@ function menuButtonExited() {
 }
 
 function showMenu(menu) {
+    //TODO: currentMenu = ... ;
     menu.classList.remove('hidden');
     menu.classList.remove('partial');
+    currentMenu = menu;
 }
 
 function hideMenu(menu) {
@@ -377,7 +435,7 @@ function menuClicked() {
         hideMenu(currentMenu);
         currentMenu = null;
     } else {
-        currentMenu = mainMenu;
+        //currentMenu = mainMenu;
         showMenu(mainMenu);
     }
 }
@@ -386,7 +444,7 @@ function saveMenuClicked() {
     const mainMenu = getMappedElementById('main-menu');
     const saveMenu = getMappedElementById('save-menu');
 
-    currentMenu = saveMenu;
+    //currentMenu = saveMenu;
     hideMenu(mainMenu);
     showMenu(saveMenu);
 }
@@ -395,7 +453,7 @@ function loadClicked() {
     const mainMenu = getMappedElementById('main-menu');
     const loadMenu = getMappedElementById('load-menu');
 
-    currentMenu = loadMenu;
+    //currentMenu = loadMenu;
     hideMenu(mainMenu);
     showMenu(loadMenu);
 }

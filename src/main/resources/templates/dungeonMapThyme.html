@@ -100,6 +100,8 @@
             <button id="save-btn" class="button button-stacked">Save</button>
             <div class="separator-h"></div>
             <button id="load-btn" class="button button-stacked">Load</button>
+            <div class="separator-h"></div>
+            <button id="back-btn" class="button button-stacked">Back</button>
         </div>
     </div>
 
@@ -108,21 +110,87 @@
             <!-- <div class="separator"></div> -->
             <button id="save-delete-btn" class="button button-stacked button-delete" data-status="inactive">🗑️ Delete Save 🗑️</button>
             <div class="separator-h"></div>
-            <button id="save-0-btn" class="button button-stacked button-save" data-slot="0">Quick Slot</button>
+
+            <div id="save-0-slot" class="save-slot" data-slot="0">
+                <div id="save-0-labels" class="labels">
+                    <div id="save-0-info" class="tooltip tooltip-info">
+                        <p>INFO Quick Save</p>
+                    </div>
+                    <div id="save-0-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Overwrite save file from Quick Slot?</p>
+                    </div>
+                </div>
+
+                <button id="save-0-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-0-btn">❌</button>
+                <button id="save-0-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-0-btn" class="button button-stacked button-save">Quick Slot</button>
+            </div>
+
+            <!-- <button id="save-0-btn" class="button button-stacked button-save" data-slot="0">Quick Slot</button> -->
+            
             <div class="separator-h"></div>
-            <button id="save-1-btn" class="button button-stacked button-save" data-slot="1">Slot 1</button>
+
+            <div id="save-1-slot" class="save-slot" data-slot="1">
+                <div id="save-1-labels" class="labels">
+                    <div id="save-1-info" class="tooltip tooltip-info">
+                        <p>INFO Save 1</p>
+                    </div>
+                    <div id="save-1-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Overwrite save file from Slot 1?</p>
+                    </div>
+                </div>
+
+                <button id="save-1-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-1-btn">❌</button>
+                <button id="save-1-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-1-btn" class="button button-stacked button-save">Slot 1</button>
+            </div>
+            <!-- <button id="save-1-btn" class="button button-stacked button-save" data-slot="1">Slot 1</button> -->
+            
             <div class="separator-h"></div>
-            <button id="save-2-btn" class="button button-stacked button-save" data-slot="2">Slot 2</button>
+           
+            <div id="save-2-slot" class="save-slot" data-slot="2">
+                <div id="save-2-labels" class="labels">
+                    <div id="save-2-info" class="tooltip tooltip-info">
+                        <p>INFO Save 2</p>
+                    </div>
+                    <div id="save-2-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Overwrite save file from Slot 2?</p>
+                    </div>
+                </div>
+
+                <button id="save-2-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-2-btn">❌</button>
+                <button id="save-2-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-2-btn" class="button button-stacked button-save">Slot 2</button>
+            </div>
+            <!-- <button id="save-2-btn" class="button button-stacked button-save" data-slot="2">Slot 2</button> -->
+            
             <div class="separator-h"></div>
-            <button id="save-3-btn" class="button button-stacked button-save" data-slot="3">Slot 3</button>
+           
+            <div id="save-3-slot" class="save-slot" data-slot="3">
+                <div id="save-3-labels" class="labels">
+                    <div id="save-3-info" class="tooltip tooltip-info">
+                        <p>INFO Save 3</p>
+                    </div>
+                    <div id="save-3-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Overwrite save file from Slot 3?</p>
+                    </div>
+                </div>
+
+                <button id="save-3-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-3-btn">❌</button>
+                <button id="save-3-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-3-btn" class="button button-stacked button-save">Slot 3</button>
+            </div>
+            <!-- <button id="save-3-btn" class="button button-stacked button-save" data-slot="3">Slot 3</button> -->
+           
             <div class="separator-h"></div>
+           
             <button id="save-back-btn" class="button button-stacked">Back</button>
         </div>
     </div>
 
     <div id="load-menu" class="menu hidden">
         <div id="load-menu-flex" class="menu-flex">
-            <div id="load-9-slot" class="load-slot" data-slot="9">
+            <!-- <div id="load-9-slot" class="load-slot" data-slot="9">
                 <div id="load-9-labels" class="labels">
                     <div id="load-9-info" class="tooltip tooltip-info">
                         <p>INFO tooltip</p>
@@ -135,12 +203,18 @@
                 <button id="load-9-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
                 <button id="load-9-btn" class="button button-stacked button-load">TEST</button>
             </div>
-            <div class="separator-h"></div>
+            <div class="separator-h"></div> -->
 
             <div id="load-0-slot" class="load-slot" data-slot="0">
-                <div id="load-0-tooltip" class="tooltip tooltip-confirm hidden">
-                    <p>Load map from Quick Slot?</p>
+                <div id="load-0-labels" class="labels">
+                    <div id="load-0-info" class="tooltip tooltip-info">
+                        <p>INFO Quick Save</p>
+                    </div>
+                    <div id="load-0-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Load map from Quick Slot?</p>
+                    </div>
                 </div>
+
                 <button id="load-0-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-0-btn">❌</button>
                 <button id="load-0-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
                 <button id="load-0-btn" class="button button-stacked button-load">Quick Slot</button>
@@ -148,8 +222,14 @@
             <div class="separator-h"></div>
 
             <div id="load-1-slot" class="load-slot" data-slot="1">
-                <div id="load-1-tooltip" class="tooltip tooltip-confirm hidden">
-                    <p>Load map from Slot 1?</p>
+                <div id="load-1-labels" class="labels">
+                    <div id="load-1-info" class="tooltip tooltip-info">
+                        <p>INFO Save 1</p>
+                    </div>
+                    <div id="load-1-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Load map from Slot 1?</p>
+                    </div>
+
                 </div>
                 <button id="load-1-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-1-btn">❌</button>
                 <button id="load-1-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
@@ -158,8 +238,13 @@
             <div class="separator-h"></div>
 
             <div id="load-2-slot" class="load-slot" data-slot="2">
-                <div id="load-2-tooltip" class="tooltip tooltip-confirm hidden">
-                    <p>Load map from Slot 2?</p>
+                <div id="load-2-labels" class="labels">
+                    <div id="load-2-info" class="tooltip tooltip-info">
+                        <p>INFO Save 2</p>
+                    </div>
+                    <div id="load-2-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Load map from Slot 2?</p>
+                    </div>
                 </div>
                 <button id="load-2-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-2-btn">❌</button>
                 <button id="load-2-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
@@ -168,8 +253,13 @@
             <div class="separator-h"></div>
 
             <div id="load-3-slot" class="load-slot" data-slot="3">
-                <div id="load-3-tooltip" class="tooltip tooltip-confirm hidden">
-                    <p>Load map from Slot 3?</p>
+                <div id="load-3-labels" class="labels">
+                    <div id="load-3-info" class="tooltip tooltip-info">
+                        <p>INFO Save 3</p>
+                    </div>
+                    <div id="load-3-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Load map from Slot 3?</p>
+                    </div>
                 </div>
                 <button id="load-3-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-3-btn">❌</button>
                 <button id="load-3-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
