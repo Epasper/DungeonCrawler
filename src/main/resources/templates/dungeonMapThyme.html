@@ -54,8 +54,9 @@
         <div id="fog-background"></div>
     </div>
 
+    <div id="bottom-notification" class="notification hidden">Save successful!</div>
+
     <div class="toolbar">
-        
         <div id="move-group" class="toolbar-group move-container move-container-hover">
             <div id="move-margin"></div>
             <div id="move-grid">
@@ -81,14 +82,13 @@
             <button id="action-btn" class="button" data-action-type="action" disabled>Actions</button>
         </div>
 
-        
         <div id="menu-group" class="toolbar-group">
             <button id="menu-btn" class="button">Menu</button>
         </div>
-
     </div>
 
     <div id="main-menu" class="menu hidden">
+        <!-- //TODO: dodać na górze menusów nazwę danego menu -->
         <div id="main-menu-flex" class="menu-flex">
             <!-- <div class="separator"></div> -->
             <button id="party-btn" class="button button-stacked">Party</button>
@@ -121,8 +121,9 @@
                     </div>
                 </div>
 
-                <button id="save-0-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-0-btn">❌</button>
-                <button id="save-0-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-0-cancel-btn" 
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="save-0-btn" data-text=" Cancel ">❌</button>
+                <button id="save-0-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="save-0-btn" class="button button-stacked button-save">Quick Slot</button>
             </div>
 
@@ -140,8 +141,9 @@
                     </div>
                 </div>
 
-                <button id="save-1-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-1-btn">❌</button>
-                <button id="save-1-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-1-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="save-1-btn" data-text=" Cancel ">❌</button>
+                <button id="save-1-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="save-1-btn" class="button button-stacked button-save">Slot 1</button>
             </div>
             <!-- <button id="save-1-btn" class="button button-stacked button-save" data-slot="1">Slot 1</button> -->
@@ -158,8 +160,9 @@
                     </div>
                 </div>
 
-                <button id="save-2-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-2-btn">❌</button>
-                <button id="save-2-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-2-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="save-2-btn" data-text=" Cancel ">❌</button>
+                <button id="save-2-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="save-2-btn" class="button button-stacked button-save">Slot 2</button>
             </div>
             <!-- <button id="save-2-btn" class="button button-stacked button-save" data-slot="2">Slot 2</button> -->
@@ -176,8 +179,9 @@
                     </div>
                 </div>
 
-                <button id="save-3-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="save-3-btn">❌</button>
-                <button id="save-3-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="save-3-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="save-3-btn" data-text=" Cancel ">❌</button>
+                <button id="save-3-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="save-3-btn" class="button button-stacked button-save">Slot 3</button>
             </div>
             <!-- <button id="save-3-btn" class="button button-stacked button-save" data-slot="3">Slot 3</button> -->
@@ -215,8 +219,9 @@
                     </div>
                 </div>
 
-                <button id="load-0-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-0-btn">❌</button>
-                <button id="load-0-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="load-0-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="load-0-btn" data-text=" Cancel ">❌</button>
+                <button id="load-0-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="load-0-btn" class="button button-stacked button-load">Quick Slot</button>
             </div>
             <div class="separator-h"></div>
@@ -231,8 +236,9 @@
                     </div>
 
                 </div>
-                <button id="load-1-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-1-btn">❌</button>
-                <button id="load-1-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="load-1-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="load-1-btn" data-text=" Cancel ">❌</button>
+                <button id="load-1-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="load-1-btn" class="button button-stacked button-load">Slot 1</button>
             </div>
             <div class="separator-h"></div>
@@ -246,8 +252,9 @@
                         <p>Load map from Slot 2?</p>
                     </div>
                 </div>
-                <button id="load-2-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-2-btn">❌</button>
-                <button id="load-2-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="load-2-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="load-2-btn" data-text=" Cancel ">❌</button>
+                <button id="load-2-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="load-2-btn" class="button button-stacked button-load">Slot 2</button>
             </div>
             <div class="separator-h"></div>
@@ -261,8 +268,9 @@
                         <p>Load map from Slot 3?</p>
                     </div>
                 </div>
-                <button id="load-3-cancel-btn" class="button button-stacked button-sliding button-cancel" data-cancelling="load-3-btn">❌</button>
-                <button id="load-3-confirm-btn" class="button button-stacked button-sliding button-confirm">✔️</button>
+                <button id="load-3-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="load-3-btn" data-text=" Cancel ">❌</button>
+                <button id="load-3-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button>
                 <button id="load-3-btn" class="button button-stacked button-load">Slot 3</button>
             </div>
             <div class="separator-h"></div>

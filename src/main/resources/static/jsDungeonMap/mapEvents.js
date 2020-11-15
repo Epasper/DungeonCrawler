@@ -1,6 +1,6 @@
 import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
-import { actionAByContext, actionBByContext, updateLoadButtons } from './mapButtons.js'
+import { actionAByContext, actionBByContext, notify, updateLoadButtons } from './mapButtons.js'
 import { draw } from './mapRender.js'
 import { party, directions } from './partyManager.js'
 import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
@@ -10,10 +10,9 @@ let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
 let currentMenu = null;
 let currentButtonAwaitingConfirmation = null;
-// let currentButtonEventFunction = () => {};
-// let currentButtonEventFunction = null;
-// let previousButtonEventFunction = () => {};
-// let previousButtonEventFunction = null;
+let confirmTextBackup = '';
+let cancelTextBackup = '';
+let tooltipTextBackups = new Map();
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
@@ -54,7 +53,7 @@ function injectSaveMenuListeners() {
 
     const cancelSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-cancel'));
     cancelSaveButtons.forEach(cancelSaveBtn => {
-        cancelSaveBtn.addEventListener('click', declineConfirmation);
+        cancelSaveBtn.addEventListener('click', exitConfirmation);
     })
 
     const confirmSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-confirm'));
@@ -72,38 +71,34 @@ function injectSaveMenuListeners() {
 function prepareSaveDeletion({ target: deleteButton }) {
     deleteButton.style.backgroundColor = 'red';
     deleteButton.dataset.status = "active";
-
-    //TODO: zamienić guzik OK, tak żeby mówił 'Delete' i miał emoji 'kosza', a guzik cancel mówił 'keep' i miał też jakąś odpowiednią emoji
-
-    debugger;
     
+    exitConfirmation();
+
     const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
         const currentSlotDiv = saveButton.parentElement;
         const currentSlotNumber = currentSlotDiv.dataset.slot;
         saveButton.classList.add('button-delete');
+
         const confirmButton = getChildNodeByIdPartialString(currentSlotDiv, 'confirm');
         confirmButton.removeEventListener('click', saveButtonConfirmed);
         confirmButton.addEventListener('click', saveButtonDelete);
-        // saveButton.removeEventListener('click', saveButtonClicked);
-        // saveButton.addEventListener('click', saveButtonDelete);
-        saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
-    })
+        confirmTextBackup = confirmButton.dataset.text;
+        confirmButton.dataset.text = ' Confirm ';
+        confirmButton.innerText = '🗑️';
 
-    deleteButton.removeEventListener('click', prepareSaveDeletion);
-    deleteButton.addEventListener('click', exitSaveDeletion);
-}
-function prepareSaveDeletion_backup({ target: deleteButton }) {
-    deleteButton.style.backgroundColor = 'red';
-    deleteButton.dataset.status = "active";
+        const cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
+        cancelTextBackup = cancelButton.dataset.text;
+        cancelButton.dataset.text = ' Keep ';
+        cancelButton.innerText = '✅';
 
-    debugger;
-    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
-    saveSlotButtons.forEach(saveButton => {
-        const currentSlotNumber = saveButton.dataset.slot;
-        saveButton.classList.add('button-delete');
-        saveButton.removeEventListener('click', saveButtonClicked);
-        saveButton.addEventListener('click', saveButtonDelete);
+        //const labelsDiv = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
+        // const tooltipDiv = getChildNodeByIdPartialString(labelsDiv, 'tooltip');
+        const tooltipDiv = getMappedElementById(`save-${currentSlotNumber}-tooltip`)
+        const p = tooltipDiv.querySelector('p');
+        tooltipTextBackups.set(tooltipDiv.id, p.innerText);
+        p.innerText = `Delete save file from ${saveButton.innerText}`;
+        
         saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
     })
 
@@ -116,17 +111,37 @@ export function exitSaveDeletion() {
     const delBtnStatus = deleteButton.dataset.status;
     if (delBtnStatus != "active") return;
 
+    exitConfirmation();
+
     deleteButton.style.backgroundColor = '';
     deleteButton.dataset.status = "inactive";
 
     const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
     saveSlotButtons.forEach(saveButton => {
-        // saveButton.removeEventListener('click', saveButtonDelete);
-        // saveButton.addEventListener('click', saveButtonClicked);
+        const currentSlotDiv = saveButton.parentElement;
+        const currentSlotNumber = currentSlotDiv.dataset.slot;
         saveButton.classList.remove('button-delete');
         saveButton.disabled = false;
-    })
 
+        const confirmButton = getChildNodeByIdPartialString(currentSlotDiv, 'confirm');
+        confirmButton.removeEventListener('click', saveButtonDelete);
+        confirmButton.addEventListener('click', saveButtonConfirmed);
+        confirmButton.dataset.text = confirmTextBackup;
+        confirmButton.innerText = '✔️';
+
+        const cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
+        cancelButton.dataset.text = cancelTextBackup;
+        cancelButton.innerText = '❌';
+
+        // const labelsDiv = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
+        // const tooltipDiv = getChildNodeByIdPartialString(labelsDiv, 'tooltip');
+        const tooltipDiv = getMappedElementById(`save-${currentSlotNumber}-tooltip`)
+        const p = tooltipDiv.querySelector('p');
+        p.innerText = tooltipTextBackups.get(tooltipDiv.id);
+        tooltipTextBackups.delete(tooltipDiv.id);
+    })
+    confirmTextBackup = '';
+    cancelTextBackup = '';
     deleteButton.removeEventListener('click', exitSaveDeletion);
     deleteButton.addEventListener('click', prepareSaveDeletion);
 }
@@ -143,7 +158,7 @@ function injectLoadMenuListeners() {
 
     const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-cancel'));
     cancelLoadButtons.forEach(cancelLoadBtn => {
-        cancelLoadBtn.addEventListener('click', declineConfirmation);
+        cancelLoadBtn.addEventListener('click', exitConfirmation);
     })
 
     const confirmLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-confirm'));
@@ -162,7 +177,7 @@ function getChildNodeByIdPartialString(node, searchedString) {
     return children.find(node => node.id.includes(searchedString));
 }
 
-function getTooltip() {
+function getActiveTooltip() {
     if (!currentButtonAwaitingConfirmation) return null;
 
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
@@ -171,16 +186,20 @@ function getTooltip() {
     return getChildNodeByIdPartialString(currentSlotLabels, 'tooltip');
 }
 
-function showTooltip() {
+function showTooltip(tooltipText = 'default') {
     if (!currentButtonAwaitingConfirmation) return;
-    const tooltipDiv = getTooltip();
+    const tooltipDiv = getActiveTooltip();
 
+    if (tooltipText !== 'default') {
+        const p = tooltipDiv.querySelector('p');
+        p.innerText = tooltipText;
+    }
     tooltipDiv.classList.remove('hidden');
 }
 
 function hideTooltip() {
     if (!currentButtonAwaitingConfirmation) return;
-    const tooltipDiv = getTooltip();
+    const tooltipDiv = getActiveTooltip();
 
     tooltipDiv.classList.add('hidden');
 }
@@ -190,7 +209,7 @@ function showConfirmationButtons(targetButton) {
     targetButton.classList.add('button-await-confirmation');
 }
 
-function declineConfirmation() {
+function exitConfirmation() {
     if (!currentButtonAwaitingConfirmation) return;
     debugger;
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
@@ -218,27 +237,34 @@ async function saveButtonConfirmed({ target: saveSlotBtn }) {
     console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
     await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
 
+    notify('Save successful!');
     updateLoadButtons();
-    declineConfirmation();
+    exitConfirmation();
 }
 
-async function saveButtonDelete({ target: saveSlotBtn }) {
-    const saveSlotNumber = saveSlotBtn.parentElement.dataset.slot;
-    console.log('delete slot: ', saveSlotBtn);
-    await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
-    saveSlotBtn.disabled = true;
+async function saveButtonDelete({ target: clickedConfirmButton }) {
+    const currentSlotDiv = clickedConfirmButton.parentElement;
+    const saveSlotNumber = currentSlotDiv.dataset.slot;
+    console.log('delete slot number: ', saveSlotNumber);
 
+    await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
+
+    const saveButton = getMappedElementById(`save-${saveSlotNumber}-btn`);
+    saveButton.disabled = true;
+
+    notify('Save deleted!');
     updateLoadButtons();
+    exitConfirmation();
 }
 
 function confirmableButtonClicked({ target: clickedButton }) {
-    declineConfirmation();
+    exitConfirmation();
     showConfirmationButtons(clickedButton);
     showTooltip();
 }
 
 function loadButtonClicked({ target: loadSlotBtn }) {
-    declineConfirmation();
+    exitConfirmation();
     showConfirmationButtons(loadSlotBtn);
     showTooltip();
 }
@@ -254,7 +280,7 @@ function backButtonClicked() {
     debugger;
 
     exitSaveDeletion();
-    declineConfirmation();
+    exitConfirmation();
     hideMenu(currentMenu);
 
     if (currentMenu === getMappedElementById('main-menu')) {
@@ -414,7 +440,6 @@ function menuButtonExited() {
 }
 
 function showMenu(menu) {
-    //TODO: currentMenu = ... ;
     menu.classList.remove('hidden');
     menu.classList.remove('partial');
     currentMenu = menu;
@@ -430,7 +455,7 @@ function menuClicked() {
     //hideMenu(saveMenu);
     if (currentMenu) {
         exitSaveDeletion();
-        declineConfirmation();
+        exitConfirmation();
         mainMenu.classList.add('partial');
         hideMenu(currentMenu);
         currentMenu = null;

@@ -86,11 +86,11 @@
 
 .stage-grid{
 	display: grid;
-	grid-template-columns: repeat(20, 1fr);
-	grid-template-rows: repeat(20, 1fr);
+	grid-template-columns: repeat(60, 1fr);
+	grid-template-rows: repeat(30, 1fr);
 	grid-column-gap: 0;
 	grid-row-gap: 0;
 	height: 90vh;
-	width: 90.0vh;
+	width: 180.0vh;
 }
 

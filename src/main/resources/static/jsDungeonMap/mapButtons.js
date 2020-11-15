@@ -67,6 +67,8 @@ class DoorOperator {
     }
 }
 
+//TODO: emoji do nazw akcji
+
 class Door {
     constructor(state, actionA, actionB, actionButtonPrompt) {
         this.state = state;
@@ -128,7 +130,7 @@ class DoorClosed extends Door {
 
 class DoorLocked extends Door {
     constructor() {
-        super('LOCKED', 'Unlock', 'Lockpick', 'Locked door');
+        super('LOCKED', '🗝️ Unlock', 'Lockpick 🔓', 'Locked door');
         this.actionAisDisabled = false;
         this.actionBisDisabled = false;
     }
@@ -336,6 +338,21 @@ export async function updateButtons() {
     updateMoveButton();
     updateDirectionalButtons();
     updateActionButton();
+}
+
+export function notify(text) {
+debugger;
+
+    const notificationDiv = getMappedElementById('bottom-notification');
+    const root = document.documentElement;
+    const notificationTime =  parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
+
+    notificationDiv.innerText = text;
+    notificationDiv.classList.remove('hidden');
+
+    setTimeout(function () {
+        notificationDiv.classList.add('hidden');
+    }, notificationTime)
 }
 
 
