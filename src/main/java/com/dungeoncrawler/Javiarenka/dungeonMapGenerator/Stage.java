@@ -7,10 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Scope("singleton")
@@ -512,8 +510,12 @@ public class Stage
         try
         {
             Writer writer = new FileWriter(url + saveName);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date date = new Date();
+
             gson.toJson(this, writer);
             writer.flush();
+            writer.append("\n").append(formatter.format(date));
             writer.close();
         } catch (IOException e)
         {

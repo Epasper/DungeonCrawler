@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -284,15 +285,16 @@ public class MapGeneratorService
         Stage loadedStage = new Stage();
         PartyManager loadedPartyManager = new PartyManager();
 
-        Reader reader;
-
         try
         {
-            reader = Files.newBufferedReader(Paths.get(fileLocation + stageSaveName));
+            JsonReader reader = new JsonReader(Files.newBufferedReader(Paths.get(fileLocation + stageSaveName)));
+            reader.setLenient(true); //ustawia mniej restrykcyjne czytanie jsona. Tutaj na końcu pliku mamy dodaną datę. Bez trybu 'lenient', istnienie tej linijki z datą powoduje błąd parsowania jsona.
             loadedStage = gson.fromJson(reader, Stage.class);
             reader.close();
 
-            reader = Files.newBufferedReader(Paths.get(fileLocation + partySaveName));
+            reader = new JsonReader(Files.newBufferedReader(Paths.get(fileLocation + partySaveName)));
+            reader.setLenient(true);
+
             loadedPartyManager = gson.fromJson(reader, PartyManager.class);
             reader.close();
 

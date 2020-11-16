@@ -71,7 +71,7 @@ function injectSaveMenuListeners() {
 function prepareSaveDeletion({ target: deleteButton }) {
     deleteButton.style.backgroundColor = 'red';
     deleteButton.dataset.status = "active";
-    
+
     exitConfirmation();
 
     const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
@@ -98,7 +98,7 @@ function prepareSaveDeletion({ target: deleteButton }) {
         const p = tooltipDiv.querySelector('p');
         tooltipTextBackups.set(tooltipDiv.id, p.innerText);
         p.innerText = `Delete save file from ${saveButton.innerText}`;
-        
+
         saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
     })
 
@@ -202,7 +202,7 @@ function hideTooltip() {
 
     tooltipDiv.classList.add('hidden');
     const p = tooltipDiv.querySelector('p');
-    if(tooltipTextBackups.get(tooltipDiv.id)) {
+    if (tooltipTextBackups.get(tooltipDiv.id)) {
         p.innerText = tooltipTextBackups.get(tooltipDiv.id);
         tooltipTextBackups.delete(tooltipDiv.id);
     }
@@ -215,7 +215,7 @@ function showConfirmationButtons(targetButton) {
 
 function exitConfirmation() {
     if (!currentButtonAwaitingConfirmation) return;
-    
+
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
     let cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
 
@@ -263,7 +263,7 @@ function confirmableButtonClicked({ target: clickedButton }) {
     exitConfirmation();
     showConfirmationButtons(clickedButton);
 
-    if(clickedButton.id.includes('save')) {
+    if (clickedButton.id.includes('save')) {
         const slotNumber = clickedButton.parentElement.dataset.slot;
         const correspondingLoadButton = getMappedElementById(`load-${slotNumber}-btn`);
         if (correspondingLoadButton.disabled) {
@@ -552,4 +552,29 @@ function hideCrossHighlightElements() {
 
     highlightedColumnLegendTile?.classList.remove('legend-highlight');
     highlightedRowLegendTile?.classList.remove('legend-highlight');
+}
+
+async function getSaveInfo(saveSlotNumber) {
+    const response = await axios.get(`http://localhost:8080/getSaveInfo?saveSlotNumber=${saveSlotNumber}`);
+    const saveInfo = response.data;
+
+    console.log(saveInfo);
+    return saveInfo;
+}
+
+export async function setInfoForSlotDiv(slotDiv, infoText = 'default') {
+    const labelsDiv = getChildNodeByIdPartialString(slotDiv, 'labels');
+    const infoDiv = getChildNodeByIdPartialString(labelsDiv, 'info');
+    const p = infoDiv.querySelector('p');
+
+    if (infoText === 'default') {
+        p.innerText = await getSaveInfo(slotDiv.dataset.slot)
+    } else {
+        p.innerText = infoText;
+    }
+}
+
+function setSlotsInfo() {
+    const loadSlotDivs = Array.from(document.querySelectorAll('load-slot'));
+    const saveSlotDivs = Array.from(document.querySelectorAll('save-slot'));
 }

@@ -2,7 +2,7 @@ import { getMappedElementById, updateMap } from './dungeonMap.js'
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
 import { animateRoomChange } from './mapRender.js'
-import { exitSaveDeletion } from './mapEvents.js';
+import { exitSaveDeletion, setInfoForSlotDiv } from './mapEvents.js';
 
 class ActionsManager {
     constructor() {
@@ -306,10 +306,18 @@ async function updateLoadButton(button) {
     const { data: slotExists } = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
 
     button.disabled = !slotExists;
+
+    const saveSlotDiv = getMappedElementById(`save-${slotNumber}-slot`);
+    const loadSlotDiv = getMappedElementById(`load-${slotNumber}-slot`);
+    await setInfoForSlotDiv(saveSlotDiv);
+    await setInfoForSlotDiv(loadSlotDiv);
+
     return button.disabled;
 }
 
 export async function updateLoadButtons() {
+    //TODO: aktualnie wszystkie load-buttony są aktualizowane po kliknięciu w guzik. A wystarczyłoby zaktualizować tylko ten, który akurat zapisano
+
     const loadButtons = Array.from(document.getElementsByClassName('button-load'));
     let emptySlotsCounter = 0;
 

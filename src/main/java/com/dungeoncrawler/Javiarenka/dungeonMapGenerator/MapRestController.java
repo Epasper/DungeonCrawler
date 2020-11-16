@@ -3,7 +3,9 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -182,5 +184,61 @@ public class MapRestController
 
         savedStageToDelete.delete();
         savedPartyToDelete.delete();
+    }
+
+    @GetMapping("/getSaveInfo")
+    public String getSaveInfo(@RequestParam int saveSlotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        StringBuilder saveInfo = new StringBuilder();
+
+        try
+        {
+            //Reader reader = Files.newBufferedReader(Paths.get(fileLocation + stageSaveName));
+            BufferedReader br = new BufferedReader(new FileReader(fileLocation + stageSaveName));
+            String sCurrentLine;
+            String lastLine = "";
+            boolean foundWidth = false;
+            boolean foundHeight = false;
+            int width = 0;
+            int height = 0;
+
+            while ((sCurrentLine = br.readLine()) != null)
+            {
+//                System.out.println(sCurrentLine);
+                if (sCurrentLine.contains("width") && !foundWidth)
+                {
+                    String[] widthLineSplit = sCurrentLine.split(":");
+                    String strWidth = widthLineSplit[widthLineSplit.length - 1]
+                            .replace(",","")
+                            .replace(" ", "");
+                    width = Integer.parseInt(strWidth);
+                    foundWidth = true;
+                }
+
+                if (sCurrentLine.contains("height") && !foundHeight)
+                {
+                    String[] heightLineSplit = sCurrentLine.split(":");
+                    String strHeight = heightLineSplit[heightLineSplit.length - 1]
+                            .replace(",","")
+                            .replace(" ", "");
+                    height = Integer.parseInt(strHeight);
+                    foundHeight = true;
+                }
+
+                lastLine = sCurrentLine;
+            }
+
+            saveInfo.append("Map ").append(width).append("x").append(height).append(" | Saved at: ").append(lastLine);
+            br.close();
+
+        } catch (IOException e)
+        {
+            //e.printStackTrace();
+            saveInfo.append("Empty slot");
+        }
+
+        return saveInfo.toString();
     }
 }
