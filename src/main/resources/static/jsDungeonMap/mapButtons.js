@@ -296,15 +296,14 @@ async function provideDoorActions(pointedTile) {
 
 async function updateLoadButton(button) {
     let elementWithSlotInfo;
-    if (button.parentElement.dataset.slot)
-    {
+    if (button.parentElement.dataset.slot) {
         elementWithSlotInfo = button.parentElement;
     } else {
         elementWithSlotInfo = button;
     }
 
     const slotNumber = elementWithSlotInfo.dataset.slot;
-    const {data: slotExists} = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
+    const { data: slotExists } = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
 
     button.disabled = !slotExists;
     return button.disabled;
@@ -322,8 +321,7 @@ export async function updateLoadButtons() {
     console.log('empty slots: ', emptySlotsCounter, ' number of load buttons: ', loadButtons.length)
 
     const deleteSaveButton = getMappedElementById('save-delete-btn');
-    if (emptySlotsCounter == loadButtons.length)
-    {
+    if (emptySlotsCounter == loadButtons.length) {
         exitSaveDeletion();
         deleteSaveButton.disabled = true;
     } else {
@@ -341,18 +339,21 @@ export async function updateButtons() {
 }
 
 export function notify(text) {
-debugger;
-
-    const notificationDiv = getMappedElementById('bottom-notification');
+    const notificationDiv = document.createElement('div');
     const root = document.documentElement;
-    const notificationTime =  parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
+    const notificationTime = parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
 
+    
     notificationDiv.innerText = text;
-    notificationDiv.classList.remove('hidden');
+    notificationDiv.classList.add('notification');//, 'hidden');
+    
+    document.body.insertBefore(notificationDiv, getMappedElementById('toolbar'));
 
     setTimeout(function () {
-        notificationDiv.classList.add('hidden');
+        notificationDiv.remove();
     }, notificationTime)
+
+
 }
 
 

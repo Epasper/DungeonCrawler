@@ -3,7 +3,7 @@
     --toolbar-padding: 1vh;
     --toolbar-space: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
     --stacked-button-height: calc(var(--toolbar-space)/3);
-    --notification-time: 2000ms;
+    --notification-time: 3000ms;
 }
 
 .toolbar {
@@ -306,29 +306,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 1s;
     /* border: solid 3px red; */
     background-color: #333;
     color: #bbb;
     box-shadow: inset 0 0 20px #000b;
     left: 50%;
     bottom: var(--toolbar-height);
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(110%);
     padding: 0 calc(var(--toolbar-padding) * 3);
     /* border-radius: 25% 25% 0px 0px; */
     border-top-left-radius: calc(var(--stacked-button-height)*0.9);
     border-top-right-radius: calc(var(--stacked-button-height)*0.9);
     height: var(--stacked-button-height);
     width: calc(var(--toolbar-space) * 3);
-    opacity: 1;
+    /* opacity: 1; */
     /* z-index: -1; */
-
-    transition: 1.5s;
+    animation: show-and-hide var(--notification-time);
 }
 
-.notification.hidden {
+@keyframes show-and-hide {
+    33% {
+        transform: translateX(-50%);
+    }
+    66% {
+        transform: translateX(-50%);
+    }
+}
+/* .notification.hidden {
     transform: translateX(-50%) translateY(110%);
-    /* opacity: 50%; */
-}
+    transition: 5s;
+} */
 
 .separator-h {
     width: 100%;

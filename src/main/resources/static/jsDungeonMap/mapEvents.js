@@ -133,8 +133,6 @@ export function exitSaveDeletion() {
         cancelButton.dataset.text = cancelTextBackup;
         cancelButton.innerText = '❌';
 
-        // const labelsDiv = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
-        // const tooltipDiv = getChildNodeByIdPartialString(labelsDiv, 'tooltip');
         const tooltipDiv = getMappedElementById(`save-${currentSlotNumber}-tooltip`)
         const p = tooltipDiv.querySelector('p');
         p.innerText = tooltipTextBackups.get(tooltipDiv.id);
@@ -192,6 +190,7 @@ function showTooltip(tooltipText = 'default') {
 
     if (tooltipText !== 'default') {
         const p = tooltipDiv.querySelector('p');
+        tooltipTextBackups.set(tooltipDiv.id, p.innerText);
         p.innerText = tooltipText;
     }
     tooltipDiv.classList.remove('hidden');
@@ -202,6 +201,11 @@ function hideTooltip() {
     const tooltipDiv = getActiveTooltip();
 
     tooltipDiv.classList.add('hidden');
+    const p = tooltipDiv.querySelector('p');
+    if(tooltipTextBackups.get(tooltipDiv.id)) {
+        p.innerText = tooltipTextBackups.get(tooltipDiv.id);
+        tooltipTextBackups.delete(tooltipDiv.id);
+    }
 }
 
 function showConfirmationButtons(targetButton) {
@@ -211,7 +215,7 @@ function showConfirmationButtons(targetButton) {
 
 function exitConfirmation() {
     if (!currentButtonAwaitingConfirmation) return;
-    debugger;
+    
     const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
     let cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
 
@@ -224,20 +228,18 @@ function exitConfirmation() {
     currentButtonAwaitingConfirmation = null;
 }
 
-async function saveButtonClicked({ target: saveSlotBtn }) {
-    const saveSlotNumber = saveSlotBtn.dataset.slot;
-    console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
+async function saveButtonConfirmed({ target: saveConfirmationBtn }) {
+    const saveSlotNumber = saveConfirmationBtn.parentElement.dataset.slot;
+    console.log('save: ', saveConfirmationBtn, 'number: ', saveSlotNumber)
     await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
 
-    updateLoadButtons();
-}
+    const correspondingLoadButton = getMappedElementById(`load-${saveSlotNumber}-btn`);
+    if (correspondingLoadButton.disabled) {
+        notify('Save created!');
+    } else {
+        notify('Save overwritten!');
+    }
 
-async function saveButtonConfirmed({ target: saveSlotBtn }) {
-    const saveSlotNumber = saveSlotBtn.parentElement.dataset.slot;
-    console.log('save: ', saveSlotBtn, 'number: ', saveSlotNumber)
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
-
-    notify('Save successful!');
     updateLoadButtons();
     exitConfirmation();
 }
@@ -252,7 +254,7 @@ async function saveButtonDelete({ target: clickedConfirmButton }) {
     const saveButton = getMappedElementById(`save-${saveSlotNumber}-btn`);
     saveButton.disabled = true;
 
-    notify('Save deleted!');
+    notify('Save file deleted!');
     updateLoadButtons();
     exitConfirmation();
 }
@@ -260,13 +262,18 @@ async function saveButtonDelete({ target: clickedConfirmButton }) {
 function confirmableButtonClicked({ target: clickedButton }) {
     exitConfirmation();
     showConfirmationButtons(clickedButton);
-    showTooltip();
-}
 
-function loadButtonClicked({ target: loadSlotBtn }) {
-    exitConfirmation();
-    showConfirmationButtons(loadSlotBtn);
-    showTooltip();
+    if(clickedButton.id.includes('save')) {
+        const slotNumber = clickedButton.parentElement.dataset.slot;
+        const correspondingLoadButton = getMappedElementById(`load-${slotNumber}-btn`);
+        if (correspondingLoadButton.disabled) {
+            showTooltip(`Create new save file in ${clickedButton.innerText}`);
+        } else {
+            showTooltip();
+        }
+    } else {
+        showTooltip();
+    }
 }
 
 async function loadButtonConfirmed({ target: loadSlotBtn }) {
@@ -321,6 +328,7 @@ async function requestQuickSave() {
     //saveButtonClicked({target: getMappedElementById('save-0-btn')});
     await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
     updateLoadButtons();
+    notify('Quick save successful!');
 }
 
 async function requestQuickLoad() {
