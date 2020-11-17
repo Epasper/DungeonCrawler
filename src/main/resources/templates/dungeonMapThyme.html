@@ -93,15 +93,35 @@
             <!-- <div class="separator"></div> -->
             <button id="party-btn" class="button button-stacked">Party</button>
             <div class="separator-h"></div>
-            <button id="q-save-btn" class="button button-stacked" data-slot="0">Quick Save</button>
+            <button id="save-q-btn" class="button button-stacked" data-slot="0">Quick Save</button>
             <div class="separator-h"></div>
-            <button id="q-load-btn" class="button button-stacked" data-slot="0">Quick Load</button>
+
+            <!-- <button id="load-q-btn" class="button button-stacked" data-slot="0">Quick Load</button> -->
+            <div id="load-q-slot" class="load-slot" data-slot="0">
+                <div id="load-q-labels" class="labels">
+                    <div id="load-q-info" class="tooltip tooltip-info">
+                        <p>INFO Quick Save</p>
+                    </div>
+                    <!-- <div id="load-0-tooltip" class="tooltip tooltip-confirm hidden">
+                        <p>Load map from Quick Slot?</p>
+                    </div> -->
+                </div>
+
+                <!-- <button id="load-q-cancel-btn"
+                    class="button button-stacked button-sliding button-cancel" data-cancelling="load-0-btn" data-text=" Cancel ">❌</button>
+                <button id="load-q-confirm-btn" class="button button-stacked button-sliding button-confirm" data-text=" OK ">✔️</button> -->
+                <button id="load-q-btn" class="button button-stacked">Quick Load</button>
+            </div>
+            
             <div class="separator-h"></div>
             <button id="save-btn" class="button button-stacked">Save</button>
             <div class="separator-h"></div>
             <button id="load-btn" class="button button-stacked">Load</button>
             <div class="separator-h"></div>
             <button id="back-btn" class="button button-stacked">Back</button>
+            <!-- <div id="q-load-info" class="tooltip tooltip-info">
+                <p>INFO Quick Save</p>
+            </div> -->
         </div>
     </div>
 

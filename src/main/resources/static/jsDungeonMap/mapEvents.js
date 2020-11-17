@@ -29,10 +29,10 @@ function injectMenuListeners() {
     menuBtn.addEventListener('mouseleave', menuButtonExited);
     menuBtn.addEventListener('click', menuClicked);
 
-    let qSaveBtn = getMappedElementById('q-save-btn');
+    let qSaveBtn = getMappedElementById('save-q-btn');
     qSaveBtn.addEventListener('click', requestQuickSave);
 
-    let qLoadBtn = getMappedElementById('q-load-btn');
+    let qLoadBtn = getMappedElementById('load-q-btn');
     qLoadBtn.addEventListener('click', requestQuickLoad);
 
     let backBtn = getMappedElementById('back-btn');

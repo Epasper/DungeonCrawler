@@ -312,6 +312,13 @@ async function updateLoadButton(button) {
     await setInfoForSlotDiv(saveSlotDiv);
     await setInfoForSlotDiv(loadSlotDiv);
 
+    //additional setting info for quick-load button in main menu
+    if (slotNumber === '0')
+    {
+        const loadSlotDiv = getMappedElementById(`load-q-slot`);
+        await setInfoForSlotDiv(loadSlotDiv);
+    }
+
     return button.disabled;
 }
 
@@ -324,7 +331,7 @@ export async function updateLoadButtons() {
     for (const loadButton of loadButtons) {
         if (await updateLoadButton(loadButton)) emptySlotsCounter++;
     }
-    await updateLoadButton(getMappedElementById('q-load-btn'));
+    await updateLoadButton(getMappedElementById('load-q-btn'));
 
     console.log('empty slots: ', emptySlotsCounter, ' number of load buttons: ', loadButtons.length)
 
