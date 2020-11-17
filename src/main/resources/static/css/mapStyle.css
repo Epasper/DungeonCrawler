@@ -203,21 +203,6 @@
     /* background-color: mix(var(--highlight-color), var(--default-tile-color)); */
 }
 
-/* .legend-highlight::before {
-    content: '';
-    background-color: var(--default-tile-color);
-} */
-
-/* .cross-highlight::before {
-    content: '';
-    pointer-events: none;
-    background-color: rgb(100, 161, 100);
-    opacity: 0.2;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-} */
-
 #party {
     z-index: 1;
     display: flex;
