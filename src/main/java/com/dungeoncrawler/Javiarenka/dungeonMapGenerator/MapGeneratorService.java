@@ -1,9 +1,14 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 @Service
 public class MapGeneratorService
@@ -11,6 +16,8 @@ public class MapGeneratorService
 
     @Autowired
     Stage stage;
+    PartyManager partyManager;
+    FogManager fogManager;
 
     public Stage getStage()
     {
@@ -21,6 +28,30 @@ public class MapGeneratorService
     {
         this.stage = stage;
     }
+
+    public PartyManager getPartyManager()
+    {
+        return partyManager;
+    }
+
+    public void setPartyManager(PartyManager partyManager)
+    {
+        this.partyManager = partyManager;
+    }
+
+    public FogManager getFogManager()
+    {
+        return fogManager;
+    }
+
+    public void setFogManager(FogManager fogManager)
+    {
+        this.fogManager = fogManager;
+    }
+
+    //======================================================================================
+    //======================================================================================
+    //======================================================================================
 
     public static void main(String[] args) throws IOException
     {
@@ -42,29 +73,34 @@ public class MapGeneratorService
         rb.lockSomeDoor();
         buildDebugSite(stage);
         stage.saveToTxt();
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 
     public Stage generateMap(int width, int height) throws IOException
     {
+        RoomBuilder rb;
+
         stage = new Stage(width, height);
-        RoomBuilder rb = new RoomBuilder(stage);
+        rb = new RoomBuilder(stage);
         stage.createPeripheralCorridor();
         stage.createPeripheralWall();
         rb.fillStageWithRooms();
         stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+        rb.removeCorridorClusters();
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
         rb.removeShortBranches(10);
-        rb.removeCorridorClusters();
         rb.lockSomeDoor();
-        rb.closeRooms();
+        rb.hideRooms();
+//        rb.closeRooms();
+
+        setPartyManager(new PartyManager(stage));
+        setFogManager(new FogManager(stage));
         stage.saveToTxt();
         //buildHtml(stage);
         //buildCSS(stage);
-
-//        TileNavigator tn = new TileNavigator(stage);
-//        tn.getTouchingTilesCascade(stage.getFirstTileOfType(TileType.DOOR_CLOSED), TileType.ROOM_LOCKED);
-
 
         return stage;
     }
@@ -162,7 +198,7 @@ public class MapGeneratorService
 
         sb.append("<div id=\"").append(tile.getIdString()).append("\" ");
         sb.append("class=\"tile ").append(type).append("\">");
-        //sb.append(tile.getIdString());  //wstawi koordynaty diva
+        sb.append(tile.getIdString());  //wstawi koordynaty diva
         sb.append("</div>");
 
         return sb.toString();
@@ -229,4 +265,58 @@ public class MapGeneratorService
 
         return sb.toString();
     }
+
+    public void save()
+    {
+        stage.saveThisStage();
+        partyManager.saveThisPartyManager();
+        fogManager.saveThisFogManager();
+    }
+
+    public void load()
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String fileName = "stage.txt";
+        Gson gson = new Gson();
+        Stage loadedStage = new Stage();
+        PartyManager loadedPartyManager = new PartyManager();
+
+        Reader reader;
+
+        try
+        {
+            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            loadedStage = gson.fromJson(reader, Stage.class);
+            reader.close();
+
+            fileName = "partyManager.txt";
+
+            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            loadedPartyManager = gson.fromJson(reader, PartyManager.class);
+            reader.close();
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        PartyManager referencedPartyManager = new PartyManager(loadedStage);
+        FogManager referencedFogManager = new FogManager(loadedStage);
+
+        if (!Objects.isNull(loadedPartyManager.getParty()))
+        {
+            referencedPartyManager.spawnParty(loadedPartyManager.getParty());
+            referencedFogManager.setParty(referencedPartyManager.getParty());
+        }
+
+        this.stage = loadedStage;
+        //stage.getRooms().clear();
+        stage.linkRoomTilesReferencesToStageTiles();
+//        RoomBuilder rb = new RoomBuilder(stage);
+//        rb.scanTilesForRooms();
+
+        this.partyManager = referencedPartyManager;
+        this.fogManager = referencedFogManager;
+    }
+
 }

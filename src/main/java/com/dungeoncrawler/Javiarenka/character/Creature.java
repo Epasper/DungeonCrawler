@@ -98,6 +98,11 @@ public abstract class Creature {
 
     public Creature(int hp) {
         this();
+    }
+
+    public Creature(String name, int hp) {
+        this();
+        this.name = name;
         this.hp = hp;
     }
 

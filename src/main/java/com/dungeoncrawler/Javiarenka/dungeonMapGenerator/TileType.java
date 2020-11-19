@@ -6,7 +6,8 @@ public enum TileType
 {
     WALL("#"),
     ROOM("_", true),
-    ROOM_LOCKED("="),
+    ROOM_HIDDEN("@"),
+    ROOM_LOCKED("=", true),
     ROOM_SCANNED("-", true),
     CORRIDOR(" ", true),
     INTERSECTION("+", true),
@@ -22,7 +23,7 @@ public enum TileType
     OBSTRUCTION("%"),
     CUTOFF("|"),
     EXCLUDED("/"),
-    ERROR("@");
+    ERROR("E");
 
     String strVal;
     private boolean isWalkable = false;
@@ -53,6 +54,17 @@ public enum TileType
     public boolean isDoor()
     {
         return this.name().contains("DOOR");
+    }
+
+    public boolean isRoom()
+    {
+        return this.name().contains("ROOM");
+    }
+
+    public boolean isOpenedDoor()
+    {
+        if (!isDoor()) return false;
+        return this.name().contains("OPENED");
     }
 
     public boolean isClosedDoor()
