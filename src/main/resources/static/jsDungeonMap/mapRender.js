@@ -1,6 +1,6 @@
-import { getMappedElementById, idMap } from './dungeonMap.js'
 import { addParty, party } from './partyManager.js'
 import { getDivFromBackendTile, getX, getY } from './mapSelection.js'
+import * as utils from './mapUtils.js'
 
 let prevFacingDirection = 'none';
 
@@ -27,19 +27,19 @@ async function drawParty() {
 
     //if (dir) party.direction = directions[dir];
 
-    let partyTile = getMappedElementById(`party`);
-    let partyImg = getMappedElementById('party-img');
+    let partyTile = utils.getMappedElementById(`party`);
+    let partyImg = utils.getMappedElementById('party-img');
     if (!partyTile) {
         console.log('Creating Party div')
         partyTile = document.createElement(`div`)
         partyTile.id = `party`;
-        idMap.set(partyTile.id, partyTile);
+        utils.idMap.set(partyTile.id, partyTile);
         // const grid = document.getElementById('grid');
         // grid.appendChild(partyTile);
 
         partyImg = document.createElement('img');
         partyImg.id = 'party-img';
-        idMap.set(partyImg.id, partyImg);
+        utils.idMap.set(partyImg.id, partyImg);
         partyImg.src = '../images/dungeonMap/arrow.svg';
         partyImg.style.height = ('60%');
         partyImg.style.width = ('60%');
@@ -60,7 +60,7 @@ async function drawParty() {
 
     if (partyImg) animatePartyRotation(partyImg, dir);
 
-    const grid = getMappedElementById('grid');
+    const grid = utils.getMappedElementById('grid');
     grid.appendChild(partyTile);
 
     if (!party) addParty(partyTile, standingTileDiv);

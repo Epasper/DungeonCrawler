@@ -1,18 +1,19 @@
 import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
-import { actionAByContext, actionBByContext, notify, updateLoadButtons } from './mapButtons.js'
-import { draw } from './mapRender.js'
+import { actionAByContext, actionBByContext } from './mapActions.js'
 import { party, directions } from './partyManager.js'
-import { finished, getMappedElementById, updateMap } from './dungeonMap.js'
+import { updateMap } from './dungeonMap.js'
+import * as utils from './mapUtils.js'
+import * as menus from './mapMenuActions.js'
 
 const mapGrid = document.getElementById(`grid`);
 let highlightedColumnLegendTile;
 let highlightedRowLegendTile;
-let currentMenu = null;
-let currentButtonAwaitingConfirmation = null;
-let confirmTextBackup = '';
-let cancelTextBackup = '';
-let tooltipTextBackups = new Map();
+//let currentMenu = null;
+// let currentButtonAwaitingConfirmation = null;
+// let confirmTextBackup = '';
+// let cancelTextBackup = '';
+// let tooltipTextBackups = new Map();
 
 export function injectTileListeners() {
     var tiles = document.getElementsByClassName("tile")
@@ -24,297 +25,89 @@ export function injectTileListeners() {
 }
 
 function injectMenuListeners() {
-    const menuBtn = getMappedElementById('menu-btn');
-    menuBtn.addEventListener('mouseenter', menuButtonEntered);
-    menuBtn.addEventListener('mouseleave', menuButtonExited);
-    menuBtn.addEventListener('click', menuClicked);
+    const menuBtn = utils.getMappedElementById('menu-btn');
+    menuBtn.addEventListener('mouseenter', menus.menuButtonEntered);
+    menuBtn.addEventListener('mouseleave', menus.menuButtonExited);
+    menuBtn.addEventListener('click', menus.menuClicked);
 
-    let qSaveBtn = getMappedElementById('save-q-btn');
-    qSaveBtn.addEventListener('click', requestQuickSave);
+    let qSaveBtn = utils.getMappedElementById('save-q-btn');
+    qSaveBtn.addEventListener('click', menus.requestQuickSave);
 
-    let qLoadBtn = getMappedElementById('load-q-btn');
-    qLoadBtn.addEventListener('click', requestQuickLoad);
+    let qLoadBtn = utils.getMappedElementById('load-q-btn');
+    qLoadBtn.addEventListener('click', menus.requestQuickLoad);
 
-    let backBtn = getMappedElementById('back-btn');
-    backBtn.addEventListener('click', backButtonClicked)
+    let backBtn = utils.getMappedElementById('back-btn');
+    backBtn.addEventListener('click', menus.backButtonClicked)
 
     injectSaveMenuListeners();
     injectLoadMenuListeners();
 }
 
 function injectSaveMenuListeners() {
-    const saveBtn = getMappedElementById('save-btn');
-    saveBtn.addEventListener('click', saveMenuClicked);
+    const saveBtn = utils.getMappedElementById('save-btn');
+    saveBtn.addEventListener('click', menus.saveMenuClicked);
 
     const saveButtons = Array.from(document.getElementsByClassName('button-save'));
     saveButtons.forEach(loadBtn => {
-        loadBtn.addEventListener('click', confirmableButtonClicked);
+        loadBtn.addEventListener('click', menus.confirmableButtonClicked);
     })
-
     const cancelSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-cancel'));
     cancelSaveButtons.forEach(cancelSaveBtn => {
-        cancelSaveBtn.addEventListener('click', exitConfirmation);
+        cancelSaveBtn.addEventListener('click', menus.exitConfirmation);
     })
-
     const confirmSaveButtons = Array.from(document.querySelectorAll('.save-slot .button-confirm'));
     confirmSaveButtons.forEach(confirmSaveBtn => {
-        confirmSaveBtn.addEventListener('click', saveButtonConfirmed);
+        confirmSaveBtn.addEventListener('click', menus.saveButtonConfirmed);
     })
 
-    const backBtn = getMappedElementById('save-back-btn');
-    backBtn.addEventListener('click', backButtonClicked)
+    const backBtn = utils.getMappedElementById('save-back-btn');
+    backBtn.addEventListener('click', menus.backButtonClicked)
 
-    const delBtn = getMappedElementById('save-delete-btn');
-    delBtn.addEventListener('click', prepareSaveDeletion);
-}
-
-function prepareSaveDeletion({ target: deleteButton }) {
-    deleteButton.style.backgroundColor = 'red';
-    deleteButton.dataset.status = "active";
-
-    exitConfirmation();
-
-    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
-    saveSlotButtons.forEach(saveButton => {
-        const currentSlotDiv = saveButton.parentElement;
-        const currentSlotNumber = currentSlotDiv.dataset.slot;
-        saveButton.classList.add('button-delete');
-
-        const confirmButton = getChildNodeByIdPartialString(currentSlotDiv, 'confirm');
-        confirmButton.removeEventListener('click', saveButtonConfirmed);
-        confirmButton.addEventListener('click', saveButtonDelete);
-        confirmTextBackup = confirmButton.dataset.text;
-        confirmButton.dataset.text = ' Confirm ';
-        confirmButton.innerText = '🗑️';
-
-        const cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
-        cancelTextBackup = cancelButton.dataset.text;
-        cancelButton.dataset.text = ' Keep ';
-        cancelButton.innerText = '✅';
-
-        //const labelsDiv = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
-        // const tooltipDiv = getChildNodeByIdPartialString(labelsDiv, 'tooltip');
-        const tooltipDiv = getMappedElementById(`save-${currentSlotNumber}-tooltip`)
-        const p = tooltipDiv.querySelector('p');
-        tooltipTextBackups.set(tooltipDiv.id, p.innerText);
-        p.innerText = `Delete save file from ${saveButton.innerText}`;
-
-        saveButton.disabled = getMappedElementById(`load-${currentSlotNumber}-btn`).disabled;
-    })
-
-    deleteButton.removeEventListener('click', prepareSaveDeletion);
-    deleteButton.addEventListener('click', exitSaveDeletion);
-}
-
-export function exitSaveDeletion() {
-    const deleteButton = getMappedElementById('save-delete-btn');
-    const delBtnStatus = deleteButton.dataset.status;
-    if (delBtnStatus != "active") return;
-
-    exitConfirmation();
-
-    deleteButton.style.backgroundColor = '';
-    deleteButton.dataset.status = "inactive";
-
-    const saveSlotButtons = Array.from(document.getElementsByClassName('button-save'));
-    saveSlotButtons.forEach(saveButton => {
-        const currentSlotDiv = saveButton.parentElement;
-        const currentSlotNumber = currentSlotDiv.dataset.slot;
-        saveButton.classList.remove('button-delete');
-        saveButton.disabled = false;
-
-        const confirmButton = getChildNodeByIdPartialString(currentSlotDiv, 'confirm');
-        confirmButton.removeEventListener('click', saveButtonDelete);
-        confirmButton.addEventListener('click', saveButtonConfirmed);
-        confirmButton.dataset.text = confirmTextBackup;
-        confirmButton.innerText = '✔️';
-
-        const cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
-        cancelButton.dataset.text = cancelTextBackup;
-        cancelButton.innerText = '❌';
-
-        const tooltipDiv = getMappedElementById(`save-${currentSlotNumber}-tooltip`)
-        const p = tooltipDiv.querySelector('p');
-        p.innerText = tooltipTextBackups.get(tooltipDiv.id);
-        tooltipTextBackups.delete(tooltipDiv.id);
-    })
-    confirmTextBackup = '';
-    cancelTextBackup = '';
-    deleteButton.removeEventListener('click', exitSaveDeletion);
-    deleteButton.addEventListener('click', prepareSaveDeletion);
+    const delBtn = utils.getMappedElementById('save-delete-btn');
+    delBtn.addEventListener('click', menus.prepareSaveDeletion);
 }
 
 function injectLoadMenuListeners() {
-    const loadBtn = getMappedElementById('load-btn');
-    loadBtn.addEventListener('click', loadClicked);
+    const loadBtn = utils.getMappedElementById('load-btn');
+    loadBtn.addEventListener('click', menus.loadClicked);
 
     const loadButtons = Array.from(document.getElementsByClassName('button-load'));
     loadButtons.forEach(loadBtn => {
-        //loadBtn.addEventListener('click', loadButtonClicked);
-        loadBtn.addEventListener('click', confirmableButtonClicked);
+        loadBtn.addEventListener('click', menus.confirmableButtonClicked);
     })
 
     const cancelLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-cancel'));
     cancelLoadButtons.forEach(cancelLoadBtn => {
-        cancelLoadBtn.addEventListener('click', exitConfirmation);
+        cancelLoadBtn.addEventListener('click', menus.exitConfirmation);
     })
 
     const confirmLoadButtons = Array.from(document.querySelectorAll('.load-slot .button-confirm'));
     confirmLoadButtons.forEach(confirmLoadBtn => {
-        confirmLoadBtn.addEventListener('click', loadButtonConfirmed);
+        confirmLoadBtn.addEventListener('click', menus.loadButtonConfirmed);
     })
 
-    const backBtn = getMappedElementById('load-back-btn');
-    backBtn.addEventListener('click', backButtonClicked)
-}
-
-function getChildNodeByIdPartialString(node, searchedString) {
-    if (!node.children) return null;
-
-    let children = Array.from(node.children);
-    return children.find(node => node.id.includes(searchedString));
-}
-
-function getActiveTooltip() {
-    if (!currentButtonAwaitingConfirmation) return null;
-
-    const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
-    const currentSlotLabels = getChildNodeByIdPartialString(currentSlotDiv, 'labels');
-
-    return getChildNodeByIdPartialString(currentSlotLabels, 'tooltip');
-}
-
-function showTooltip(tooltipText = 'default') {
-    if (!currentButtonAwaitingConfirmation) return;
-    const tooltipDiv = getActiveTooltip();
-
-    if (tooltipText !== 'default') {
-        const p = tooltipDiv.querySelector('p');
-        tooltipTextBackups.set(tooltipDiv.id, p.innerText);
-        p.innerText = tooltipText;
-    }
-    tooltipDiv.classList.remove('hidden');
-}
-
-function hideTooltip() {
-    if (!currentButtonAwaitingConfirmation) return;
-    const tooltipDiv = getActiveTooltip();
-
-    tooltipDiv.classList.add('hidden');
-    const p = tooltipDiv.querySelector('p');
-    if (tooltipTextBackups.get(tooltipDiv.id)) {
-        p.innerText = tooltipTextBackups.get(tooltipDiv.id);
-        tooltipTextBackups.delete(tooltipDiv.id);
-    }
-}
-
-function showConfirmationButtons(targetButton) {
-    currentButtonAwaitingConfirmation = targetButton;
-    targetButton.classList.add('button-await-confirmation');
-}
-
-function exitConfirmation() {
-    if (!currentButtonAwaitingConfirmation) return;
-
-    const currentSlotDiv = currentButtonAwaitingConfirmation.parentElement;
-    let cancelButton = getChildNodeByIdPartialString(currentSlotDiv, 'cancel');
-
-    const cancelledBtnId = cancelButton.dataset.cancelling;
-    const cancelledButton = getMappedElementById(cancelledBtnId);
-    cancelledButton.classList.remove('button-await-confirmation');
-
-    hideTooltip();
-
-    currentButtonAwaitingConfirmation = null;
-}
-
-async function saveButtonConfirmed({ target: saveConfirmationBtn }) {
-    const saveSlotNumber = saveConfirmationBtn.parentElement.dataset.slot;
-    console.log('save: ', saveConfirmationBtn, 'number: ', saveSlotNumber)
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
-
-    const correspondingLoadButton = getMappedElementById(`load-${saveSlotNumber}-btn`);
-    if (correspondingLoadButton.disabled) {
-        notify('Save created!');
-    } else {
-        notify('Save overwritten!');
-    }
-
-    updateLoadButtons();
-    exitConfirmation();
-}
-
-async function saveButtonDelete({ target: clickedConfirmButton }) {
-    const currentSlotDiv = clickedConfirmButton.parentElement;
-    const saveSlotNumber = currentSlotDiv.dataset.slot;
-    console.log('delete slot number: ', saveSlotNumber);
-
-    await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
-
-    const saveButton = getMappedElementById(`save-${saveSlotNumber}-btn`);
-    saveButton.disabled = true;
-
-    notify('Save file deleted!');
-    updateLoadButtons();
-    exitConfirmation();
-}
-
-function confirmableButtonClicked({ target: clickedButton }) {
-    exitConfirmation();
-    showConfirmationButtons(clickedButton);
-
-    if (clickedButton.id.includes('save')) {
-        const slotNumber = clickedButton.parentElement.dataset.slot;
-        const correspondingLoadButton = getMappedElementById(`load-${slotNumber}-btn`);
-        if (correspondingLoadButton.disabled) {
-            showTooltip(`Create new save file in ${clickedButton.innerText}`);
-        } else {
-            showTooltip();
-        }
-    } else {
-        showTooltip();
-    }
-}
-
-async function loadButtonConfirmed({ target: loadSlotBtn }) {
-    const loadSlotNumber = loadSlotBtn.parentElement.dataset.slot;
-    console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
-
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
-}
-
-function backButtonClicked() {
-    debugger;
-
-    exitSaveDeletion();
-    exitConfirmation();
-    hideMenu(currentMenu);
-
-    if (currentMenu === getMappedElementById('main-menu')) {
-        currentMenu = null;
-    } else {
-        showMenu(getMappedElementById('main-menu'));
-    }
+    const backBtn = utils.getMappedElementById('load-back-btn');
+    backBtn.addEventListener('click', menus.backButtonClicked)
 }
 
 export function injectButtonsListeners() {
-    let spawnBtn = getMappedElementById('spawn-party-btn');
+    let spawnBtn = utils.getMappedElementById('spawn-party-btn');
     spawnBtn.addEventListener('click', spawnPartyBackend);
 
-    let actionBtn = getMappedElementById('action-btn');
-    let actionBtn1 = getMappedElementById('action-btn-1');
-    let actionBtn2 = getMappedElementById('action-btn-2');
+    let actionBtn = utils.getMappedElementById('action-btn');
+    let actionBtn1 = utils.getMappedElementById('action-btn-1');
+    let actionBtn2 = utils.getMappedElementById('action-btn-2');
     actionBtn.addEventListener('click', makeAction);
     actionBtn1.addEventListener('click', actionAByContext);
     actionBtn2.addEventListener('click', actionBByContext);
 
-    let moveBtn = getMappedElementById('move-party-btn');
+    let moveBtn = utils.getMappedElementById('move-party-btn');
     moveBtn.addEventListener('click', teleportPartyBackend);
 
-    let moveUpBtn = getMappedElementById('move-up');
-    let moveDownBtn = getMappedElementById('move-down');
-    let moveLeftBtn = getMappedElementById('move-left');
-    let moveRightBtn = getMappedElementById('move-right');
+    let moveUpBtn = utils.getMappedElementById('move-up');
+    let moveDownBtn = utils.getMappedElementById('move-down');
+    let moveLeftBtn = utils.getMappedElementById('move-left');
+    let moveRightBtn = utils.getMappedElementById('move-right');
     let moveButtons = [moveUpBtn, moveDownBtn, moveLeftBtn, moveRightBtn]
     moveButtons.forEach(mvBtn => {
         mvBtn.addEventListener('click', movePartyOneStepBackend);
@@ -324,17 +117,8 @@ export function injectButtonsListeners() {
     injectMenuListeners();
 }
 
-async function requestQuickSave() {
-    //saveButtonClicked({target: getMappedElementById('save-0-btn')});
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
-    updateLoadButtons();
-    notify('Quick save successful!');
-}
 
-async function requestQuickLoad() {
-    //loadButtonClicked({target: getMappedElementById('load-0-btn')});
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${0}`);
-}
+
 
 function makeAction() {
     let selectedTile = selectedGridTileDiv;
@@ -361,7 +145,6 @@ async function spawnPartyBackend() {
 async function teleportPartyBackend() {
     let coordX = getX(selectedGridTileDiv);
     let coordY = getY(selectedGridTileDiv);
-    //let [heroId] = selectedHero.id.split('-').slice(-1); //slice (-1) zwroci tablicę o długosci 1 elementu od końca
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
@@ -381,25 +164,25 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 }
 
 async function keyPressedMove({ keyCode }) {
-    const moveBtn = getMappedElementById('move-party-btn');
+    const moveBtn = utils.getMappedElementById('move-party-btn');
     if (moveBtn.disabled) return;
     let dirBtn;
 
     switch (keyCode) {
         case 37:    //LEFT
-            dirBtn = getMappedElementById('move-left');
+            dirBtn = utils.getMappedElementById('move-left');
             console.log('---KEY LOGGED: left---');
             break;
         case 38:    //UP
-            dirBtn = getMappedElementById('move-up');
+            dirBtn = utils.getMappedElementById('move-up');
             console.log('---KEY LOGGED: up---');
             break;
         case 39:    //RIGHT
-            dirBtn = getMappedElementById('move-right');
+            dirBtn = utils.getMappedElementById('move-right');
             console.log('---KEY LOGGED: right---');
             break;
         case 40:    //DOWN
-            dirBtn = getMappedElementById('move-down');
+            dirBtn = utils.getMappedElementById('move-down');
             console.log('---KEY LOGGED: down---');
             break;
         default:
@@ -425,70 +208,6 @@ async function keyPressedMove({ keyCode }) {
     }, 100)
 
     document.addEventListener('keydown', keyPressedMove);
-}
-
-function menuButtonEntered() {
-    if (currentMenu) return;
-
-    const menu = getMappedElementById('main-menu');
-
-    if (menu.classList.length == 1) return;
-
-    menu.classList.remove('hidden');
-    menu.classList.add('partial');
-}
-
-function menuButtonExited() {
-    const menu = getMappedElementById('main-menu');
-
-    if (menu.classList.length == 1) return;
-
-    menu.classList.remove('partial');
-    menu.classList.add('hidden');
-}
-
-function showMenu(menu) {
-    menu.classList.remove('hidden');
-    menu.classList.remove('partial');
-    currentMenu = menu;
-}
-
-function hideMenu(menu) {
-    menu.classList.add('hidden');
-}
-
-function menuClicked() {
-    const mainMenu = getMappedElementById('main-menu');
-
-    //hideMenu(saveMenu);
-    if (currentMenu) {
-        exitSaveDeletion();
-        exitConfirmation();
-        mainMenu.classList.add('partial');
-        hideMenu(currentMenu);
-        currentMenu = null;
-    } else {
-        //currentMenu = mainMenu;
-        showMenu(mainMenu);
-    }
-}
-
-function saveMenuClicked() {
-    const mainMenu = getMappedElementById('main-menu');
-    const saveMenu = getMappedElementById('save-menu');
-
-    //currentMenu = saveMenu;
-    hideMenu(mainMenu);
-    showMenu(saveMenu);
-}
-
-function loadClicked() {
-    const mainMenu = getMappedElementById('main-menu');
-    const loadMenu = getMappedElementById('load-menu');
-
-    //currentMenu = loadMenu;
-    hideMenu(mainMenu);
-    showMenu(loadMenu);
 }
 
 async function tileClicked({ target: clickedTileDiv }) {
@@ -522,8 +241,8 @@ function showCrossHighlightElements(centerDivElement, colorIdentifier) {
 
     root.style.setProperty('--highlight-color', cssColor);
 
-    let rowElement = getMappedElementById('cross-highlight-row');
-    let colElement = getMappedElementById('cross-highlight-col');
+    let rowElement = utils.getMappedElementById('cross-highlight-row');
+    let colElement = utils.getMappedElementById('cross-highlight-col');
 
     rowElement.classList.add('cross-highlight');
     colElement.classList.add('cross-highlight');
@@ -534,8 +253,8 @@ function showCrossHighlightElements(centerDivElement, colorIdentifier) {
     rowElement.style.gridArea = `${currentRow + 1} / 1 / ${currentRow + 2} / ${mapWidth + 1}`;
     colElement.style.gridArea = `1 / ${currentCol + 1} / ${mapHeight + 1} / ${currentCol + 2}`;
 
-    let columnLegendTile = getMappedElementById(`col-${currentCol}`);
-    let rowLegendTile = getMappedElementById(`row-${currentRow}`);
+    let columnLegendTile = utils.getMappedElementById(`col-${currentCol}`);
+    let rowLegendTile = utils.getMappedElementById(`row-${currentRow}`);
 
     columnLegendTile.classList.add('legend-highlight');
     highlightedColumnLegendTile = columnLegendTile;
@@ -544,37 +263,12 @@ function showCrossHighlightElements(centerDivElement, colorIdentifier) {
 }
 
 function hideCrossHighlightElements() {
-    let rowElement = getMappedElementById('cross-highlight-row');
-    let colElement = getMappedElementById('cross-highlight-col');
+    let rowElement = utils.getMappedElementById('cross-highlight-row');
+    let colElement = utils.getMappedElementById('cross-highlight-col');
 
     rowElement.classList.remove('cross-highlight');
     colElement.classList.remove('cross-highlight');
 
     highlightedColumnLegendTile?.classList.remove('legend-highlight');
     highlightedRowLegendTile?.classList.remove('legend-highlight');
-}
-
-async function getSaveInfo(saveSlotNumber) {
-    const response = await axios.get(`http://localhost:8080/getSaveInfo?saveSlotNumber=${saveSlotNumber}`);
-    const saveInfo = response.data;
-
-    console.log(saveInfo);
-    return saveInfo;
-}
-
-export async function setInfoForSlotDiv(slotDiv, infoText = 'default') {
-    const labelsDiv = getChildNodeByIdPartialString(slotDiv, 'labels');
-    const infoDiv = getChildNodeByIdPartialString(labelsDiv, 'info');
-    const p = infoDiv.querySelector('p');
-
-    if (infoText === 'default') {
-        p.innerText = await getSaveInfo(slotDiv.dataset.slot)
-    } else {
-        p.innerText = infoText;
-    }
-}
-
-function setSlotsInfo() {
-    const loadSlotDivs = Array.from(document.querySelectorAll('load-slot'));
-    const saveSlotDivs = Array.from(document.querySelectorAll('save-slot'));
 }

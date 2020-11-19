@@ -1,8 +1,9 @@
-import { getMappedElementById, updateMap } from './dungeonMap.js'
+import { updateMap } from './dungeonMap.js'
 import { directions, party } from './partyManager.js';
 import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
 import { animateRoomChange } from './mapRender.js'
-import { exitSaveDeletion, setInfoForSlotDiv } from './mapEvents.js';
+
+import * as utils from './mapUtils.js'
 
 class ActionsManager {
     constructor() {
@@ -157,8 +158,8 @@ let doorOperator = new DoorOperator();
 
 
 async function updateSpawnButton() {
-    let spawnButton = getMappedElementById('spawn-party-btn');
-    if (getMappedElementById('party')) {
+    let spawnButton = utils.getMappedElementById('spawn-party-btn');
+    if (utils.getMappedElementById('party')) {
         spawnButton.style.opacity = '0';
         spawnButton.style.pointerEvents = 'none';
     }
@@ -173,7 +174,7 @@ async function updateSpawnButton() {
     let isSpawnable = response.data;
 
     //let isSpawnable = data;
-    let isSelection = (getMappedElementById('selection') != null)
+    let isSelection = (utils.getMappedElementById('selection') != null)
 
     if (isSpawnable && isSelection) {
         spawnButton.disabled = false;
@@ -190,8 +191,8 @@ function isPartySelected() {
 }
 
 function updateMoveButton() {
-    let moveButton = getMappedElementById('move-party-btn');
-    let moveButtonsContainer = getMappedElementById('move-group');
+    let moveButton = utils.getMappedElementById('move-party-btn');
+    let moveButtonsContainer = utils.getMappedElementById('move-group');
 
     //dodawanie i usuwanie sub-klasy 'move-container-hover' ostylowanej w CSS wyłącza reakcję interfacu, kiedy button "Move Party" jest nieaktywny
     if (isPartySelected()) {
@@ -221,13 +222,13 @@ async function updateDirectionalButtons() {
 }
 
 function activateActionMenu() {
-    getMappedElementById('action-group').classList.add('active');
+    utils.getMappedElementById('action-group').classList.add('active');
 }
 
 function deactivateActionMenu() {
-    getMappedElementById('action-group').classList.remove('active');
-    let btn1 = getMappedElementById('action-btn-1');
-    let btn2 = getMappedElementById('action-btn-2');
+    utils.getMappedElementById('action-group').classList.remove('active');
+    let btn1 = utils.getMappedElementById('action-btn-1');
+    let btn2 = utils.getMappedElementById('action-btn-2');
 
     btn1.disabled = true;
     btn2.disabled = true;
@@ -245,7 +246,7 @@ async function activateDoorBackend(newDoorState, descendingOrder = false) {
 }
 
 async function updateActionButton() {
-    let actionBtn = getMappedElementById('action-btn');
+    let actionBtn = utils.getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
     if (party.direction == directions.NONE) return;
@@ -281,8 +282,8 @@ async function provideDoorActions(pointedTile) {
     // let doorOperator = new DoorOperator(pointedDiv);
     doorOperator.update(pointedTile);
 
-    let action1Btn = getMappedElementById('action-btn-1');
-    let action2Btn = getMappedElementById('action-btn-2');
+    let action1Btn = utils.getMappedElementById('action-btn-1');
+    let action2Btn = utils.getMappedElementById('action-btn-2');
 
     doorOperator.giveButtonAnAction(action1Btn, 'A');
     doorOperator.giveButtonAnAction(action2Btn, 'B');
@@ -290,58 +291,8 @@ async function provideDoorActions(pointedTile) {
     actionsManager.actionA = async () => { await doorOperator.actionA(); };
     actionsManager.actionB = async () => { await doorOperator.actionB(); };
 
-    const actionBtn = getMappedElementById('action-btn');
+    const actionBtn = utils.getMappedElementById('action-btn');
     actionBtn.textContent = doorOperator.current.actionButtonPrompt;
-}
-
-async function updateLoadButton(button) {
-    let elementWithSlotInfo;
-    if (button.parentElement.dataset.slot) {
-        elementWithSlotInfo = button.parentElement;
-    } else {
-        elementWithSlotInfo = button;
-    }
-
-    const slotNumber = elementWithSlotInfo.dataset.slot;
-    const { data: slotExists } = await axios.get(`http://localhost:8080/checkIfSaveExists?slotNumber=${slotNumber}`);
-
-    button.disabled = !slotExists;
-
-    const saveSlotDiv = getMappedElementById(`save-${slotNumber}-slot`);
-    const loadSlotDiv = getMappedElementById(`load-${slotNumber}-slot`);
-    await setInfoForSlotDiv(saveSlotDiv);
-    await setInfoForSlotDiv(loadSlotDiv);
-
-    //additional setting info for quick-load button in main menu
-    if (slotNumber === '0')
-    {
-        const loadSlotDiv = getMappedElementById(`load-q-slot`);
-        await setInfoForSlotDiv(loadSlotDiv);
-    }
-
-    return button.disabled;
-}
-
-export async function updateLoadButtons() {
-    //TODO: aktualnie wszystkie load-buttony są aktualizowane po kliknięciu w guzik. A wystarczyłoby zaktualizować tylko ten, który akurat zapisano
-
-    const loadButtons = Array.from(document.getElementsByClassName('button-load'));
-    let emptySlotsCounter = 0;
-
-    for (const loadButton of loadButtons) {
-        if (await updateLoadButton(loadButton)) emptySlotsCounter++;
-    }
-    await updateLoadButton(getMappedElementById('load-q-btn'));
-
-    console.log('empty slots: ', emptySlotsCounter, ' number of load buttons: ', loadButtons.length)
-
-    const deleteSaveButton = getMappedElementById('save-delete-btn');
-    if (emptySlotsCounter == loadButtons.length) {
-        exitSaveDeletion();
-        deleteSaveButton.disabled = true;
-    } else {
-        deleteSaveButton.disabled = false;
-    }
 }
 
 export async function updateButtons() {
@@ -362,7 +313,7 @@ export function notify(text) {
     notificationDiv.innerText = text;
     notificationDiv.classList.add('notification');//, 'hidden');
     
-    document.body.insertBefore(notificationDiv, getMappedElementById('toolbar'));
+    document.body.insertBefore(notificationDiv, utils.getMappedElementById('toolbar'));
 
     setTimeout(function () {
         notificationDiv.remove();

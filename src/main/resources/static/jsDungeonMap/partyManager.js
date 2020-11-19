@@ -1,6 +1,6 @@
-import { updateMap, getMappedElementById } from "./dungeonMap.js";
+import { updateMap } from "./dungeonMap.js";
 import { tileMouseEntered } from './mapEvents.js'
-import { updateButtons } from "./mapButtons.js";
+import { updateButtons } from "./mapActions.js";
 import { draw } from "./mapRender.js";
 
 export const directions = {

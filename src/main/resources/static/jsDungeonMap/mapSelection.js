@@ -1,6 +1,6 @@
-import { getMappedElementById, idMap} from './dungeonMap.js'
-import { updateButtons } from './mapButtons.js'
+import { updateButtons } from './mapActions.js'
 import { tileMouseEntered } from './mapEvents.js'
+import * as utils from './mapUtils.js'
 
 export let selectedGridTileDiv
 
@@ -19,7 +19,7 @@ export function makeSelection(targetTile, mapGrid) {
     selectionDivElement.style.gridRow = (`${y}`);
     selectionDivElement.style.gridColumn = (`${x}`);
     selectionDivElement.id = 'selection';
-    idMap.set(selectionDivElement.id, selectionDivElement);
+    utils.idMap.set(selectionDivElement.id, selectionDivElement);
 
     console.log(getX(targetTile), `---`, getY(targetTile))
     mapGrid.appendChild(selectionDivElement)
@@ -62,18 +62,18 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     await deleteSelection(clickedSelectionDiv);
 
     // selectedGridTileDiv = null;
-    // idMap.delete(clickedSelectionDiv.id);
+    // utils.idMap.delete(clickedSelectionDiv.id);
     // clickedSelectionDiv.remove();
 }
 
-export async function deleteSelection(selectionDiv = getMappedElementById('selection')) {
+export async function deleteSelection(selectionDiv = utils.getMappedElementById('selection')) {
     selectedGridTileDiv = null;
-    idMap.delete(selectionDiv.id);
+    utils.idMap.delete(selectionDiv.id);
     selectionDiv.remove();
 }
 
 export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
 
     // return document.getElementById(`${x}-${y}`);
-    return getMappedElementById(`${x}${distinguisherSign}${y}`);
+    return utils.getMappedElementById(`${x}${distinguisherSign}${y}`);
 }
