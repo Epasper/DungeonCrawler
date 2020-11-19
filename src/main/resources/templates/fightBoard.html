@@ -46,7 +46,7 @@
                 <ul th:each="monster: ${monsters}">
                     <li><a th:href="@{/fightBoard/selectMonster(monsterName=${monster.getName()})}"
                             th:text="${monster.getName()}"></a>
-                        <p th:text="${monster.getRace().name()}"></p>
+                        <p th:text="${monster.getMonsterRaceName()}"></p>
                         <p th:text="${monster.getHp()}"></p>
                         <p th:text="${monster.getDamageStrength()}"></p>
                         <p th:text="${monster.isAlive()}"></p>

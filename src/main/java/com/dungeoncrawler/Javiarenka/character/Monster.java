@@ -16,8 +16,8 @@ public class Monster extends Creature {
     public Monster() {
     }
 
-    public Monster(int hp, MonsterRace race, int damageStrength) {
-        super(hp);
+    public Monster(String name, int hp, String imageLink, MonsterRace race, int damageStrength) {
+        super(name, hp, imageLink);
         this.race = race;
         this.damageStrength = damageStrength;
     }

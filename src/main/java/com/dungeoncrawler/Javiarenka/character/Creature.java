@@ -101,6 +101,12 @@ public abstract class Creature {
         this.hp = hp;
     }
 
+    public Creature(String name, int hp, String imageLink) {
+        this.name = name;
+        this.hp = hp;
+        this.imageLink = imageLink;
+    }
+
     public String getName() {
         return name;
     }

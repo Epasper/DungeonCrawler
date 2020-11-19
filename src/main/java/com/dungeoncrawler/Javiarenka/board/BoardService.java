@@ -5,6 +5,7 @@ import com.dungeoncrawler.Javiarenka.character.Hero;
 import com.dungeoncrawler.Javiarenka.character.Monster;
 import com.dungeoncrawler.Javiarenka.character.MonsterRace;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
+import com.dungeoncrawler.Javiarenka.staticResources.MonsterResources;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
@@ -38,26 +39,7 @@ public class BoardService {
     public BoardService() {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
-        Monster testMon1 = new Monster(80, MonsterRace.GOBLIN, 9);
-        Monster testMon2 = new Monster(30, MonsterRace.ANIMAL, 4);
-        Monster testMon3 = new Monster(200, MonsterRace.UNDEAD, 15);
-        Monster testMon4 = new Monster(100, MonsterRace.FIEND, 12);
-        Monster testMon5 = new Monster(500, MonsterRace.DRAGON, 40);
-        Monster testMon6 = new Monster(300, MonsterRace.MONSTROSITY, 20);
-        testMon1.setName("Goblin Brawler");
-        testMon1.setImageLink("../images/monsters/monster_goblinscout.png");
-        testMon2.setName("Rat");
-        testMon2.setImageLink("../images/monsters/monster_ratling.png");
-        testMon3.setName("Skeleton Warrior");
-        testMon3.setImageLink("../images/monsters/monster_skeleton.png");
-        testMon4.setName("Imp");
-        testMon4.setImageLink("../images/monsters/monster_imp.png");
-        testMon5.setName("Red Dragon");
-        testMon5.setImageLink("../images/monsters/monster_dragonred.png");
-        testMon6.setName("Centaur");
-        testMon6.setImageLink("../images/monsters/monster_centaur.png");
-
-        monsters.addAll(List.of(testMon1, testMon2, testMon3, testMon4, testMon5, testMon6));
+        monsters = MonsterResources.defaultMonsters();
         for (Monster monster : monsters) {
             monster.saveThisMonster();
         }
