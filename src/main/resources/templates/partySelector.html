@@ -23,7 +23,7 @@
         <p th:text="${hero.getHp()}"></p>
         <p th:text="${hero.getWeaponName() + '(' + hero.getEquippedWeapon().getDamageDealt() + ')'}"></p>
         <p th:text="${hero.getArmorName() + '(' + hero.getEquippedArmor().getDamageReduction() + ')'}"></p>
-        <p th:text="${hero.getTotalHp()}"></p>
+        <p th:text="${hero.getMaxHp()}"></p>
         <button th:class="${hero.isSelectedForParty()} ? 'selected' : 'unselected'" th:id="${hero.getName()} + '---' + ${hero.getSurname()}" th:onclick="'javascript:selectCharacter(\'' + ${hero.getName()} + '---' + ${hero.getSurname()} + '\');'">Select</button>
     </div>
 </div>

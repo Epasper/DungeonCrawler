@@ -2,7 +2,6 @@ package com.dungeoncrawler.Javiarenka.character;
 
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
-import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,7 +11,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hero extends Character {
+public class Hero extends Creature {
     private String surname;
     private HeroClass heroClass;
     private Armor equippedArmor;
@@ -20,11 +19,38 @@ public class Hero extends Character {
     private String weaponName;
     private String armorName;
     private String className;
-    private int money;
     private List<Skill> skills;
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
+    //since thymeleaf looping works better when starting from 1, these two values should never be lower than 1:
+    private int encounterXPosition;
+    private int encounterYPosition;
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public int getEncounterXPosition() {
+        return encounterXPosition;
+    }
+
+    public void setEncounterXPosition(int encounterXPosition) {
+        this.encounterXPosition = encounterXPosition;
+    }
+
+    public int getEncounterYPosition() {
+        return encounterYPosition;
+    }
+
+    public void setEncounterYPosition(int encounterYPosition) {
+        this.encounterYPosition = encounterYPosition;
+    }
 
     public String getSurname() {
         return surname;
@@ -82,13 +108,6 @@ public class Hero extends Character {
         this.className = className;
     }
 
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
 
     public List<Skill> getSkills() {
         return skills;
@@ -123,11 +142,6 @@ public class Hero extends Character {
         addStartingBackpackItems();
     }
 
-    public Hero(String name, int hp) {
-        super(name, hp);
-        addStartingBackpackItems();
-    }
-
     public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<Skill> skills) {
         this();
         super.setName(name);
@@ -137,7 +151,6 @@ public class Hero extends Character {
         this.equippedWeapon = equippedWeapon;
         this.backpack.setRightHandSlot(equippedWeapon);
         this.backpack.setChestSlot(equippedArmor);
-        this.money = money;
         this.skills = skills;
     }
 
@@ -161,42 +174,73 @@ public class Hero extends Character {
                 ", equippedWeapon=" + equippedWeapon +
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
-                ", money=" + money +
                 ", skills=" + skills +
                 ", backpack=" + backpack +
                 '}';
     }
 
-    public void setHpByHeroClass() {
+    public void setDefensesByHeroClass() {
         switch (heroClass) {
             case WARRIOR:
+                setMaxHp(100);
                 setHp(100);
+                setMaxMagicShield(20);
+                setMagicShield(20);
+                setMaxPhysicalShield(40);
+                setPhysicalShield(40);
                 break;
             case ROGUE:
+                setMaxHp(60);
                 setHp(60);
+                setMaxMagicShield(30);
+                setMagicShield(30);
+                setMaxPhysicalShield(30);
+                setPhysicalShield(30);
                 break;
             case ARCHER:
+                setMaxHp(70);
                 setHp(70);
+                setMaxMagicShield(25);
+                setMagicShield(25);
+                setMaxPhysicalShield(45);
+                setPhysicalShield(45);
                 break;
             case KNIGHT:
+                setMaxHp(120);
                 setHp(120);
+                setMaxMagicShield(10);
+                setMagicShield(10);
+                setMaxPhysicalShield(50);
+                setPhysicalShield(50);
+                break;
             case HEALER:
+                setMaxHp(80);
                 setHp(80);
+                setMaxMagicShield(40);
+                setMagicShield(40);
+                setMaxPhysicalShield(20);
+                setPhysicalShield(20);
+                break;
             case WIZARD:
+                setMaxHp(50);
                 setHp(50);
+                setMaxMagicShield(50);
+                setMagicShield(50);
+                setMaxPhysicalShield(10);
+                setPhysicalShield(10);
+                break;
         }
     }
 
-    public int getTotalHp() {
-        return getHp() + equippedArmor.getAdditionalHp();
-    }
-
     public void saveThisHero() {
-        setHpByHeroClass();
+        setEncounterXPosition(1);
+        setEncounterYPosition(1);
+        setDefensesByHeroClass();
         setSkillsByHeroClass();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
+        System.out.println(this);
         try {
             Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + getName() + "---" + getSurname() + ".txt");
             gson.toJson(this, writer);
@@ -208,18 +252,15 @@ public class Hero extends Character {
     }
 
     @Override
-    public String attack(Character monster) {
+    public String attack(Creature monster) {
         String message;
         String hit = "hit ";
         String damageDealt;
         if (equippedWeapon != null) {
             damageDealt = " and dealt " + getEquippedWeapon().getDamageDealt() + " " + getEquippedWeapon().getDamageType() + " damage.";
-        } else {
-            damageDealt = " and dealt 1 damage.";
-        }
-        if (equippedWeapon != null) {
             monster.setHp(monster.getHp() - equippedWeapon.getDamageDealt());
         } else {
+            damageDealt = " and dealt 1 damage.";
             monster.setHp(monster.getHp() - unarmedAttackDamage);
         }
         if (monster.getHp() < 1) {
@@ -229,16 +270,6 @@ public class Hero extends Character {
         return message;
     }
 
-    public void addMoney(int amount) {
-        this.money = this.money + amount;
-    }
-
-    public void removeMoney(int amount) throws NoMoreMoneyException {
-        if (amount > this.money) {
-            throw new NoMoreMoneyException();
-        }
-        this.money = this.money - amount;
-    }
 
     public void setSkillsByHeroClass() {
         List<Skill> defaultSkills = SkillResources.defaultSkills();
@@ -246,5 +277,15 @@ public class Hero extends Character {
                 .filter(skill -> skill.getClassRestrictions().contains(getHeroClass()))
                 .collect(Collectors.toList());
         setSkills(skillsFiltered);
+    }
+
+    public void addMundaneItemToBackpack(MundaneItem mundaneItem) {
+        try {
+            backpack.putEquipmentToFirstAvailableSlot(new MundaneItem(mundaneItem.getName(), mundaneItem.getWeight(),
+                    mundaneItem.getPrice(), mundaneItem.getMaxStackSize(), mundaneItem.isQuestItem(), mundaneItem.getSelectPossibility(),
+                    mundaneItem.getNumberOfItems(), mundaneItem.getItemType()));
+        } catch (InventorySlotsFullException e) {
+            e.printStackTrace();
+        }
     }
 }

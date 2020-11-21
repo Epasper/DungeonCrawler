@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Map</title>
     <script src="../jsDungeonMap/mapForm.js" defer></script>
 </head>
 <body>
-    <form action='/dungeonMap' onsubmit="return validate()" method='post'>
+    <form action='/dungeonMap' onsubmit="return validate()" method='post'> <!--metoda 'get' powoduje, że w adresie strony pojawiają się parametry, czego chciałbym uniknąć-->
         <label for="width">Map width:</label><br>
         <input type='number' min="20" name='width' id="width"><br> <!--required-->
         <label for="height">Map height:</label><br>

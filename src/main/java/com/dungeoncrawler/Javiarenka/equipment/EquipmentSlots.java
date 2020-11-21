@@ -10,6 +10,8 @@ public enum EquipmentSlots {
     ARMS("Arms"),
     BAGGAGE("Baggage");
 
+    //todo head and legs
+
     private final String equipmentSlotsString;
 
     EquipmentSlots(String heroClassString) {

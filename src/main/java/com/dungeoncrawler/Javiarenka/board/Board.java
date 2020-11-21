@@ -3,7 +3,7 @@ package com.dungeoncrawler.Javiarenka.board;
 public class Board {
     private int boardX;
     private int boardY;
-    private Tile[][] boardTiles = new Tile[boardX][boardY];
+    private EncounterTile[][] boardTiles = new EncounterTile[boardX][boardY];
 
     public Board(int boardX, int boardY) {
         this.boardX = boardX;
@@ -26,11 +26,11 @@ public class Board {
         this.boardY = boardY;
     }
 
-    public Tile[][] getBoardTiles() {
+    public EncounterTile[][] getBoardTiles() {
         return boardTiles;
     }
 
-    public void setBoardTiles(Tile[][] boardTiles) {
+    public void setBoardTiles(EncounterTile[][] boardTiles) {
         this.boardTiles = boardTiles;
     }
 }

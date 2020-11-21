@@ -44,6 +44,7 @@ public class PartySelectorService {
         } catch (IOException e) {
             selectedHeroes = new ArrayList<>();
         }
+        System.out.println(selectedHeroes);
         return selectedHeroes;
     }
 

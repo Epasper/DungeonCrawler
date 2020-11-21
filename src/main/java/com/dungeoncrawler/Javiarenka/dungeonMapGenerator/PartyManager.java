@@ -1,13 +1,21 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PartyManager
 {
-    private Stage stage;
-    private TileNavigator tileNav;
+    private transient Stage stage;
+    private transient TileNavigator tileNav;
     private PartyAvatar party;
+
+    public PartyManager(){};
 
     public PartyManager(Stage stage)
     {
@@ -54,12 +62,29 @@ public class PartyManager
         return party;
     }
 
+    public PartyAvatar spawnParty(Tile targetTile, Direction facingDirection)
+    {
+        party = new PartyAvatar(targetTile);
+        targetTile.setOccupied(true);
+        party.setDirection(facingDirection);
+        return party;
+    }
+
+    public PartyAvatar spawnParty(PartyAvatar givenParty)
+    {
+        party = new PartyAvatar(stage.getTile(givenParty.getOccupiedTile().getX(), givenParty.getOccupiedTile().getY()));
+        party.getOccupiedTile().setOccupied(true);
+        party.setDirection(givenParty.getDirection());
+        return party;
+    }
+
     public boolean teleportParty(Tile targetTile)
     {
         if(targetTile.isWalkable())
         {
-            party.occupiedTile.setOccupied(false);
+            party.getOccupiedTile().setOccupied(false);
             party.setOccupiedTile(targetTile);
+            party.getOccupiedTile().setOccupied(true);
             return true;
         }
         return false;
@@ -73,12 +98,12 @@ public class PartyManager
 
     public boolean movePartyOneStep(Direction dir)
     {
-        if(party.direction != dir) {
+        if(party.getDirection() != dir) {
             party.setDirection(dir);
             return false;
         }
 
-        Tile targetTile = tileNav.getNextTile(party.occupiedTile, dir);
+        Tile targetTile = tileNav.getNextTile(party.getOccupiedTile(), dir);
         party.setDirection(dir);
         if (!targetTile.isWalkable()) return false;
         return teleportParty(targetTile);
@@ -91,9 +116,24 @@ public class PartyManager
 
         for(Direction dir : Direction.VALUES)
         {
-            targetTile = tileNav.getNextTile(party.occupiedTile, dir);
+            targetTile = tileNav.getNextTile(party.getOccupiedTile(), dir);
             outputMap.put(dir, targetTile.isWalkable());
         }
         return outputMap;
+    }
+
+    public void saveThisPartyManager()
+    {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try
+        {
+            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "partyManager.txt");
+            gson.toJson(this, writer);
+            writer.flush();
+            writer.close();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

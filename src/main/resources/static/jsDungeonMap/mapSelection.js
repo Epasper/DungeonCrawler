@@ -1,4 +1,6 @@
+import { getMappedElementById, idMap} from './dungeonMap.js'
 import { updateButtons } from './mapButtons.js'
+import { tileMouseEntered } from './mapEvents.js'
 
 export let selectedGridTileDiv
 
@@ -16,43 +18,41 @@ export function makeSelection(targetTile, mapGrid) {
     const x = getX(targetTile) + 1
     const y = getY(targetTile) + 1
 
-    const selectionDivElement = document.createElement(`div`)
-    selectionDivElement.style.gridRow = (`${y}`)
-    selectionDivElement.style.gridColumn = (`${x}`)
-    selectionDivElement.id = 'selection'
+    const selectionDivElement = document.createElement(`div`);
+    selectionDivElement.style.gridRow = (`${y}`);
+    selectionDivElement.style.gridColumn = (`${x}`);
+    selectionDivElement.id = 'selection';
+    idMap.set(selectionDivElement.id, selectionDivElement);
 
     console.log(getX(targetTile), `---`, getY(targetTile))
     mapGrid.appendChild(selectionDivElement)
 
     selectionDivElement.addEventListener('click', clickedOnSelectionDiv);
-    selectionDivElement.addEventListener('mouseenter', function () {
-        var ev = new Event('mouseenter')
-        selectedGridTileDiv.dispatchEvent(ev)
-    })
-    selectionDivElement.addEventListener('mouseleave', function () {
-        var ev = new Event('mouseleave')
-        selectedGridTileDiv.dispatchEvent(ev)
-    })
+    selectionDivElement.addEventListener('mouseenter', mouseEnteredSelectionDiv);
 }
 
-export function getX(tile) {
+function mouseEnteredSelectionDiv() {
+    tileMouseEntered({target: selectedGridTileDiv})
+}
+
+export function getX(tile, separator = '-') {
     var tileId = ``
     tileId = tile.id
 
-    var x = tileId.split(`-`)[0]
+    var x = tileId.split(separator)[0]
     return x * 1
 }
 
-export function getY(tile) {
+export function getY(tile, separator = '-') {
     var tileId = ``
     tileId = tile.id
 
-    var y = tileId.split(`-`)[1]
+    var y = tileId.split(separator)[1]
     return y * 1
 }
 
 async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
-    selectedGridTileDiv.dispatchEvent(new Event('mouseleave'));
+    //selectedGridTileDiv.dispatchEvent(new Event('mouseleave'));
     let tileId = selectedGridTileDiv.id;
     let tileType = selectedGridTileDiv.classList[1];
 
@@ -61,11 +61,22 @@ async function clickedOnSelectionDiv({ target: clickedSelectionDiv }) {
     const message = `Tile: ${tileId} (${tileType}) has been de-selected!`;
     await axios.get(`http://localhost:8080/getClickedTile?coordX=${coordX}&coordY=${coordY}&message=${message}`);
 
-    updateButtons();
-    selectedGridTileDiv = null;
-    clickedSelectionDiv.remove();
+    await updateButtons();
+    await deleteSelection(clickedSelectionDiv);
+
+    // selectedGridTileDiv = null;
+    // idMap.delete(clickedSelectionDiv.id);
+    // clickedSelectionDiv.remove();
 }
 
-export function getDivFromBackendTile({ x, y }) {
-    return document.getElementById(`${x}-${y}`);
+export async function deleteSelection(selectionDiv = getMappedElementById('selection')) {
+    selectedGridTileDiv = null;
+    idMap.delete(selectionDiv.id);
+    selectionDiv.remove();
+}
+
+export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
+
+    // return document.getElementById(`${x}-${y}`);
+    return getMappedElementById(`${x}${distinguisherSign}${y}`);
 }
