@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 public enum HeroClass {
     ARCHER("Archer"),
@@ -23,9 +23,8 @@ public enum HeroClass {
     }
 
     public static HeroClass getHeroClassByName(String name) {
-        name = name.toUpperCase();
         for(HeroClass v : values()){
-            if( v.heroClassString.equals(name)){
+            if( v.heroClassString.equalsIgnoreCase(name)){
                 return v;
             }
         }

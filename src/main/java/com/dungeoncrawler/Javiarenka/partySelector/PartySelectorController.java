@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.partySelector;
 
+import com.dungeoncrawler.Javiarenka.board.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public class PartySelectorController {
 
     @PostMapping("/partySelector")
     public RedirectView postPartySelect(@RequestBody List<String> listOfChosenNames, Model model) {
+        BoardService.isAlreadyLoaded = false;
         System.out.println("postMethodCalledSuccessfully: " + listOfChosenNames.toString());
         service.saveTheParty(listOfChosenNames);
         service.setAllAvailableHeroes(service.loadAllHeroes());

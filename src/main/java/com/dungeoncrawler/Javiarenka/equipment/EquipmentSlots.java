@@ -1,7 +1,5 @@
 package com.dungeoncrawler.Javiarenka.equipment;
 
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
-
 public enum EquipmentSlots {
     CHEST("Chest"),
     LEFT_HAND("Left Hand"),

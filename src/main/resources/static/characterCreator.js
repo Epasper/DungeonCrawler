@@ -2,7 +2,19 @@ let globalHeroClass = '';
 let isWeaponSelected = false;
 let isArmorSelected = false;
 let isHeroClassSelected = false;
+let areAllAttributePointsSpent = false;
 let errorMessages = [];
+let availableAttributePoints;
+let allAttributeNames = [];
+let allAttributes = {};
+
+function initialize() {
+    allAttributeNames.forEach(e => {
+        let attrDiv = document.getElementById('attribute:' + e);
+        attrDiv.value = 2;
+        allAttributes[e] = 2;
+    })
+}
 
 function selectHeroClass(heroClass) {
     sendAjaxArmorRequest(heroClass);
@@ -11,6 +23,29 @@ function selectHeroClass(heroClass) {
     isHeroClassSelected = true;
     isArmorSelected = false;
     isWeaponSelected = false;
+}
+
+function changeAttributePoints(attributeName) {
+    const backupCurrentAttributePoints = allAttributes[attributeName];
+    let attrDiv = document.getElementById('attribute:' + attributeName);
+    let allPointsDiv = document.getElementById('number-of-points');
+    console.log(allAttributes);
+    console.log(availableAttributePoints);
+    allAttributes[attributeName] = attrDiv.valueAsNumber;
+    availableAttributePoints = 22 - Object.values(allAttributes).reduce((prev, curr) => {
+        return prev + curr - 2;
+    })
+    console.log(availableAttributePoints);
+    if (availableAttributePoints < 0) {
+        availableAttributePoints = 0;
+        attrDiv.value = backupCurrentAttributePoints;
+        allAttributes[attributeName] = backupCurrentAttributePoints;
+    }
+    allPointsDiv.innerHTML = availableAttributePoints;
+}
+
+function validatePoints(attributeName) {
+    return availableAttributePoints > 0 && allAttributes[attributeName] > 1 && allAttributes[attributeName] < 12;
 }
 
 function sendAjaxArmorRequest(heroClass) {
@@ -108,12 +143,19 @@ function saveCharacter() {
         const weaponName = document.getElementsByClassName('selection selection-success weaponImg')[0].innerText;
         const armorName = document.getElementsByClassName('selection selection-success armorImg')[0].innerText;
         const heroClass = globalHeroClass;
+        console.log(allAttributes);
         const hero = {
             name: name,
             surname: surname,
             weaponName: weaponName,
             armorName: armorName,
-            className: heroClass
+            className: heroClass,
+            strength: allAttributes.Strength,
+            dexterity: allAttributes.Dexterity,
+            stamina: allAttributes.Stamina,
+            intelligence: allAttributes.Intelligence,
+            willpower: allAttributes.Willpower,
+            resilience: allAttributes.Resilience,
         }
         const heroJSON = JSON.stringify(hero);
         request.send(heroJSON);

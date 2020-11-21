@@ -1,5 +1,7 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
+import com.dungeoncrawler.Javiarenka.creature.skill.SkillCard;
+import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import com.dungeoncrawler.Javiarenka.staticResources.SkillResources;
 import com.dungeoncrawler.Javiarenka.equipment.*;
 import com.google.gson.Gson;
@@ -20,7 +22,7 @@ public class Hero extends Creature {
     private String armorName;
     private String className;
     private int money;
-    private List<Skill> skills;
+    private List<SkillCard> skillCards;
     private Backpack backpack = new Backpack();
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
@@ -28,6 +30,12 @@ public class Hero extends Creature {
     private int encounterXPosition;
     private int encounterYPosition;
     private boolean isSelected;
+    private int strength;
+    private int dexterity;
+    private int stamina;
+    private int intelligence;
+    private int willpower;
+    private int resilience;
 
     public boolean isSelected() {
         return isSelected;
@@ -117,12 +125,12 @@ public class Hero extends Creature {
         this.money = money;
     }
 
-    public List<Skill> getSkills() {
-        return skills;
+    public List<SkillCard> getSkillCards() {
+        return skillCards;
     }
 
-    public void setSkills(List<Skill> skills) {
-        this.skills = skills;
+    public void setSkillCards(List<SkillCard> skillCards) {
+        this.skillCards = skillCards;
     }
 
     public Backpack getBackpack() {
@@ -145,12 +153,69 @@ public class Hero extends Creature {
         isSelectedForParty = selectedForParty;
     }
 
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public void setDexterity(int dexterity) {
+        this.dexterity = dexterity;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        this.stamina = stamina;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public int getWillpower() {
+        return willpower;
+    }
+
+    public void setWillpower(int willpower) {
+        this.willpower = willpower;
+    }
+
+    public int getResilience() {
+        return resilience;
+    }
+
+    public void setResilience(int resilience) {
+        this.resilience = resilience;
+    }
+
+    public static void main(String[] args) {
+        PartySelectorService partySelectorService = new PartySelectorService();
+        List<Hero> temp = partySelectorService.loadAllHeroes();
+        for(Hero h : temp) {
+            h.setSkillCards(null);
+            h.saveThisHero();
+        }
+    }
+
     public Hero() {
         super();
         addStartingBackpackItems();
     }
 
-    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<Skill> skills) {
+    public Hero(String name, String surname, HeroClass heroClass, Armor equippedArmor, Weapon equippedWeapon, int money, List<SkillCard> skillCards) {
         this();
         super.setName(name);
         this.surname = surname;
@@ -160,7 +225,7 @@ public class Hero extends Creature {
         this.backpack.setRightHandSlot(equippedWeapon);
         this.backpack.setChestSlot(equippedArmor);
         this.money = money;
-        this.skills = skills;
+        this.skillCards = skillCards;
     }
 
     public void addStartingBackpackItems() {
@@ -184,7 +249,7 @@ public class Hero extends Creature {
                 ", weaponName='" + weaponName + '\'' +
                 ", armorName='" + armorName + '\'' +
                 ", money=" + money +
-                ", skills=" + skills +
+                ", skillCards=" + skillCards +
                 ", backpack=" + backpack +
                 '}';
     }
@@ -292,11 +357,15 @@ public class Hero extends Creature {
     }
 
     public void setSkillsByHeroClass() {
-        List<Skill> defaultSkills = SkillResources.defaultSkills();
-        List<Skill> skillsFiltered = defaultSkills.stream()
-                .filter(skill -> skill.getClassRestrictions().contains(getHeroClass()))
+        SkillResources s = new SkillResources();
+        List<SkillCard> defaultSkillCards = SkillResources.getAllStartingSkillCards();
+        List<SkillCard> skillsFiltered = defaultSkillCards
+                .stream()
+                .filter(skillCard -> skillCard
+                        .getClassRestrictions()
+                        .contains(getHeroClass()))
                 .collect(Collectors.toList());
-        setSkills(skillsFiltered);
+        setSkillCards(skillsFiltered);
     }
 
     public void addMundaneItemToBackpack(MundaneItem mundaneItem) {
