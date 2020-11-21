@@ -3,10 +3,17 @@ package com.dungeoncrawler.Javiarenka.board;
 import com.dungeoncrawler.Javiarenka.creature.Creature;
 import com.dungeoncrawler.Javiarenka.creature.Hero;
 import com.dungeoncrawler.Javiarenka.creature.Monster;
+import com.dungeoncrawler.Javiarenka.creature.MonsterRace;
 import com.dungeoncrawler.Javiarenka.load.LoadGameService;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,17 +41,31 @@ public class BoardService {
     public BoardService() {
         heroes = new ArrayList<>();
         messageOutput.add("Fight log:");
-        Monster testMon1 = new Monster(80, "Goblin", 9);
-        Monster testMon2 = new Monster(30, "Animal", 4);
-        Monster testMon3 = new Monster(200, "Undead", 15);
+        Monster testMon1 = new Monster(80, MonsterRace.GOBLIN, 9);
+        Monster testMon2 = new Monster(30, MonsterRace.ANIMAL, 4);
+        Monster testMon3 = new Monster(200, MonsterRace.UNDEAD, 15);
+        Monster testMon4 = new Monster(100, MonsterRace.FIEND, 12);
+        Monster testMon5 = new Monster(500, MonsterRace.DRAGON, 40);
+        Monster testMon6 = new Monster(300, MonsterRace.MONSTROSITY, 20);
+        testMon1.setName("Goblin Brawler");
         testMon1.setImageLink("../images/monsters/monster_goblinscout.png");
-        testMon1.setName("Goblin Warrior");
-        testMon2.setImageLink("../images/monsters/monster_ratling.png");
         testMon2.setName("Rat");
-        testMon3.setImageLink("../images/monsters/monster_skeleton.png");
+        testMon2.setImageLink("../images/monsters/monster_ratling.png");
         testMon3.setName("Skeleton Warrior");
-        monsters.addAll(List.of(testMon1, testMon2, testMon3));
+        testMon3.setImageLink("../images/monsters/monster_skeleton.png");
+        testMon4.setName("Imp");
+        testMon4.setImageLink("../images/monsters/monster_imp.png");
+        testMon5.setName("Red Dragon");
+        testMon5.setImageLink("../images/monsters/monster_dragonred.png");
+        testMon6.setName("Centaur");
+        testMon6.setImageLink("../images/monsters/monster_centaur.png");
+        monsters.addAll(List.of(testMon1, testMon2, testMon3, testMon4, testMon5, testMon6));
         if (!isAlreadyLoaded) prepareTheBoard();
+
+        for (Monster monster : monsters) {
+            monster.saveThisMonster();
+        }
+        prepareTheBoard();
     }
 
     public void prepareTheBoard() {
@@ -210,6 +231,35 @@ public class BoardService {
         heroes.clear();
     }
 
+    public List<String> getAllHeroNamesAndSurnames() {
+        File folder = new File("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/");
+        File[] listOfFiles = folder.listFiles();
+        List<String> allHeroNamesAndSurnames = new ArrayList<>();
+
+        if (listOfFiles != null) {
+            for (File file : listOfFiles) {
+                if (file.isFile() && file.getName().contains("---")) {
+                    allHeroNamesAndSurnames.add(file.getName());
+                }
+            }
+        }
+        return allHeroNamesAndSurnames;
+    }
+
+    public void loadAllHeroes() {
+        heroes.clear();
+        Gson gson = new Gson();
+        for (String nameAndSurname : getAllHeroNamesAndSurnames()) {
+            try {
+                Reader reader = Files.newBufferedReader(Paths.get("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/" + nameAndSurname));
+                Hero hero = gson.fromJson(reader, Hero.class);
+                heroes.add(hero);
+                reader.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     public PartySelectorService getPartySelectorService() {
         return partySelectorService;
