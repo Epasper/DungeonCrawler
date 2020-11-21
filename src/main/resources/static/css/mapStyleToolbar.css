@@ -1,14 +1,17 @@
+/* TODO: potworzyć zmienne z kolorami (na bazie rgb lub hex) i podmienić je w kodzie */
+
 :root {
     --toolbar-height: 15vh;
     --toolbar-padding: 1vh;
-    --toolbar-space: calc(var(--toolbar-height) - var(--toolbar-padding) * 2)
+    --toolbar-space: calc(var(--toolbar-height) - var(--toolbar-padding) * 2);
+    --stacked-button-height: calc(var(--toolbar-space)/3);
+    --notification-time: 3000ms;
 }
 
 .toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* overflow: hidden; */
     background-color: #333;
     position: fixed;
     bottom: 0;
@@ -19,28 +22,272 @@
     padding: var(--toolbar-padding);
 }
 
-.button {
-    /* box-sizing: border-box; */
-    height: 100%;
-    padding: 0 1em;
-    width: calc(var(--toolbar-space));
-    border-radius: calc(var(--toolbar-padding)/2);
+.menu {
+    width: var(--toolbar-height);
+    padding: var(--toolbar-padding);
+    background-color: #333;
+    position: fixed;
+    right: 0px;
+    bottom: calc(var(--toolbar-height) + var(--toolbar-padding)/2);
+    border-top-left-radius: calc(var(--toolbar-padding)*1);
+    border-bottom-left-radius: calc(var(--toolbar-padding)*1);
+    box-shadow: inset 0 0 20px #000000;
+
+    transition: transform 0.3s;
+    z-index: 1;
 }
 
+.menu.hidden {
+    transform: translateX(100%);
+}
+
+.menu.partial {
+    transform: translateX(calc(100% - var(--toolbar-padding) + 1px));
+}
+
+.toolbar-group {
+    position: relative;
+    height: var(--toolbar-space);
+}
+
+.load-slot,
+.save-slot {
+    position: relative;
+    height: var(--stacked-button-height);
+}
+
+.button {
+    user-select: none;
+    padding: 0 0.5em;
+    height: 100%;
+    width: 100%;
+    border-radius: calc(var(--toolbar-padding)/2);
+    background-color: #bbb;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s, opacity 0.3s, width 0.3s, height 0.3s;
+}
+
+.button-cancel,
+.button-confirm
+{
+    position: absolute;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.3s, width 0.3s;
+    white-space: nowrap;
+}
+
+.labels {
+    --this-height: calc(var(--stacked-button-height));
+
+    pointer-events: none;
+    position: absolute;
+    display: flex;
+    height: var(--this-height);
+    transform: translateX(calc((100% + var(--toolbar-padding) * 1.5) * -1));
+}
+
+.tooltip
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #bbb;
+    padding: 1em;
+    background-color: #333;
+    border-radius: calc(var(--toolbar-padding) * 1);
+    box-shadow: inset 0 0 20px #000000;
+    transition: all 0.3s;
+}
+
+.tooltip-info{
+    position: relative;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tooltip-confirm:not(.hidden) {
+    margin-left: calc(var(--toolbar-padding) / 2 + 2px);
+}
+
+.load-slot:hover .tooltip-info,
+.save-slot:hover .tooltip-info
+{
+    opacity: 1;
+}
+
+.tooltip-info::after {
+    content: "";
+    position: absolute;
+    --current-width: calc(100%);
+    left: 100%;
+    border-width: calc(var(--toolbar-padding) * 0.5);
+    border-style: solid;
+    border-color: transparent transparent transparent #222;
+  }
+
+.tooltip p
+{
+    word-wrap: none;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+.tooltip.hidden
+{
+    font-size: 0;
+    pointer-events: none;
+}
+
+.button-cancel {
+    width: var(--stacked-button-height);
+    right: 0;
+}
+
+.button-confirm {
+    width: calc(100% - var(--stacked-button-height));
+    left: 0;
+    padding: 0;
+}
+
+.button:focus {
+    outline: 0;
+}
+
+.button:enabled:hover {
+    cursor: pointer;
+    background-color: #ccc;
+    border-color: skyblue;
+    box-shadow: 0 0 5px 0px skyblue;
+}
+
+.button.button-delete:enabled:hover
+{
+    border-color: red;
+    box-shadow: 0 0 5px 0px red;
+}
+
+.button.button-cancel:enabled:hover
+{
+    border-color: red;
+    box-shadow: 0 0 5px 0px red;
+    width: calc(100% - var(--stacked-button-height));
+}
+
+.button.button-cancel:enabled[data-text=" Keep "]:hover
+{
+    border-color: lightgreen;
+    box-shadow: 0 0 5px 0px lightgreen;
+}
+
+.button.button-cancel:enabled:hover + .button.button-confirm:enabled {
+    width: var(--stacked-button-height);
+}
+
+.button.button-confirm:enabled::before
+{
+    content: ' OK ';
+    content: attr(data-text);
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.button.button-confirm:enabled::after {
+    opacity: 0;
+}
+
+.button.button-cancel:enabled:hover + .button.button-confirm:enabled::before
+{
+    content: ' OK ';
+    content: attr(data-text);
+    transition: font-size 0.3s;
+    font-size: 0px;
+    padding: 0;
+}
+
+.button.button-cancel:enabled::after
+{
+    content: ' Cancel ';
+    content: attr(data-text);
+    font-size: 0;
+    transition: 0.5s;
+}
+
+.button.button-cancel:enabled:hover::after
+{
+    content: ' Cancel';
+    content: attr(data-text);
+    font-size: 1em;
+}
+
+.button.button-await-confirmation:enabled {
+    pointer-events: none;
+    opacity: 0;
+}
+
+.button.button-confirm:enabled:hover
+{
+    border-color: lightgreen;
+    box-shadow: 0 0 5px 0px lightgreen;
+}
+
+.button.button-confirm:enabled[data-text=" Confirm "]:hover
+{
+    border-color: red;
+    box-shadow: 0 0 5px 0px red;
+}
+
+.button.button-load,
+.button.button-save {
+    position: absolute;
+}
+
+.button:enabled:active {
+    background-color: #fff;
+}
+
+
 .button:disabled {
-    background-color: #959595;
+    background-color: #444;
+    color: #222;
 }
 
 .button.button-stacked {
-    width: 100%;
-    /* height: 200px; */
-    /* flex-shrink: 0; */
+    height: var(--stacked-button-height);
+}
+
+.notification {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 1s;
+    /* border: solid 3px red; */
+    background-color: #333;
+    color: #bbb;
+    box-shadow: inset 0 0 20px #000b;
+    left: 50%;
+    bottom: var(--toolbar-height);
+    transform: translateX(-50%) translateY(110%);
+    padding: 0 calc(var(--toolbar-padding) * 3);
+    border-top-left-radius: calc(var(--stacked-button-height)*0.9);
+    border-top-right-radius: calc(var(--stacked-button-height)*0.9);
+    height: var(--stacked-button-height);
+    width: calc(var(--toolbar-space) * 3);
+    animation: show-and-hide var(--notification-time);
+}
+
+@keyframes show-and-hide {
+    33% {
+        transform: translateX(-50%);
+    }
+    66% {
+        transform: translateX(-50%);
+    }
 }
 
 .separator-h {
     width: 100%;
-    height: calc(var(--toolbar-padding) * 1);
-    min-height: calc(var(--toolbar-padding) * 1);
+    height: calc(var(--toolbar-padding) * 0.75);
+    min-height: calc(var(--toolbar-padding) * 0.75);
 }
 
 .separator-v {
@@ -48,32 +295,38 @@
     min-width: calc(var(--toolbar-padding) * 1);
 }
 
+#menu-group {
+    width: var(--toolbar-space);
+}
+
 #move-party-btn {
-    /* display: none; */
     z-index: 1;
-    position: fixed;
-    height: calc(var(--toolbar-space));
     transition: all 0.4s, transform 0.4s;
-    /* transition: transform 0.4s; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #spawn-party-btn {
-    /* display: none; */
     z-index: 1;
-    position: fixed;
-    height: calc(var(--toolbar-space));
     transition: all 0.4s, transform 0.4s;
-    /* transition: transform 0.4s; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 #move-margin {
-    /* pointer-events: none; */
     pointer-events: painted;
     position: absolute;
     bottom: 0;
     left: 0;
-    height: calc(var(--toolbar-height) * 1.2);
-    width: calc(var(--toolbar-height) * 1.2);
+    height: 100%;
+    width: 100%;
+    transform: scale(2);
     /* border: solid 1px yellow; */
 }
 
@@ -91,18 +344,16 @@
     opacity: 1;
 }
 
-#misc-menu {
+.menu-flex {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: var(--toolbar-space);
     height: 100%;
     /* border: solid 2px white; */
 }
 
-#action-menu {
+#action-group {
     position: relative;
-    height: var(--toolbar-space);
     width: calc(2 * var(--toolbar-space) + var(--toolbar-padding));
     /* border: solid 1px white; */
 }
@@ -118,15 +369,14 @@
 
 #actions-container {
     display: flex;
-    /* border: solid 20px red; */
     height: 100%;
     width: 100%;
+    /* border: solid 20px red; */
 }
 
 #action-btn {
     position: absolute;
     transition: all 0.6s, opacity 0.3s;
-    /* width: calc(2 * var(--toolbar-space)); */
     top: 0;
     bottom: 0;
     left: 0;
@@ -135,62 +385,18 @@
 }
 
 #action-btn-1, #action-btn-2 {
-    /* transform: scale(0.9); */
     transition: 0.3s;
 }
 
-#action-menu.active:hover #action-btn {
-/* #action-menu:hover #action-btn { */
-    /* transform: translateY( calc(var(--toolbar-space) * -1)); */
+#action-group.active:hover #action-btn {
     opacity: 0;
     pointer-events: none;
-
-    /* animation-name: hide-opacity;
-    animation-timing-function: ease-in-out;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards; */
 }
 
-/* #action-menu.active:hover #action-btn-1 { */
-#action-menu:hover #action-btn-1 {
-    /* transform: translateY( calc(var(--toolbar-space) * -1)); */
-    /* pointer-events: none; */
-    /* transform: scale(1); */
-    
-    /* z-index: 1; */
-
-    /* animation-name: left-to-right;
-    animation-timing-function: ease-in-out;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards; */
-}
-
-/* #action-menu.active:hover #action-btn-2 { */
-#action-menu:hover #action-btn-2 {
-    /* transform: translateY( calc(var(--toolbar-space) * -1)); */
-    /* pointer-events: none; */
-    /* transform: scale(1); */
-    
-    /* z-index: 1; */
-
-    /* animation-name: right-to-left;
-    animation-timing-function: ease-in-out;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards; */
-}
-
-#action-menu:hover #action-margin {
+#action-group:hover #action-margin {
     transform: scaleY(1.4) scaleX(1.2);
     z-index: -1;
 }
-
-#action-btn-1:hover, #action-btn-2:hover {
-    background-color: red;
-}
-
 
 @keyframes hide-opacity {
     40% {
@@ -198,7 +404,6 @@
         transform: scale(1);
     }
     70%{
-        /* opacity: 1; */
         transform: scale(0.9);
     }
     100%{
@@ -214,7 +419,6 @@
     }
     40% {
         transform: scale(0.7) translateX(calc((var(--toolbar-space)+var(--toolbar-padding))* -1.2));
-        /* transform: scale(0.7); */
     }
     60% {
         transform: translateX(calc((var(--toolbar-space)+var(--toolbar-padding))* -1.0));
@@ -255,17 +459,11 @@
 .move-container-hover:hover #move-grid {
     height: 100%;
     width: var(--toolbar-space);
-
 }
 
 .move-container-hover:hover #move-up {
     transform: translate(0, -100%) rotate(-90deg);
 }
-
-/* TODO: jeśli chcemy skalować któryś z guzików ruchu - trzeba użyć poniższego selektora*/
-/* #move-menu:hover #move-up:active, #move-menu:hover .move-button-active {
-    transform: translate(0, -100%) rotate(-90deg) scale(0.7);
-} */
 
 .move-container-hover:hover #move-left {
     transform: translate(-100%, 0) rotate(-180deg);
@@ -304,28 +502,15 @@
 }
 
 .move-button {
-    /* box-sizing: border-box; */
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: steelblue;
     height: 100%;
     left: 100px;
-    /* min-height: 20px; */
-    /* padding: 0 1em; */
-    /* margin: 10px; */
-    /* grid-area: 2 / 2 / 3 / 3; */
     grid-row-start: 2;
     grid-column-start: 2;
     transition: transform 0.6s;
-    /* transition: 0.5s; */
-    /* transition: background-image 0.5s; */
-    /* background-image: url('../images/dungeonMap/diamond.svg'); */
-    /* background-repeat: no-repeat; */
-    /* background-position: center; */
-    /* box-shadow: 0 0 10px 0px #000; */
-    /* background-size: cover; */
-    /* transform: scale(5); */
 }
 
 .move-button:hover {
@@ -359,7 +544,6 @@
     background-color: rgb(226, 16, 16);
     box-shadow: 0 0 10px 0px rgb(255, 0, 0);
 }
-
 
 
 /* poniżej demo animowanej obramówki, gdzie obramowanie jest widoczne tylko na rogach kratki*/

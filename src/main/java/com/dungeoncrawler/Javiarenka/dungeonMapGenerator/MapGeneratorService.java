@@ -2,6 +2,7 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
 import com.dungeoncrawler.Javiarenka.dungeonMapGenerator.fogOfWar.FogManager;
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +89,7 @@ public class MapGeneratorService
         stage.createPeripheralWall();
         rb.fillStageWithRooms();
         stage.saveToTxt("./src/main/java/com/dungeoncrawler/Javiarenka/dungeonMapGenerator/txt/rooms_backup.txt");
+        MapGeneratorService.buildDebugSite(stage);
         rb.removeCorridorClusters();
         rb.obstructPercentageOfCorridors(60);
         rb.addDoorToAllRooms();
@@ -266,32 +268,33 @@ public class MapGeneratorService
         return sb.toString();
     }
 
-    public void save()
+    public void save(int saveSlotNumber)
     {
-        stage.saveThisStage();
-        partyManager.saveThisPartyManager();
-        fogManager.saveThisFogManager();
+        stage.saveThisStage(saveSlotNumber);
+        partyManager.saveThisPartyManager(saveSlotNumber);
+        //fogManager.saveThisFogManager();
     }
 
-    public void load()
+    public void load(int loadSlotNumber)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String fileName = "stage.txt";
+        String stageSaveName = "save-" + Integer.toString(loadSlotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(loadSlotNumber) + "_party.txt";
+
         Gson gson = new Gson();
         Stage loadedStage = new Stage();
         PartyManager loadedPartyManager = new PartyManager();
 
-        Reader reader;
-
         try
         {
-            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
+            JsonReader reader = new JsonReader(Files.newBufferedReader(Paths.get(fileLocation + stageSaveName)));
+            reader.setLenient(true); //ustawia mniej restrykcyjne czytanie jsona. Tutaj na końcu pliku mamy dodaną datę. Bez trybu 'lenient', istnienie tej linijki z datą powoduje błąd parsowania jsona.
             loadedStage = gson.fromJson(reader, Stage.class);
             reader.close();
 
-            fileName = "partyManager.txt";
+            reader = new JsonReader(Files.newBufferedReader(Paths.get(fileLocation + partySaveName)));
+            reader.setLenient(true);
 
-            reader = Files.newBufferedReader(Paths.get(fileLocation + fileName));
             loadedPartyManager = gson.fromJson(reader, PartyManager.class);
             reader.close();
 
@@ -300,20 +303,17 @@ public class MapGeneratorService
             e.printStackTrace();
         }
 
-        PartyManager referencedPartyManager = new PartyManager(loadedStage);
-        FogManager referencedFogManager = new FogManager(loadedStage);
+        this.stage = loadedStage;
+        stage.linkTiles();
+
+        PartyManager referencedPartyManager = new PartyManager(stage);
+        FogManager referencedFogManager = new FogManager(stage);
 
         if (!Objects.isNull(loadedPartyManager.getParty()))
         {
             referencedPartyManager.spawnParty(loadedPartyManager.getParty());
             referencedFogManager.setParty(referencedPartyManager.getParty());
         }
-
-        this.stage = loadedStage;
-        //stage.getRooms().clear();
-        stage.linkRoomTilesReferencesToStageTiles();
-//        RoomBuilder rb = new RoomBuilder(stage);
-//        rb.scanTilesForRooms();
 
         this.partyManager = referencedPartyManager;
         this.fogManager = referencedFogManager;
