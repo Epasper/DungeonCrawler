@@ -79,17 +79,13 @@ public class Monster extends Creature {
         Random random = new Random();
         int randomNumber = random.nextInt(100);
         List<MundaneItem> availableItems = new ArrayList<>();
-        System.out.println(randomNumber);
 
-        if(getHp() < 1) {
             for(MundaneItem item : afterDeathItems) {
                 if(randomNumber <= item.getSelectPossibility()) {
                     availableItems.add(item);
                 }
             }
             return availableItems.get(random.nextInt(availableItems.size()));
-        }
-            return null;
     }
 
     public void afterDeath(Hero hero) {
