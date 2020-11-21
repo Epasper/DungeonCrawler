@@ -1,4 +1,4 @@
-import { getMappedElementById} from './dungeonMap.js'
+import * as utils from './mapUtils.js'
 
 const SIZE_REF = 80
 
@@ -12,7 +12,7 @@ function getMapWidth() {
     var checkedTile
 
     do {
-        checkedTile = getMappedElementById(width + '-0')
+        checkedTile = utils.getMappedElementById(width + '-0')
         width++
     } while (checkedTile != null)
     return width - 1
@@ -23,14 +23,14 @@ function getMapHeight() {
     var checkedTile
 
     do {
-        checkedTile = getMappedElementById('0-' + height)
+        checkedTile = utils.getMappedElementById('0-' + height)
         height++
     } while (checkedTile != null)
     return height - 1
 }
 
 function adaptMapAndFogGrids() {
-    var grid = getMappedElementById('grid');
+    var grid = utils.getMappedElementById('grid');
     // var gridFog = document.getElementById(`fog-grid`);
     var gridStyle = grid.style;
     // var gridFogStyle = gridFog.style;
@@ -42,12 +42,12 @@ function adaptMapAndFogGrids() {
 }
 
 function adaptTopLegend() {
-    var gridStyle = getMappedElementById(`coord-top`).style
+    var gridStyle = utils.getMappedElementById(`coord-top`).style
     gridStyle.gridTemplateColumns = `repeat(${mapWidth}, 1fr)`
 }
 
 function adaptSideLegend() {
-    var gridStyle = getMappedElementById(`coord-side`).style
+    var gridStyle = utils.getMappedElementById(`coord-side`).style
     gridStyle.gridTemplateRows = `repeat(${mapHeight}, 1fr)`
 }
 
@@ -60,7 +60,7 @@ export function adaptGrids()
 }
 
 function adaptContainerGrid() {
-    var grid = getMappedElementById(`container-grid`)
+    var grid = utils.getMappedElementById(`container-grid`)
     var gridStyle = grid.style
     gridStyle.gridTemplateRows = `1fr ${mapHeight}fr`
     gridStyle.gridTemplateColumns = `1fr ${mapWidth}fr`

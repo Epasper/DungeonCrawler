@@ -3,6 +3,9 @@ package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -78,6 +81,7 @@ public class MapRestController
     {
         Tile clickedTile = service.getStage().getTile(coordX, coordY);
         if (!message.equals("")) System.out.println(message);
+        System.out.println(clickedTile.getInfoString());
         return clickedTile;
     }
 
@@ -97,7 +101,6 @@ public class MapRestController
     @GetMapping("/activateDoor")
     public Object[] updateTile(@RequestParam int coordX, @RequestParam int coordY, @RequestParam TileType newType)
     {
-        //TODO: zadbać o sytuację, w której zamykane są drzwi, ale stoimy wewnątrz pokoju.
 
         Object[] outputArray = new Object[2];
         Tile targetTile = service.getStage().getTile(coordX, coordY);
@@ -144,10 +147,98 @@ public class MapRestController
         return outputMap;
     }
 
-    @GetMapping("saveMap")
-    public void saveMap()
+    @GetMapping("/getSeenTiles")
+    public Set<Tile> getSeenTiles()
     {
-        service.save();
+        return service.getFogManager().getAlreadySeenTiles();
     }
 
+    @GetMapping("/saveMap")
+    public void saveMap(@RequestParam int saveSlotNumber)
+    {
+        service.save(saveSlotNumber);
+    }
+
+    @GetMapping("/checkIfSaveExists")
+    public boolean checkIfSaveExists(@RequestParam int slotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(slotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(slotNumber) + "_party.txt";
+
+        File checkedSavedStage = new File(fileLocation + stageSaveName);
+        File checkedSavedParty = new File(fileLocation + partySaveName);
+
+        return (checkedSavedStage.exists() && checkedSavedParty.exists());
+    }
+
+    @GetMapping("/deleteSave")
+    public void deleteSave(@RequestParam int saveSlotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+
+        File savedStageToDelete = new File(fileLocation + stageSaveName);
+        File savedPartyToDelete = new File(fileLocation + partySaveName);
+
+        savedStageToDelete.delete();
+        savedPartyToDelete.delete();
+    }
+
+    @GetMapping("/getSaveInfo")
+    public String getSaveInfo(@RequestParam int saveSlotNumber)
+    {
+        String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        StringBuilder saveInfo = new StringBuilder();
+
+        try
+        {
+            //Reader reader = Files.newBufferedReader(Paths.get(fileLocation + stageSaveName));
+            BufferedReader br = new BufferedReader(new FileReader(fileLocation + stageSaveName));
+            String sCurrentLine;
+            String lastLine = "";
+            boolean foundWidth = false;
+            boolean foundHeight = false;
+            int width = 0;
+            int height = 0;
+
+            while ((sCurrentLine = br.readLine()) != null)
+            {
+//                System.out.println(sCurrentLine);
+                if (sCurrentLine.contains("width") && !foundWidth)
+                {
+                    String[] widthLineSplit = sCurrentLine.split(":");
+                    String strWidth = widthLineSplit[widthLineSplit.length - 1]
+                            .replace(",","")
+                            .replace(" ", "");
+                    width = Integer.parseInt(strWidth);
+                    foundWidth = true;
+                }
+
+                if (sCurrentLine.contains("height") && !foundHeight)
+                {
+                    String[] heightLineSplit = sCurrentLine.split(":");
+                    String strHeight = heightLineSplit[heightLineSplit.length - 1]
+                            .replace(",","")
+                            .replace(" ", "");
+                    height = Integer.parseInt(strHeight);
+                    foundHeight = true;
+                }
+
+                lastLine = sCurrentLine;
+            }
+
+            saveInfo.append("Map ").append(width).append("x").append(height).append(" | Saved at: ").append(lastLine);
+            br.close();
+
+        } catch (IOException e)
+        {
+            //e.printStackTrace();
+            saveInfo.append("Empty slot");
+        }
+
+        return saveInfo.toString();
+    }
 }

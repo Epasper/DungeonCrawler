@@ -7,10 +7,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Scope("singleton")
@@ -20,6 +18,7 @@ public class Stage
     private int width;
     private int height;
     private Tile[][] tiles;
+    private List<Tile> tilesList;
     private List<Room> rooms = new ArrayList<>();
     //private PartyManager partyManager = new PartyManager(this);
     //private FogManager fogManager = new FogManager(this);
@@ -42,6 +41,8 @@ public class Stage
                 tiles[coordX][coordY] = new Tile(coordX, coordY);
             }
         }
+
+        updateTilesList();
     }
 
     Stage(Tile[][] stageTiles)
@@ -58,6 +59,8 @@ public class Stage
                 tiles[coordX][coordY] = stageTiles[coordX][coordY];
             }
         }
+
+        updateTilesList();
     }
 
     Stage(String filePath) throws IOException
@@ -79,6 +82,8 @@ public class Stage
                 tiles[coordX][coordY].setType(stp.getTileTypeValue(coordX, coordY));
             }
         }
+
+        updateTilesList();
     }
 
     public int getWidth()
@@ -96,7 +101,12 @@ public class Stage
         return tiles;
     }
 
-//    public PartyManager getPartyManager()
+    public List<Tile> getTilesList()
+    {
+        return tilesList;
+    }
+
+    //    public PartyManager getPartyManager()
 //    {
 //        return partyManager;
 //    }
@@ -142,6 +152,11 @@ public class Stage
     public Tile getTile(int coordX, int coordY)
     {
         return tiles[coordX][coordY];
+    }
+
+    public Tile getTile(Tile tile)
+    {
+        return tiles[tile.getX()][tile.getY()];
     }
 
     public Tile[] getTilesOfType(TileType searchedType)
@@ -294,6 +309,13 @@ public class Stage
         System.out.println(getColumnString(colNumber));
     }
 
+    public List<Tile> getSeenTiles()
+    {
+        return getTilesList().stream()
+                .filter(Tile::wasAlreadySeen)
+                .collect(Collectors.toList());
+    }
+
     public String asString()
     {
         StringBuilder sb = new StringBuilder();
@@ -341,8 +363,7 @@ public class Stage
 
     public void setTileTypes(TileType targetType)
     {
-        Arrays.stream(getTilesAsOneDimensionalArray())
-                .forEach(tile -> tile.setType(targetType));
+        getTilesList().forEach(tile -> tile.setType(targetType));
     }
 
     public void createPeripheralWall()
@@ -455,24 +476,46 @@ public class Stage
         }
     }
 
-    public void linkRoomTilesReferencesToStageTiles()
+    public void updateTilesList()
+    {
+        this.tilesList = new ArrayList<>(Arrays.asList(getTilesAsOneDimensionalArray()));
+    }
+
+    public void linkTiles()
+    {
+        updateTilesList();
+        getRooms().forEach(room -> room.linkToStage(this));
+        //if (this.getClass() != Room.class) linkRoomTilesReferencesToStageTiles();
+    }
+
+    private void linkRoomTilesReferencesToStageTiles()
     {
         RoomBuilder rb = new RoomBuilder(this);
 
         rooms.forEach(room -> {
-            room.setTiles(rb.getTilesRectangle(this.getTile(room.getxPos(), room.getyPos()), room.getWidth(), room.getHeight(), BuildDirection.RD));
+            room.linkTiles();
+            room.getTilesList().forEach(tile -> {
+                tile = this.getTile(tile.getX(), tile.getY());
+            });
+            //room.setTiles(rb.getTilesRectangle(this.getTile(room.getxPos(), room.getyPos()), room.getWidth(), room.getHeight(), BuildDirection.RD));
             room.setDoor(this.getTile(room.getDoor().getX(), room.getDoor().getY()));
         });
     }
 
-    public void saveThisStage()
+    public void saveThisStage(int saveSlotNumber)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String url = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
+        String saveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
         try
         {
-            Writer writer = new FileWriter("src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/" + "stage.txt");
+            Writer writer = new FileWriter(url + saveName);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            Date date = new Date();
+
             gson.toJson(this, writer);
             writer.flush();
+            writer.append("\n").append(formatter.format(date));
             writer.close();
         } catch (IOException e)
         {
