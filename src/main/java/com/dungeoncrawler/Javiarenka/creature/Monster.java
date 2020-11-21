@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 import com.dungeoncrawler.Javiarenka.equipment.MundaneItem;
 

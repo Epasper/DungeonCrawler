@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ public abstract class Creature {
     private int hp;
     private int maxHp;
     private boolean isAlive;
-    private List<CharacterStatus> allCharacterStatuses;
+    private List<CreatureStatus> allCreatureStatuses;
     private int maxPhysicalShield;
     private int maxMagicShield;
     private int physicalShield;
@@ -18,6 +18,32 @@ public abstract class Creature {
     private int initiative;
     private String imageLink;
     private boolean isActive = false;
+    private int encounterXPosition;
+    private int encounterYPosition;
+
+    public List<CreatureStatus> getAllCreatureStatuses() {
+        return allCreatureStatuses;
+    }
+
+    public void setAllCreatureStatuses(List<CreatureStatus> allCreatureStatuses) {
+        this.allCreatureStatuses = allCreatureStatuses;
+    }
+
+    public int getEncounterXPosition() {
+        return encounterXPosition;
+    }
+
+    public void setEncounterXPosition(int encounterXPosition) {
+        this.encounterXPosition = encounterXPosition;
+    }
+
+    public int getEncounterYPosition() {
+        return encounterYPosition;
+    }
+
+    public void setEncounterYPosition(int encounterYPosition) {
+        this.encounterYPosition = encounterYPosition;
+    }
 
     public boolean isActive() {
         return isActive;
@@ -93,7 +119,7 @@ public abstract class Creature {
 
     public Creature() {
         this.isAlive = true;
-        this.allCharacterStatuses = new ArrayList<>();
+        this.allCreatureStatuses = new ArrayList<>();
     }
 
     public Creature(int hp) {
@@ -132,18 +158,18 @@ public abstract class Creature {
         isAlive = alive;
     }
 
-    public List<CharacterStatus> getAllCharacterStatuses() {
-        return allCharacterStatuses;
+    public List<CreatureStatus> getAllCharacterStatuses() {
+        return allCreatureStatuses;
     }
 
-    public void setAllCharacterStatuses(List<CharacterStatus> allCharacterStatuses) {
-        this.allCharacterStatuses = allCharacterStatuses;
+    public void setAllCharacterStatuses(List<CreatureStatus> allCreatureStatuses) {
+        this.allCreatureStatuses = allCreatureStatuses;
     }
 
     public boolean checkForStatus(String statusName) {
-        List<CharacterStatus> statusList = getAllCharacterStatuses();
+        List<CreatureStatus> statusList = getAllCharacterStatuses();
         return statusList.stream()
-                .anyMatch((CharacterStatus status) -> status.equalsCharacterStatus(statusName));
+                .anyMatch((CreatureStatus status) -> status.equalsCharacterStatus(statusName));
     }
 
     @Override
@@ -153,7 +179,7 @@ public abstract class Creature {
                 ", hp=" + hp +
                 ", maxHp=" + maxHp +
                 ", isAlive=" + isAlive +
-                ", allCharacterStatuses=" + allCharacterStatuses +
+                ", allCharacterStatuses=" + allCreatureStatuses +
                 ", maxPhysicalShield=" + maxPhysicalShield +
                 ", maxMagicShield=" + maxMagicShield +
                 ", physicalShield=" + physicalShield +

@@ -1,9 +1,9 @@
 package com.dungeoncrawler.Javiarenka;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
-import com.dungeoncrawler.Javiarenka.character.Monster;
-import com.dungeoncrawler.Javiarenka.character.NoMoreMoneyException;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.Monster;
+import com.dungeoncrawler.Javiarenka.creature.NoMoreMoneyException;
 import com.dungeoncrawler.Javiarenka.equipment.DamageType;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import org.junit.jupiter.api.BeforeAll;
@@ -37,7 +37,6 @@ public class HeroTest {
         testMonster.setHp(MONSTER_STARTING_HP);
         testedHero.setEquippedWeapon(testWeapon);
         testWeapon.setDamageDealt(20);
-        testedHero.setMoney(30);
     }
 
     @Test
@@ -60,16 +59,4 @@ public class HeroTest {
         testedHero.attack(testMonster);
         assert (testMonster.isAlive());
     }
-
-    @Test
-    void testGetMoneyFromEmptyPocket(){
-        testedHero.setMoney(0);
-        Exception exception = assertThrows(NoMoreMoneyException.class, () -> testedHero.removeMoney(20));
-
-        String expectedMessage = NoMoreMoneyException.MESSAGE;
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
 }

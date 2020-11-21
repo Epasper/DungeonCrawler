@@ -1,8 +1,8 @@
 package com.dungeoncrawler.Javiarenka.board;
 
-import com.dungeoncrawler.Javiarenka.character.Creature;
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.Monster;
+import com.dungeoncrawler.Javiarenka.creature.Creature;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Monster;
 import com.dungeoncrawler.Javiarenka.load.LoadGameService;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import org.springframework.stereotype.Service;
@@ -26,6 +26,7 @@ public class BoardService {
     private EncounterTile[][] tiles;
     private Map<String, String> imageSources = new HashMap<>();
     Random random = new Random();
+    public static boolean isAlreadyLoaded = false;
     private final String grassImageSource = "../images/encounterTiles/GrassTile1.png";
     private final String stoneImageSource = "../images/encounterTiles/StoneFloor";
     private final String rubbleImageSource = "../images/encounterTiles/rubble";
@@ -43,7 +44,7 @@ public class BoardService {
         testMon3.setImageLink("../images/monsters/monster_skeleton.png");
         testMon3.setName("Skeleton Warrior");
         monsters.addAll(List.of(testMon1, testMon2, testMon3));
-        prepareTheBoard();
+        if (!isAlreadyLoaded) prepareTheBoard();
     }
 
     public void prepareTheBoard() {
@@ -112,6 +113,29 @@ public class BoardService {
             YPositions.remove(randomListElement);
             hero.setEncounterXPosition(1);
             System.out.println(hero.getEncounterXPosition() + "-" + hero.getEncounterYPosition());
+        }
+
+        List<Integer> monsterYPositions = new ArrayList<>();
+        while (monsterYPositions.size() < monsters.size()) {
+            int rollForInitialPosition = random.nextInt(boardHeight - 1) + 1;
+            int rollUpOrDown = Math.random() > 0.5 ? 1 : -1;
+            if (rollUpOrDown > 0 && rollForInitialPosition + monsters.size() > boardHeight) {
+                continue;
+            } else if (rollForInitialPosition - monsters.size() < 1) {
+                continue;
+            }
+            for (int i = 0; i < monsters.size(); i++) {
+                monsterYPositions.add(rollForInitialPosition + rollUpOrDown);
+                rollForInitialPosition += rollUpOrDown;
+            }
+        }
+        System.out.println(monsters.size());
+        for (Monster monster : monsters) {
+            int randomListElement = random.nextInt(monsterYPositions.size());
+            monster.setEncounterYPosition(monsterYPositions.get(randomListElement));
+            monsterYPositions.remove(randomListElement);
+            monster.setEncounterXPosition(boardWidth);
+            System.out.println(monster.getEncounterXPosition() + "-" + monster.getEncounterYPosition());
         }
     }
 
