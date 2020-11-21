@@ -27,8 +27,6 @@ public class Hero extends Creature {
     private final int unarmedAttackDamage = 1;
     private boolean isSelectedForParty;
     //since thymeleaf looping works better when starting from 1, these two values should never be lower than 1:
-    private int encounterXPosition;
-    private int encounterYPosition;
     private boolean isSelected;
     private int strength;
     private int dexterity;
@@ -43,22 +41,6 @@ public class Hero extends Creature {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
-    }
-
-    public int getEncounterXPosition() {
-        return encounterXPosition;
-    }
-
-    public void setEncounterXPosition(int encounterXPosition) {
-        this.encounterXPosition = encounterXPosition;
-    }
-
-    public int getEncounterYPosition() {
-        return encounterYPosition;
-    }
-
-    public void setEncounterYPosition(int encounterYPosition) {
-        this.encounterYPosition = encounterYPosition;
     }
 
     public String getSurname() {

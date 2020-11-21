@@ -18,6 +18,32 @@ public abstract class Creature {
     private int initiative;
     private String imageLink;
     private boolean isActive = false;
+    private int encounterXPosition;
+    private int encounterYPosition;
+
+    public List<CreatureStatus> getAllCreatureStatuses() {
+        return allCreatureStatuses;
+    }
+
+    public void setAllCreatureStatuses(List<CreatureStatus> allCreatureStatuses) {
+        this.allCreatureStatuses = allCreatureStatuses;
+    }
+
+    public int getEncounterXPosition() {
+        return encounterXPosition;
+    }
+
+    public void setEncounterXPosition(int encounterXPosition) {
+        this.encounterXPosition = encounterXPosition;
+    }
+
+    public int getEncounterYPosition() {
+        return encounterYPosition;
+    }
+
+    public void setEncounterYPosition(int encounterYPosition) {
+        this.encounterYPosition = encounterYPosition;
+    }
 
     public boolean isActive() {
         return isActive;
