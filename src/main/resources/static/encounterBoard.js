@@ -1,24 +1,37 @@
 let globalSelectedHero
 
 function initialize() {
-    document.onload = heroes.forEach(element => {
-        const id = 'hero:' + element.encounterXPosition + '---' + element.encounterYPosition;
-        const image = '../images/' + element.heroClass + '.png';
+    document.onload = manageHeroesAndMonsters();
+}
+
+function manageHeroesAndMonsters(){
+    heroes.forEach(hero => {
+        const id = 'hero:' + hero.encounterXPosition + '---' + hero.encounterYPosition;
+        const image = '../images/' + hero.heroClass + '.png';
         let heroDiv = document.getElementById(id);
-        let heroSideDiv = document.getElementById(element.name + '|||' + element.surname);
-        let heroHPBarText = document.getElementById(element.name + '|||' + element.surname + '|||hp-text');
-        let heroMagicBarText = document.getElementById(element.name + '|||' + element.surname + '|||mshield-text');
-        let heroPhysicalBarText = document.getElementById(element.name + '|||' + element.surname + '|||pshield-text');
+        let heroSideDiv = document.getElementById(hero.name + '|||' + hero.surname);
+        let heroHPBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||hp-text');
+        let heroMagicBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||mshield-text');
+        let heroPhysicalBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||pshield-text');
         heroSideDiv.src = image;
-        heroHPBarText.innerHTML = element.hp + `/` + element.maxHp;
-        heroMagicBarText.innerHTML = element.magicShield + `/` + element.maxMagicShield;
-        heroPhysicalBarText.innerHTML = element.physicalShield + `/` + element.maxPhysicalShield;
+        heroHPBarText.innerHTML = hero.hp + `/` + hero.maxHp;
+        heroMagicBarText.innerHTML = hero.magicShield + `/` + hero.maxMagicShield;
+        heroPhysicalBarText.innerHTML = hero.physicalShield + `/` + hero.maxPhysicalShield;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
-        element.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
-        element.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
-        heroDiv.onclick = () => getMovableTiles(element);
+        hero.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
+        hero.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
+        heroDiv.onclick = () => getMovableTiles(hero);
     });
+    monsters.forEach(monster => {
+        const id = 'hero:' + monster.encounterXPosition + '---' + monster.encounterYPosition;
+        const image = monster.imageLink;
+        let monsterDiv = document.getElementById(id);
+        monsterDiv.style.zIndex = "3";
+        monsterDiv.src = image;
+        monster.active ? monsterDiv.classList.add("active-creature") : monsterDiv.classList.add("inactive-creature")
+        monster.active ? monsterDiv.classList.remove("inactive-creature") : monsterDiv.classList.remove("active-creature")
+    })
 }
 
 function getSurnameFromId(id) {
