@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.save;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
 import com.dungeoncrawler.Javiarenka.partySelector.PartySelectorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

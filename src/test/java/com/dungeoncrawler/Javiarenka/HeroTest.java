@@ -1,9 +1,9 @@
 package com.dungeoncrawler.Javiarenka;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
-import com.dungeoncrawler.Javiarenka.character.Monster;
-import com.dungeoncrawler.Javiarenka.character.NoMoreMoneyException;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.Monster;
+import com.dungeoncrawler.Javiarenka.creature.NoMoreMoneyException;
 import com.dungeoncrawler.Javiarenka.equipment.DamageType;
 import com.dungeoncrawler.Javiarenka.equipment.Weapon;
 import org.junit.jupiter.api.BeforeAll;

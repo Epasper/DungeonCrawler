@@ -1,6 +1,6 @@
 package com.dungeoncrawler.Javiarenka.partySelector;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

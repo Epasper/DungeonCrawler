@@ -1,36 +1,96 @@
 let globalSelectedHero
 
 function initialize() {
-    document.onload = heroes.forEach(element => {
-        const id = 'hero:' + element.encounterXPosition + '---' + element.encounterYPosition;
-        const image = '../images/' + element.heroClass + '.png';
+    document.onload = manageHeroesAndMonsters();
+}
+
+function manageHeroesAndMonsters(){
+    heroes.forEach(hero => {
+        const id = 'hero:' + hero.encounterXPosition + '---' + hero.encounterYPosition;
+        const image = '../images/' + hero.heroClass + '.png';
         let heroDiv = document.getElementById(id);
-        let heroSideDiv = document.getElementById(element.name + '|||' + element.surname);
-        let heroHPBarText = document.getElementById(element.name + '|||' + element.surname + '|||hp-text');
-        let heroMagicBarText = document.getElementById(element.name + '|||' + element.surname + '|||mshield-text');
-        let heroPhysicalBarText = document.getElementById(element.name + '|||' + element.surname + '|||pshield-text');
+        let heroSideDiv = document.getElementById(hero.name + '|||' + hero.surname);
+        let heroHPBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||hp-text');
+        let heroMagicBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||mshield-text');
+        let heroPhysicalBarText = document.getElementById(hero.name + '|||' + hero.surname + '|||pshield-text');
         heroSideDiv.src = image;
-        heroHPBarText.innerHTML = element.hp + `/` + element.maxHp;
-        heroMagicBarText.innerHTML = element.magicShield + `/` + element.maxMagicShield;
-        heroPhysicalBarText.innerHTML = element.physicalShield + `/` + element.maxPhysicalShield;
+        heroHPBarText.innerHTML = hero.hp + `/` + hero.maxHp;
+        heroMagicBarText.innerHTML = hero.magicShield + `/` + hero.maxMagicShield;
+        heroPhysicalBarText.innerHTML = hero.physicalShield + `/` + hero.maxPhysicalShield;
         heroDiv.style.zIndex = "3";
         heroDiv.src = image;
-        element.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
-        element.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
-        heroDiv.onclick = () => getMovableTiles(element);
+        hero.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
+        hero.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
+        heroDiv.onclick = () => getMovableTiles(hero);
+    });
+    monsters.forEach(monster => {
+        const id = 'hero:' + monster.encounterXPosition + '---' + monster.encounterYPosition;
+        const image = monster.imageLink;
+        let monsterDiv = document.getElementById(id);
+        monsterDiv.style.zIndex = "3";
+        monsterDiv.src = image;
+        monster.active ? monsterDiv.classList.add("active-creature") : monsterDiv.classList.add("inactive-creature")
+        monster.active ? monsterDiv.classList.remove("inactive-creature") : monsterDiv.classList.remove("active-creature")
+    })
+}
+
+function getSurnameFromId(id) {
+    return id.substring(id.length, id.indexOf('|||') + 3);
+}
+
+function getNameFromId(id) {
+    return id.substring(0, id.indexOf('|||'));
+}
+
+function selectCharacter(Id) {
+    console.log(Id);
+    clearTheBoardOfEffects();
+    const surname = getSurnameFromId(Id);
+    const name = getNameFromId(Id);
+    const hero = heroes
+        .filter(e => e.name === name)
+        .find(f => f.surname === surname);
+    let heroSkillsDiv = document.getElementById('current-hero-skills');
+    while (heroSkillsDiv.firstChild) {
+        heroSkillsDiv.removeChild(heroSkillsDiv.lastChild);
+    }
+    hero.skillCards.forEach(e => {
+        let imgDiv = document.createElement("img");
+        let skillImgDiv = document.createElement("img");
+        imgDiv.src = '../images/skillCards/skillCardBlank.png';
+        skillImgDiv.src = e.imageSource;
+        imgDiv.classList.add('skill-card');
+        skillImgDiv.classList.add('skill-image');
+        imgDiv.onclick = function() {selectSkill(e, hero)};
+        skillImgDiv.onclick = function() {selectSkill(e, hero)};
+        let singleSkillDiv = document.createElement("div");
+        singleSkillDiv.className = 'single-skill';
+        singleSkillDiv.appendChild(imgDiv);
+        singleSkillDiv.appendChild(skillImgDiv);
+        heroSkillsDiv.appendChild(singleSkillDiv);
     });
 }
 
-function getMovableTiles(curentlyClickedHero) {
+function selectSkill(skill, hero) {
+    console.log(skill.name);
+    console.log(skill);
+    if (skill.movementSpeed > 0) {
+        getMovableTiles(hero, skill.movementSpeed);
+    }
+    if (skill.attackRange > 0) {
+        getAttackRange(hero, skill.attackRange);
+    }
+}
+
+function getMovableTiles(curentlyClickedHero, movementSpeed) {
     globalSelectedHero = curentlyClickedHero;
-    clearTheBoardOfWalkEffects();
-    const heroSpeed = curentlyClickedHero.speed;
+    clearTheBoardOfEffects();
     const xPos = curentlyClickedHero.encounterXPosition;
     const yPos = curentlyClickedHero.encounterYPosition;
     const isSelected = curentlyClickedHero.isSelected;
-    for (i = xPos - heroSpeed; i < xPos + heroSpeed + 1; i++) {
+    for (i = xPos - movementSpeed; i < xPos + movementSpeed + 1; i++) {
         if (i < 1 || i > width) continue;
-        for (j = yPos - heroSpeed; j < yPos + heroSpeed + 1; j++) {
+        for (j = yPos - movementSpeed; j < yPos + movementSpeed + 1; j++) {
             if (j < 1 || j > height) continue;
             let currentEffectDiv = document.getElementById('container' + i + '---' + j);
             currentEffectDiv.classList.add('walkable-effects');
@@ -40,11 +100,30 @@ function getMovableTiles(curentlyClickedHero) {
     curentlyClickedHero.isSelected = !isSelected;
 }
 
-function clearTheBoardOfWalkEffects() {
+function getAttackRange(curentlyClickedHero, range) {
+    globalSelectedHero = curentlyClickedHero;
+    clearTheBoardOfEffects();
+    const xPos = curentlyClickedHero.encounterXPosition;
+    const yPos = curentlyClickedHero.encounterYPosition;
+    const isSelected = curentlyClickedHero.isSelected;
+    for (i = xPos - range; i < xPos + range + 1; i++) {
+        if (i < 1 || i > width) continue;
+        for (j = yPos - range; j < yPos + range + 1; j++) {
+            if (j < 1 || j > height) continue;
+            let currentEffectDiv = document.getElementById('container' + i + '---' + j);
+            currentEffectDiv.classList.add('in-range-effects');
+            tiles[i - 1][j - 1].withinReach = true;
+        }
+    }
+    curentlyClickedHero.isSelected = !isSelected;
+}
+
+function clearTheBoardOfEffects() {
     for (i = 1; i <= width; i++) {
         for (j = 1; j <= height; j++) {
             let currentEffectDiv = document.getElementById('container' + i + '---' + j);
             currentEffectDiv.classList.remove('walkable-effects');
+            currentEffectDiv.classList.remove('in-range-effects');
         }
     }
 }
@@ -77,7 +156,7 @@ function moveTheHero(currentId) {
         .filter(e => e.name === initiativeOrder[0].name)
         .find(f => f.surname === initiativeOrder[0].surname);
     hero && (hero.active = true);
-    clearTheBoardOfWalkEffects()
+    clearTheBoardOfEffects()
     initialize();
 }
 
@@ -106,8 +185,8 @@ function testRemovePhysicalShield(heroNameAndSurname) {
 }
 
 function changeHitPoints(numberToChange, heroNameAndSurname, defense) {
-    const name = heroNameAndSurname.substring(0, heroNameAndSurname.indexOf('|||'))
-    const surname = heroNameAndSurname.substring(heroNameAndSurname.length, heroNameAndSurname.indexOf('|||') + 3)
+    const name = getNameFromId(heroNameAndSurname);
+    const surname = getSurnameFromId(heroNameAndSurname);
     let hero = heroes
         .filter(e => e.name === name)
         .find(f => f.surname === surname)

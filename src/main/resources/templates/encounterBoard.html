@@ -4,12 +4,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fight!</title>
     <link rel="stylesheet" href="../css/encounterBoard.css">
     <script th:inline="javascript">
         const height = [[${boardHeight}]];
         const width = [[${boardWidth}]];
         let heroes = [[${heroes}]];
+        let monsters = [[${monsters}]];
         let tiles = [[${tiles}]];
         let initiativeOrder = [[${initiativeOrder}]]
         document.documentElement.style.setProperty("--height", height);
@@ -21,7 +22,11 @@
     <div class="hero-portraits">
         <th:block th:each="hero : ${heroes}">
             <div th:with="currentHero=${hero.getName()} + '|||' + ${hero.getSurname()}">
-                <img th:id="${currentHero}"/>
+                <img th:onclick="'javascript:selectCharacter(\'' + ${currentHero} + '\')'" th:id="${currentHero}"/>
+                <a th:href="'/editEquipment?heroNameAndSurname='+${hero.getName()} + '---' + ${hero.getSurname()}"
+                   class="equipment">
+                    <img src="../images/equipment.png">
+                </a>
                 <div class="area">
                     <div class="total"></div>
                     <div class="health-box">
@@ -96,22 +101,7 @@
         </th:block>
     </div>
     <div class="skill-bar-container">
-        <div class="skill-bar">
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
-            <div class="single-skill">
-                <img src="../images/skillCards/skillCardBlank.png"/>
-            </div>
+        <div id="current-hero-skills" class="skill-bar">
         </div>
     </div>
 </div>

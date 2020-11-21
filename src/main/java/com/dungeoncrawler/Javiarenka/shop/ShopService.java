@@ -1,7 +1,7 @@
 package com.dungeoncrawler.Javiarenka.shop;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.Party;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.Party;
 import com.dungeoncrawler.Javiarenka.equipment.Backpack;
 import com.dungeoncrawler.Javiarenka.load.LoadGameService;
 import org.springframework.stereotype.Service;

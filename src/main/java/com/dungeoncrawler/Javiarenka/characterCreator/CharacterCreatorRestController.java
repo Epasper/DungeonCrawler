@@ -1,7 +1,7 @@
 package com.dungeoncrawler.Javiarenka.characterCreator;
 
-import com.dungeoncrawler.Javiarenka.character.Hero;
-import com.dungeoncrawler.Javiarenka.character.HeroClass;
+import com.dungeoncrawler.Javiarenka.creature.Hero;
+import com.dungeoncrawler.Javiarenka.creature.HeroClass;
 import com.dungeoncrawler.Javiarenka.equipment.Armor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingArmor;
 import com.dungeoncrawler.Javiarenka.equipment.StartingWeapon;
@@ -17,7 +17,7 @@ public class CharacterCreatorRestController {
 
     @GetMapping("/charClassToArmor/{className}")
     public Set<String> getAvailableArmors(@PathVariable String className) {
-        return service.getCharacterClassToAvailableArmor().get(className.toUpperCase());
+        return service.getCharacterClassToAvailableArmor().get(className);
     }
 
     @GetMapping("/charClassToArmor")
@@ -27,7 +27,7 @@ public class CharacterCreatorRestController {
 
     @GetMapping("/charClassToWeapon/{className}")
     public Set<String> getAvailableWeapons(@PathVariable String className) {
-        return service.getCharacterClassToAvailableWeapon().get(className.toUpperCase());
+        return service.getCharacterClassToAvailableWeapon().get(className);
     }
 
     @GetMapping("/charClassToWeapon")

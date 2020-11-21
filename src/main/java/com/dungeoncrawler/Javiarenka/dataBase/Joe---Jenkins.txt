@@ -13,8 +13,7 @@
       "ROGUE",
       "WARRIOR"
     ],
-    "imageLink": "../images/Leather Armor",
-    "occupyingSlot": "CHEST"
+    "imageLink": "../images/Leather Armor"
   },
   "equippedWeapon": {
     "damageType": "DMG_PIERCING",
@@ -27,49 +26,91 @@
       "WARRIOR",
       "ARCHER"
     ],
-    "imageLink": "../images/Short Bow",
-    "occupyingSlot": "RIGHT_HAND"
+    "imageLink": "../images/Short Bow"
   },
   "weaponName": "Short Bow",
   "armorName": "Leather Armor",
   "className": "Archer",
   "money": 0,
-  "skills": [
+  "skillCards": [
     {
-      "name": "Shoots and becomes invisible",
-      "additionalDamage": 18,
-      "additionalHp": 0,
-      "isMagicSkill": true,
-      "isPhysicalSkill": false,
-      "target": "SELF_AND_ENEMY",
-      "coolDown": 2,
-      "manaCost": 22,
-      "staminaCost": 14,
-      "appliesStatuses": [
-        "INVISIBLE"
-      ],
-      "appliedStatusDuration": 3,
-      "classRestrictions": [
-        "ARCHER"
-      ]
-    },
-    {
-      "name": "Shoots and burns",
-      "additionalDamage": 8,
-      "additionalHp": 0,
+      "name": "Rally to the Aid",
+      "description": "Move and Heal All Allies Around the And of Movement",
+      "flatAdditionalDamage": 0,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 10,
+      "allDamageMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
-      "target": "ALL_ENEMIES",
-      "coolDown": 2,
-      "manaCost": 4,
-      "staminaCost": 15,
-      "appliesStatuses": [
-        "BURNED"
+      "isSecondAttack": false,
+      "primaryTarget": "ALLIES_AROUND",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "classRestrictions": [
+        "HEALER",
+        "ROGUE",
+        "ARCHER",
+        "KNIGHT",
+        "WIZARD",
+        "WARRIOR"
       ],
-      "appliedStatusDuration": 3,
+      "imageSource": "../images/skillCards/41.png",
+      "movementSpeed": 4,
+      "attackRange": 0
+    },
+    {
+      "name": "Shoot and Disappear",
+      "description": "",
+      "flatAdditionalDamage": 18,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
+      "isMagicSkill": false,
+      "isPhysicalSkill": true,
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "SELF",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "INVISIBLE",
+          "skillTarget": "SELF",
+          "duration": 3
+        }
+      ],
       "classRestrictions": [
         "ARCHER"
-      ]
+      ],
+      "imageSource": "../images/skillCards/43.png",
+      "movementSpeed": 0,
+      "attackRange": 10
+    },
+    {
+      "name": "Shoot and Set on Fire",
+      "description": "",
+      "flatAdditionalDamage": 8,
+      "secondaryAttackFlatAdditionalDamage": 0,
+      "healingAmount": 0,
+      "allDamageMultipliers": [],
+      "isMagicSkill": true,
+      "isPhysicalSkill": false,
+      "isSecondAttack": false,
+      "primaryTarget": "ENEMY",
+      "secondaryTarget": "ENEMY",
+      "secondAttackTarget": "ENEMY",
+      "appliedConditions": [
+        {
+          "appliedStatuses": "BURNED",
+          "skillTarget": "ENEMY",
+          "duration": 3
+        }
+      ],
+      "classRestrictions": [
+        "ARCHER"
+      ],
+      "imageSource": "../images/skillCards/3.png",
+      "movementSpeed": 0,
+      "attackRange": 10
     }
   ],
   "backpack": {
@@ -84,8 +125,7 @@
         "WARRIOR",
         "ARCHER"
       ],
-      "imageLink": "../images/Short Bow",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Short Bow"
     },
     "chestSlot": {
       "damageReduction": 10,
@@ -99,8 +139,7 @@
         "ROGUE",
         "WARRIOR"
       ],
-      "imageLink": "../images/Leather Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Leather Armor"
     },
     "baggage": {
       "0": {
@@ -290,11 +329,17 @@
   "encounterXPosition": 1,
   "encounterYPosition": 1,
   "isSelected": false,
+  "strength": 4,
+  "dexterity": 10,
+  "stamina": 6,
+  "intelligence": 4,
+  "willpower": 4,
+  "resilience": 4,
   "name": "Joe",
   "hp": 70,
   "maxHp": 70,
   "isAlive": true,
-  "allCharacterStatuses": [],
+  "allCreatureStatuses": [],
   "maxPhysicalShield": 45,
   "maxMagicShield": 25,
   "physicalShield": 45,

@@ -1,4 +1,4 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.dungeoncrawler.Javiarenka.character;
+package com.dungeoncrawler.Javiarenka.creature;
 
-public enum CharacterStatus {
+public enum CreatureStatus {
     DEFAULT("DEFAULT"),
     FOCUSED("FOCUSED"),
     UNFOCUSED("UNFOCUSED"),
@@ -24,7 +24,7 @@ public enum CharacterStatus {
 
     private final String characterStatusString;
 
-    CharacterStatus(String characterStatusString) {
+    CreatureStatus(String characterStatusString) {
         this.characterStatusString = characterStatusString;
     }
 
@@ -37,10 +37,9 @@ public enum CharacterStatus {
         return this.characterStatusString;
     }
 
-    public static CharacterStatus getCharacterStatusByName(String name) {
-        name = name.toUpperCase();
-        for (CharacterStatus status : values()) {
-            if (status.characterStatusString.equals(name)) {
+    public static CreatureStatus getCharacterStatusByName(String name) {
+        for (CreatureStatus status : values()) {
+            if (status.characterStatusString.equalsIgnoreCase(name)) {
                 return status;
             }
         }
