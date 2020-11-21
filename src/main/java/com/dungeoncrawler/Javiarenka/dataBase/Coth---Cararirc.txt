@@ -37,11 +37,12 @@
   "skillCards": [
     {
       "name": "Rally to the Aid",
-      "description": "Move and Heal All Allies Around the And of Movement",
+      "description": "Move",
       "flatAdditionalDamage": 0,
       "secondaryAttackFlatAdditionalDamage": 0,
-      "healingAmount": 10,
+      "healingAmount": 0,
       "allDamageMultipliers": [],
+      "allHealingMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -67,6 +68,12 @@
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 10,
       "allDamageMultipliers": [],
+      "allHealingMultipliers": [
+        {
+          "attribute": "WILLPOWER",
+          "multiplier": 1.3
+        }
+      ],
       "isMagicSkill": true,
       "isPhysicalSkill": false,
       "isSecondAttack": false,
@@ -86,7 +93,18 @@
       "flatAdditionalDamage": 5,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 15,
-      "allDamageMultipliers": [],
+      "allDamageMultipliers": [
+        {
+          "attribute": "STRENGTH",
+          "multiplier": 1.1
+        }
+      ],
+      "allHealingMultipliers": [
+        {
+          "attribute": "RESILIENCE",
+          "multiplier": 1.3
+        }
+      ],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -316,8 +334,6 @@
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": true,
-  "encounterXPosition": 1,
-  "encounterYPosition": 1,
   "isSelected": false,
   "strength": 4,
   "dexterity": 4,
@@ -336,5 +352,7 @@
   "magicShield": 40,
   "speed": 3,
   "initiative": 0,
-  "isActive": false
+  "isActive": false,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1
 }

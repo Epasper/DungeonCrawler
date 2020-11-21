@@ -35,11 +35,12 @@
   "skillCards": [
     {
       "name": "Rally to the Aid",
-      "description": "Move and Heal All Allies Around the And of Movement",
+      "description": "Move",
       "flatAdditionalDamage": 0,
       "secondaryAttackFlatAdditionalDamage": 0,
-      "healingAmount": 10,
+      "healingAmount": 0,
       "allDamageMultipliers": [],
+      "allHealingMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -59,12 +60,18 @@
       "attackRange": 0
     },
     {
-      "name": "Hits Enemy and Weakens It",
-      "description": "",
+      "name": "Dizzying Strike",
+      "description": "Hits Enemy and Weakens It",
       "flatAdditionalDamage": 15,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 0,
-      "allDamageMultipliers": [],
+      "allDamageMultipliers": [
+        {
+          "attribute": "STAMINA",
+          "multiplier": 1.2
+        }
+      ],
+      "allHealingMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -86,12 +93,18 @@
       "attackRange": 1
     },
     {
-      "name": "Hits and slows down all enemies",
-      "description": "",
+      "name": "Terrorizing Shout",
+      "description": "Hits and slows down all enemies",
       "flatAdditionalDamage": 5,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 0,
-      "allDamageMultipliers": [],
+      "allDamageMultipliers": [
+        {
+          "attribute": "RESILIENCE",
+          "multiplier": 1.1
+        }
+      ],
+      "allHealingMultipliers": [],
       "isMagicSkill": true,
       "isPhysicalSkill": false,
       "isSecondAttack": false,
@@ -326,8 +339,6 @@
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": false,
-  "encounterXPosition": 1,
-  "encounterYPosition": 1,
   "isSelected": false,
   "strength": 6,
   "dexterity": 4,
@@ -346,5 +357,7 @@
   "magicShield": 10,
   "speed": 3,
   "initiative": 0,
-  "isActive": false
+  "isActive": false,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1
 }

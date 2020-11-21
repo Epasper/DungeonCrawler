@@ -33,11 +33,12 @@
   "skillCards": [
     {
       "name": "Rally to the Aid",
-      "description": "Move and Heal All Allies Around the And of Movement",
+      "description": "Move",
       "flatAdditionalDamage": 0,
       "secondaryAttackFlatAdditionalDamage": 0,
-      "healingAmount": 10,
+      "healingAmount": 0,
       "allDamageMultipliers": [],
+      "allHealingMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -57,12 +58,18 @@
       "attackRange": 0
     },
     {
-      "name": "Hits and Sets on Fire",
-      "description": "",
+      "name": "Fire Bolt",
+      "description": "Hits and Sets on Fire",
       "flatAdditionalDamage": 10,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 0,
-      "allDamageMultipliers": [],
+      "allDamageMultipliers": [
+        {
+          "attribute": "INTELLIGENCE",
+          "multiplier": 1.4
+        }
+      ],
+      "allHealingMultipliers": [],
       "isMagicSkill": true,
       "isPhysicalSkill": false,
       "isSecondAttack": false,
@@ -84,12 +91,18 @@
       "attackRange": 8
     },
     {
-      "name": "Hits and Speeds Up",
-      "description": "",
+      "name": "Hasten",
+      "description": "Hits and Speeds Up",
       "flatAdditionalDamage": 2,
       "secondaryAttackFlatAdditionalDamage": 0,
       "healingAmount": 0,
-      "allDamageMultipliers": [],
+      "allDamageMultipliers": [
+        {
+          "attribute": "DEXTERITY",
+          "multiplier": 1.2
+        }
+      ],
+      "allHealingMultipliers": [],
       "isMagicSkill": false,
       "isPhysicalSkill": true,
       "isSecondAttack": false,
@@ -322,8 +335,6 @@
   },
   "unarmedAttackDamage": 1,
   "isSelectedForParty": true,
-  "encounterXPosition": 1,
-  "encounterYPosition": 1,
   "isSelected": false,
   "strength": 4,
   "dexterity": 4,
@@ -342,5 +353,7 @@
   "magicShield": 50,
   "speed": 3,
   "initiative": 0,
-  "isActive": false
+  "isActive": false,
+  "encounterXPosition": 1,
+  "encounterYPosition": 1
 }
