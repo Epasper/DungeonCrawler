@@ -1,5 +1,7 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import java.util.Arrays;
+
 public class Wall
 {
     private Direction side;
@@ -21,6 +23,20 @@ public class Wall
         this.side = side;
     }
 
+    public void replaceWallTile(Tile tile)
+    {
+        int foundIndex = TileNavigator.containsTileByCoordinates(Arrays.asList(wallTiles), tile);
+        if (foundIndex >= 0)
+        {
+            wallTiles[foundIndex] = tile;
+        }
+    }
+
+    public void replaceWallTile(int index,Tile replacingTile)
+    {
+        wallTiles[index] = replacingTile;
+    }
+
     public Direction getSide()
     {
         return side;
@@ -29,5 +45,14 @@ public class Wall
     public Tile[] getWallTiles()
     {
         return wallTiles;
+    }
+
+    public void linkToStage(Stage stage)
+    {
+        for (int i = 0; i < wallTiles.length; i++)
+        {
+            Tile stageTile = stage.getTile(wallTiles[i]);
+            replaceWallTile(i, stageTile);
+        }
     }
 }

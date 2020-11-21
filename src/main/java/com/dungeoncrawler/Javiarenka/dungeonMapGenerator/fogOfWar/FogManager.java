@@ -30,11 +30,11 @@ public class FogManager
     private Set<Tile> alreadySeenTiles = new HashSet<>();
     private Set<Tile> newlySeenTiles = new HashSet<>();
 
-
     public FogManager(Stage stage)
     {
         this.stage = stage;
         this.tileNav = new TileNavigator(stage);
+        this.alreadySeenTiles.addAll(stage.getSeenTiles());
     }
 
     public PartyAvatar getParty()
@@ -51,6 +51,11 @@ public class FogManager
     public Set<Tile> getNewlySeenTiles()
     {
         return newlySeenTiles;
+    }
+
+    public Set<Tile> getAlreadySeenTiles()
+    {
+        return alreadySeenTiles;
     }
 
     //==============================================================================================
@@ -113,7 +118,7 @@ public class FogManager
         Room visibleRoom = stage.getRoomByTile(partyPointedTile);
         List<Tile> roomInnerTiles = visibleRoom.getRoomInnerTiles();
         List<Tile> roomWallTiles = visibleRoom.getWallTiles();
-        roomInnerTiles.forEach(tile -> tile.setVisibility(1,true));
+        roomInnerTiles.forEach(tile -> tile.setVisibility(1, true));
         roomWallTiles.forEach(tile -> tile.setVisibility(0.5, true));
 
         roomLitTiles.addAll(roomInnerTiles);

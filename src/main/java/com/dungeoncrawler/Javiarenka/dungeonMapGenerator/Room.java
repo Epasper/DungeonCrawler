@@ -93,13 +93,11 @@ public class Room extends Stage
 
     public void lockRoomTiles()
     {
-//        Arrays.stream(getTilesOfType(TileType.ROOM)).forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
         getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM_LOCKED));
     }
 
     public void unlockRoomTiles()
     {
-//        Arrays.stream(getTilesOfType(TileType.ROOM_LOCKED)).forEach(tile -> tile.setType(TileType.ROOM));
         getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM));
     }
 
@@ -108,7 +106,7 @@ public class Room extends Stage
         Set<Tile> wallTiles = new HashSet<>();
         Arrays.stream(walls).forEach(wall -> wallTiles.addAll(Arrays.asList(wall.getWallTiles())));
 
-        return new ArrayList<>(Arrays.asList(getTilesAsOneDimensionalArray())).stream()
+        return getTilesList().stream()
                 .filter(tile -> !wallTiles.contains(tile))
                 .collect(Collectors.toList());
     }
@@ -123,5 +121,22 @@ public class Room extends Stage
     public void hideRoom()
     {
         getRoomInnerTiles().forEach(tile -> tile.setType(TileType.ROOM_HIDDEN));
+    }
+
+    public void linkToStage(Stage stage)
+    {
+        Arrays.stream(walls).forEach(wall -> wall.linkToStage(stage));
+        this.setDoor(stage.getTile(this.getDoor()));
+
+        replaceTiles(stage);
+        updateTilesList();
+    }
+
+    public void replaceTiles(Stage stage)
+    {
+        RoomBuilder rb = new RoomBuilder(stage);
+        Tile roomSeedInStage = stage.getTile(this.xPos, this.yPos);
+        Tile[][] rectangleFromStage = rb.getTilesRectangle(roomSeedInStage, this.getWidth(), this.getHeight(), BuildDirection.RD);
+        setTiles(rectangleFromStage);
     }
 }

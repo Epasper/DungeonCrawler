@@ -106,6 +106,16 @@ public class Tile
 
     public void setVisibility(double visibility, boolean onlyIfBigger)
     {
+//        if (this.x == 13 && this.y == 14)
+//        {
+//            System.out.println("");
+//        }
+//
+//        if (this.alreadySeen)
+//        {
+//            if (this.visibility < 0.15) this.visibility = 0.15;
+//        }
+
         if (onlyIfBigger)
         {
             if (visibility > this.visibility) setVisibility(visibility);
@@ -124,5 +134,13 @@ public class Tile
     public void makeNotVisible()
     {
         this.visibility = 0;
+    }
+
+    public String getInfoString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("visibility: ").append(this.visibility).append("\n");
+        sb.append("already seen: ").append(this.alreadySeen).append("\n");
+        return sb.toString();
     }
 }
