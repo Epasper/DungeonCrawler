@@ -68,7 +68,6 @@ public class Monster extends Creature {
         }
     }
 
-    @Override
     public String attack(Creature hero) {
         String message;
         Hero attackedHero = (Hero) hero;

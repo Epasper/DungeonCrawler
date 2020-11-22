@@ -301,7 +301,6 @@ public class Hero extends Creature {
         }
     }
 
-    @Override
     public String attack(Creature monster) {
         String message;
         String hit = "hit ";
