@@ -4,7 +4,7 @@ function initialize() {
     document.onload = manageHeroesAndMonsters();
 }
 
-function manageHeroesAndMonsters(){
+function manageHeroesAndMonsters() {
     heroes.forEach(hero => {
         const id = 'hero:' + hero.encounterXPosition + '---' + hero.encounterYPosition;
         const image = '../images/' + hero.heroClass + '.png';
@@ -21,7 +21,7 @@ function manageHeroesAndMonsters(){
         heroDiv.src = image;
         hero.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
         hero.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
-        heroDiv.onclick = () => getMovableTiles(hero);
+        heroDiv.onclick = () => selectCharacter(hero.name + '|||' + hero.surname);
     });
     monsters.forEach(monster => {
         const id = 'hero:' + monster.encounterXPosition + '---' + monster.encounterYPosition;
@@ -61,8 +61,8 @@ function selectCharacter(Id) {
         skillImgDiv.src = e.imageSource;
         imgDiv.classList.add('skill-card');
         skillImgDiv.classList.add('skill-image');
-        imgDiv.onclick = function() {selectSkill(e, hero)};
-        skillImgDiv.onclick = function() {selectSkill(e, hero)};
+        imgDiv.onclick = function () { selectSkill(e, hero) };
+        skillImgDiv.onclick = function () { selectSkill(e, hero) };
         let singleSkillDiv = document.createElement("div");
         singleSkillDiv.className = 'single-skill';
         singleSkillDiv.appendChild(imgDiv);
@@ -129,6 +129,7 @@ function clearTheBoardOfEffects() {
 }
 
 function moveTheHero(currentId) {
+    if (!globalSelectedHero.active) return;
     const xPosition = parseInt(currentId.slice(0, currentId.indexOf('---')));
     const yPosition = parseInt(currentId.slice(currentId.indexOf('---') + 3));
     const oldXPos = globalSelectedHero.encounterXPosition;
@@ -144,6 +145,11 @@ function moveTheHero(currentId) {
     currentDiv.src = image;
     currentDiv.style.zIndex = "3";
     globalSelectedHero.active = false;
+    let movedHero = heroes
+        .filter(e => e.name === globalSelectedHero.name)
+        .find(f => f.surname === globalSelectedHero.surname);
+    movedHero.active = false;
+    initiativeOrder[0].active = false;
     initiativeOrder.push(initiativeOrder.shift());
     initiativeOrder[0].active = true;
     let oldInitiativeDiv = document.getElementById('init|||' + globalSelectedHero.initiative);
@@ -152,12 +158,39 @@ function moveTheHero(currentId) {
     let newInitiativeDiv = document.getElementById('init|||' + initiativeOrder[0].initiative);
     newInitiativeDiv.classList.add("initiative-bar-active");
     console.log('init|||' + initiativeOrder[0].initiative)
-    let hero = heroes
+    let nextHero = heroes
         .filter(e => e.name === initiativeOrder[0].name)
         .find(f => f.surname === initiativeOrder[0].surname);
-    hero && (hero.active = true);
+    nextHero && (nextHero.active = true);
     clearTheBoardOfEffects()
     initialize();
+    saveHeroesStateInBackEnd();
+    saveInitiativeOrderInBackEnd();
+    if (initiativeOrder[0].monster) moveTheMonster(initiativeOrder[0]);
+    console.log('NEXT: ' + JSON.stringify(initiativeOrder[0]));
+    // if (initiativeOrder[0].)
+}
+
+function moveTheMonster(monsterToBeMoved) {
+    //todo implement AI logic here
+}
+
+function saveHeroesStateInBackEnd() {
+    let request = new XMLHttpRequest();
+    const url = `http://localhost:8080/encounterBoard/heroesStatus`
+    request.open("PUT", url, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    const heroesJSON = JSON.stringify(heroes);
+    request.send(heroesJSON);
+}
+
+function saveInitiativeOrderInBackEnd() {
+    let request = new XMLHttpRequest();
+    const url = `http://localhost:8080/encounterBoard/initiativeOrder`
+    request.open("PUT", url, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+    const initJSON = JSON.stringify(initiativeOrder);
+    request.send(initJSON);
 }
 
 function testAddHp(heroNameAndSurname) {

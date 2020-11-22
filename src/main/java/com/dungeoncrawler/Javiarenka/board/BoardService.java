@@ -93,6 +93,8 @@ public class BoardService {
         List<Creature> tempCharList = new ArrayList<>();
         for (Hero hero : heroes) {
             int initRoll = random.nextInt(maxInitiative);
+            //todo: testing, remove before deployment:
+            initRoll -= 50;
             hero.setInitiative(initRoll);
             hero.setActive(false);
             tempCharList.add(hero);

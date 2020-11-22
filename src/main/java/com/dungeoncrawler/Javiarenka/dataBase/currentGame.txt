@@ -14,8 +14,7 @@
         "ROGUE",
         "HEALER"
       ],
-      "imageLink": "../images/Cloth Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Cloth Armor"
     },
     "equippedWeapon": {
       "damageType": "DMG_FIRE",
@@ -26,66 +25,121 @@
       "classRestrictions": [
         "WIZARD"
       ],
-      "imageLink": "../images/Staff of Fire",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Staff of Fire"
     },
     "weaponName": "Staff of Fire",
     "armorName": "Cloth Armor",
     "className": "Wizard",
     "money": 0,
-    "skills": [
+    "skillCards": [
       {
-        "name": "Hits and burns",
-        "additionalDamage": 10,
-        "additionalHp": 0,
-        "isMagicSkill": true,
-        "isPhysicalSkill": false,
-        "target": "ENEMY",
-        "coolDown": 3,
-        "manaCost": 15,
-        "staminaCost": 5,
-        "appliesStatuses": [
-          "BURNED"
-        ],
-        "appliedStatusDuration": 2,
-        "classRestrictions": [
-          "WIZARD"
-        ]
-      },
-      {
-        "name": "Hit and speeds up",
-        "additionalDamage": 2,
-        "additionalHp": 0,
+        "name": "Rally to the Aid",
+        "description": "Move",
+        "flatAdditionalDamage": 0,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [],
+        "allHealingMultipliers": [],
         "isMagicSkill": false,
         "isPhysicalSkill": true,
-        "target": "SELF_AND_ENEMY",
-        "coolDown": 4,
-        "manaCost": 5,
-        "staminaCost": 12,
-        "appliesStatuses": [
-          "HASTED"
+        "isSecondAttack": false,
+        "primaryTarget": "ALLIES_AROUND",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "classRestrictions": [
+          "HEALER",
+          "ROGUE",
+          "ARCHER",
+          "KNIGHT",
+          "WIZARD",
+          "WARRIOR"
         ],
-        "appliedStatusDuration": 2,
+        "imageSource": "../images/skillCards/41.png",
+        "movementSpeed": 4,
+        "attackRange": 0
+      },
+      {
+        "name": "Fire Bolt",
+        "description": "Hits and Sets on Fire",
+        "flatAdditionalDamage": 10,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [
+          {
+            "attribute": "INTELLIGENCE",
+            "multiplier": 1.4
+          }
+        ],
+        "allHealingMultipliers": [],
+        "isMagicSkill": true,
+        "isPhysicalSkill": false,
+        "isSecondAttack": false,
+        "primaryTarget": "ENEMY",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "appliedConditions": [
+          {
+            "appliedStatuses": "BURNED",
+            "skillTarget": "ENEMY",
+            "duration": 3
+          }
+        ],
         "classRestrictions": [
           "WIZARD"
-        ]
+        ],
+        "imageSource": "../images/skillCards/6.png",
+        "movementSpeed": 0,
+        "attackRange": 8
+      },
+      {
+        "name": "Hasten",
+        "description": "Hits and Speeds Up",
+        "flatAdditionalDamage": 2,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [
+          {
+            "attribute": "DEXTERITY",
+            "multiplier": 1.2
+          }
+        ],
+        "allHealingMultipliers": [],
+        "isMagicSkill": false,
+        "isPhysicalSkill": true,
+        "isSecondAttack": false,
+        "primaryTarget": "ENEMY",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "appliedConditions": [
+          {
+            "appliedStatuses": "HASTED",
+            "skillTarget": "SELF",
+            "duration": 3
+          }
+        ],
+        "classRestrictions": [
+          "WIZARD"
+        ],
+        "imageSource": "../images/skillCards/37.png",
+        "movementSpeed": 0,
+        "attackRange": 4
       }
     ],
     "backpack": {
       "rightHandSlot": {
-        "damageDealt": 0,
+        "damageType": "DMG_FIRE",
+        "damageDealt": 5,
         "name": "Staff of Fire",
         "weight": 8.0,
         "price": 20.0,
         "classRestrictions": [
           "WIZARD"
         ],
-        "imageLink": "../images/Staff of Fire",
-        "occupyingSlot": "RIGHT_HAND"
+        "imageLink": "../images/Staff of Fire"
       },
       "chestSlot": {
-        "damageReduction": 0,
-        "chanceToHitReduction": 0,
+        "damageReduction": 4,
+        "chanceToHitReduction": 10,
         "additionalHp": 0,
         "name": "Cloth Armor",
         "weight": 5.0,
@@ -95,8 +149,7 @@
           "ROGUE",
           "HEALER"
         ],
-        "imageLink": "../images/Cloth Armor",
-        "occupyingSlot": "CHEST"
+        "imageLink": "../images/Cloth Armor"
       },
       "baggage": {
         "0": {
@@ -283,21 +336,27 @@
     },
     "unarmedAttackDamage": 1,
     "isSelectedForParty": true,
-    "encounterXPosition": 1,
-    "encounterYPosition": 1,
     "isSelected": false,
+    "strength": 4,
+    "dexterity": 4,
+    "stamina": 4,
+    "intelligence": 12,
+    "willpower": 4,
+    "resilience": 4,
     "name": "Chase",
     "hp": 50,
     "maxHp": 50,
     "isAlive": true,
-    "allCharacterStatuses": [],
+    "allCreatureStatuses": [],
     "maxPhysicalShield": 10,
     "maxMagicShield": 50,
     "physicalShield": 10,
     "magicShield": 50,
     "speed": 3,
     "initiative": 0,
-    "isActive": false
+    "isActive": false,
+    "encounterXPosition": 1,
+    "encounterYPosition": 1
   },
   {
     "surname": "Cararirc",
@@ -335,42 +394,89 @@
     "armorName": "Cloth Armor",
     "className": "Healer",
     "money": 0,
-    "skills": [
+    "skillCards": [
       {
-        "name": "Heals all allies",
-        "additionalDamage": 0,
-        "additionalHp": 10,
-        "isMagicSkill": true,
-        "isPhysicalSkill": false,
-        "target": "ALL_ALLIES",
-        "coolDown": 1,
-        "manaCost": 20,
-        "staminaCost": 0,
-        "appliesStatuses": [
-          "DEFAULT"
-        ],
-        "appliedStatusDuration": 1,
-        "classRestrictions": [
-          "HEALER"
-        ]
-      },
-      {
-        "name": "Hits and heals itself",
-        "additionalDamage": 5,
-        "additionalHp": 15,
+        "name": "Rally to the Aid",
+        "description": "Move",
+        "flatAdditionalDamage": 0,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [],
+        "allHealingMultipliers": [],
         "isMagicSkill": false,
         "isPhysicalSkill": true,
-        "target": "SELF_AND_ENEMY",
-        "coolDown": 2,
-        "manaCost": 5,
-        "staminaCost": 10,
-        "appliesStatuses": [
-          "DEFAULT"
+        "isSecondAttack": false,
+        "primaryTarget": "ALLIES_AROUND",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "classRestrictions": [
+          "HEALER",
+          "ROGUE",
+          "ARCHER",
+          "KNIGHT",
+          "WIZARD",
+          "WARRIOR"
         ],
-        "appliedStatusDuration": 1,
+        "imageSource": "../images/skillCards/41.png",
+        "movementSpeed": 4,
+        "attackRange": 0
+      },
+      {
+        "name": "Healing Shout",
+        "description": "Heals All Allies",
+        "flatAdditionalDamage": 0,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 10,
+        "allDamageMultipliers": [],
+        "allHealingMultipliers": [
+          {
+            "attribute": "WILLPOWER",
+            "multiplier": 1.3
+          }
+        ],
+        "isMagicSkill": true,
+        "isPhysicalSkill": false,
+        "isSecondAttack": false,
+        "primaryTarget": "ALL_ALLIES",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
         "classRestrictions": [
           "HEALER"
-        ]
+        ],
+        "imageSource": "../images/skillCards/24.png",
+        "movementSpeed": 0,
+        "attackRange": 0
+      },
+      {
+        "name": "Rejuvenating Strike",
+        "description": "Hits and Heals Self",
+        "flatAdditionalDamage": 5,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 15,
+        "allDamageMultipliers": [
+          {
+            "attribute": "STRENGTH",
+            "multiplier": 1.1
+          }
+        ],
+        "allHealingMultipliers": [
+          {
+            "attribute": "RESILIENCE",
+            "multiplier": 1.3
+          }
+        ],
+        "isMagicSkill": false,
+        "isPhysicalSkill": true,
+        "isSecondAttack": false,
+        "primaryTarget": "ENEMY",
+        "secondaryTarget": "SELF",
+        "secondAttackTarget": "ENEMY",
+        "classRestrictions": [
+          "HEALER"
+        ],
+        "imageSource": "../images/skillCards/18.png",
+        "movementSpeed": 0,
+        "attackRange": 2
       }
     ],
     "backpack": {
@@ -423,10 +529,10 @@
           "imageLink": "../images/Broken Branch"
         },
         "3": {
-          "name": "Coal Ore Chunk",
-          "weight": 0.2,
-          "price": 12.0,
-          "imageLink": "../images/Coal Ore Chunk"
+          "name": "NO EQUIPMENT",
+          "weight": 0.0,
+          "price": 0.0,
+          "imageLink": "../images/null"
         },
         "4": {
           "name": "NO EQUIPMENT",
@@ -489,10 +595,10 @@
           "imageLink": "../images/null"
         },
         "14": {
-          "name": "NO EQUIPMENT",
-          "weight": 0.0,
-          "price": 0.0,
-          "imageLink": "../images/null"
+          "name": "Coal Ore Chunk",
+          "weight": 0.2,
+          "price": 12.0,
+          "imageLink": "../images/Coal Ore Chunk"
         },
         "15": {
           "name": "NO EQUIPMENT",
@@ -588,21 +694,27 @@
     },
     "unarmedAttackDamage": 1,
     "isSelectedForParty": true,
-    "encounterXPosition": 1,
-    "encounterYPosition": 1,
     "isSelected": false,
+    "strength": 4,
+    "dexterity": 4,
+    "stamina": 4,
+    "intelligence": 6,
+    "willpower": 10,
+    "resilience": 4,
     "name": "Coth",
     "hp": 80,
     "maxHp": 80,
     "isAlive": true,
-    "allCharacterStatuses": [],
+    "allCreatureStatuses": [],
     "maxPhysicalShield": 20,
     "maxMagicShield": 40,
     "physicalShield": 20,
     "magicShield": 40,
     "speed": 3,
     "initiative": 0,
-    "isActive": false
+    "isActive": false,
+    "encounterXPosition": 1,
+    "encounterYPosition": 1
   },
   {
     "surname": "Jenkins",
@@ -619,8 +731,7 @@
         "ROGUE",
         "WARRIOR"
       ],
-      "imageLink": "../images/Leather Armor",
-      "occupyingSlot": "CHEST"
+      "imageLink": "../images/Leather Armor"
     },
     "equippedWeapon": {
       "damageType": "DMG_PIERCING",
@@ -633,49 +744,104 @@
         "WARRIOR",
         "ARCHER"
       ],
-      "imageLink": "../images/Short Bow",
-      "occupyingSlot": "RIGHT_HAND"
+      "imageLink": "../images/Short Bow"
     },
     "weaponName": "Short Bow",
     "armorName": "Leather Armor",
     "className": "Archer",
     "money": 0,
-    "skills": [
+    "skillCards": [
       {
-        "name": "Shoots and becomes invisible",
-        "additionalDamage": 18,
-        "additionalHp": 0,
-        "isMagicSkill": true,
-        "isPhysicalSkill": false,
-        "target": "SELF_AND_ENEMY",
-        "coolDown": 2,
-        "manaCost": 22,
-        "staminaCost": 14,
-        "appliesStatuses": [
-          "INVISIBLE"
-        ],
-        "appliedStatusDuration": 3,
-        "classRestrictions": [
-          "ARCHER"
-        ]
-      },
-      {
-        "name": "Shoots and burns",
-        "additionalDamage": 8,
-        "additionalHp": 0,
+        "name": "Rally to the Aid",
+        "description": "Move",
+        "flatAdditionalDamage": 0,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [],
+        "allHealingMultipliers": [],
         "isMagicSkill": false,
         "isPhysicalSkill": true,
-        "target": "ALL_ENEMIES",
-        "coolDown": 2,
-        "manaCost": 4,
-        "staminaCost": 15,
-        "appliesStatuses": [
-          "BURNED"
+        "isSecondAttack": false,
+        "primaryTarget": "ALLIES_AROUND",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "classRestrictions": [
+          "HEALER",
+          "ROGUE",
+          "ARCHER",
+          "KNIGHT",
+          "WIZARD",
+          "WARRIOR"
         ],
-        "appliedStatusDuration": 3,
+        "imageSource": "../images/skillCards/41.png",
+        "movementSpeed": 4,
+        "attackRange": 0
+      },
+      {
+        "name": "Hunter\u0027s Step",
+        "description": "Shoot and Disappear",
+        "flatAdditionalDamage": 18,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [
+          {
+            "attribute": "DEXTERITY",
+            "multiplier": 1.3
+          }
+        ],
+        "allHealingMultipliers": [],
+        "isMagicSkill": false,
+        "isPhysicalSkill": true,
+        "isSecondAttack": false,
+        "primaryTarget": "ENEMY",
+        "secondaryTarget": "SELF",
+        "secondAttackTarget": "ENEMY",
+        "appliedConditions": [
+          {
+            "appliedStatuses": "INVISIBLE",
+            "skillTarget": "SELF",
+            "duration": 3
+          }
+        ],
         "classRestrictions": [
           "ARCHER"
-        ]
+        ],
+        "imageSource": "../images/skillCards/43.png",
+        "movementSpeed": 0,
+        "attackRange": 10
+      },
+      {
+        "name": "Shoot and Set on Fire",
+        "description": "",
+        "flatAdditionalDamage": 8,
+        "secondaryAttackFlatAdditionalDamage": 0,
+        "healingAmount": 0,
+        "allDamageMultipliers": [
+          {
+            "attribute": "INTELLIGENCE",
+            "multiplier": 1.3
+          }
+        ],
+        "allHealingMultipliers": [],
+        "isMagicSkill": true,
+        "isPhysicalSkill": false,
+        "isSecondAttack": false,
+        "primaryTarget": "ENEMY",
+        "secondaryTarget": "ENEMY",
+        "secondAttackTarget": "ENEMY",
+        "appliedConditions": [
+          {
+            "appliedStatuses": "BURNED",
+            "skillTarget": "ENEMY",
+            "duration": 3
+          }
+        ],
+        "classRestrictions": [
+          "ARCHER"
+        ],
+        "imageSource": "../images/skillCards/3.png",
+        "movementSpeed": 0,
+        "attackRange": 10
       }
     ],
     "backpack": {
@@ -690,8 +856,7 @@
           "WARRIOR",
           "ARCHER"
         ],
-        "imageLink": "../images/Short Bow",
-        "occupyingSlot": "RIGHT_HAND"
+        "imageLink": "../images/Short Bow"
       },
       "chestSlot": {
         "damageReduction": 10,
@@ -705,8 +870,7 @@
           "ROGUE",
           "WARRIOR"
         ],
-        "imageLink": "../images/Leather Armor",
-        "occupyingSlot": "CHEST"
+        "imageLink": "../images/Leather Armor"
       },
       "baggage": {
         "0": {
@@ -893,20 +1057,26 @@
     },
     "unarmedAttackDamage": 1,
     "isSelectedForParty": true,
-    "encounterXPosition": 1,
-    "encounterYPosition": 1,
     "isSelected": false,
+    "strength": 4,
+    "dexterity": 10,
+    "stamina": 6,
+    "intelligence": 4,
+    "willpower": 4,
+    "resilience": 4,
     "name": "Joe",
     "hp": 70,
     "maxHp": 70,
     "isAlive": true,
-    "allCharacterStatuses": [],
+    "allCreatureStatuses": [],
     "maxPhysicalShield": 45,
     "maxMagicShield": 25,
     "physicalShield": 45,
     "magicShield": 25,
     "speed": 3,
     "initiative": 0,
-    "isActive": false
+    "isActive": false,
+    "encounterXPosition": 1,
+    "encounterYPosition": 1
   }
 ]

@@ -19,6 +19,8 @@ public class Monster extends Creature {
     private MonsterRace race;
     private int damageStrength;
     private List<MundaneItem> afterDeathItems;
+    //this boolean value is being used for more convenient way of class identification in JS:
+    private final boolean isMonster = true;
 
     public Monster() {
     }
@@ -27,6 +29,10 @@ public class Monster extends Creature {
         super(hp);
         this.race = race;
         this.damageStrength = damageStrength;
+    }
+
+    public boolean isMonster() {
+        return isMonster;
     }
 
     public MonsterRace getRace() {
@@ -68,7 +74,6 @@ public class Monster extends Creature {
         }
     }
 
-    @Override
     public String attack(Creature hero) {
         String message;
         Hero attackedHero = (Hero) hero;

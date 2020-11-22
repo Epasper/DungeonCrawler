@@ -3,7 +3,7 @@ package com.dungeoncrawler.Javiarenka.creature;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Creature {
+public class Creature {
 
     private String name;
     private int hp;
@@ -147,8 +147,6 @@ public abstract class Creature {
     public void setHp(int hp) {
         this.hp = hp;
     }
-
-    public abstract String attack(Creature character);
 
     public boolean isAlive() {
         return isAlive;
