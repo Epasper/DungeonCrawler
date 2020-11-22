@@ -21,7 +21,7 @@ function manageHeroesAndMonsters() {
         heroDiv.src = image;
         hero.active ? heroDiv.classList.add("active-creature") : heroDiv.classList.add("inactive-creature")
         hero.active ? heroDiv.classList.remove("inactive-creature") : heroDiv.classList.remove("active-creature")
-        heroDiv.onclick = () => getMovableTiles(hero);
+        heroDiv.onclick = () => selectCharacter(hero.name + '|||' + hero.surname);
     });
     monsters.forEach(monster => {
         const id = 'hero:' + monster.encounterXPosition + '---' + monster.encounterYPosition;
