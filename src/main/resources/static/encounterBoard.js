@@ -165,7 +165,14 @@ function moveTheHero(currentId) {
     clearTheBoardOfEffects()
     initialize();
     saveHeroesStateInBackEnd();
-    saveInitiativeOrderInBackEnd()
+    saveInitiativeOrderInBackEnd();
+    if (initiativeOrder[0].monster) moveTheMonster(initiativeOrder[0]);
+    console.log('NEXT: ' + JSON.stringify(initiativeOrder[0]));
+    // if (initiativeOrder[0].)
+}
+
+function moveTheMonster(monsterToBeMoved) {
+    //todo implement AI logic here
 }
 
 function saveHeroesStateInBackEnd() {
