@@ -9,12 +9,14 @@ public class Room extends Stage
     private int yPos;
     private Wall[] walls = new Wall[Direction.SIZE];
     private Tile door;
+    private boolean alreadyVisited;
 
     Room(int xCoord, int yCoord, int roomWidth, int roomHeight)
     {
         super(roomWidth, roomHeight);
         xPos = xCoord;
         yPos = yCoord;
+        alreadyVisited = false;
     }
 
     Room(Tile seedTile, int roomWidth, int roomHeight)
@@ -22,6 +24,7 @@ public class Room extends Stage
         super(roomWidth, roomHeight);
         xPos = seedTile.getX();
         yPos = seedTile.getY();
+        alreadyVisited = false;
     }
 
     Room(Tile[][] roomTiles, TileType targetType)
@@ -59,6 +62,7 @@ public class Room extends Stage
                     break;
             }
         }
+        alreadyVisited = false;
     }
 
     public int getxPos()
@@ -89,6 +93,16 @@ public class Room extends Stage
     public void setDoor(Tile door)
     {
         this.door = door;
+    }
+
+    public boolean isAlreadyVisited()
+    {
+        return alreadyVisited;
+    }
+
+    public void setAlreadyVisited(boolean alreadyVisited)
+    {
+        this.alreadyVisited = alreadyVisited;
     }
 
     public void lockRoomTiles()
