@@ -7,6 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class MapRestController
@@ -151,6 +152,38 @@ public class MapRestController
     public Set<Tile> getSeenTiles()
     {
         return service.getFogManager().getAlreadySeenTiles();
+    }
+
+    @GetMapping("/getVisitedRoomTiles")
+    public List<Tile> getVisitedRoomTiles()
+    {
+        List<Tile> outputList = new ArrayList<>();
+        service.getStage().getRooms().stream()
+                .filter(Room::isAlreadyVisited)
+                .collect(Collectors.toList())
+                .forEach(room -> outputList.addAll(room.getRoomInnerTiles()));
+        return outputList;
+    }
+
+    @GetMapping("/wasRoomVisited")
+    public boolean wasRoomVisited(@RequestParam int coordX, @RequestParam int coordY)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        return room.isAlreadyVisited();
+    }
+
+    @GetMapping("/visitRoom")
+    public List<Tile> visitRoom(@RequestParam int coordX, @RequestParam int coordY)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        room.setAlreadyVisited(true);
+
+        System.out.println();
+        System.out.println("Room visited.");
+        System.out.println(room.asString());
+        return room.getRoomInnerTiles();
     }
 
     @GetMapping("/saveMap")
