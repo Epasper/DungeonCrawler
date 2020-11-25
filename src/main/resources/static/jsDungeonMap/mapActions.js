@@ -1,7 +1,7 @@
 import { updateMap } from './dungeonMap.js'
-import { directions, party } from './partyManager.js';
-import { getX, getY, selectedGridTileDiv, getDivFromBackendTile } from './mapSelection.js'
-import { animateRoomChange } from './mapRender.js'
+import { directions, party } from './partyManager.js'
+import { selectedGridTileDiv } from './mapSelection.js'
+import { DoorOperator} from './jsMapClasses/doorOperator.js'
 
 import * as utils from './mapUtils.js'
 
@@ -20,142 +20,9 @@ class ActionsManager {
     }
 }
 
-class DoorOperator {
-
-    constructor(pointedTile) {
-        if (!pointedTile) return;
-        console.log('constructing door operator on: ', pointedTile);
-        this.pointedTile = pointedTile;
-        this.div = getDivFromBackendTile(pointedTile);
-        this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
-        const [type] = pointedTile.type.split('_').splice(-1);
-        const index = this.states.findIndex(door => door.state == type)
-        this.current = this.states[index];
-    }
-
-    update(pointedTile) {
-        console.log('updating door operator for: ', pointedTile);
-        this.pointedTile = pointedTile;
-        this.div = getDivFromBackendTile(pointedTile);
-        this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
-        const [type] = pointedTile.type.split('_').splice(-1);
-        const index = this.states.findIndex(door => door.state == type)
-        this.current = this.states[index];
-    }
-
-    async actionA() {
-        console.log('ACTION A from DoorOperator');
-        console.log(this);
-        console.log(this.current);
-        this.changeState(await this.current.actionA(this.div));
-    }
-
-    async actionB() {
-        console.log('ACTION B from DoorOperator');
-        console.log(this);
-        console.log(this.current);
-        this.changeState(await this.current.actionB(this.div));
-    }
-
-    changeState(targetState) {
-        const index = this.states.findIndex(door => door.state == targetState);
-        this.current = this.states[index];
-    }
-
-    giveButtonAnAction(btnElement, actionLetter) {
-        btnElement.textContent = this.current[`action${actionLetter}Prompt`];
-        btnElement.disabled = this.current[`action${actionLetter}isDisabled`];
-    }
-}
-
-//TODO: emoji do nazw akcji
-
-class Door {
-    constructor(state, actionA, actionB, actionButtonPrompt) {
-        this.state = state;
-        this.actionAPrompt = actionA;
-        this.actionBPrompt = actionB;
-        this.actionButtonPrompt = actionButtonPrompt
-    }
-}
-
-class DoorOpened extends Door {
-    constructor() {
-        super('OPENED', 'Open', 'Close', 'Opened door');
-        this.actionAisDisabled = true;
-        this.actionBisDisabled = false;
-    }
-
-    async actionA(div) {
-        console.log('door already opened');
-        return this.state;
-    }
-
-    async actionB(div) {
-        console.log('closing the door');
-        const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-
-        await activateDoorBackend(newState)
-        return newState;
-    }
-}
-
-class DoorClosed extends Door {
-    constructor() {
-        super('CLOSED', 'Open', 'Close', 'Closed door');
-        this.actionAisDisabled = false;
-        this.actionBisDisabled = true;
-    }
-
-    async actionA(div) {
-        console.log('opening the door');
-        const newState = 'OPENED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-
-        await activateDoorBackend(newState)
-        return newState;
-    }
-
-    async actionB(div) {
-        console.log('locking the door');
-        const newState = 'LOCKED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-        return newState;
-    }
-
-}
-
-class DoorLocked extends Door {
-    constructor() {
-        super('LOCKED', '🗝️ Unlock', 'Lockpick 🔓', 'Locked door');
-        this.actionAisDisabled = false;
-        this.actionBisDisabled = false;
-    }
-
-    async actionA(div) {
-        console.log('unlocking the door');
-        const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
-
-        await activateDoorBackend(newState)
-        return newState;
-    }
-
-    async actionB(div) {
-        console.log('bashing the door');
-        return this.state;
-    }
-}
-
 const directionalButtons = Array.from(document.getElementsByClassName('move-button'));
 let actionsManager = new ActionsManager();
 let doorOperator = new DoorOperator();
-
 
 async function updateSpawnButton() {
     let spawnButton = utils.getMappedElementById('spawn-party-btn');
@@ -166,8 +33,8 @@ async function updateSpawnButton() {
 
     if (!selectedGridTileDiv) return false;
 
-    let coordX = getX(selectedGridTileDiv)
-    let coordY = getY(selectedGridTileDiv)
+    let coordX = utils.getXCoord(selectedGridTileDiv)
+    let coordY = utils.getYCoord(selectedGridTileDiv)
 
     //AXIOS method:
     const response = await axios.get(`http://localhost:8080/checkSpawnability?coordX=${coordX}&coordY=${coordY}`);
@@ -234,29 +101,30 @@ function deactivateActionMenu() {
     btn2.disabled = true;
 }
 
-async function activateDoorBackend(newDoorState, descendingOrder = false) {
-    console.log('======================= ACTIVATE DOOR BACKEND ==========================');
-
-    const pointedTile = doorOperator.pointedTile;
-    const { data: roomData } = await axios.get(`http://localhost:8080/activateDoor?coordX=${pointedTile.x}&coordY=${pointedTile.y}
-    &newType=DOOR_${newDoorState}`);
-    const changedTilesData = roomData[1];
-    if (changedTilesData) await animateRoomChange(changedTilesData, descendingOrder);
-    console.log('======================= STOP DOOR BACKEND ==========================');
-}
-
 async function updateActionButton() {
     let actionBtn = utils.getMappedElementById('action-btn');
     if (!isPartySelected()) return;
 
     if (party.direction == directions.NONE) return;
 
-    const { data: pointedTile } = await axios.get(`http://localhost:8080/getPointedTile?dir=${party.direction}`);
+    const { data: pointedBackendTile } = await axios.get(`http://localhost:8080/getPointedTile?dir=${party.direction}`);
 
-    if (pointedTile.type.includes('DOOR')) {
+    //ACTIONS FOR DOOR
+    if (pointedBackendTile.type.includes('DOOR')) {
         actionBtn.disabled = false;
         activateActionMenu();
-        provideDoorActions(pointedTile);
+        provideDoorActions(pointedBackendTile);
+        return;
+    }
+
+    //ACTIONS FOR ROOM
+    const standingTile = party.standingTileDiv;
+    const classListArr = Array.from(standingTile.classList);
+    const isRoom = classListArr.some(cls => cls === 'ROOM');
+    if (isRoom) {
+        actionBtn.disabled = false;
+        activateActionMenu();
+        //provideEncounterActions();
         return;
     }
 
@@ -278,9 +146,8 @@ export async function actionBByContext() {
     await updateMap();
 }
 
-async function provideDoorActions(pointedTile) {
-    // let doorOperator = new DoorOperator(pointedDiv);
-    doorOperator.update(pointedTile);
+async function provideDoorActions(pointedBackendTile) {
+    doorOperator.update(pointedBackendTile);
 
     let action1Btn = utils.getMappedElementById('action-btn-1');
     let action2Btn = utils.getMappedElementById('action-btn-2');
@@ -303,23 +170,4 @@ export async function updateButtons() {
     updateDirectionalButtons();
     updateActionButton();
 }
-
-export function notify(text) {
-    const notificationDiv = document.createElement('div');
-    const root = document.documentElement;
-    const notificationTime = parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
-
-    
-    notificationDiv.innerText = text;
-    notificationDiv.classList.add('notification');//, 'hidden');
-    
-    document.body.insertBefore(notificationDiv, utils.getMappedElementById('toolbar'));
-
-    setTimeout(function () {
-        notificationDiv.remove();
-    }, notificationTime)
-
-
-}
-
 
