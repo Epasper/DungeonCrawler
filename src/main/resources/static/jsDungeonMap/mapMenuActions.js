@@ -354,3 +354,18 @@ function hideMenu(menu) {
     menu.classList.add('hidden');
 }
 
+function notify(text) {
+    const notificationDiv = document.createElement('div');
+    const root = document.documentElement;
+    const notificationTime = parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
+
+    
+    notificationDiv.innerText = text;
+    notificationDiv.classList.add('notification');//, 'hidden');
+    
+    document.body.insertBefore(notificationDiv, utils.getMappedElementById('toolbar'));
+
+    setTimeout(function () {
+        notificationDiv.remove();
+    }, notificationTime)
+}

@@ -11,8 +11,8 @@ export const directions = {
     NONE: 'NONE'
 }
 
-//let heroes = [];
 export let party;
+
 
 export function addParty(partyTile, standingTile) {
     party = {
