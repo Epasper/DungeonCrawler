@@ -26,3 +26,23 @@ export function makeCorridorsTemoraryVisible() {
     const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
     corridorFogDivs.forEach(div => div.style.backgroundColor = 'rgb(50,50,100');
 }
+
+export function getXCoord(tile, separator = '-') {
+    var tileId = ``
+    tileId = tile.id
+
+    var x = tileId.split(separator)[0]
+    return x * 1
+}
+
+export function getYCoord(tile, separator = '-') {
+    var tileId = ``
+    tileId = tile.id
+
+    var y = tileId.split(separator)[1]
+    return y * 1
+}
+
+export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
+    return getMappedElementById(`${x}${distinguisherSign}${y}`);
+}
