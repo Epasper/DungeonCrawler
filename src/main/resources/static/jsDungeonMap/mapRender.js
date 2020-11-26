@@ -13,8 +13,11 @@ export async function draw() {
 }
 
 async function drawParty() {
-    const response = await axios.get(`http://localhost:8080/getParty`);
-    const backendParty = response.data;
+    const response = await axios.get(`http://localhost:8080/getPartyData`);
+    const backendParty = response.data['partyData'];
+    const encounterStatus = response.data['encounterStatus'];
+
+    debugger;
 
     if (!backendParty) return;
 

@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,10 +69,17 @@ public class MapRestController
         //////service.getFogManager().updateVisibility();
     }
 
-    @GetMapping("/getParty")
-    public PartyAvatar getParty()
+    @GetMapping("/getPartyData")
+//    public PartyAvatar getPartyData()
+    public Map<String, Object> getPartyData()
     {
-        return service.getPartyManager().getParty();
+        Map<String, Object> outputMap = new TreeMap<>();
+        EncounterStatus encounterStatus = service.getPartyManager().checkEncounterStatus();
+
+        outputMap.put("partyData", service.getPartyManager().getParty());
+        outputMap.put("encounterStatus", encounterStatus);
+
+        return outputMap;
     }
 
     @GetMapping("/getClickedTile")

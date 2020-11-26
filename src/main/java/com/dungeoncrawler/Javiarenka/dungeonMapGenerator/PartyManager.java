@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyManager
 {
@@ -137,5 +138,16 @@ public class PartyManager
         {
             e.printStackTrace();
         }
+    }
+
+    public EncounterStatus checkEncounterStatus()
+    {
+        if (Objects.isNull(party)) return EncounterStatus.UNDEFINED;
+
+        Tile partyTile = party.getOccupiedTile();
+        if (!partyTile.getType().isRoom()) return EncounterStatus.UNDEFINED;
+
+        Room room = stage.getRoomByTile(partyTile);
+        return room.getEncounterStatus();
     }
 }
