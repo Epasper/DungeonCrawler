@@ -8,7 +8,7 @@ export class DoorOperator {
 
         if (!pointedBackendTile) return;
         console.log('constructing door operator on: ', pointedBackendTile);
-        this.pointedTile = pointedBackendTile;
+        this.pointedBackendTile = pointedBackendTile;
         this.div = utils.getDivFromBackendTile(pointedBackendTile);
         const [type] = pointedBackendTile.type.split('_').splice(-1);
         const index = this.states.findIndex(door => door.state == type)
@@ -17,7 +17,7 @@ export class DoorOperator {
 
     update(pointedBackendTile) {
         console.log('updating door operator for: ', pointedBackendTile);
-        this.pointedTile = pointedBackendTile;
+        this.pointedBackendTile = pointedBackendTile;
         this.div = utils.getDivFromBackendTile(pointedBackendTile);
         //////////this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
         this.states.forEach(doorState => doorState.update(pointedBackendTile))
@@ -53,12 +53,12 @@ export class DoorOperator {
 }
 
 class Door {
-    constructor(state, actionA, actionB, actionButtonPrompt, pointedTile) {
+    constructor(state, actionA, actionB, actionButtonPrompt, pointedBackendTile) {
         this.state = state;
         this.actionAPrompt = actionA;
         this.actionBPrompt = actionB;
         this.actionButtonPrompt = actionButtonPrompt
-        this.pointedBackendTile = pointedTile;
+        this.pointedBackendTile = pointedBackendTile;
     }
 
     update(pointedBackendTile) {

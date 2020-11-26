@@ -1,7 +1,7 @@
 import { makeSelection, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
 import { actionAByContext, actionBByContext } from './mapActions.js'
-import { party, directions } from './partyManager.js'
+import { party, directions } from './jsMapClasses/partyManager.js'
 import { updateMap } from './dungeonMap.js'
 import * as utils from './mapUtils.js'
 import * as menus from './mapMenuActions.js'

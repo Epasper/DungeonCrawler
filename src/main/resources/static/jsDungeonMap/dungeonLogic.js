@@ -1,4 +1,4 @@
-import { party } from "./partyManager.js";
+import { party } from "./jsMapClasses/partyManager.js";
 import * as utils from "./mapUtils.js"
 
 

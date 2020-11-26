@@ -1,4 +1,4 @@
-import { addParty, party } from './partyManager.js'
+import { addPartyManager, party } from './jsMapClasses/partyManager.js'
 import * as utils from './mapUtils.js'
 
 let prevFacingDirection = 'none';
@@ -56,7 +56,9 @@ async function drawParty() {
     const grid = utils.getMappedElementById('grid');
     grid.appendChild(partyTile);
 
-    if (!party) addParty(partyTile, standingTileDiv);
+    // if (!party) addPartyManager(partyTile, standingTileDiv);
+    debugger;
+    if (!party.exists()) addPartyManager(partyTile, standingTileDiv);
     if (standingTileDiv) party.standingTileDiv = standingTileDiv;
 }
 
@@ -109,63 +111,6 @@ function animatePartyRotation(partyImg, dir) {
     }
 }
 
-async function drawFogOfWarbackup() {
-
-    if (!party) return;
-
-    console.log(`---DRAWING FOG START---`)
-    const response = await axios.get(`http://localhost:8080/getVisibilityData`);
-    console.log(`---DRAWING FOG after await---`)
-
-    const newlyShownTiles = response.data[1];
-    const newlyHiddenTiles = response.data[2];
-    const raytracedTiles = response.data[3];
-
-    const visibilityData = response.data[0];
-    let fogDiv;
-    let visibleFogDivs = [];
-    let hiddenCounter = 0;
-    let shownCounter = 0;
-    //console.log(visibilityData)
-
-    console.log('newly show tiles: ', newlyShownTiles)
-    let distances = Object.keys(newlyShownTiles);
-    distances.forEach(distance => {
-        let fogDiv = utils.getDivFromBackendTile(newlyShownTiles[distance], 'x');
-        console.log('figDiv: ', fogDiv);
-        //fogDiv.style.transitionDelay = (`${distance / 10}s`)
-    })
-
-    visibilityData.forEach(tile => {
-        fogDiv = utils.getDivFromBackendTile(tile, 'x');
-        if (tile.visibility == 0) {
-            fogDiv.style.opacity = '';
-            fogDiv.classList.remove('visible');
-            hiddenCounter++;
-        } else {
-            fogDiv.style.opacity = 1 - tile.visibility;
-            fogDiv.classList.add('visible');
-            visibleFogDivs.push(fogDiv);
-            shownCounter++;
-        }
-    });
-
-    raytracedTiles.forEach(tile => {
-        utils.getDivFromBackendTile(tile, 'x').style.backgroundColor = 'red';
-        utils.getDivFromBackendTile(tile, 'x').style.opacity = '0.8';
-    })
-
-    //TODO: uncomment below to avoid bugs with drawing fog of war, when events are triggered too quickly (but slows down site)
-    // let visibleTiles = Array.from(document.getElementsByClassName('visible'));
-    // visibleTiles.forEach(fDiv => {
-
-    //     if (!visibleFogDivs.some(div => div === fDiv)) {
-    //         fDiv.style.opacity = '';
-    //         fogDiv.classList.remove('visible');
-    //     }
-    // })
-}
-
 export async function loadVisitedFog() {
     const response = await axios.get(`http://localhost:8080/getSeenTiles`);
     const visitedTiles = response.data;
@@ -188,7 +133,8 @@ export async function loadVisitedRooms() {
 
 async function drawFogOfWar() {
 
-    if (!party) return;
+    // if (!party) return;
+    if (!party.exists()) return;
 
     console.log('=============================== DRAWING FOG ====================================');
 
@@ -202,7 +148,7 @@ async function drawFogOfWar() {
     const distancesSorted = response.data['distancesSorted'];
     const newlySeenTiles = response.data['newlySeenTiles'];
 
-    console.log('newly shown tiles: ', newlyShownTiles);
+    //console.log('newly shown tiles: ', newlyShownTiles);
 
     let i = 0;
     let root = document.documentElement;
