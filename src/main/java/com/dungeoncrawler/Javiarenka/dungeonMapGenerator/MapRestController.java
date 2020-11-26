@@ -192,6 +192,16 @@ public class MapRestController
         return room.getRoomInnerTiles();
     }
 
+    @GetMapping("/roomEncounter")
+    public List<Tile> roomEncounter (@RequestParam int coordX, @RequestParam int coordY, @RequestParam EncounterStatus newEncounterState)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        room.setEncounterStatus(newEncounterState);
+        //room.setAlreadyVisited(true);
+        return room.getRoomInnerTiles();
+    }
+
     @GetMapping("/saveMap")
     public void saveMap(@RequestParam int saveSlotNumber)
     {
