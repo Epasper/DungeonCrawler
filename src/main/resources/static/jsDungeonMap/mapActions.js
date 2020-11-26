@@ -1,7 +1,8 @@
 import { updateMap } from './dungeonMap.js'
-import { directions, party } from './partyManager.js'
+import { directions, party } from './jsMapClasses/partyManager.js'
 import { selectedGridTileDiv } from './mapSelection.js'
-import { DoorOperator} from './jsMapClasses/doorOperator.js'
+import { DoorOperator } from './jsMapClasses/doorOperator.js'
+import { EncounterOperator } from './jsMapClasses/encounterOperator.js'
 
 import * as utils from './mapUtils.js'
 
@@ -23,6 +24,8 @@ class ActionsManager {
 const directionalButtons = Array.from(document.getElementsByClassName('move-button'));
 let actionsManager = new ActionsManager();
 let doorOperator = new DoorOperator();
+let encounterOperator = new EncounterOperator();
+
 
 async function updateSpawnButton() {
     let spawnButton = utils.getMappedElementById('spawn-party-btn');
@@ -124,7 +127,7 @@ async function updateActionButton() {
     if (isRoom) {
         actionBtn.disabled = false;
         activateActionMenu();
-        //provideEncounterActions();
+        provideEncounterActions();
         return;
     }
 
@@ -160,6 +163,23 @@ async function provideDoorActions(pointedBackendTile) {
 
     const actionBtn = utils.getMappedElementById('action-btn');
     actionBtn.textContent = doorOperator.current.actionButtonPrompt;
+}
+
+function provideEncounterActions() {
+    //const standingBackendTile = party.
+    encounterOperator.update();
+
+    let action1Btn = utils.getMappedElementById('action-btn-1');
+    let action2Btn = utils.getMappedElementById('action-btn-2');
+
+    encounterOperator.giveButtonAnAction(action1Btn, 'A');
+    encounterOperator.giveButtonAnAction(action2Btn, 'B');
+
+    actionsManager.actionA = async () => { await encounterOperator.actionA(); };
+    actionsManager.actionB = async () => { await encounterOperator.actionB(); };
+
+    const actionBtn = utils.getMappedElementById('action-btn');
+    actionBtn.textContent = encounterOperator.current.actionButtonPrompt;
 }
 
 export async function updateButtons() {
