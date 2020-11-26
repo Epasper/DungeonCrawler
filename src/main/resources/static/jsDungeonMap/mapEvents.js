@@ -158,8 +158,6 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
 
     await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
 
-    party.direction = directions[dir];
-
     await updateMap();
 }
 

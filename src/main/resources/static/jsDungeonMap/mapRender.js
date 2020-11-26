@@ -18,12 +18,8 @@ async function drawParty() {
 
     if (!backendParty) return;
 
-    //debugger;
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
     console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
-    //debugger;
-
-    //if (dir) party.direction = directions[dir];
 
     let partyTile = utils.getMappedElementById(`party`);
     let partyImg = utils.getMappedElementById('party-img');
@@ -56,10 +52,9 @@ async function drawParty() {
     const grid = utils.getMappedElementById('grid');
     grid.appendChild(partyTile);
 
-    // if (!party) addPartyManager(partyTile, standingTileDiv);
-    debugger;
-    if (!party.exists()) addPartyManager(partyTile, standingTileDiv);
-    if (standingTileDiv) party.standingTileDiv = standingTileDiv;
+    if (!party.exists()) addPartyManager(partyTile, standingTileDiv, backendParty.occupiedTile); //tworzy Party, jeśli nie istnieje
+
+    if (standingTileDiv) party.update(standingTileDiv, backendParty.occupiedTile, dir);  //updatuje Party
 }
 
 function animatePartyRotation(partyImg, dir) {

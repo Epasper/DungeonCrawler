@@ -20,7 +20,7 @@ export class EncounterOperator {
         this.standingBackendTile = partyStandingBackendTile;
         this.standingDiv = utils.getDivFromBackendTile(partyStandingBackendTile);
         //////////this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
-        this.states.forEach(doorState => doorState.update(partyStandingBackendTile))
+        this.states.forEach(encounter => encounter.update(partyStandingBackendTile))
 
         // const [type] = pointedBackendTile.type.split('_').splice(-1);
         const type = partyStandingBackendTile.type;
