@@ -19,6 +19,12 @@ async function drawParty() {
 
     if (!backendParty) return;
 
+    if (!party.isSpawned)   //warunek zachodzi w sytuacji po Loadzie gry, przy pierwszym rysowaniu
+    {
+        party.createPartyDiv();
+        party.isSpawned = true;
+    }
+
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
     console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
 
