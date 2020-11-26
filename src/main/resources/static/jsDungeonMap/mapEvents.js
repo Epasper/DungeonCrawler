@@ -138,6 +138,9 @@ async function spawnPartyBackend() {
     const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
     corridorFogDivs.forEach(div => div.style.backgroundColor = '');
 
+    party.createPartyDiv();
+    party.isSpawned = true;
+
     await deleteSelection();
     await updateMap();
 }

@@ -1,5 +1,6 @@
 import { updateMap } from "../dungeonMap.js";
 import { tileMouseEntered } from '../mapEvents.js'
+import * as utils from '../mapUtils.js'
 
 export const directions = {
     UP: 'UP',
@@ -10,22 +11,20 @@ export const directions = {
 }
 
 export class Party {
-    constructor(partyDiv, standingTileDiv, standingTileBackend) {
-        this.partyDiv = partyDiv;
-        this.standingTileDiv = standingTileDiv;
+    constructor(occupiedTileBackend, encounterStatus) {
+        this.partyDiv = null;
+        this.occupiedTileBackend = occupiedTileBackend;
+        if (occupiedTileBackend) this.occupiedTileDiv = utils.getDivFromBackendTile(occupiedTileBackend);
         this.direction = directions.NONE;
         this.isSelected = false;
-        this.standingTileBackend = standingTileBackend;
-
-        if (partyDiv) {
-            partyDiv.addEventListener('click', partyClick);
-            partyDiv.addEventListener('mouseenter', mouseEnteredPartyDiv);
-        }
+        this.isSpawned = false;
+        this.encounterStatus = encounterStatus;
     }
 
-    update(standingTileDiv, standingTileBackend, dir) {
-        this.standingTileDiv = standingTileDiv;
-        this.standingTileBackend = standingTileBackend;
+    update(occupiedTileBackend, encounterStatus, dir) {
+        this.occupiedTileBackend = occupiedTileBackend;
+        this.occupiedTileDiv = utils.getDivFromBackendTile(occupiedTileBackend);
+        this.encounterStatus = encounterStatus;
         this.direction = dir;
     }
 
@@ -45,17 +44,40 @@ export class Party {
         console.log(this?.partyDiv);
         return this?.partyDiv;
     }
+
+    createPartyDiv() {
+        console.log('Creating Party div')
+    
+        const partyDiv = document.createElement(`div`)
+        partyDiv.id = `party`;
+        utils.idMap.set(partyDiv.id, partyDiv);
+    
+        const partyImg = document.createElement('img');
+        partyImg.id = 'party-img';
+        utils.idMap.set(partyImg.id, partyImg);
+    
+        partyImg.src = '../images/dungeonMap/arrow.svg';
+        partyImg.style.height = ('60%');
+        partyImg.style.width = ('60%');
+        partyDiv.appendChild(partyImg);
+    
+        this.partyDiv = partyDiv;
+        this.partyDiv.addEventListener('click', partyClick);
+        this.partyDiv.addEventListener('mouseenter', mouseEnteredPartyDiv);
+
+        // const grid = utils.getMappedElementById('grid');
+        // grid.appendChild(partyDiv);
+    }
 }
 
 export let party = new Party();
 
-
-export function addPartyManager(partyDiv, standingTileDiv, standingTileBackend) {
-    party = new Party(partyDiv, standingTileDiv, standingTileBackend);
-}
+// export function addPartyManager(partyDiv, occupiedTileDiv, occupiedTileBackend) {
+//     party = new Party(partyDiv, occupiedTileDiv, occupiedTileBackend);
+// }
 
 function mouseEnteredPartyDiv() {
-    tileMouseEntered({ target: party.standingTileDiv }, 'party')
+    tileMouseEntered({ target: party.occupiedTileDiv }, 'party')
 }
 
 async function partyClick({ target: partyDiv }) {     //Destrukturyzacja obiektu. Do funkcji wchodzi obiekt Event i bierzemy z niego Event.target i przypisujemy do partyDiv. 

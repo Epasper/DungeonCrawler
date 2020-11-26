@@ -2,7 +2,7 @@ import * as utils from '../mapUtils.js'
 
 export class EncounterOperator {
 
-    constructor(partyStandingBackendTile) {
+    constructor(partyStandingBackendTile, encounterStatus) {
         this.states = [new EncounterAfter(), new EncounterBefore()];
 
         if (!partyStandingBackendTile) return;
@@ -10,12 +10,12 @@ export class EncounterOperator {
         this.standingBackendTile = partyStandingBackendTile;
         this.standingDiv = utils.getDivFromBackendTile(partyStandingBackendTile);
         // const [type] = partyStandingBackendTile.type.split('_').splice(-1);
-        const type = partyStandingBackendTile.type; //TODO: wyciągać typ encountera z backendu
+        const type = encounterStatus;
         const index = this.states.findIndex(encounter => encounter.state == type)
         this.current = this.states[index];
     }
 
-    update(partyStandingBackendTile) {
+    update(partyStandingBackendTile, encounterStatus) {
         console.log('updating encounter operator for: ', partyStandingBackendTile);
         this.standingBackendTile = partyStandingBackendTile;
         this.standingDiv = utils.getDivFromBackendTile(partyStandingBackendTile);
@@ -23,7 +23,7 @@ export class EncounterOperator {
         this.states.forEach(encounter => encounter.update(partyStandingBackendTile))
 
         // const [type] = pointedBackendTile.type.split('_').splice(-1);
-        const type = partyStandingBackendTile.type;
+        const type = encounterStatus;
         const index = this.states.findIndex(encounter => encounter.state == type)
         this.current = this.states[index];
     }

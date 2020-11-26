@@ -9,7 +9,7 @@ export async function updateLogic() {
 
 async function generateRoomEncounter() {
     if (!party) return;
-    const standingTileDiv = party.standingTileDiv;
+    const standingTileDiv = party.occupiedTileDiv;
 
     if (!await isRoomTileEncounterReady(standingTileDiv)) return;
 

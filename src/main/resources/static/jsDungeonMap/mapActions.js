@@ -29,7 +29,8 @@ let encounterOperator = new EncounterOperator();
 
 async function updateSpawnButton() {
     let spawnButton = utils.getMappedElementById('spawn-party-btn');
-    if (utils.getMappedElementById('party')) {
+    // if (utils.getMappedElementById('party')) {
+    if (party.isSpawned) {
         spawnButton.style.opacity = '0';
         spawnButton.style.pointerEvents = 'none';
     }
@@ -121,7 +122,7 @@ async function updateActionButton() {
     }
 
     //ACTIONS FOR ROOM
-    const standingTile = party.standingTileDiv;
+    const standingTile = party.occupiedTileDiv;
     const classListArr = Array.from(standingTile.classList);
     const isRoom = classListArr.some(cls => cls === 'ROOM');
     if (isRoom) {
@@ -167,7 +168,7 @@ async function provideDoorActions(pointedBackendTile) {
 
 function provideEncounterActions() {
     //const standingBackendTile = party.
-    encounterOperator.update();
+    encounterOperator.update(party.occupiedTileDiv, party.encounterStatus);
 
     let action1Btn = utils.getMappedElementById('action-btn-1');
     let action2Btn = utils.getMappedElementById('action-btn-2');

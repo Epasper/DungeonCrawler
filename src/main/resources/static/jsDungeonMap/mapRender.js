@@ -1,4 +1,4 @@
-import { addPartyManager, party } from './jsMapClasses/partyManager.js'
+import { /*addPartyManager,*/ party, Party } from './jsMapClasses/partyManager.js'
 import * as utils from './mapUtils.js'
 
 let prevFacingDirection = 'none';
@@ -17,47 +17,25 @@ async function drawParty() {
     const backendParty = response.data['partyData'];
     const encounterStatus = response.data['encounterStatus'];
 
-    debugger;
-
     if (!backendParty) return;
 
     const [xCoord, yCoord, dir] = [backendParty.occupiedTile.x, backendParty.occupiedTile.y, backendParty.direction];
     console.log(`---drawing party: x:${xCoord}/ y:${yCoord} facing: ${dir}---`);
 
-    let partyTile = utils.getMappedElementById(`party`);
+    let partyDiv = utils.getMappedElementById('party');
     let partyImg = utils.getMappedElementById('party-img');
-    if (!partyTile) {
-        console.log('Creating Party div')
-        partyTile = document.createElement(`div`)
-        partyTile.id = `party`;
-        utils.idMap.set(partyTile.id, partyTile);
+    partyDiv.style.gridRow = `${yCoord + 1}`;
+    partyDiv.style.gridColumn = `${xCoord + 1}`;
+    animatePartyRotation(partyImg, dir);
 
-        partyImg = document.createElement('img');
-        partyImg.id = 'party-img';
-        utils.idMap.set(partyImg.id, partyImg);
-        partyImg.src = '../images/dungeonMap/arrow.svg';
-        partyImg.style.height = ('60%');
-        partyImg.style.width = ('60%');
-        partyTile.appendChild(partyImg);
-    }
+    party.update(backendParty.occupiedTile, encounterStatus, dir);
+
+    const grid = utils.getMappedElementById('grid');
+    grid.appendChild(partyDiv);
 
     //TODO: sprawdzić czy zmieniła się pozycja - jeśli nie - to nic nie robić dalej
     // można też wywoływanie drawFogOfWar() dorzucić tutaj - jeśli pozycja party się nie zmieni, to i fog się nie musi rysować na nowo
     // ale uwaga z drzwiami. Prawdopodobnie nie może się zmienić ani drużyna, ani pola wokół niej
-
-    partyTile.style.gridRow = `${yCoord + 1}`;
-    partyTile.style.gridColumn = `${xCoord + 1}`;
-
-    const standingTileDiv = utils.getDivFromBackendTile(backendParty.occupiedTile);
-
-    if (partyImg) animatePartyRotation(partyImg, dir);
-
-    const grid = utils.getMappedElementById('grid');
-    grid.appendChild(partyTile);
-
-    if (!party.exists()) addPartyManager(partyTile, standingTileDiv, backendParty.occupiedTile); //tworzy Party, jeśli nie istnieje
-
-    if (standingTileDiv) party.update(standingTileDiv, backendParty.occupiedTile, dir);  //updatuje Party
 }
 
 function animatePartyRotation(partyImg, dir) {
@@ -132,7 +110,7 @@ export async function loadVisitedRooms() {
 async function drawFogOfWar() {
 
     // if (!party) return;
-    if (!party.exists()) return;
+    if (!party.isSpawned) return;
 
     console.log('=============================== DRAWING FOG ====================================');
 
@@ -151,7 +129,7 @@ async function drawFogOfWar() {
     let i = 0;
     let root = document.documentElement;
     const frameDuration = parseInt(window.getComputedStyle(root).getPropertyValue(`--visibility-frame-duration`));
-    
+
     visibleTilesSortedByDistance.forEach(tile => {
         let tileDiv = utils.getDivFromBackendTile(tile);
         let distance = distancesSorted[i] - partyVisibilityRadius;
