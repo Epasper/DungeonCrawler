@@ -2,27 +2,21 @@ import * as utils from '../mapUtils.js'
 
 export class EncounterOperator {
 
-    constructor(partyStandingBackendTile, encounterStatus) {
+    constructor(occupiedTileDiv, encounterStatus) {
         this.states = [new EncounterAfter(), new EncounterBefore()];
+        console.log('constructing encounter operator on: ', occupiedTileDiv);
 
-        if (!partyStandingBackendTile) return;
-        console.log('constructing encounter operator on: ', partyStandingBackendTile);
-        this.standingBackendTile = partyStandingBackendTile;
-        this.standingDiv = utils.getDivFromBackendTile(partyStandingBackendTile);
-        // const [type] = partyStandingBackendTile.type.split('_').splice(-1);
+        this.occupiedTileDiv = occupiedTileDiv;
         const type = encounterStatus;
         const index = this.states.findIndex(encounter => encounter.state == type)
         this.current = this.states[index];
     }
 
-    update(partyStandingBackendTile, encounterStatus) {
-        console.log('updating encounter operator for: ', partyStandingBackendTile);
-        this.standingBackendTile = partyStandingBackendTile;
-        this.standingDiv = utils.getDivFromBackendTile(partyStandingBackendTile);
-        //////////this.states = [new DoorOpened(), new DoorClosed(), new DoorLocked()];
-        this.states.forEach(encounter => encounter.update(partyStandingBackendTile))
+    update(occupiedTileDiv, encounterStatus) {
+        console.log('updating encounter operator for: ', encounterStatus);
 
-        // const [type] = pointedBackendTile.type.split('_').splice(-1);
+        this.occupiedTileDiv = occupiedTileDiv;
+        this.states.forEach(encounter => encounter.update(occupiedTileDiv));
         const type = encounterStatus;
         const index = this.states.findIndex(encounter => encounter.state == type)
         this.current = this.states[index];
@@ -37,14 +31,14 @@ export class EncounterOperator {
         console.log('ACTION A from EncounterOperator');
         console.log(this);
         console.log(this.current);
-        this.changeState(await this.current.actionA(this.standingDiv));
+        this.changeState(await this.current.actionA(this.occupiedTileDiv));
     }
 
     async actionB() {
         console.log('ACTION B from EncounterOperator');
         console.log(this);
         console.log(this.current);
-        this.changeState(await this.current.actionB(this.standingDiv));
+        this.changeState(await this.current.actionB(this.occupiedTileDiv));
     }
 
     giveButtonAnAction(btnElement, actionLetter) {
@@ -54,33 +48,33 @@ export class EncounterOperator {
 }
 
 class Encounter {
-    constructor(state, actionA, actionB, actionButtonPrompt, partyStandingBackendTile) {
+    constructor(state, actionA, actionB, actionButtonPrompt, occupiedTileDiv) {
         this.state = state;
         this.actionAPrompt = actionA;
         this.actionBPrompt = actionB;
         this.actionButtonPrompt = actionButtonPrompt
-        this.partyStandingBackendTile = partyStandingBackendTile;
+        this.occupiedTileDiv = occupiedTileDiv;
     }
 
-    update(partyStandingBackendTile) {
-        this.partyStandingBackendTile = partyStandingBackendTile;
+    update(occupiedTileDiv) {
+        this.occupiedTileDiv = occupiedTileDiv;
     }
 }
 
 class EncounterBefore extends Encounter {
     constructor() {
         super('BEFORE', '⚔️ Engage', 'Sabotage 💣', 'Encounter ready');
-        this.actionAisDisabled = true;
-        this.actionBisDisabled = true;
+        this.actionAisDisabled = false;
+        this.actionBisDisabled = false;
     }
 
-    async actionA(standingDiv) {
+    async actionA(occupiedTileDiv) {
         console.log('Starting an encounter');
         const newState = 'AFTER';
 
-        standingDiv.classList.add('encountered');
+        //occupiedTileDiv.classList.add('encountered');
 
-        await generateEncounter(this.partyStandingBackendTile);
+        await generateRoomEncounter(this.occupiedTileDiv);
 
         return newState;
     }
@@ -94,11 +88,11 @@ class EncounterBefore extends Encounter {
 class EncounterAfter extends Encounter {
     constructor() {
         super('AFTER', '💤 Rest', 'Repeat 🔁', 'Encounter finished');
-        this.actionAisDisabled = true;
-        this.actionBisDisabled = true;
+        this.actionAisDisabled = false;
+        this.actionBisDisabled = false;
     }
 
-    async actionA(standingDiv) {
+    async actionA(occupiedTileDiv) {
         console.log('Resting');
         return this.state;
     }
@@ -107,7 +101,22 @@ class EncounterAfter extends Encounter {
         console.log('Reseting encounter');
         const newState = 'BEFORE';
 
-        await resetEncounter(this.partyStandingBackendTile);
+        //await resetEncounter(this.occupiedTileDiv);
         return newState;
     }
+}
+
+async function generateRoomEncounter(occupiedTileDiv) {
+    //if (!party) return;
+    //const occupiedTileDiv = party.occupiedTileDiv;
+
+    //if (!await isRoomTileEncounterReady(occupiedTileDiv)) return;
+
+    const coordX = utils.getXCoord(occupiedTileDiv)
+    const coordY = utils.getYCoord(occupiedTileDiv)
+    const {data: roomTilesBackend} = await axios.get(`http://localhost:8080/visitRoom?coordX=${coordX}&coordY=${coordY}`);
+    roomTilesBackend.forEach(tile => {
+        const tileDiv = utils.getDivFromBackendTile(tile);
+        tileDiv.classList.add('encountered');
+    })
 }

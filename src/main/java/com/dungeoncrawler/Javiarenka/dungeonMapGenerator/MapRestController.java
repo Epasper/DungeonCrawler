@@ -183,7 +183,8 @@ public class MapRestController
     {
         Tile roomTile = service.getStage().getTile(coordX, coordY);
         Room room = service.getStage().getRoomByTile(roomTile);
-        room.setAlreadyVisited(true);
+        room.setEncounterStatus(EncounterStatus.AFTER);
+        //room.setAlreadyVisited(true);
 
         System.out.println();
         System.out.println("Room visited.");

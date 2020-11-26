@@ -29,5 +29,5 @@ export async function updateMap() {
     console.log(`================= UPDATE ==============`)
     await draw();
     await updateButtons();
-    await updateLogic();
+    //await updateLogic();
 }

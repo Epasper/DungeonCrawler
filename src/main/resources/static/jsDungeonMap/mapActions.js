@@ -124,7 +124,7 @@ async function updateActionButton() {
     //ACTIONS FOR ROOM
     const standingTile = party.occupiedTileDiv;
     const classListArr = Array.from(standingTile.classList);
-    const isRoom = classListArr.some(cls => cls === 'ROOM');
+    const isRoom = classListArr.some(cls => cls.includes('ROOM'));
     if (isRoom) {
         actionBtn.disabled = false;
         activateActionMenu();

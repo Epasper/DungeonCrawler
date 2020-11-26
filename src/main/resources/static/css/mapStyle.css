@@ -66,7 +66,8 @@
     transition: background-color 1s;
 }
 
-.ROOM.visited {
+.ROOM.visited,
+.ROOM.encountered {
     background-color: #84a768;
     /* transition: background-color 1s; */
 }
@@ -77,7 +78,8 @@
     transition: background-color 1s;
 }
 
-.ROOM_LOCKED.visited {
+.ROOM_LOCKED.visited,
+.ROOM_LOCKED.encountered {
     background-color: #33552d;
 }
 
