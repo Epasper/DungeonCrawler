@@ -67,9 +67,9 @@
 }
 
 .ROOM.visited,
-.ROOM.encountered {
+.ROOM.encountered,
+.ROOM[data-encounter-status="AFTER"] {
     background-color: #84a768;
-    /* transition: background-color 1s; */
 }
 
 .ROOM_LOCKED {
@@ -79,7 +79,8 @@
 }
 
 .ROOM_LOCKED.visited,
-.ROOM_LOCKED.encountered {
+.ROOM_LOCKED.encountered,
+.ROOM_LOCKED[data-encounter-status="AFTER"] {
     background-color: #33552d;
 }
 

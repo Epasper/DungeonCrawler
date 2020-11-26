@@ -55,3 +55,11 @@ export function replaceClass(element, oldClassStr, newClassStr) {
 
     element.className = newClassName;
 }
+
+export function getDivFromCoordinateString(str, distinguisherSign = '-') {
+    const coordinates = str.split(distinguisherSign);
+    const x = coordinates[0];
+    const y = coordinates[1];
+
+    return getMappedElementById(`${x}${distinguisherSign}${y}`);
+}

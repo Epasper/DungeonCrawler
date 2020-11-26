@@ -103,14 +103,19 @@ export async function loadVisitedFog() {
     })
 }
 
-export async function loadVisitedRooms() {
-    const response = await axios.get(`http://localhost:8080/getVisitedRoomTiles`);
-    const visitedTiles = response.data;
+export async function loadEncountersStates() {
+ 
+    const response = await axios.get(`http://localhost:8080/loadEncountersStates`);;
+    const encounterTiles = new Map(Object.entries(response.data));
 
-    visitedTiles.forEach(tile => {
-        let tileDiv = utils.getDivFromBackendTile(tile);
-        tileDiv.classList.add('visited');
+    console.log('encounter tiles: ', encounterTiles)
+    encounterTiles.forEach((value, key) => {
+        const coordinateString = key;
+        const encounterStatus = value;
+        let tileDiv = utils.getDivFromCoordinateString(coordinateString);
+        tileDiv.dataset.encounterStatus = encounterStatus;
     })
+
 }
 
 async function drawFogOfWar() {

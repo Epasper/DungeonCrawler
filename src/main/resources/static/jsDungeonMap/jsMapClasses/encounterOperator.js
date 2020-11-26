@@ -108,22 +108,13 @@ class EncounterAfter extends Encounter {
     }
 }
 
-async function generateRoomEncounter(occupiedTileDiv) {
+async function changeRoomEncounter(newEncounterStatus, occupiedTileDiv) {
     const coordX = utils.getXCoord(occupiedTileDiv)
     const coordY = utils.getYCoord(occupiedTileDiv)
-    const {data: roomTilesBackend} = await axios.get(`http://localhost:8080/visitRoom?coordX=${coordX}&coordY=${coordY}`);
+    const {data: roomTilesBackend} = await axios.get(`http://localhost:8080/roomEncounter?coordX=${coordX}&coordY=${coordY}&newEncounterState=${newEncounterStatus}`);
     roomTilesBackend.forEach(tile => {
         const tileDiv = utils.getDivFromBackendTile(tile);
-        tileDiv.classList.add('encountered');
-    })
-}
-
-async function changeRoomEncounter(newEncounterState, occupiedTileDiv) {
-    const coordX = utils.getXCoord(occupiedTileDiv)
-    const coordY = utils.getYCoord(occupiedTileDiv)
-    const {data: roomTilesBackend} = await axios.get(`http://localhost:8080/roomEncounter?coordX=${coordX}&coordY=${coordY}&newEncounterState=${newEncounterState}`);
-    roomTilesBackend.forEach(tile => {
-        const tileDiv = utils.getDivFromBackendTile(tile);
-        tileDiv.classList.add(newEncounterState);
+        tileDiv.classList.add(newEncounterStatus);
+        tileDiv.dataset.encounterStatus = newEncounterStatus;
     })
 }

@@ -1,5 +1,6 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -159,15 +160,17 @@ public class MapRestController
         return service.getFogManager().getAlreadySeenTiles();
     }
 
-    @GetMapping("/getVisitedRoomTiles")
-    public List<Tile> getVisitedRoomTiles()
+    @GetMapping("/loadEncountersStates")
+    public Map<String, EncounterStatus> loadEncountersStates()
     {
-        List<Tile> outputList = new ArrayList<>();
-        service.getStage().getRooms().stream()
-                .filter(Room::isAlreadyVisited)
-                .collect(Collectors.toList())
-                .forEach(room -> outputList.addAll(room.getRoomInnerTiles()));
-        return outputList;
+        Map<String, EncounterStatus> outputMap = new HashMap<>();
+        service.getStage().getRooms().forEach(room -> {
+            EncounterStatus roomStatus = room.getEncounterStatus();
+            List<Tile> innerTiles = room.getRoomInnerTiles();
+            innerTiles.forEach(tile -> outputMap.put(tile.toStringForJsonMap(), roomStatus));
+        });
+        
+        return outputMap;
     }
 
     @GetMapping("/wasRoomVisited")

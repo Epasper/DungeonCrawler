@@ -1,6 +1,6 @@
 import { updateButtons } from './mapActions.js'
 import { injectTileListeners, injectButtonsListeners } from './mapEvents.js'
-import { draw, loadVisitedFog, loadVisitedRooms } from './mapRender.js'
+import { draw, loadVisitedFog, loadEncountersStates as loadEncountersStates } from './mapRender.js'
 import { adaptGrids } from './mapStyling.js'
 import {updateLogic } from './dungeonLogic.js'
 import * as utils from './mapUtils.js'
@@ -22,7 +22,7 @@ async function ready() {
     await updateMap();
     utils.makeCorridorsTemoraryVisible();
     await loadVisitedFog();
-    await loadVisitedRooms();
+    await loadEncountersStates();
 }
 
 export async function updateMap() {
