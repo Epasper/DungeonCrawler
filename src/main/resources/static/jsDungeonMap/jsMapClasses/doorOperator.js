@@ -81,8 +81,9 @@ class DoorOpened extends Door {
     async actionB(div) {
         console.log('closing the door');
         const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
+        // div.classList.remove(`DOOR_${this.state}`)
+        // div.classList.add(`DOOR_${newState}`)
+        utils.replaceClass(div, `DOOR_${this.state}`, `DOOR_${newState}`);
 
         await activateDoorBackend(newState, this.pointedBackendTile)
         return newState;
@@ -99,8 +100,9 @@ class DoorClosed extends Door {
     async actionA(div) {
         console.log('opening the door');
         const newState = 'OPENED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
+        // div.classList.remove(`DOOR_${this.state}`)
+        // div.classList.add(`DOOR_${newState}`)
+        utils.replaceClass(div, `DOOR_${this.state}`, `DOOR_${newState}`);
 
         await activateDoorBackend(newState, this.pointedBackendTile)
         return newState;
@@ -109,8 +111,9 @@ class DoorClosed extends Door {
     async actionB(div) {
         console.log('locking the door');
         const newState = 'LOCKED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
+        // div.classList.remove(`DOOR_${this.state}`)
+        // div.classList.add(`DOOR_${newState}`)
+        utils.replaceClass(div, `DOOR_${this.state}`, `DOOR_${newState}`);
         return newState;
     }
 
@@ -126,8 +129,9 @@ class DoorLocked extends Door {
     async actionA(div) {
         console.log('unlocking the door');
         const newState = 'CLOSED';
-        div.classList.remove(`DOOR_${this.state}`)
-        div.classList.add(`DOOR_${newState}`)
+        //div.classList.remove(`DOOR_${this.state}`)
+        //div.classList.add(`DOOR_${newState}`)
+        utils.replaceClass(div, `DOOR_${this.state}`, `DOOR_${newState}`);
 
         await activateDoorBackend(newState, this.pointedBackendTile)
         return newState;

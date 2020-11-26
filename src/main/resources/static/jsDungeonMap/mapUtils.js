@@ -46,3 +46,12 @@ export function getYCoord(tile, separator = '-') {
 export function getDivFromBackendTile({ x, y }, distinguisherSign = '-') {
     return getMappedElementById(`${x}${distinguisherSign}${y}`);
 }
+
+export function replaceClass(element, oldClassStr, newClassStr) {
+    if(!element.classList.contains(oldClassStr)) return;
+
+    const fullClassName = element.className;
+    const newClassName = fullClassName.replace(oldClassStr, newClassStr);
+
+    element.className = newClassName;
+}

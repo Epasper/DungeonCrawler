@@ -190,8 +190,11 @@ export async function animateRoomChange(changedTilesData, descendingOrder = fals
 
         setTimeout(function () {
             cascades.get(`${counter}`).forEach(div => {
-                div.classList.remove(currentType);
-                div.classList.add(newType);
+                if (div.classList.contains('ROOM_HIDDEN')) {
+                    utils.replaceClass(div, 'ROOM_HIDDEN', newType);
+                } else {
+                    utils.replaceClass(div, currentType, newType);
+                }
             })
         }, (i + 1) * 100)
     }

@@ -214,6 +214,7 @@ async function keyPressedMove({ keyCode }) {
 async function tileClicked({ target: clickedTileDiv }) {
     var tileId = clickedTileDiv.id
     var tileType = clickedTileDiv.classList[0];
+    tileType = clickedTileDiv.className;
 
     const coordX = utils.getXCoord(clickedTileDiv);
     const coordY = utils.getYCoord(clickedTileDiv);
