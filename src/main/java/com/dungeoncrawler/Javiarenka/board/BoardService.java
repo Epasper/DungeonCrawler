@@ -69,9 +69,13 @@ public class BoardService {
     }
 
     public void prepareTheBoard() {
+        prepareTheBoard(16,8);
+    }
+
+    public void prepareTheBoard(int boardWidth, int boardHeight) {
         //todo: replace the hardcoded values with values from the entered room upon entering
-        boardHeight = 8;
-        boardWidth = 16;
+        this.boardHeight = boardHeight;
+        this.boardWidth = boardWidth;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
         clearSelectedHeroes();
