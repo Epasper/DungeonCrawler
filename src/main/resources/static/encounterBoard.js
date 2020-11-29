@@ -209,3 +209,8 @@ function changeHitPoints(numberToChange, heroNameAndSurname, defense) {
             defense === 'pshield' ? hero.physicalShield + `/` + hero.maxPhysicalShield :
                 defense === 'mshield' ? hero.magicShield + `/` + hero.maxMagicShield : undefined
 }
+
+function exitToMap() {
+    console.log('Exiting back to dungeon map...');
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotIdentifier=e`);
+}

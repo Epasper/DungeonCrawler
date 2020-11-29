@@ -211,10 +211,10 @@ async function saveButtonDelete({ target: clickedConfirmButton }) {
 //========================= LOAD BUTTON ACTIONS =========================
 
 export async function loadButtonConfirmed({ target: loadSlotBtn }) {
-    const loadSlotNumber = loadSlotBtn.parentElement.dataset.slot;
-    console.log('load: ', loadSlotBtn, 'number: ', loadSlotNumber);
+    const loadSlotIdentifier = loadSlotBtn.parentElement.dataset.slot;
+    console.log('load: ', loadSlotBtn, 'number: ', loadSlotIdentifier);
 
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${loadSlotNumber}`);
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotIdentifier=${loadSlotIdentifier}`);
 }
 
 export async function updateLoadButtons() {
@@ -312,7 +312,7 @@ export async function requestQuickSave() {
 }
 
 export async function requestQuickLoad() {
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotNumber=${0}`);
+    window.location.replace(`http://localhost:8080/loadMap?loadSlotIdentifier=${0}`);
 }
 
 export function saveMenuClicked() {

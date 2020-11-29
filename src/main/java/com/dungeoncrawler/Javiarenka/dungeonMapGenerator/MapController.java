@@ -53,9 +53,9 @@ public class MapController
     }
 
     @GetMapping("/loadMap")
-    public RedirectView loadMap(@RequestParam int loadSlotNumber)
+    public RedirectView loadMap(@RequestParam String loadSlotIdentifier)
     {
-        service.load(loadSlotNumber);
+        service.load(loadSlotIdentifier);
         return new RedirectView("/dungeonMap");
     }
 }

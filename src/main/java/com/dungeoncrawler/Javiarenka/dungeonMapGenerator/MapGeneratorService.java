@@ -275,11 +275,11 @@ public class MapGeneratorService
         //fogManager.saveThisFogManager();
     }
 
-    public void load(int loadSlotNumber)
+    public void load(String loadSlotIdentifier)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String stageSaveName = "save-" + Integer.toString(loadSlotNumber) + "_stage.txt";
-        String partySaveName = "save-" + Integer.toString(loadSlotNumber) + "_party.txt";
+        String stageSaveName = "save-" + loadSlotIdentifier + "_stage.txt";
+        String partySaveName = "save-" + loadSlotIdentifier + "_party.txt";
 
         Gson gson = new Gson();
         Stage loadedStage = new Stage();

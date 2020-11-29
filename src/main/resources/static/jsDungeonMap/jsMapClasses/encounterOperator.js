@@ -76,8 +76,8 @@ class EncounterBefore extends Encounter {
         //occupiedTileDiv.classList.add('encountered');
 
         //await generateRoomEncounter(this.occupiedTileDiv);
-        await saveBeforeEncounter();
         await changeRoomEncounter(newState, this.occupiedTileDiv);
+        await saveBeforeEncounter();
 
         return newState;
     }
