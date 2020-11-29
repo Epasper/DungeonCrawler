@@ -123,11 +123,11 @@ public class PartyManager
         return outputMap;
     }
 
-    public void saveThisPartyManager(int saveSlotNumber)
+    public void saveThisPartyManager(String saveSlotIdentifier)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String url = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String saveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+        String saveName = "save-" + saveSlotIdentifier + "_party.txt";
         try
         {
             Writer writer = new FileWriter(url + saveName);

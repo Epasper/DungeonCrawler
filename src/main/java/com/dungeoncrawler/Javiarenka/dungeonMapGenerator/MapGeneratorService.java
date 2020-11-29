@@ -268,10 +268,10 @@ public class MapGeneratorService
         return sb.toString();
     }
 
-    public void save(int saveSlotNumber)
+    public void save(String saveSlotIdentifier)
     {
-        stage.saveThisStage(saveSlotNumber);
-        partyManager.saveThisPartyManager(saveSlotNumber);
+        stage.saveThisStage(saveSlotIdentifier);
+        partyManager.saveThisPartyManager(saveSlotIdentifier);
         //fogManager.saveThisFogManager();
     }
 

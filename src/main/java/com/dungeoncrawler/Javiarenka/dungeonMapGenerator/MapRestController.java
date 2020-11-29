@@ -169,7 +169,7 @@ public class MapRestController
             List<Tile> innerTiles = room.getRoomInnerTiles();
             innerTiles.forEach(tile -> outputMap.put(tile.toStringForJsonMap(), roomStatus));
         });
-        
+
         return outputMap;
     }
 
@@ -206,9 +206,9 @@ public class MapRestController
     }
 
     @GetMapping("/saveMap")
-    public void saveMap(@RequestParam int saveSlotNumber)
+    public void saveMap(@RequestParam String saveSlotIdentifier)
     {
-        service.save(saveSlotNumber);
+        service.save(saveSlotIdentifier);
     }
 
     @GetMapping("/checkIfSaveExists")
@@ -225,11 +225,11 @@ public class MapRestController
     }
 
     @GetMapping("/deleteSave")
-    public void deleteSave(@RequestParam int saveSlotNumber)
+    public void deleteSave(@RequestParam int saveSlotIdentifier)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
-        String partySaveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+        String stageSaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_party.txt";
 
         File savedStageToDelete = new File(fileLocation + stageSaveName);
         File savedPartyToDelete = new File(fileLocation + partySaveName);
@@ -239,10 +239,10 @@ public class MapRestController
     }
 
     @GetMapping("/getSaveInfo")
-    public String getSaveInfo(@RequestParam int saveSlotNumber)
+    public String getSaveInfo(@RequestParam int saveSlotIdentifier)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        String stageSaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_stage.txt";
         StringBuilder saveInfo = new StringBuilder();
 
         try

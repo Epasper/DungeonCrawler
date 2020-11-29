@@ -1,3 +1,4 @@
+import { notify } from '../mapMenuActions.js'
 import * as utils from '../mapUtils.js'
 
 export class EncounterOperator {
@@ -75,6 +76,7 @@ class EncounterBefore extends Encounter {
         //occupiedTileDiv.classList.add('encountered');
 
         //await generateRoomEncounter(this.occupiedTileDiv);
+        await saveBeforeEncounter();
         await changeRoomEncounter(newState, this.occupiedTileDiv);
 
         return newState;
@@ -117,4 +119,11 @@ async function changeRoomEncounter(newEncounterStatus, occupiedTileDiv) {
         tileDiv.classList.add(newEncounterStatus);
         tileDiv.dataset.encounterStatus = newEncounterStatus;
     })
+}
+
+export async function saveBeforeEncounter() {
+    const saveSlotIdentifier = 'e';
+    await axios.get(`http://localhost:8080/saveMap?saveSlotIdentifier=${saveSlotIdentifier}`);
+
+    notify('Auto save!');
 }

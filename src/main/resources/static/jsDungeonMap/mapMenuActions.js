@@ -81,8 +81,8 @@ export function confirmableButtonClicked({ target: clickedButton }) {
     }
 }
 
-async function getSaveInfo(saveSlotNumber) {
-    const response = await axios.get(`http://localhost:8080/getSaveInfo?saveSlotNumber=${saveSlotNumber}`);
+async function getSaveInfo(saveSlotIdentifier) {
+    const response = await axios.get(`http://localhost:8080/getSaveInfo?saveSlotIdentifier=${saveSlotIdentifier}`);
     const saveInfo = response.data;
 
     console.log(saveInfo);
@@ -177,11 +177,11 @@ export function exitSaveDeletion() {
 }
 
 export async function saveButtonConfirmed({ target: saveConfirmationBtn }) {
-    const saveSlotNumber = saveConfirmationBtn.parentElement.dataset.slot;
-    console.log('save: ', saveConfirmationBtn, 'number: ', saveSlotNumber)
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${saveSlotNumber}`);
+    const saveSlotIdentifier = saveConfirmationBtn.parentElement.dataset.slot;
+    console.log('save: ', saveConfirmationBtn, 'number: ', saveSlotIdentifier)
+    await axios.get(`http://localhost:8080/saveMap?saveSlotIdentifier=${saveSlotIdentifier}`);
 
-    const correspondingLoadButton = utils.getMappedElementById(`load-${saveSlotNumber}-btn`);
+    const correspondingLoadButton = utils.getMappedElementById(`load-${saveSlotIdentifier}-btn`);
     if (correspondingLoadButton.disabled) {
         notify('Save created!');
     } else {
@@ -194,12 +194,12 @@ export async function saveButtonConfirmed({ target: saveConfirmationBtn }) {
 
 async function saveButtonDelete({ target: clickedConfirmButton }) {
     const currentSlotDiv = clickedConfirmButton.parentElement;
-    const saveSlotNumber = currentSlotDiv.dataset.slot;
-    console.log('delete slot number: ', saveSlotNumber);
+    const saveSlotIdentifier = currentSlotDiv.dataset.slot;
+    console.log('delete slot number: ', saveSlotIdentifier);
 
-    await axios.get(`http://localhost:8080/deleteSave?saveSlotNumber=${saveSlotNumber}`);
+    await axios.get(`http://localhost:8080/deleteSave?saveSlotIdentifier=${saveSlotIdentifier}`);
 
-    const saveButton = utils.getMappedElementById(`save-${saveSlotNumber}-btn`);
+    const saveButton = utils.getMappedElementById(`save-${saveSlotIdentifier}-btn`);
     saveButton.disabled = true;
 
     notify('Save file deleted!');
@@ -306,7 +306,7 @@ export function menuClicked() {
 }
 
 export async function requestQuickSave() {
-    await axios.get(`http://localhost:8080/saveMap?saveSlotNumber=${0}`);
+    await axios.get(`http://localhost:8080/saveMap?saveSlotIdentifier=${0}`);
     updateLoadButtons();
     notify('Quick save successful!');
 }
@@ -354,7 +354,7 @@ function hideMenu(menu) {
     menu.classList.add('hidden');
 }
 
-function notify(text) {
+export function notify(text) {
     const notificationDiv = document.createElement('div');
     const root = document.documentElement;
     const notificationTime = parseInt(window.getComputedStyle(root).getPropertyValue(`--notification-time`));
