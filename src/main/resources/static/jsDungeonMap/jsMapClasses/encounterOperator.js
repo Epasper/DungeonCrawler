@@ -1,4 +1,5 @@
 import { notify } from '../mapMenuActions.js'
+import { mapHeight, mapWidth } from '../mapStyling.js';
 import * as utils from '../mapUtils.js'
 
 export class EncounterOperator {
@@ -76,8 +77,10 @@ class EncounterBefore extends Encounter {
         //occupiedTileDiv.classList.add('encountered');
 
         //await generateRoomEncounter(this.occupiedTileDiv);
-        await changeRoomEncounter(newState, this.occupiedTileDiv);
+        const roomSize = await changeRoomEncounter(newState, this.occupiedTileDiv);
         await saveBeforeEncounter();
+
+        goToEncounterBoard(roomSize.width * 2, roomSize.height * 2);
 
         return newState;
     }
@@ -119,6 +122,7 @@ async function changeRoomEncounter(newEncounterStatus, occupiedTileDiv) {
         tileDiv.classList.add(newEncounterStatus);
         tileDiv.dataset.encounterStatus = newEncounterStatus;
     })
+    return getInnerRoomSizeFromBeckendTilesList(roomTilesBackend);
 }
 
 export async function saveBeforeEncounter() {
@@ -126,4 +130,21 @@ export async function saveBeforeEncounter() {
     await axios.get(`http://localhost:8080/saveMap?saveSlotIdentifier=${saveSlotIdentifier}`);
 
     notify('Auto save!');
+}
+
+function goToEncounterBoard(width, height) {
+    window.location.replace(`http://localhost:8080/encounterBoard?width=${width}&height=${height}`);
+}
+
+function getInnerRoomSizeFromBeckendTilesList(backendTiles) {
+    const xCoords = backendTiles.map(tile => tile.x);
+    const yCoords = backendTiles.map(tile => tile.y);
+    const minX = Math.min(...xCoords);
+    const maxX = Math.max(...xCoords);
+    const minY = Math.min(...yCoords);
+    const maxY = Math.max(...yCoords);
+    const roomWidth = maxX - minX + 1;
+    const roomHeight = maxY - minY + 1;
+    
+    return {width: roomWidth, height: roomHeight};
 }

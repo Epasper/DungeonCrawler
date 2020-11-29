@@ -2,8 +2,6 @@ import * as utils from './mapUtils.js'
 
 const SIZE_REF = 80
 
-// export let mapHeight = getMapHeight()
-// export let mapWidth = getMapWidth()
 export const mapHeight = mapHeightThyme;
 export const mapWidth = mapWidthThyme;
 

@@ -15,9 +15,6 @@ import java.util.stream.IntStream;
 //@RequestMapping("generateMap") //wtedy wszystkie metody poniżej będą zaczynać się od /generateMap/...
 public class MapController
 {
-
-    //TODO: w prawym dolnym rogu przycisk "Menu" z wysuwanym menu -> savegame / loadgame / etc.
-
     //TODO: zamiast tworzyć Divy selekcji i Party Javascriptem - niech będą od początku w htmlu, a JS niech zarządza tylko ich wyświetlaniem
 
     @Autowired
@@ -29,8 +26,6 @@ public class MapController
     {
 
         if(!Objects.isNull(width) || !Objects.isNull(height)) service.generateMap(width.intValue(), height.intValue());
-
-//        service.generateMap(width, height);
 
         Stage stage = service.getStage();
 
