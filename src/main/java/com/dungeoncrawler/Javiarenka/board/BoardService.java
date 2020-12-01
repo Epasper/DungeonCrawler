@@ -86,6 +86,13 @@ public class BoardService {
         setHeroImages();
     }
 
+    public void clearTheBoard() {
+        clearSelectedHeroes();
+        this.boardHeight = 0;
+        this.boardWidth = 0;
+        tiles = new EncounterTile[0][0];
+    }
+
     //todo: change the images from class based to those customized in character creation (after such customization is possible)
     private void setHeroImages() {
         for (Hero hero : heroes) {

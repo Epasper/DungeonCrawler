@@ -210,7 +210,8 @@ function changeHitPoints(numberToChange, heroNameAndSurname, defense) {
                 defense === 'mshield' ? hero.magicShield + `/` + hero.maxMagicShield : undefined
 }
 
-function exitToMap() {
+async function exitToMap() {
     console.log('Exiting back to dungeon map...');
-    window.location.replace(`http://localhost:8080/loadMap?loadSlotIdentifier=e`);
+
+    window.location.replace(`http://localhost:8080/exitBoardToMap`);
 }

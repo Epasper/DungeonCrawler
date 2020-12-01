@@ -25,23 +25,6 @@ public class BoardController {
         return "fightBoard";
     }
 
-    //backup:
-//    @GetMapping("/encounterBoard")
-//    public String encounter(Model model) {
-//        if (!BoardService.isAlreadyLoaded)service.prepareTheBoard();
-//        BoardService.isAlreadyLoaded = true;
-//        model.addAttribute("heroes", service.getHeroes());
-//        model.addAttribute("monsters", service.getMonsters());
-//        model.addAttribute("consoleText", service.getMessageOutput());
-//        model.addAttribute("boardWidth", service.getBoardWidth());
-//        model.addAttribute("boardHeight", service.getBoardHeight());
-//        model.addAttribute("tiles", service.getTiles());
-//        model.addAttribute("tileImages", service.getImageSources());
-//        model.addAttribute("initiativeOrder", service.getInitiativeOrder());
-//        return "encounterBoard";
-//    }
-
-
     @GetMapping("/encounterBoard")
     public String encounter(@RequestParam(required = false) Integer width, @RequestParam(required = false) Integer height, Model model) {
         if (!BoardService.isAlreadyLoaded) {
@@ -62,6 +45,13 @@ public class BoardController {
         model.addAttribute("tileImages", service.getImageSources());
         model.addAttribute("initiativeOrder", service.getInitiativeOrder());
         return "encounterBoard";
+    }
+
+    @GetMapping("/exitBoardToMap")
+    public String exitBoardToMap() {
+        service.clearTheBoard();
+        BoardService.isAlreadyLoaded = false;
+        return "redirect:/loadMap?loadSlotIdentifier=e";
     }
 
     @GetMapping("/fightBoard/attackHero")
