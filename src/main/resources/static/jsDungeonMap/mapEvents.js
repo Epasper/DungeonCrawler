@@ -1,7 +1,7 @@
-import { makeSelection, getX, getY, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
+import { makeSelection, selectedGridTileDiv, deleteSelection } from './mapSelection.js'
 import { mapWidth, mapHeight } from './mapStyling.js'
 import { actionAByContext, actionBByContext } from './mapActions.js'
-import { party, directions } from './partyManager.js'
+import { party, directions } from './jsMapClasses/partyManager.js'
 import { updateMap } from './dungeonMap.js'
 import * as utils from './mapUtils.js'
 import * as menus from './mapMenuActions.js'
@@ -128,8 +128,8 @@ function makeAction() {
 }
 
 async function spawnPartyBackend() {
-    let coordX = getX(selectedGridTileDiv)
-    let coordY = getY(selectedGridTileDiv)
+    let coordX = utils.getXCoord(selectedGridTileDiv)
+    let coordY = utils.getYCoord(selectedGridTileDiv)
 
     const response = await axios.get(`http://localhost:8080/spawnParty?coordX=${coordX}&coordY=${coordY}`);
     const backendParty = response.data;
@@ -138,13 +138,16 @@ async function spawnPartyBackend() {
     const corridorFogDivs = Array.from(document.getElementsByClassName('fog-CORRIDOR'));
     corridorFogDivs.forEach(div => div.style.backgroundColor = '');
 
+    party.createPartyDiv();
+    party.isSpawned = true;
+
     await deleteSelection();
     await updateMap();
 }
 
 async function teleportPartyBackend() {
-    let coordX = getX(selectedGridTileDiv);
-    let coordY = getY(selectedGridTileDiv);
+    let coordX = utils.getXCoord(selectedGridTileDiv);
+    let coordY = utils.getYCoord(selectedGridTileDiv);
 
     await axios.get(`http://localhost:8080/moveParty?coordX=${coordX}&coordY=${coordY}`)
 
@@ -157,8 +160,6 @@ async function movePartyOneStepBackend({ target: clickedMoveButton }) {
     dir = dir.toUpperCase();
 
     await axios.get(`http://localhost:8080/stepParty?dir=${dir}`);
-
-    party.direction = directions[dir];
 
     await updateMap();
 }
@@ -212,10 +213,11 @@ async function keyPressedMove({ keyCode }) {
 
 async function tileClicked({ target: clickedTileDiv }) {
     var tileId = clickedTileDiv.id
-    var tileType = clickedTileDiv.classList[1]
+    var tileType = clickedTileDiv.classList[0];
+    tileType = clickedTileDiv.className;
 
-    const coordX = getX(clickedTileDiv);
-    const coordY = getY(clickedTileDiv);
+    const coordX = utils.getXCoord(clickedTileDiv);
+    const coordY = utils.getYCoord(clickedTileDiv);
     const message = `Tile: ${tileId} (${tileType}) has been selected!`
 
     const { data: clickedTileBackend3 } = await axios
@@ -247,8 +249,8 @@ function showCrossHighlightElements(centerDivElement, colorIdentifier) {
     rowElement.classList.add('cross-highlight');
     colElement.classList.add('cross-highlight');
 
-    const currentRow = getY(centerDivElement);
-    const currentCol = getX(centerDivElement);
+    const currentRow = utils.getYCoord(centerDivElement);
+    const currentCol = utils.getXCoord(centerDivElement);
 
     rowElement.style.gridArea = `${currentRow + 1} / 1 / ${currentRow + 2} / ${mapWidth + 1}`;
     colElement.style.gridArea = `1 / ${currentCol + 1} / ${mapHeight + 1} / ${currentCol + 2}`;

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class PartyManager
 {
@@ -122,11 +123,11 @@ public class PartyManager
         return outputMap;
     }
 
-    public void saveThisPartyManager(int saveSlotNumber)
+    public void saveThisPartyManager(String saveSlotIdentifier)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String url = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String saveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+        String saveName = "save-" + saveSlotIdentifier + "_party.txt";
         try
         {
             Writer writer = new FileWriter(url + saveName);
@@ -137,5 +138,16 @@ public class PartyManager
         {
             e.printStackTrace();
         }
+    }
+
+    public EncounterStatus checkEncounterStatus()
+    {
+        if (Objects.isNull(party)) return EncounterStatus.UNDEFINED;
+
+        Tile partyTile = party.getOccupiedTile();
+        if (!partyTile.getType().isRoom()) return EncounterStatus.UNDEFINED;
+
+        Room room = stage.getRoomByTile(partyTile);
+        return room.getEncounterStatus();
     }
 }

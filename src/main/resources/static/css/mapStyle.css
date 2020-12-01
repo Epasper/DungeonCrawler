@@ -66,10 +66,22 @@
     transition: background-color 1s;
 }
 
+.ROOM.visited,
+.ROOM.encountered,
+.ROOM[data-encounter-status="AFTER"] {
+    background-color: #84a768;
+}
+
 .ROOM_LOCKED {
     background-color: #55522d;
     /* background-color: var(--default-tile-color); */
     transition: background-color 1s;
+}
+
+.ROOM_LOCKED.visited,
+.ROOM_LOCKED.encountered,
+.ROOM_LOCKED[data-encounter-status="AFTER"] {
+    background-color: #33552d;
 }
 
 .DOOR_CLOSED {

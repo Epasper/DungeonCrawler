@@ -69,9 +69,13 @@ public class BoardService {
     }
 
     public void prepareTheBoard() {
+        prepareTheBoard(16,8);
+    }
+
+    public void prepareTheBoard(int boardWidth, int boardHeight) {
         //todo: replace the hardcoded values with values from the entered room upon entering
-        boardHeight = 8;
-        boardWidth = 16;
+        this.boardHeight = boardHeight;
+        this.boardWidth = boardWidth;
         tiles = new EncounterTile[boardWidth][boardHeight];
         rollForBoardTiles();
         clearSelectedHeroes();
@@ -80,6 +84,13 @@ public class BoardService {
         rollForInitialYCoordinates();
         rollForInitiative();
         setHeroImages();
+    }
+
+    public void clearTheBoard() {
+        clearSelectedHeroes();
+        this.boardHeight = 0;
+        this.boardWidth = 0;
+        tiles = new EncounterTile[0][0];
     }
 
     //todo: change the images from class based to those customized in character creation (after such customization is possible)

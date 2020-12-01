@@ -40,7 +40,8 @@
         </div>
         <div class="stage-grid" id="grid">
             <th:block th:each="tile: ${tiles}">
-                <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile tile-fogged '+${tile.type}"
+                <!-- <div th:id="${tile.x} + '-' + ${tile.y}" th:class="'tile tile-fogged '+${tile.type}" -->
+                <div th:id="${tile.x} + '-' + ${tile.y}" th:class="${tile.type} + ' tile tile-fogged'"
                     th:style="'grid-area: ' + ${tile.y+1} + '/' + ${tile.x+1} + '/' + ${tile.y+2} + '/' + ${tile.x+2} + ';'">
                 </div>
             </th:block>

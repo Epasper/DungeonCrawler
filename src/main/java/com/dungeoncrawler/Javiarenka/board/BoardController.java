@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Objects;
+
 @Controller
 public class BoardController {
     BoardService service = new BoardService();
@@ -24,8 +26,15 @@ public class BoardController {
     }
 
     @GetMapping("/encounterBoard")
-    public String encounter(Model model) {
-        if (!BoardService.isAlreadyLoaded)service.prepareTheBoard();
+    public String encounter(@RequestParam(required = false) Integer width, @RequestParam(required = false) Integer height, Model model) {
+        if (!BoardService.isAlreadyLoaded) {
+            if(!Objects.isNull(width) || !Objects.isNull(height)) {
+                service.prepareTheBoard(width, height);
+            } else {
+                service.prepareTheBoard();
+            }
+        }
+
         BoardService.isAlreadyLoaded = true;
         model.addAttribute("heroes", service.getHeroes());
         model.addAttribute("monsters", service.getMonsters());
@@ -36,6 +45,13 @@ public class BoardController {
         model.addAttribute("tileImages", service.getImageSources());
         model.addAttribute("initiativeOrder", service.getInitiativeOrder());
         return "encounterBoard";
+    }
+
+    @GetMapping("/exitBoardToMap")
+    public String exitBoardToMap() {
+        service.clearTheBoard();
+        BoardService.isAlreadyLoaded = false;
+        return "redirect:/loadMap?loadSlotIdentifier=e";
     }
 
     @GetMapping("/fightBoard/attackHero")

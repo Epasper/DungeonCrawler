@@ -1,12 +1,12 @@
 package com.dungeoncrawler.Javiarenka.dungeonMapGenerator;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class MapRestController
@@ -70,10 +70,17 @@ public class MapRestController
         //////service.getFogManager().updateVisibility();
     }
 
-    @GetMapping("/getParty")
-    public PartyAvatar getParty()
+    @GetMapping("/getPartyData")
+//    public PartyAvatar getPartyData()
+    public Map<String, Object> getPartyData()
     {
-        return service.getPartyManager().getParty();
+        Map<String, Object> outputMap = new TreeMap<>();
+        EncounterStatus encounterStatus = service.getPartyManager().checkEncounterStatus();
+
+        outputMap.put("partyData", service.getPartyManager().getParty());
+        outputMap.put("encounterStatus", encounterStatus);
+
+        return outputMap;
     }
 
     @GetMapping("/getClickedTile")
@@ -153,10 +160,55 @@ public class MapRestController
         return service.getFogManager().getAlreadySeenTiles();
     }
 
-    @GetMapping("/saveMap")
-    public void saveMap(@RequestParam int saveSlotNumber)
+    @GetMapping("/loadEncountersStates")
+    public Map<String, EncounterStatus> loadEncountersStates()
     {
-        service.save(saveSlotNumber);
+        Map<String, EncounterStatus> outputMap = new HashMap<>();
+        service.getStage().getRooms().forEach(room -> {
+            EncounterStatus roomStatus = room.getEncounterStatus();
+            List<Tile> innerTiles = room.getRoomInnerTiles();
+            innerTiles.forEach(tile -> outputMap.put(tile.toStringForJsonMap(), roomStatus));
+        });
+
+        return outputMap;
+    }
+
+    @GetMapping("/wasRoomVisited")
+    public boolean wasRoomVisited(@RequestParam int coordX, @RequestParam int coordY)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        return room.isAlreadyVisited();
+    }
+
+    @GetMapping("/visitRoom")
+    public List<Tile> visitRoom(@RequestParam int coordX, @RequestParam int coordY)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        room.setEncounterStatus(EncounterStatus.AFTER);
+        //room.setAlreadyVisited(true);
+
+        System.out.println();
+        System.out.println("Room visited.");
+        System.out.println(room.asString());
+        return room.getRoomInnerTiles();
+    }
+
+    @GetMapping("/roomEncounter")
+    public List<Tile> roomEncounter (@RequestParam int coordX, @RequestParam int coordY, @RequestParam EncounterStatus newEncounterState)
+    {
+        Tile roomTile = service.getStage().getTile(coordX, coordY);
+        Room room = service.getStage().getRoomByTile(roomTile);
+        room.setEncounterStatus(newEncounterState);
+        //room.setAlreadyVisited(true);
+        return room.getRoomInnerTiles();
+    }
+
+    @GetMapping("/saveMap")
+    public void saveMap(@RequestParam String saveSlotIdentifier)
+    {
+        service.save(saveSlotIdentifier);
     }
 
     @GetMapping("/checkIfSaveExists")
@@ -173,11 +225,11 @@ public class MapRestController
     }
 
     @GetMapping("/deleteSave")
-    public void deleteSave(@RequestParam int saveSlotNumber)
+    public void deleteSave(@RequestParam int saveSlotIdentifier)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
-        String partySaveName = "save-" + Integer.toString(saveSlotNumber) + "_party.txt";
+        String stageSaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_stage.txt";
+        String partySaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_party.txt";
 
         File savedStageToDelete = new File(fileLocation + stageSaveName);
         File savedPartyToDelete = new File(fileLocation + partySaveName);
@@ -187,10 +239,10 @@ public class MapRestController
     }
 
     @GetMapping("/getSaveInfo")
-    public String getSaveInfo(@RequestParam int saveSlotNumber)
+    public String getSaveInfo(@RequestParam int saveSlotIdentifier)
     {
         String fileLocation = "src/main/java/com/dungeoncrawler/Javiarenka/dataBase/dungeonMap/";
-        String stageSaveName = "save-" + Integer.toString(saveSlotNumber) + "_stage.txt";
+        String stageSaveName = "save-" + Integer.toString(saveSlotIdentifier) + "_stage.txt";
         StringBuilder saveInfo = new StringBuilder();
 
         try

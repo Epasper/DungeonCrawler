@@ -143,4 +143,11 @@ public class Tile
         sb.append("already seen: ").append(this.alreadySeen).append("\n");
         return sb.toString();
     }
+
+    public String toStringForJsonMap()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.x).append("-").append(this.y);
+        return sb.toString();
+    }
 }

@@ -9,12 +9,17 @@ public class Room extends Stage
     private int yPos;
     private Wall[] walls = new Wall[Direction.SIZE];
     private Tile door;
+    //TODO: usunąć boolean alreadyVisited i powiązane funckje, kiedy już będzie w pełni zastąpiony przez EncounterStatus
+    private boolean alreadyVisited;
+    private EncounterStatus encounterStatus;
 
     Room(int xCoord, int yCoord, int roomWidth, int roomHeight)
     {
         super(roomWidth, roomHeight);
         xPos = xCoord;
         yPos = yCoord;
+        alreadyVisited = false;
+        encounterStatus = EncounterStatus.BEFORE;
     }
 
     Room(Tile seedTile, int roomWidth, int roomHeight)
@@ -22,6 +27,8 @@ public class Room extends Stage
         super(roomWidth, roomHeight);
         xPos = seedTile.getX();
         yPos = seedTile.getY();
+        alreadyVisited = false;
+        encounterStatus = EncounterStatus.BEFORE;
     }
 
     Room(Tile[][] roomTiles, TileType targetType)
@@ -59,6 +66,8 @@ public class Room extends Stage
                     break;
             }
         }
+        alreadyVisited = false;
+        encounterStatus = EncounterStatus.BEFORE;
     }
 
     public int getxPos()
@@ -89,6 +98,26 @@ public class Room extends Stage
     public void setDoor(Tile door)
     {
         this.door = door;
+    }
+
+    public boolean isAlreadyVisited()
+    {
+        return alreadyVisited;
+    }
+
+    public void setAlreadyVisited(boolean alreadyVisited)
+    {
+        this.alreadyVisited = alreadyVisited;
+    }
+
+    public EncounterStatus getEncounterStatus()
+    {
+        return encounterStatus;
+    }
+
+    public void setEncounterStatus(EncounterStatus encounterStatus)
+    {
+        this.encounterStatus = encounterStatus;
     }
 
     public void lockRoomTiles()
